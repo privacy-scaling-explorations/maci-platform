@@ -5,10 +5,6 @@ import { Header } from "~/components/Header";
 
 const navLinks = [
   {
-    href: "/applications",
-    children: "Applications",
-  },
-  {
     href: "/voters",
     children: "Voters",
   },
