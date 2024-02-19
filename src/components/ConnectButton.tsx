@@ -1,17 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
-import { type ComponentPropsWithRef } from "react";
+import { type ComponentPropsWithRef, useEffect } from "react";
 import { type Address, useEnsAvatar, useEnsName } from "wagmi";
 import { FaListCheck } from "react-icons/fa6";
 
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import { createBreakpoint } from "react-use";
+import { useSession } from "next-auth/react";
 
 import { Button } from "./ui/Button";
 import { Chip } from "./ui/Chip";
 import { useBallot } from "~/features/ballot/hooks/useBallot";
 import { EligibilityDialog } from "./EligibilityDialog";
 import { useLayoutOptions } from "~/layouts/BaseLayout";
+import { useMaci, useApprovedAttestation } from "~/hooks/useMaci";
+import { useEthersSigner } from "~/hooks/useEthersSigner";
 
 const useBreakpoint = createBreakpoint({ XL: 1280, L: 768, S: 350 });
 
@@ -94,10 +97,19 @@ const ConnectedDetails = ({
   const ballotSize = (ballot?.votes ?? []).length;
 
   const { eligibilityCheck, showBallot } = useLayoutOptions();
+
+  const { isMaciSignedUp } = useMaci();
+
   return (
     <div>
       <div className="flex gap-2 text-white">
-        {!showBallot ? null : ballot?.publishedAt ? (
+        {
+          !isMaciSignedUp && 
+            <SignUpButton address={account.address}>
+              Sign Up
+            </SignUpButton>
+        }
+        {(!showBallot || !isMaciSignedUp) ? null : ballot?.publishedAt ? (
           <Chip>Already submitted</Chip>
         ) : (
           <Chip className="gap-2" as={Link} href={"/ballot"}>
@@ -141,3 +153,24 @@ const UserInfo = ({
     </Chip>
   );
 };
+
+const SignUpButton = ({address, children, ...props}: { address: Address } & ComponentPropsWithRef<typeof Chip>) => {
+  const attestation = useApprovedAttestation(address);
+  const { signUpMaci } = useMaci();
+  const { data } = useSession();
+  const signer = useEthersSigner();
+
+  const signup = async () => {
+    if (!data) return;
+    if (!signer) return;
+
+    await signUpMaci(attestation.data.id, data.publicKey, signer);
+  }
+
+  // The signed message need to be changed
+  return (
+    <Chip className="gap-2" onClick={signup} {...props}>
+      {children}
+    </Chip>
+  );
+}

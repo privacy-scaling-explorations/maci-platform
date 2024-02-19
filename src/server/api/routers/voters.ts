@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import {
   fetchAttestations,
+  fetchApprovedVoterAttestation,
   createDataFilter,
   fetchApprovedVoter,
 } from "~/utils/fetchAttestations";
@@ -18,6 +19,11 @@ export const votersRouter = createTRPCRouter({
     .input(z.object({ address: z.string() }))
     .query(async ({ input }) => {
       return fetchApprovedVoter(input.address);
+    }),
+  approvedAttestation: publicProcedure
+    .input(z.object({ address: z.string() }))
+    .query(async ({ input }) => {
+      return fetchApprovedVoterAttestation(input.address);
     }),
   list: publicProcedure.input(FilterSchema).query(async ({}) => {
     return fetchAttestations([eas.schemas.approval], {

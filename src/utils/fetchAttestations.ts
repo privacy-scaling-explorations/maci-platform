@@ -80,6 +80,15 @@ export async function fetchAttestations(
   }).then((r) => r.data?.attestations.map(parseAttestation));
 }
 
+export async function fetchApprovedVoterAttestation(address: string) {
+  return fetchAttestations([eas.schemas.approval], {
+    where: {
+      recipient: { equals: address },
+      ...createDataFilter("type", "bytes32", "voter"),
+    },
+  }).then((attestations) => attestations[0]);
+}
+
 export async function fetchApprovedVoter(address: string) {
   if (config.skipApprovedVoterCheck) return true;
   return fetchAttestations([eas.schemas.approval], {
