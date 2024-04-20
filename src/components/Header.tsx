@@ -28,7 +28,7 @@ const NavLink = ({
 }: { isActive: boolean } & ComponentPropsWithRef<typeof Link>) => (
   <Link
     className={clsx(
-      "flex h-full items-center border-b-[3px] border-transparent p-4 font-semibold text-gray-400 hover:text-white",
+      "flex h-full items-center border-b-[3px] border-transparent p-4 font-semibold text-gray-400 hover:text-black",
       {
         ["!border-white  !text-white"]: isActive,
       },
@@ -52,7 +52,7 @@ export const Header = ({ navLinks }: { navLinks: NavLink[] }) => {
             className="mr-1 text-gray-600 md:hidden"
             onClick={() => setOpen(!isOpen)}
           />
-          <Link href={"/"} className="py-4">
+          <Link href={"/home"} className="py-4">
             <Logo />
           </Link>
         </div>
