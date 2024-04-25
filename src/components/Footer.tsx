@@ -2,25 +2,19 @@ import { GithubIcon } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="flex flex-col items-center justify-center bg-gray-950 p-2 text-gray-400">
-      <a
-        href={"https://github.com/privacy-scaling-explorations/maci-rpgf/"}
-        target="_blank"
-        className="group py-4 text-sm hover:text-white"
-      >
-        <div className="flex">
-          Built with{" "}
-          <span className="relative -mt-1 w-6 px-1 text-xl text-red-600">
-            <span className="absolute">❤️</span>
-            <span className="absolute group-hover:animate-ping">❤️</span>
-          </span>
-          on EasyRetroPGF.
+    <footer className="flex bg-PGFBrown justify-center items-center text-gray-400 px-12">
+      <div className="max-w-screen-2xl mx-auto flex justify-between w-full">
+        <div className="flex items-center space-x-6">
+          <img src="/images/x-icon.png" className="h-10" alt="X Icon" />
+          <img src="/images/telegram-icon.png" className="h-10" alt="Telegram Icon" />
         </div>
-        <div className="inline-flex">
-          Run your own RPGF Round
-          <GithubIcon className="ml-1 mt-0.5 h-4 w-4" />
+        <div className="flex items-center space-x-6">
+          <h1>Una iniciativa de</h1>
+          <img src="/images/ETHMx-icon.png" className="h-24 py-2 my-2" alt="ETHMx Icon" />
         </div>
-      </a>
+      </div>
     </footer>
   );
 }
+
+// container mx-auto flex h-[72px] max-w-screen-2xl items-center px-2

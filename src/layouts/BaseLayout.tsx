@@ -57,7 +57,7 @@ export const BaseLayout = ({
       <Head>
         <title>{title}</title>
         <meta name="description" content={metadata.description} />
-        <link rel="icon" href="favicon.svg" />
+        <link rel="icon" href="favicon.svg" />npm
         <meta property="og:url" content={metadata.url} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={title} />
@@ -73,10 +73,18 @@ export const BaseLayout = ({
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={metadata.description} />
         <meta name="twitter:image" content={metadata.image} />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Ojuju:wght@200..800&display=swap" rel="stylesheet"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com"/>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Ojuju:wght@200..800&display=swap" rel="stylesheet"/>
+      
       </Head>
       <div
         className={clsx(
-          " flex h-full min-h-screen flex-1 flex-col dark:bg-gray-900 dark:text-white",
+          " flex h-full min-h-screen flex-1 flex-col dark:bg-PGFBeige",
           theme,
         )}
       >
@@ -84,7 +92,7 @@ export const BaseLayout = ({
         <div className="mx-auto w-full flex-1 pt-12 2xl:container md:flex">
           {sidebar === "left" ? wrappedSidebar : null}
           <div
-            className={clsx("w-full min-w-0 px-2 pb-24", {
+            className={clsx("w-full min-w-0 px-2", {
               ["mx-auto max-w-5xl"]: !sidebar,
             })}
           >
