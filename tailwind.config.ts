@@ -32,6 +32,9 @@ const customColors = {
   highlight: {
     600: "#F3CF00",
   },
+  PGFBeige: "#FFEEDF",
+  PGFBrown: "#230F07",
+  PFGOrangeL: "#FE6236"
 };
 
 export default {
@@ -45,7 +48,8 @@ export default {
         gray: colors.stone,
       },
       fontFamily: {
-        sans: ["var(--font-inter)", ...theme.fontFamily.sans],
+        ojuju: ["Ojuju"],
+        montserrat: ["Montserrat"]
       },
     },
   },
