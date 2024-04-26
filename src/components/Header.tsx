@@ -15,7 +15,7 @@ const Logo = () => (
     {config.logoUrl ? (
       <Image alt="logo" className="max-h-full" src={config.logoUrl} />
     ) : (
-      <div className="flex h-full items-center justify-center px-4 text-lg font-medium tracking-wider text-black font-ojuju font-extrabold">
+      <div className="flex h-full items-center justify-center px-4 text-xl font-medium tracking-wider text-black font-ojuju font-black">
         {metadata.title}
       </div>
     )}
@@ -30,7 +30,7 @@ const NavLink = ({
     className={clsx(
       "flex h-full items-center border-b-[3px] border-transparent p-4 font-semibold text-gray-400 hover:text-black",
       {
-        ["!border-white  !text-white"]: isActive,
+        ["!border-PGFBrown  !text-PGFBrown"]: isActive,
       },  
     )}
     {...props}
