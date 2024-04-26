@@ -42,7 +42,7 @@ export const allo = {
 export const isNativeToken = allo.tokenAddress === nativeToken;
 
 export const theme = {
-  colorMode: "dark",
+  colorMode: "light",
 };
 
 export const eas = {

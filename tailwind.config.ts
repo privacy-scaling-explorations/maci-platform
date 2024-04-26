@@ -34,7 +34,9 @@ const customColors = {
   },
   PGFBeige: "#FFEEDF",
   PGFBrown: "#230F07",
-  PFGOrangeL: "#FE6236"
+  PGFOrangeL: "#FE6236",
+  PGFGreenL: "#AFA54C",
+  PGFGreenD: "#847A23",
 };
 
 export default {
