@@ -32,63 +32,28 @@ export interface IDeployGatekeeperArgs {
 }
 
 /**
- * Interface that represents deploy args for MACI
- */
-export interface IDeployMaciArgs {
-  /**
-   * State tree depth
-   */
-  stateTreeDepth: number;
-}
-
-/**
  * Interface that represents deploy args for VkRegistry
  */
 export interface IDeployVkRegistryArgs {
   /**
-   * State tree depth
-   */
-  stateTreeDepth: number;
-
-  /**
-   * The depth of the state subtree
-   */
-  intStateTreeDepth: number;
-
-  /**
-   * The depth of the message tree
-   */
-  messageTreeDepth: number;
-
-  /**
-   * The depth of the vote option tree
-   */
-  voteOptionTreeDepth: number;
-
-  /**
-   * The depth of the message batch tree
-   */
-  messageBatchDepth: number;
-
-  /**
    * Extracted process message zkey for QV
    */
-  processMessagesZkeyPathQv: ISnarkJSVerificationKey;
+  processMessagesZkeyQv: ISnarkJSVerificationKey;
 
   /**
    * Extracted process message zkey for Non-QV
    */
-  processMessagesZkeyPathNonQv: ISnarkJSVerificationKey;
+  processMessagesZkeyNonQv: ISnarkJSVerificationKey;
 
   /**
    * Extracted tally votes zkey for QV
    */
-  tallyVotesZkeyPathQv: ISnarkJSVerificationKey;
+  tallyVotesZkeyQv: ISnarkJSVerificationKey;
 
   /**
    * Extracted tally votes zkey for Non-QV
    */
-  tallyVotesZkeyPathNonQv: ISnarkJSVerificationKey;
+  tallyVotesZkeyNonQv: ISnarkJSVerificationKey;
 }
 
 export interface IRegisterArgs {
@@ -113,4 +78,4 @@ export interface IRegisterArgs {
   args?: unknown[];
 }
 
-export type IAbi = Record<EContracts, Interface | InterfaceAbi >;
+export type IAbi = Record<Partial<EContracts>, Interface | InterfaceAbi >;

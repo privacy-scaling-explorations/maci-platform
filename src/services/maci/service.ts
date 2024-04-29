@@ -12,10 +12,6 @@ import {
   ConstantInitialVoiceCreditProxy__factory as ConstantInitialVoiceCreditProxyFactory,
   EASGatekeeper__factory as EASGatekeeperFactory,
   Verifier__factory as VerifierFactory,
-  PoseidonT3__factory as PoseidonT3Factory,
-  PoseidonT4__factory as PoseidonT4Factory,
-  PoseidonT5__factory as PoseidonT5Factory,
-  PoseidonT6__factory as PoseidonT6Factory,
   VkRegistry__factory as VkRegistryFactory,
   type MACI,
   type EASGatekeeper,
@@ -24,28 +20,37 @@ import {
   type IVkObjectParams,
 } from "maci-cli/sdk";
 
+import { type Signer, Contract } from "ethers";
+
 import type {
   IDeployGatekeeperArgs,
   IDeployInitialVoiceCreditProxyArgs,
-  IDeployMaciArgs,
   IDeployVkRegistryArgs,
   IRegisterArgs,
-  IAbi,
 } from "./types";
-import { ABI } from "./constants";
-import { type Signer, Contract } from "ethers";
+import {
+  ABI,
+  STATE_TREE_DEPTH,
+  INT_STATE_TREE_DEPTH,
+  MESSAGE_TREE_DEPTH,
+  MESSAGE_BATCH_DEPTH,
+  VOTE_OPTION_TREE_DEPTH,
+  POSEIDON_T3_ADDRESS,
+  POSEIDON_T4_ADDRESS,
+  POSEIDON_T5_ADDRESS,
+  POSEIDON_T6_ADDRESS,
+} from "./constants";
 
 /**
  * MACI service is responsible for deployment of MACI components like:
  * 1. VoiceCreditProxy
  * 2. Gatekeeper
  * 3. Verifier
- * 4. Poseidon contracts
- * 5. PollFactory
- * 6. MessageProcessorFactory
- * 7. TallyFactory
- * 8. MACI contract
- * 9. VkRegistry
+ * 4. PollFactory
+ * 5. MessageProcessorFactory
+ * 6. TallyFactory
+ * 7. MACI contract
+ * 8. VkRegistry
  */
 export class MaciService {
   /**
@@ -172,151 +177,34 @@ export class MaciService {
   }
 
   /**
-   * Deploy Poseidon contracts and save them to the storage
-   *
-   * @returns deployed contracts addresses
-   */
-  async deployPoseidon(): Promise<[string, string, string, string]> {
-    const network = await this.getNetwork();
-
-    const poseidonT3Address = this.storage.getAddress(
-      EContracts.PoseidonT3,
-      network,
-    );
-    const poseidonT4Address = this.storage.getAddress(
-      EContracts.PoseidonT4,
-      network,
-    );
-    const poseidonT5Address = this.storage.getAddress(
-      EContracts.PoseidonT5,
-      network,
-    );
-    const poseidonT6Address = this.storage.getAddress(
-      EContracts.PoseidonT6,
-      network,
-    );
-
-    if (
-      poseidonT3Address &&
-      poseidonT4Address &&
-      poseidonT5Address &&
-      poseidonT6Address
-    ) {
-      return [
-        poseidonT3Address,
-        poseidonT4Address,
-        poseidonT5Address,
-        poseidonT6Address,
-      ];
-    }
-
-    const poseidonT3Contract = await this.deployment.deployContract({
-      name: EContracts.PoseidonT3,
-      signer: this.deployer,
-      abi: PoseidonT3Factory.abi,
-      bytecode: PoseidonT3Factory.bytecode,
-    });
-
-    const poseidonT4Contract = await this.deployment.deployContract({
-      name: EContracts.PoseidonT4,
-      signer: this.deployer,
-      abi: PoseidonT4Factory.abi,
-      bytecode: PoseidonT4Factory.bytecode,
-    });
-
-    const poseidonT5Contract = await this.deployment.deployContract({
-      name: EContracts.PoseidonT5,
-      signer: this.deployer,
-      abi: PoseidonT5Factory.abi,
-      bytecode: PoseidonT5Factory.bytecode,
-    });
-
-    const poseidonT6Contract = await this.deployment.deployContract({
-      name: EContracts.PoseidonT6,
-      signer: this.deployer,
-      abi: PoseidonT6Factory.abi,
-      bytecode: PoseidonT6Factory.bytecode,
-    });
-
-    await Promise.all([
-      this.register({
-        id: EContracts.PoseidonT3,
-        contract: poseidonT3Contract,
-      }),
-      this.register({
-        id: EContracts.PoseidonT4,
-        contract: poseidonT4Contract,
-      }),
-      this.register({
-        id: EContracts.PoseidonT5,
-        contract: poseidonT5Contract,
-      }),
-      this.register({
-        id: EContracts.PoseidonT6,
-        contract: poseidonT6Contract,
-      }),
-    ]);
-
-    const addresses = await Promise.all(
-      [
-        poseidonT3Contract,
-        poseidonT4Contract,
-        poseidonT5Contract,
-        poseidonT6Contract,
-      ].map((contract) => contract.getAddress()),
-    );
-
-    return addresses as [string, string, string, string];
-  }
-
-  /**
    * Deploy PollFactory contract and save it to the storage
    *
    * @returns deployed contract address
    */
   async deployPollFactory(): Promise<string> {
     const network = await this.getNetwork();
-    
-    const address = this.storage.getAddress(
-      EContracts.PollFactory,
-      network,
-    );
-    if (address) return address;
 
-    const poseidonT3ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT3,
-      network,
-    );
-    const poseidonT4ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT4,
-      network,
-    );
-    const poseidonT5ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT5,
-      network,
-    );
-    const poseidonT6ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT6,
-      network,
-    );
+    const address = this.storage.getAddress(EContracts.PollFactory, network);
+    if (address) return address;
 
     const linkedPollFactoryContract =
       await this.deployment.createContractFactory(
         PollFactoryFactory.abi,
         PollFactoryFactory.linkBytecode(
           linkPoseidonLibraries(
-            poseidonT3ContractAddress,
-            poseidonT4ContractAddress,
-            poseidonT5ContractAddress,
-            poseidonT6ContractAddress,
+            POSEIDON_T3_ADDRESS,
+            POSEIDON_T4_ADDRESS,
+            POSEIDON_T5_ADDRESS,
+            POSEIDON_T6_ADDRESS,
           ),
         ),
         this.deployer,
       );
     const pollFactoryContract =
-      await this.deployment.deployContractWithLinkedLibraries(
-        linkedPollFactoryContract,
-      );
+      await this.deployment.deployContractWithLinkedLibraries({
+        contractFactory: linkedPollFactoryContract,
+        signer: this.deployer,
+      });
 
     await this.register({
       id: EContracts.PollFactory,
@@ -340,41 +228,25 @@ export class MaciService {
     );
     if (address) return address;
 
-    const poseidonT3ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT3,
-      network,
-    );
-    const poseidonT4ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT4,
-      network,
-    );
-    const poseidonT5ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT5,
-      network,
-    );
-    const poseidonT6ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT6,
-      network,
-    );
-
     const linkedMessageProcessorFactoryContract =
       await this.deployment.createContractFactory(
         MessageProcessorFactoryFactory.abi,
         MessageProcessorFactoryFactory.linkBytecode(
           linkPoseidonLibraries(
-            poseidonT3ContractAddress,
-            poseidonT4ContractAddress,
-            poseidonT5ContractAddress,
-            poseidonT6ContractAddress,
+            POSEIDON_T3_ADDRESS,
+            POSEIDON_T4_ADDRESS,
+            POSEIDON_T5_ADDRESS,
+            POSEIDON_T6_ADDRESS,
           ),
         ),
         this.deployer,
       );
 
     const messageProcessorFactoryContract =
-      await this.deployment.deployContractWithLinkedLibraries(
-        linkedMessageProcessorFactoryContract,
-      );
+      await this.deployment.deployContractWithLinkedLibraries({
+        contractFactory: linkedMessageProcessorFactoryContract,
+        signer: this.deployer,
+      });
 
     await this.register({
       id: EContracts.MessageProcessorFactory,
@@ -391,48 +263,29 @@ export class MaciService {
    */
   async deployTallyFactory(): Promise<string> {
     const network = await this.getNetwork();
-    
-    const address = this.storage.getAddress(
-      EContracts.TallyFactory,
-      network,
-    );
-    if (address) return address;
 
-    const poseidonT3ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT3,
-      network,
-    );
-    const poseidonT4ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT4,
-      network,
-    );
-    const poseidonT5ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT5,
-      network,
-    );
-    const poseidonT6ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT6,
-      network,
-    );
+    const address = this.storage.getAddress(EContracts.TallyFactory, network);
+    if (address) return address;
 
     const linkedTallyFactoryContract =
       await this.deployment.createContractFactory(
         TallyFactoryFactory.abi,
         TallyFactoryFactory.linkBytecode(
           linkPoseidonLibraries(
-            poseidonT3ContractAddress,
-            poseidonT4ContractAddress,
-            poseidonT5ContractAddress,
-            poseidonT6ContractAddress,
+            POSEIDON_T3_ADDRESS,
+            POSEIDON_T4_ADDRESS,
+            POSEIDON_T5_ADDRESS,
+            POSEIDON_T6_ADDRESS,
           ),
         ),
         this.deployer,
       );
 
     const tallyFactoryContract =
-      await this.deployment.deployContractWithLinkedLibraries(
-        linkedTallyFactoryContract,
-      );
+      await this.deployment.deployContractWithLinkedLibraries({
+        contractFactory: linkedTallyFactoryContract,
+        signer: this.deployer,
+      });
 
     await this.register({
       id: EContracts.TallyFactory,
@@ -445,34 +298,13 @@ export class MaciService {
   /**
    * Deploy MACI contract and save it to the storage
    *
-   * @param args - deploy arguments for MACI
    * @returns deployed contract address
    */
-  async deployMaci({ stateTreeDepth }: IDeployMaciArgs): Promise<string> {
+  async deployMaci(): Promise<string> {
     const network = await this.getNetwork();
 
-    const address = this.storage.getAddress(
-      EContracts.MACI,
-      network,
-    );
+    const address = this.storage.getAddress(EContracts.MACI, network);
     if (address) return address;
-
-    const poseidonT3ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT3,
-      network,
-    );
-    const poseidonT4ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT4,
-      network,
-    );
-    const poseidonT5ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT5,
-      network,
-    );
-    const poseidonT6ContractAddress = this.storage.mustGetAddress(
-      EContracts.PoseidonT6,
-      network,
-    );
 
     const constantInitialVoiceCreditProxyContractAddress =
       this.storage.mustGetAddress(
@@ -482,10 +314,6 @@ export class MaciService {
 
     const gatekeeperContractAddress = this.storage.mustGetAddress(
       EContracts.EASGatekeeper,
-      network,
-    );
-    const topupCreditContractAddress = this.storage.mustGetAddress(
-      EContracts.TopupCredit,
       network,
     );
     const pollFactoryContractAddress = this.storage.mustGetAddress(
@@ -505,10 +333,10 @@ export class MaciService {
       MACIFactory.abi,
       MACIFactory.linkBytecode(
         linkPoseidonLibraries(
-          poseidonT3ContractAddress,
-          poseidonT4ContractAddress,
-          poseidonT5ContractAddress,
-          poseidonT6ContractAddress,
+          POSEIDON_T3_ADDRESS,
+          POSEIDON_T4_ADDRESS,
+          POSEIDON_T5_ADDRESS,
+          POSEIDON_T6_ADDRESS,
         ),
       ),
       this.deployer,
@@ -516,23 +344,27 @@ export class MaciService {
 
     const maciContract =
       await this.deployment.deployContractWithLinkedLibraries<MACI>(
-        maciContractFactory,
+        {
+          contractFactory: maciContractFactory,
+          signer: this.deployer,
+        },
         pollFactoryContractAddress,
         messageProcessorFactoryContractAddress,
         tallyFactoryContractAddress,
         gatekeeperContractAddress,
         constantInitialVoiceCreditProxyContractAddress,
-        topupCreditContractAddress,
-        stateTreeDepth,
+        STATE_TREE_DEPTH,
       );
 
-    const gatekeeperContract = await this.deployment.getContract<EASGatekeeper>(
-      {
-        name: EContracts.EASGatekeeper,
-        address: gatekeeperContractAddress,
-      },
-    );
+    const gatekeeperContract = new Contract(
+      gatekeeperContractAddress,
+      EASGatekeeperFactory.abi,
+      this.deployer,
+    ) as unknown as EASGatekeeper;
     const maciInstanceAddress = await maciContract.getAddress();
+
+    if (!gatekeeperContract)
+      throw new Error("Error occurred during fetching EASGatekeeper contract");
 
     await gatekeeperContract
       .setMaciInstance(maciInstanceAddress)
@@ -547,8 +379,7 @@ export class MaciService {
         tallyFactoryContractAddress,
         gatekeeperContractAddress,
         constantInitialVoiceCreditProxyContractAddress,
-        topupCreditContractAddress,
-        stateTreeDepth,
+        STATE_TREE_DEPTH,
       ],
     });
 
@@ -562,15 +393,10 @@ export class MaciService {
    * @returns deployed contract address
    */
   async deployVkRegistry({
-    stateTreeDepth,
-    intStateTreeDepth,
-    messageTreeDepth,
-    messageBatchDepth,
-    voteOptionTreeDepth,
-    processMessagesZkeyPathQv,
-    processMessagesZkeyPathNonQv,
-    tallyVotesZkeyPathQv,
-    tallyVotesZkeyPathNonQv,
+    processMessagesZkeyQv,
+    processMessagesZkeyNonQv,
+    tallyVotesZkeyQv,
+    tallyVotesZkeyNonQv,
   }: IDeployVkRegistryArgs): Promise<string> {
     const address = this.storage.getAddress(
       EContracts.VkRegistry,
@@ -579,10 +405,10 @@ export class MaciService {
     if (address) return address;
 
     const [qvProcessVk, qvTallyVk, nonQvProcessVk, nonQvTallyQv] = [
-      processMessagesZkeyPathQv,
-      tallyVotesZkeyPathQv,
-      processMessagesZkeyPathNonQv,
-      tallyVotesZkeyPathNonQv,
+      processMessagesZkeyQv,
+      tallyVotesZkeyQv,
+      processMessagesZkeyNonQv,
+      tallyVotesZkeyNonQv,
     ].map(
       (vk) =>
         VerifyingKey.fromObj(
@@ -605,11 +431,11 @@ export class MaciService {
 
     await vkRegistryContract
       .setVerifyingKeysBatch(
-        stateTreeDepth,
-        intStateTreeDepth,
-        messageTreeDepth,
-        voteOptionTreeDepth,
-        5 ** messageBatchDepth,
+        STATE_TREE_DEPTH,
+        INT_STATE_TREE_DEPTH,
+        MESSAGE_TREE_DEPTH,
+        VOTE_OPTION_TREE_DEPTH,
+        5 ** MESSAGE_BATCH_DEPTH,
         modes,
         processZkeys,
         tallyZkeys,
@@ -633,7 +459,9 @@ export class MaciService {
     const abi = ABI[id];
 
     if (!address && !contract) {
-      throw new Error("Address and contract are not provided. Provide at least one.");
+      throw new Error(
+        "Address and contract are not provided. Provide at least one.",
+      );
     }
 
     if (!abi && !contract) {

@@ -366,7 +366,6 @@ describe("MaciService", () => {
         ZeroAddress,
         ZeroAddress,
         ZeroAddress,
-        ZeroAddress,
         10,
       ],
       network: "localhost",
