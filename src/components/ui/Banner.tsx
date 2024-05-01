@@ -8,7 +8,7 @@ export const Banner = createComponent(
     base: "bg-gray-200 dark:bg-gray-800",
     variants: {
       size: {
-        md: "h-24 rounded-2xl",
+        md: "h-20 rounded-2xl",
         lg: "h-80 rounded-3xl",
       },
       rounded: {

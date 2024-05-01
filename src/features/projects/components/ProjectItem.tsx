@@ -20,19 +20,22 @@ export function ProjectItem({
   return (
     <article
       data-testid={`project-${attestation.id}`}
-      className="group rounded-2xl border border-gray-200 p-2 hover:border-primary-500 dark:border-gray-700 dark:hover:border-primary-500"
+      className="group p-0 bg-white overflow-hidden items-center rounded-2xl border border-PGFBeige border-box hover:border-PGFGreenL dark:border-gray-700 dark:hover:border-primary-500"
     >
-      <div className="opacity-70 transition-opacity group-hover:opacity-100">
+      <div className="opacity-85 transition-opacity group-hover:opacity-100">
         <ProjectBanner profileId={attestation?.recipient} />
+        <div className="flex">
         <ProjectAvatar
           rounded="full"
           className="-mt-8 ml-4"
           profileId={attestation?.recipient}
-        />
-      </div>
+          />
       <Heading className="truncate" size="lg" as="h3">
         <Skeleton isLoading={isLoading}>{attestation?.name}</Skeleton>
       </Heading>
+      </div>        
+      </div>
+      <div className="px-2 pb-2">
       <div className="mb-2">
         <p className="line-clamp-2 h-10 text-sm dark:text-gray-300">
           <Skeleton isLoading={isLoading} className="w-full">
@@ -43,6 +46,7 @@ export function ProjectItem({
       <Skeleton isLoading={isLoading} className="w-[100px]">
         <ImpactCategories tags={metadata.data?.impactCategory} />
       </Skeleton>
+      </div>
     </article>
   );
 }

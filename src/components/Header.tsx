@@ -15,7 +15,7 @@ const Logo = () => (
     {config.logoUrl ? (
       <Image alt="logo" className="max-h-full" src={config.logoUrl} />
     ) : (
-      <div className="flex h-full items-center justify-center px-4 text-xl font-medium tracking-wider text-black font-ojuju font-black">
+      <div className="flex h-full items-center justify-center px-4 text-xl font-medium tracking-wider text-black font-ojuju font-extrabold">
         {metadata.title}
       </div>
     )}
