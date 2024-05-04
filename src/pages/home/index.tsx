@@ -47,19 +47,19 @@ const Home = () => {
           <div className='hidden bg-PGFBrown w-1 absolute bot-0 md:block' style={{height: '450px'}}></div>
     
           <div className='text-3xl text-center py-12' style={{width: "364px"}}>
-            <h1>ESTA RONDA ES POSIBLE GRACIAS A</h1>
+            <h1 className='font-bold'>ESTA RONDA ES POSIBLE GRACIAS A</h1>
             <div className="grid grid-cols-2 gap-4 p-4">
-              <div className="p-4 bg-PGFBrown rounded-3xl text-white flex items-center justify-center">
-                LOGO 1
+              <div className="p-4 rounded-3xl text-white flex items-center justify-center">
+                <img src="/images/maci-logo.png" alt="" />
               </div>
-              <div className="p-4 bg-PGFBrown rounded-3xl text-white flex items-center justify-center">
-                LOGO 2
+              <div className="p-4 rounded-3xl text-white flex items-center justify-center">
+                <img src="/images/pgf-logo.png" alt="" />
               </div>
-              <div className="p-4 bg-PGFBrown rounded-3xl text-white flex items-center justify-center">
-                LOGO 3
+              <div className="p-4 rounded-3xl text-white flex items-center justify-center">
+                <img src="/images/gitcoin-logo.png" alt="" />
               </div>
-              <div className="p-4 bg-PGFBrown rounded-3xl text-white flex items-center justify-center">
-                LOGO 4
+              <div className="p-4 rounded-3xl text-white flex items-center justify-center">
+                <img src="/images/eas-logo.png" alt="" />
               </div>
             </div>
           </div>

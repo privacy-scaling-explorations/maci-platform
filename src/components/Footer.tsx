@@ -3,8 +3,12 @@ export function Footer() {
     <footer className="flex bg-PGFBrown justify-center items-center px-12">
       <div className="max-w-screen-2xl mx-auto flex justify-between w-full">
         <div className="flex items-center space-x-6">
-          <img src="/images/x-icon.png" className="h-10" alt="X Icon" />
-          <img src="/images/telegram-icon.png" className="h-10" alt="Telegram Icon" />
+          <a href="https://twitter.com/ethereum_mexico">
+            <img src="/images/x-icon.png" className="h-10" alt="X Icon" />
+          </a>
+          <a href="https://t.me/+WjS3Nf8Y75UwYWIx">
+            <img src="/images/telegram-icon.png" className="h-10" alt="Telegram Icon" />
+          </a>
         </div>
         <div className="flex items-center space-x-6 text-white">
           <h1>Una iniciativa de</h1>
