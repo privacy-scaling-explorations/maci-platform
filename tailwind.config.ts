@@ -32,6 +32,11 @@ const customColors = {
   highlight: {
     600: "#F3CF00",
   },
+  PGFBeige: "#FFEEDF",
+  PGFBrown: "#230F07",
+  PGFOrangeL: "#FE6236",
+  PGFGreenL: "#AFA54C",
+  PGFGreenD: "#847A23",
 };
 
 export default {
@@ -45,7 +50,8 @@ export default {
         gray: colors.stone,
       },
       fontFamily: {
-        sans: ["var(--font-inter)", ...theme.fontFamily.sans],
+        ojuju: ["Ojuju"],
+        montserrat: ["Montserrat"]
       },
     },
   },

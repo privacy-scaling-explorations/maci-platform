@@ -1,7 +1,7 @@
 import * as wagmiChains from "wagmi/chains";
 
 export const metadata = {
-  title: "EasyRetroPGF",
+  title: "Ethereum México PGF",
   description: "Open-source Retro Public Goods Funding platform",
   url: "https://easy-retro-pgf.vercel.app",
   image: "/api/og",
@@ -43,7 +43,7 @@ export const allo = {
 export const isNativeToken = allo.tokenAddress === nativeToken;
 
 export const theme = {
-  colorMode: "dark",
+  colorMode: "light",
 };
 
 export const eas = {

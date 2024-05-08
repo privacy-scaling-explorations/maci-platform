@@ -57,7 +57,6 @@ export const ConnectButton = () => {
                   <Button
                     suppressHydrationWarning
                     onClick={openConnectModal}
-                    className="rounded-full"
                     variant="primary"
                   >
                     {isMobile ? "Connect" : "Connect wallet"}
@@ -107,7 +106,7 @@ const ConnectedDetails = ({
 
   return (
     <div>
-      <div className="flex gap-2 text-white">
+      <div className="flex gap-2">
         {!isEligibleToVote && <Chip>You are not allowed to vote</Chip>}
 
         {isEligibleToVote && !isRegistered && (

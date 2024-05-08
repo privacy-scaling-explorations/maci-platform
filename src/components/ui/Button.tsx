@@ -3,14 +3,14 @@ import { createComponent } from ".";
 import { type ComponentPropsWithRef, createElement, forwardRef } from "react";
 
 const button = tv({
-  base: "inline-flex items-center justify-center font-semibold text-center transition-colors rounded-full duration-150 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:ring-offset-gray-800",
+  base: "inline-flex items-center justify-center font-semibold font-montserrat text-center transition-colors rounded-full duration-150 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:ring-offset-gray-800",
   variants: {
     variant: {
       primary:
-        "bg-primary-600 hover:bg-primary-700 dark:bg-white dark:hover:bg-primary-500 dark:text-gray-900 text-white dark:disabled:bg-gray-500",
+        "bg-PGFGreenL text-white dark:bg-black hover:bg-PGFGreenD",
       ghost: "hover:bg-gray-100 dark:hover:bg-gray-800",
       default:
-        "bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-700",
+        "bg-PGFGreenL hover:bg-PGFGreenD text-white dark:bg-gray-900 dark:hover:bg-gray-700",
       inverted: "bg-white text-black hover:bg-white/90",
       link: "bg-none hover:underline",
       outline: "border-2 hover:bg-white/5",
