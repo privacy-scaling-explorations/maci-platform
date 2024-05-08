@@ -27,12 +27,12 @@ export function ApplicationItem({
   id,
   recipient,
   name,
-  metadataPtr,
+  metadataPtr1,
   time,
   isApproved,
   isLoading,
 }: Attestation & { isApproved?: boolean; isLoading?: boolean }) {
-  const metadata = useMetadata<Application>(metadataPtr);
+  const metadata = useMetadata<Application>(metadataPtr1);
 
   const form = useFormContext();
 
