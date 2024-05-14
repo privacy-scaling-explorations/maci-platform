@@ -1,20 +1,21 @@
 // pages/home.js o pages/index.js
 import React from 'react';
 import { LayoutWithBallot, Layout } from '../../layouts/DefaultLayout';
-import { Projects } from "../../features/projects/components/Projects"
+import { Projects } from "../../features/projects/components/Projects";
+import Link from "next/link";
 const Home = () => {
   return (
     <>
       <Layout>
-        <div className='w-full flex flex-col py-12 items-center justify-center text-black text-4xl font-ojuju'>
-          <img src="/images/animalsL.png" className='absolute left-0 z-0 top-60 lg:opacity-100 opacity-70'/>
-          <img src="/images/animalsR.png" className='absolute right-0 z-0 top-24 lg:opacity-100 opacity-70'/>
-          <img src='/images/ETHPGF-icon.png' className='z-10 p-4'/>
+      <div className='w-full flex flex-col py-2 items-center justify-center text-black text-2xl md:text-4xl  font-ojuju'>
+          <img src="/images/animalsL.png" className='absolute left-0 z-0 top-40 opacity-70 w-1/2 md:w-auto lg:opacity-100 '/>
+          <img src="/images/animalsR.png" className='absolute right-0 z-0 top-20 opacity-70 w-1/2 md:w-auto lg:opacity-100 '/>
+          <img src='/images/ETHPGF-icon.png' className='z-10 p-4 w-full md:w-3/5 2xl:w-auto'/>
           <h1 className='text-center mt-8 z-10'>RONDA DE FINANCIAMIENTO PARA COMUNIDADES Y PROYECTOS MEXICANOS</h1>
           <p className='font-bold z-10 text-center'>DEL 22 DE MAYO AL 5 DE JUNIO</p>
-          <button className='text-3xl bg-PGFOrangeL p-4 m-8 rounded-full text-white z-10 items-center font-montserrat font-medium'>
-            Aplica aqui
-          </button>
+          <Link  href={"/projects"} className='text-3xl bg-PGFOrangeL p-4 m-8 rounded-full text-white z-10 items-center font-montserrat font-medium'>
+            Aplica aquí
+          </Link>
         </div>
         
         <div className='flex flex-col items-center py-12 justify-around text-black relative md:flex-row'>
@@ -65,12 +66,12 @@ const Home = () => {
           </div>
         </div>
 
-        <div className='py-12 text-xl md:text-3xl relative'>
-          <img className='pl-4 md:pl-80' src='/images/map.png'></img>
-          <div className='absolute top-0 right-0 space-y-4 w-96 text-center md:top-48 md:bottom-36 md:left-16 md:space-y-8'>
+        <div className='py-12 flex flex-col md:flex-row justify-center items-center'>
+          <div className='text-center text-xl md:text-3xl space-y-4'>
             <h1>Más de 26 comunidades alrededor de todo México</h1>
             <h2 className='font-semibold'>$10,000 USD DE MATHCING POOL</h2>
           </div>
+          <img className='w-5/6 md:w-1/2' src='/images/map.png'></img>
         </div>
       </Layout>
     </>

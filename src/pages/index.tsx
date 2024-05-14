@@ -8,7 +8,7 @@ export default function ProjectsPage({}) {
 
 export const getServerSideProps: GetServerSideProps = async () => ({
   redirect: {
-    destination: "/projects",
+    destination: "/home",
     permanent: false,
   },
 });
