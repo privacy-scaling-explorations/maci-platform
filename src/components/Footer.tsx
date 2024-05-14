@@ -6,7 +6,7 @@ export function Footer() {
           <a href="https://twitter.com/ethereum_mexico">
             <img src="/images/x-icon.png" className="h-10" alt="X Icon" />
           </a>
-          <a href="https://t.me/wthmexico">
+          <a href="https://t.me/ethmexico">
             <img src="/images/telegram-icon.png" className="h-10" alt="Telegram Icon" />
           </a>
         </div>

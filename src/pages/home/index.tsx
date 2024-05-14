@@ -40,7 +40,7 @@ const Home = () => {
               <div>
               <h2 className='font-semibold items-center'>¿Tienes alguna otra duda?</h2>
                 <p>Te invitamos a nuestro grupo de Telegram</p>
-                <a href='https://t.me/+WjS3Nf8Y75UwYWIx' className='underline'>Ethereum México PGF</a>
+                <a href="https://t.me/ethmexico" className='underline'>Ethereum México PGF</a>
               </div>
             </div>
           </div>
