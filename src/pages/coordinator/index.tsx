@@ -7,9 +7,10 @@ import { useDeployment } from "~/hooks/useDeployment";
 
 export default function CoodirnatorDashboard() { 
     const isAdmin = useIsAdmin();
-    const { deployStatus, deploy } = useDeployment();
+    const { deployStatus, deploy, deployPoll } = useDeployment();
 
     const handleDeploy = useCallback(() => deploy({ amount: 99 }), [deploy]);
+    const handleDeployPoll = useCallback(() => deployPoll(), [deployPoll]);
 
     return (
         <Layout>
@@ -17,6 +18,7 @@ export default function CoodirnatorDashboard() {
                 <div>
                     <button onClick={handleDeploy}>deploy contracts</button>
                     <div>Deploy progress: {deployStatus}</div>
+                    <button onClick={handleDeployPoll}>deploy poll</button>
                 </div>
             }
         </Layout>
