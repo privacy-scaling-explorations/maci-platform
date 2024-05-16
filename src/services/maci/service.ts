@@ -5,6 +5,7 @@ import {
   EContracts,
   EMode,
   VerifyingKey,
+  PubKey,
   PollFactory__factory as PollFactoryFactory,
   MessageProcessorFactory__factory as MessageProcessorFactoryFactory,
   TallyFactory__factory as TallyFactoryFactory,
@@ -13,11 +14,18 @@ import {
   EASGatekeeper__factory as EASGatekeeperFactory,
   Verifier__factory as VerifierFactory,
   VkRegistry__factory as VkRegistryFactory,
+  Poll__factory as PollFactory,
+  MessageProcessor__factory as MessageProcessorFactory,
+  Tally__factory as TallyFactory,
+  AccQueueQuinaryMaci__factory as AccQueueQuinaryMaciFactory,
   type MACI,
   type EASGatekeeper,
   type IVerifyingKeyStruct,
   type VkRegistry,
   type IVkObjectParams,
+  type Poll,
+  type MessageProcessor,
+  type Tally,
 } from "maci-cli/sdk";
 
 import { type Signer, Contract } from "ethers";
@@ -27,6 +35,7 @@ import type {
   IDeployInitialVoiceCreditProxyArgs,
   IDeployVkRegistryArgs,
   IRegisterArgs,
+  IDeployPollArgs,
 } from "./types";
 import {
   ABI,
@@ -51,6 +60,8 @@ import {
  * 6. TallyFactory
  * 7. MACI contract
  * 8. VkRegistry
+ *
+ * MACI service is also responsible for deployment for MACI poll rounds.
  */
 export class MaciService {
   /**
@@ -450,12 +461,164 @@ export class MaciService {
     return vkRegistryContract.getAddress();
   }
 
+  async deployPoll({ duration, pubKey }: IDeployPollArgs) {
+    const network = await this.getNetwork();
+    const maciContractAddress = this.storage.mustGetAddress(
+      EContracts.MACI,
+      network,
+    );
+    const verifierContractAddress = this.storage.mustGetAddress(
+      EContracts.Verifier,
+      network,
+    );
+    const vkRegistryContractAddress = this.storage.mustGetAddress(
+      EContracts.VkRegistry,
+      network,
+    );
+
+    const maciContract = new Contract(
+      maciContractAddress,
+      MACIFactory.abi,
+      this.deployer,
+    ) as unknown as MACI;
+
+    const pollId = await maciContract.nextPollId();
+    const unserializedKey = PubKey.deserialize(pubKey);
+    const mode = EMode.NON_QV;
+
+    if (!unserializedKey) throw new Error("Provided pubKey is not valid.");
+
+    const [
+      pollContractAddress,
+      messageProcessorContractAddress,
+      tallyContractAddress,
+    ] = await maciContract.deployPoll.staticCall(
+      duration,
+      {
+        intStateTreeDepth: INT_STATE_TREE_DEPTH,
+        messageTreeSubDepth: MESSAGE_BATCH_DEPTH,
+        messageTreeDepth: MESSAGE_TREE_DEPTH,
+        voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,
+      },
+      unserializedKey.asContractParam(),
+      verifierContractAddress,
+      vkRegistryContractAddress,
+      mode,
+    );
+
+    const tx = await maciContract.deployPoll(
+      duration,
+      {
+        intStateTreeDepth: INT_STATE_TREE_DEPTH,
+        messageTreeSubDepth: MESSAGE_BATCH_DEPTH,
+        messageTreeDepth: MESSAGE_TREE_DEPTH,
+        voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,
+      },
+      unserializedKey.asContractParam(),
+      verifierContractAddress,
+      vkRegistryContractAddress,
+      EMode.NON_QV,
+    );
+
+    const receipt = await tx.wait();
+
+    if (receipt?.status !== 1) {
+      throw new Error("Deploy poll transaction is failed");
+    }
+
+    const pollContract = new Contract(
+      pollContractAddress,
+      PollFactory.abi,
+      this.deployer,
+    ) as unknown as Poll;
+    const [maxValues, extContracts] = await Promise.all([
+      pollContract.maxValues(),
+      pollContract.extContracts(),
+    ]);
+
+    const messageProcessorContract = new Contract(
+      messageProcessorContractAddress,
+      MessageProcessorFactory.abi,
+      this.deployer,
+    ) as unknown as MessageProcessor;
+
+    const tallyContract = new Contract(
+      tallyContractAddress,
+      TallyFactory.abi,
+      this.deployer,
+    ) as unknown as Tally;
+
+    const messageAccQueueContract = new Contract(
+      extContracts[1],
+      AccQueueQuinaryMaciFactory.abi,
+      this.deployer,
+    );
+
+    await Promise.all([
+      this.register({
+        id: EContracts.Poll,
+        key: `poll-${pollId}`,
+        contract: pollContract,
+        args: [
+          duration,
+          maxValues.map((value) => value.toString()),
+          {
+            intStateTreeDepth: INT_STATE_TREE_DEPTH,
+            messageTreeSubDepth: MESSAGE_BATCH_DEPTH,
+            messageTreeDepth: MESSAGE_TREE_DEPTH,
+            voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,
+          },
+          unserializedKey.asContractParam(),
+          extContracts,
+        ],
+      }),
+
+      this.register({
+        id: EContracts.MessageProcessor,
+        key: `poll-${pollId}`,
+        contract: messageProcessorContract,
+        args: [
+          verifierContractAddress,
+          vkRegistryContractAddress,
+          pollContractAddress,
+          mode,
+        ],
+      }),
+
+      this.register({
+        id: EContracts.Tally,
+        key: `poll-${pollId}`,
+        contract: tallyContract,
+        args: [
+          verifierContractAddress,
+          vkRegistryContractAddress,
+          pollContractAddress,
+          messageProcessorContractAddress,
+          mode,
+        ],
+      }),
+
+      this.register({
+        id: EContracts.AccQueueQuinaryMaci,
+        key: `poll-${pollId}`,
+        contract: messageAccQueueContract,
+        args: [MESSAGE_BATCH_DEPTH],
+      }),
+    ]);
+
+    return {
+      pollContractAddress,
+      messageProcessorContractAddress,
+      tallyContractAddress,
+    };
+  }
+
   /**
    * Register contracts to the ContractStorage
    *
    * @param args - arguments for contract registration
    */
-  async register({ id, contract, address, args }: IRegisterArgs) {
+  async register({ id, contract, address, key, args }: IRegisterArgs) {
     const abi = ABI[id];
 
     if (!address && !contract) {
@@ -471,6 +634,7 @@ export class MaciService {
     await this.storage.register({
       id,
       contract: contract || new Contract(address, abi, this.deployer),
+      key,
       args: args ?? [],
       network: await this.getNetwork(),
     });
