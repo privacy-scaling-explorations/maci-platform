@@ -51,6 +51,10 @@ export const Layout = ({ children, ...props }: Props) => {
           href: "/distribute",
           children: "Distribute",
         },
+        {
+          href: "/coordinator",
+          children: "Coordinator",
+        },
       ],
     );
   }

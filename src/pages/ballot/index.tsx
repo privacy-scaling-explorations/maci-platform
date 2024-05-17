@@ -62,7 +62,7 @@ export default function BallotPage() {
 
 function BallotAllocationForm() {
   const form = useFormContext<{ votes: Vote[] }>();
-  const { pollData } = useMaci();
+  const { pollData, maciAddress } = useMaci();
   const pollId = pollData?.id.toString();
 
   const save = useSaveBallot();
@@ -70,7 +70,7 @@ function BallotAllocationForm() {
 
   const votes = form.watch("votes");
   function handleSaveBallot({ votes }: { votes: Vote[] }) {
-    save.mutate({ votes, pollId: pollId! });
+    save.mutate({ votes, maci: maciAddress, pollId: pollId! });
   }
 
   return (
@@ -125,7 +125,7 @@ function ImportCSV() {
   const [votes, setVotes] = useState<Vote[]>([]);
   const save = useSaveBallot();
   const csvInputRef = useRef<HTMLInputElement>(null);
-  const { pollData } = useMaci();
+  const { pollData, maciAddress } = useMaci();
   const pollId = pollData?.id.toString();
 
   const importCSV = useCallback((csvString: string) => {
@@ -180,7 +180,7 @@ function ImportCSV() {
             disabled={save.isPending}
             onClick={() => {
               save
-                .mutateAsync({ votes, pollId: pollId! })
+                .mutateAsync({ votes, maci: maciAddress, pollId: pollId! })
                 .then(() => form.reset({ votes }))
                 .catch(console.log);
               setVotes([]);
@@ -224,7 +224,7 @@ function ClearBallot() {
   const form = useFormContext();
   const [isOpen, setOpen] = useState(false);
   const { mutateAsync, isPending } = useSaveBallot();
-  const { pollData } = useMaci();
+  const { pollData, maciAddress } = useMaci();
   const pollId = pollData?.id.toString();
 
   if ([EAppState.TALLYING, EAppState.RESULTS].includes(getAppState()))
@@ -251,7 +251,11 @@ function ClearBallot() {
             variant="primary"
             disabled={isPending}
             onClick={() =>
-              mutateAsync({ votes: [], pollId: pollId! }).then(() => {
+              mutateAsync({
+                votes: [],
+                maci: maciAddress,
+                pollId: pollId!,
+              }).then(() => {
                 setOpen(false);
                 form.reset({ votes: [] });
               })

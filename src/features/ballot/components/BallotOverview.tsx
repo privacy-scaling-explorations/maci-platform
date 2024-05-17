@@ -147,7 +147,7 @@ function BallotOverview() {
 
 const SubmitBallotButton = ({ disabled = false }) => {
   const [isOpen, setOpen] = useState(false);
-  const { isLoading, pollId, error, onVote } = useMaci();
+  const { isLoading, pollId, error, maciAddress, onVote } = useMaci();
   const { data: ballot } = useBallot();
   const { lock, unlock } = useLockBallot();
 
@@ -168,10 +168,10 @@ const SubmitBallotButton = ({ disabled = false }) => {
       await onVote(
         votes,
         async () => {
-          await unlock.mutateAsync({ pollId: pollId! });
+          await unlock.mutateAsync({ maci: maciAddress, pollId: pollId! });
         },
         async () => {
-          await lock.mutateAsync({ pollId: pollId! });
+          await lock.mutateAsync({ maci: maciAddress, pollId: pollId! });
           await router.push("/ballot/confirmation");
         },
       );
