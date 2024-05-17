@@ -5,7 +5,7 @@ import { useIsAdmin } from "~/hooks/useIsAdmin";
 import { useDeployment } from "~/hooks/useDeployment";
 
 
-export default function CoodirnatorDashboard() { 
+export default function CoordinatorDashboard() { 
     const isAdmin = useIsAdmin();
     const { deployStatus, deploy, deployPoll } = useDeployment();
 

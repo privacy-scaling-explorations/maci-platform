@@ -640,6 +640,11 @@ export class MaciService {
     });
   }
 
+  async getMaciAddress(): Promise<string> {
+    const network = await this.getNetwork();
+    return this.storage.mustGetAddress(EContracts.MACI, network);
+  }
+
   /**
    * Get current signer's network name
    *
