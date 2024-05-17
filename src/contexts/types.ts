@@ -17,6 +17,7 @@ export interface MaciContextType {
   error?: string;
   pollData?: IGetPollData;
   tallyData?: TallyData;
+  maciAddress?: string;
   onSignup: (onError: () => void) => Promise<void>;
   onVote: (
     args: IVoteArgs[],
