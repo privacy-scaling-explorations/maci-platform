@@ -18,7 +18,7 @@ export default function ProjectDetails({
 }) {
   const metadata = useProjectMetadata(attestation?.metadataPtr);
 
-  const { bio, websiteUrl, payoutAddress, fundingSources } =
+  const { bio, twitterUrl, telegramUrl, email, payoutAddress, fundingSources, impactAmount } =
     metadata.data ?? {};
 
   return (
@@ -42,9 +42,14 @@ export default function ProjectDetails({
         <div>
           <div className="">
             <NameENS address={payoutAddress} />
-            <a href={websiteUrl} target="_blank" className="hover:underline">
-              {websiteUrl}
+            <a href={twitterUrl} target="_blank" className="hover:underline">
+              {twitterUrl}
             </a>
+            <br></br>
+            <a href={telegramUrl} target="_blank" className="hover:underline">
+              {telegramUrl}
+            </a>
+            <br></br>
           </div>
         </div>
       </div>

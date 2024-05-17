@@ -111,21 +111,45 @@ export function ApplicationForm({ address = "" }) {
             <Textarea rows={4} placeholder="Project description" />
           </FormControl>
           <div className="gap-4 md:flex">
+
             <FormControl
               className="flex-1"
-              name="application.websiteUrl"
-              label="Website"
+              name="application.twitterUrl"
+              label="X (Twitter)"
               required
             >
               <Input placeholder="https://" />
             </FormControl>
 
+            {/* New */}
             <FormControl
               className="flex-1"
-              name="application.payoutAddress"
-              label="Payout address"
+              name="application.telegramUrl"
+              label="Telegram"
               required
             >
+              <Input placeholder="https://t.me/" />
+            </FormControl>
+
+            {/* New */}
+            <FormControl
+              className="flex-1"
+              name="application.email"
+              label="Email"
+              required
+            >
+              <Input placeholder="user@mail.com" />
+            </FormControl>
+            
+          </div>
+
+          <div className="gap-4 md:flex">
+            <FormControl
+                className="flex-1"
+                name="application.payoutAddress"
+                label="Payout address"
+                required
+              >
               <Input placeholder="0x..." />
             </FormControl>
           </div>
@@ -228,6 +252,18 @@ export function ApplicationForm({ address = "" }) {
               </>
             )}
           />
+          {/* New */}
+          <div className="gap-4 md:flex">
+            <FormControl
+              name={`application.impactAmount`}
+              label="¿Cuánto consideras que vale en USD tu impacto?"
+              required
+              valueAsNumber
+            >
+              <Input type="number" placeholder="Amount" />
+            </FormControl>
+
+          </div>
         </FormSection>
 
         <FormSection
@@ -276,6 +312,8 @@ export function ApplicationForm({ address = "" }) {
             )}
           />
         </FormSection>
+
+        
 
         {error ? (
           <div className="mb-4 text-center text-gray-600 dark:text-gray-400">
