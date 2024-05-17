@@ -82,16 +82,13 @@ export function useDeployment() {
     [deployStatus, setDeployStatus, Boolean(signer), Boolean(maci)],
   );
 
-  const deployPoll = useCallback(
-    async () => {
-      if (!signer || !maci) throw new Error("no signer");
+  const deployPoll = useCallback(async () => {
+    if (!signer || !maci) throw new Error("no signer");
 
-      if (!data) throw new Error("maci keypair not generated");
+    if (!data) throw new Error("maci keypair not generated");
 
-      await maci.deployPoll({ duration: 1000, pubKey: data.publicKey });
-    }
-  , [deployStatus, setDeployStatus, Boolean(signer), Boolean(maci), data]
-  );
+    await maci.deployPoll({ duration: 100000, pubKey: data.publicKey });
+  }, [deployStatus, setDeployStatus, Boolean(signer), Boolean(maci), data]);
 
   return {
     deployStatus,
