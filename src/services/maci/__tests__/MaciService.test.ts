@@ -7,14 +7,29 @@ import {
   EContracts,
   EMode,
   VerifyingKey,
-  MessageProcessorFactoryFactory,
-  PollFactoryFactory,
-  TallyFactoryFactory,
-  MACIFactory,
+  PubKey,
+  MessageProcessorFactory__factory as MessageProcessorFactoryFactory,
+  PollFactory__factory as PollFactoryFactory,
+  TallyFactory__factory as TallyFactoryFactory,
+  MACI__factory as MACIFactory,
+  ConstantInitialVoiceCreditProxy__factory as ConstantInitialVoiceCreditProxyFactory,
+  EASGatekeeper__factory as EASGatekeeperFactory,
+  Verifier__factory as VerifierFactory,
+  VkRegistry__factory as VkRegistryFactory,
 } from "maci-cli/sdk";
 import { describe, expect, test, vi, beforeEach, type Mock } from "vitest";
 
-import { STATE_TREE_SUB_DEPTH } from "../constants";
+import {
+  STATE_TREE_DEPTH,
+  INT_STATE_TREE_DEPTH,
+  MESSAGE_TREE_DEPTH,
+  VOTE_OPTION_TREE_DEPTH,
+  MESSAGE_BATCH_DEPTH,
+  POSEIDON_T3_ADDRESS,
+  POSEIDON_T4_ADDRESS,
+  POSEIDON_T5_ADDRESS,
+  POSEIDON_T6_ADDRESS,
+} from "../constants";
 import { MaciService } from "..";
 
 vi.mock("maci-cli/sdk", async () => {
@@ -43,6 +58,14 @@ describe("MaciService", () => {
     stateAq: vi.fn(() => Promise.resolve(ZeroAddress)),
     setMaciInstance: vi.fn(() => Promise.resolve({ wait: vi.fn() })),
     setVerifyingKeysBatch: vi.fn(() => Promise.resolve({ wait: vi.fn() })),
+    nextPollId: vi.fn(() => Promise.resolve(0)),
+    deployPoll: vi.fn(() =>
+      Promise.resolve({
+        wait: vi.fn(() => Promise.resolve({ status: 1 })),
+      }),
+    ),
+    maxValues: vi.fn(() => Promise.resolve([10, 20])),
+    extContracts: vi.fn(() => Promise.resolve([ZeroAddress, ZeroAddress])),
   };
 
   const mockDeployment = {
@@ -59,6 +82,7 @@ describe("MaciService", () => {
   const mockStorage = {
     register: vi.fn(),
     mustGetAddress: vi.fn(() => ZeroAddress),
+    getAddress: vi.fn(() => undefined),
   } as unknown as ContractStorage;
 
   beforeEach(() => {
@@ -82,6 +106,8 @@ describe("MaciService", () => {
       {
         name: EContracts.ConstantInitialVoiceCreditProxy,
         signer: mockDeployer,
+        abi: ConstantInitialVoiceCreditProxyFactory.abi,
+        bytecode: ConstantInitialVoiceCreditProxyFactory.bytecode,
       },
       "10",
     );
@@ -106,7 +132,12 @@ describe("MaciService", () => {
     expect(address).toBe(ZeroAddress);
     expect(mockDeployment.deployContract).toHaveBeenCalledTimes(1);
     expect(mockDeployment.deployContract).toHaveBeenCalledWith(
-      { name: EContracts.EASGatekeeper, signer: mockDeployer },
+      {
+        name: EContracts.EASGatekeeper,
+        signer: mockDeployer,
+        abi: EASGatekeeperFactory.abi,
+        bytecode: EASGatekeeperFactory.bytecode,
+      },
       ZeroAddress,
       ZeroAddress,
       "1",
@@ -130,85 +161,12 @@ describe("MaciService", () => {
     expect(mockDeployment.deployContract).toHaveBeenCalledWith({
       name: EContracts.Verifier,
       signer: mockDeployer,
+      abi: VerifierFactory.abi,
+      bytecode: VerifierFactory.bytecode,
     });
     expect(mockStorage.register).toHaveBeenCalledTimes(1);
     expect(mockStorage.register).toHaveBeenCalledWith({
       id: EContracts.Verifier,
-      contract: mockContract,
-      args: [],
-      network: "localhost",
-    });
-  });
-
-  test("should deploy topup credit properly", async () => {
-    const service = new MaciService(mockDeployer);
-
-    const address = await service.deployTopupCredit();
-
-    expect(address).toBe(ZeroAddress);
-    expect(mockDeployment.deployContract).toHaveBeenCalledTimes(1);
-    expect(mockDeployment.deployContract).toHaveBeenCalledWith({
-      name: EContracts.TopupCredit,
-      signer: mockDeployer,
-    });
-    expect(mockStorage.register).toHaveBeenCalledTimes(1);
-    expect(mockStorage.register).toHaveBeenCalledWith({
-      id: EContracts.TopupCredit,
-      contract: mockContract,
-      args: [],
-      network: "localhost",
-    });
-  });
-
-  test("should deploy poseidon contracts properly", async () => {
-    const service = new MaciService(mockDeployer);
-
-    const addresses = await service.deployPoseidon();
-
-    expect(addresses).toStrictEqual([
-      ZeroAddress,
-      ZeroAddress,
-      ZeroAddress,
-      ZeroAddress,
-    ]);
-    expect(mockDeployment.deployContract).toHaveBeenCalledTimes(4);
-    expect(mockDeployment.deployContract).toHaveBeenNthCalledWith(1, {
-      name: EContracts.PoseidonT3,
-      signer: mockDeployer,
-    });
-    expect(mockDeployment.deployContract).toHaveBeenNthCalledWith(2, {
-      name: EContracts.PoseidonT4,
-      signer: mockDeployer,
-    });
-    expect(mockDeployment.deployContract).toHaveBeenNthCalledWith(3, {
-      name: EContracts.PoseidonT5,
-      signer: mockDeployer,
-    });
-    expect(mockDeployment.deployContract).toHaveBeenNthCalledWith(4, {
-      name: EContracts.PoseidonT6,
-      signer: mockDeployer,
-    });
-    expect(mockStorage.register).toHaveBeenCalledTimes(4);
-    expect(mockStorage.register).toHaveBeenCalledWith({
-      id: EContracts.PoseidonT3,
-      contract: mockContract,
-      args: [],
-      network: "localhost",
-    });
-    expect(mockStorage.register).toHaveBeenCalledWith({
-      id: EContracts.PoseidonT4,
-      contract: mockContract,
-      args: [],
-      network: "localhost",
-    });
-    expect(mockStorage.register).toHaveBeenCalledWith({
-      id: EContracts.PoseidonT5,
-      contract: mockContract,
-      args: [],
-      network: "localhost",
-    });
-    expect(mockStorage.register).toHaveBeenCalledWith({
-      id: EContracts.PoseidonT6,
       contract: mockContract,
       args: [],
       network: "localhost",
@@ -226,10 +184,10 @@ describe("MaciService", () => {
       PollFactoryFactory.abi,
       PollFactoryFactory.linkBytecode(
         linkPoseidonLibraries(
-          ZeroAddress,
-          ZeroAddress,
-          ZeroAddress,
-          ZeroAddress,
+          POSEIDON_T3_ADDRESS,
+          POSEIDON_T4_ADDRESS,
+          POSEIDON_T5_ADDRESS,
+          POSEIDON_T6_ADDRESS,
         ),
       ),
       mockDeployer,
@@ -239,7 +197,10 @@ describe("MaciService", () => {
     ).toHaveBeenCalledTimes(1);
     expect(
       mockDeployment.deployContractWithLinkedLibraries,
-    ).toHaveBeenCalledWith(mockContract);
+    ).toHaveBeenCalledWith({
+      contractFactory: mockContract,
+      signer: mockDeployer,
+    });
 
     expect(mockStorage.register).toHaveBeenCalledTimes(1);
     expect(mockStorage.register).toHaveBeenCalledWith({
@@ -261,10 +222,10 @@ describe("MaciService", () => {
       MessageProcessorFactoryFactory.abi,
       MessageProcessorFactoryFactory.linkBytecode(
         linkPoseidonLibraries(
-          ZeroAddress,
-          ZeroAddress,
-          ZeroAddress,
-          ZeroAddress,
+          POSEIDON_T3_ADDRESS,
+          POSEIDON_T4_ADDRESS,
+          POSEIDON_T5_ADDRESS,
+          POSEIDON_T6_ADDRESS,
         ),
       ),
       mockDeployer,
@@ -274,7 +235,10 @@ describe("MaciService", () => {
     ).toHaveBeenCalledTimes(1);
     expect(
       mockDeployment.deployContractWithLinkedLibraries,
-    ).toHaveBeenCalledWith(mockContract);
+    ).toHaveBeenCalledWith({
+      contractFactory: mockContract,
+      signer: mockDeployer,
+    });
 
     expect(mockStorage.register).toHaveBeenCalledTimes(1);
     expect(mockStorage.register).toHaveBeenCalledWith({
@@ -296,10 +260,10 @@ describe("MaciService", () => {
       TallyFactoryFactory.abi,
       TallyFactoryFactory.linkBytecode(
         linkPoseidonLibraries(
-          ZeroAddress,
-          ZeroAddress,
-          ZeroAddress,
-          ZeroAddress,
+          POSEIDON_T3_ADDRESS,
+          POSEIDON_T4_ADDRESS,
+          POSEIDON_T5_ADDRESS,
+          POSEIDON_T6_ADDRESS,
         ),
       ),
       mockDeployer,
@@ -309,7 +273,10 @@ describe("MaciService", () => {
     ).toHaveBeenCalledTimes(1);
     expect(
       mockDeployment.deployContractWithLinkedLibraries,
-    ).toHaveBeenCalledWith(mockContract);
+    ).toHaveBeenCalledWith({
+      contractFactory: mockContract,
+      signer: mockDeployer,
+    });
 
     expect(mockStorage.register).toHaveBeenCalledTimes(1);
     expect(mockStorage.register).toHaveBeenCalledWith({
@@ -323,7 +290,7 @@ describe("MaciService", () => {
   test("should deploy maci properly", async () => {
     const service = new MaciService(mockDeployer);
 
-    const address = await service.deployMaci({ stateTreeDepth: 10 });
+    const address = await service.deployMaci();
 
     expect(address).toBe(ZeroAddress);
     expect(mockDeployment.createContractFactory).toHaveBeenCalledTimes(1);
@@ -331,10 +298,10 @@ describe("MaciService", () => {
       MACIFactory.abi,
       MACIFactory.linkBytecode(
         linkPoseidonLibraries(
-          ZeroAddress,
-          ZeroAddress,
-          ZeroAddress,
-          ZeroAddress,
+          POSEIDON_T3_ADDRESS,
+          POSEIDON_T4_ADDRESS,
+          POSEIDON_T5_ADDRESS,
+          POSEIDON_T6_ADDRESS,
         ),
       ),
       mockDeployer,
@@ -345,8 +312,10 @@ describe("MaciService", () => {
     expect(
       mockDeployment.deployContractWithLinkedLibraries,
     ).toHaveBeenCalledWith(
-      mockContract,
-      ZeroAddress,
+      {
+        contractFactory: mockContract,
+        signer: mockDeployer,
+      },
       ZeroAddress,
       ZeroAddress,
       ZeroAddress,
@@ -356,8 +325,8 @@ describe("MaciService", () => {
     );
     expect(mockContract.setMaciInstance).toHaveBeenCalledTimes(1);
     expect(mockContract.setMaciInstance).toHaveBeenCalledWith(ZeroAddress);
-    expect(mockStorage.register).toHaveBeenCalledTimes(2);
-    expect(mockStorage.register).toHaveBeenNthCalledWith(1, {
+    expect(mockStorage.register).toHaveBeenCalledTimes(1);
+    expect(mockStorage.register).toHaveBeenCalledWith({
       id: EContracts.MACI,
       contract: mockContract,
       args: [
@@ -368,13 +337,6 @@ describe("MaciService", () => {
         ZeroAddress,
         10,
       ],
-      network: "localhost",
-    });
-    expect(mockStorage.register).toHaveBeenNthCalledWith(2, {
-      id: EContracts.AccQueueQuinaryBlankSl,
-      name: "contracts/trees/AccQueueQuinaryBlankSl.sol:AccQueueQuinaryBlankSl",
-      contract: mockContract,
-      args: [STATE_TREE_SUB_DEPTH],
       network: "localhost",
     });
   });
@@ -404,15 +366,10 @@ describe("MaciService", () => {
       ],
     };
     const defaultArgs = {
-      stateTreeDepth: 10,
-      intStateTreeDepth: 1,
-      messageTreeDepth: 2,
-      messageBatchDepth: 1,
-      voteOptionTreeDepth: 2,
-      processMessagesZkeyPathQv: defaultZkey,
-      processMessagesZkeyPathNonQv: defaultZkey,
-      tallyVotesZkeyPathQv: defaultZkey,
-      tallyVotesZkeyPathNonQv: defaultZkey,
+      processMessagesZkeyQv: defaultZkey,
+      processMessagesZkeyNonQv: defaultZkey,
+      tallyVotesZkeyQv: defaultZkey,
+      tallyVotesZkeyNonQv: defaultZkey,
     };
     const service = new MaciService(mockDeployer);
 
@@ -423,6 +380,8 @@ describe("MaciService", () => {
     expect(mockDeployment.deployContract).toHaveBeenCalledWith({
       name: EContracts.VkRegistry,
       signer: mockDeployer,
+      abi: VkRegistryFactory.abi,
+      bytecode: VkRegistryFactory.bytecode,
     });
     expect(mockStorage.register).toHaveBeenCalledTimes(1);
     expect(mockStorage.register).toHaveBeenCalledWith({
@@ -433,20 +392,131 @@ describe("MaciService", () => {
     });
     expect(mockContract.setVerifyingKeysBatch).toHaveBeenCalledTimes(1);
     expect(mockContract.setVerifyingKeysBatch).toHaveBeenCalledWith(
-      defaultArgs.stateTreeDepth,
-      defaultArgs.intStateTreeDepth,
-      defaultArgs.messageTreeDepth,
-      defaultArgs.voteOptionTreeDepth,
-      5 ** defaultArgs.messageBatchDepth,
+      STATE_TREE_DEPTH,
+      INT_STATE_TREE_DEPTH,
+      MESSAGE_TREE_DEPTH,
+      VOTE_OPTION_TREE_DEPTH,
+      5 ** MESSAGE_BATCH_DEPTH,
       [EMode.QV, EMode.NON_QV],
       [
-        defaultArgs.processMessagesZkeyPathQv,
-        defaultArgs.processMessagesZkeyPathNonQv,
+        defaultArgs.processMessagesZkeyQv,
+        defaultArgs.processMessagesZkeyNonQv,
       ].map((vk) => VerifyingKey.fromObj(vk).asContractParam()),
-      [
-        defaultArgs.tallyVotesZkeyPathQv,
-        defaultArgs.tallyVotesZkeyPathNonQv,
-      ].map((vk) => VerifyingKey.fromObj(vk).asContractParam()),
+      [defaultArgs.tallyVotesZkeyQv, defaultArgs.tallyVotesZkeyNonQv].map(
+        (vk) => VerifyingKey.fromObj(vk).asContractParam(),
+      ),
     );
+  });
+
+  test("should deploy poll properly", async () => {
+    mockContract.deployPoll.staticCall = vi.fn(() =>
+      Promise.resolve([ZeroAddress, ZeroAddress, ZeroAddress]),
+    );
+
+    const defaultArgs = {
+      duration: 300,
+      pubKey:
+        "macipk.8a1cc54f26d811a6573edd2dea82eee3031bd6ebca2dde123e53520c2e91c501",
+    };
+    const service = new MaciService(mockDeployer);
+
+    const addresses = await service.deployPoll(defaultArgs);
+
+    expect(addresses).toStrictEqual({
+      pollContractAddress: ZeroAddress,
+      messageProcessorContractAddress: ZeroAddress,
+      tallyContractAddress: ZeroAddress,
+    });
+
+    expect(mockContract.nextPollId).toHaveBeenCalledTimes(1);
+
+    const pollId = await mockContract.nextPollId();
+    expect(pollId).toEqual(0);
+
+    const unserializedKey = PubKey.deserialize(defaultArgs.pubKey);
+
+    expect(mockContract.deployPoll.staticCall).toHaveBeenCalledTimes(1);
+    expect(mockContract.deployPoll.staticCall).toHaveBeenCalledWith(
+      defaultArgs.duration,
+      {
+        intStateTreeDepth: INT_STATE_TREE_DEPTH,
+        messageTreeSubDepth: MESSAGE_BATCH_DEPTH,
+        messageTreeDepth: MESSAGE_TREE_DEPTH,
+        voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,
+      },
+      unserializedKey.asContractParam(),
+      ZeroAddress,
+      ZeroAddress,
+      EMode.NON_QV,
+    );
+
+    expect(mockContract.deployPoll).toHaveBeenCalledTimes(1);
+    expect(mockContract.deployPoll).toHaveBeenCalledWith(
+      defaultArgs.duration,
+      {
+        intStateTreeDepth: INT_STATE_TREE_DEPTH,
+        messageTreeSubDepth: MESSAGE_BATCH_DEPTH,
+        messageTreeDepth: MESSAGE_TREE_DEPTH,
+        voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,
+      },
+      unserializedKey.asContractParam(),
+      ZeroAddress,
+      ZeroAddress,
+      EMode.NON_QV,
+    );
+
+    expect(mockContract.maxValues).toHaveBeenCalledTimes(1);
+    expect(mockContract.extContracts).toHaveBeenCalledTimes(1);
+
+    const maxValues = await mockContract.maxValues();
+    const extContracts = await mockContract.extContracts();
+
+    expect(mockStorage.register).toHaveBeenCalledTimes(4);
+    expect(mockStorage.register).toHaveBeenNthCalledWith(1, {
+      id: EContracts.Poll,
+      key: `poll-${pollId}`,
+      contract: mockContract,
+      args: [
+        defaultArgs.duration,
+        maxValues.map((value) => value.toString()),
+        {
+          intStateTreeDepth: INT_STATE_TREE_DEPTH,
+          messageTreeSubDepth: MESSAGE_BATCH_DEPTH,
+          messageTreeDepth: MESSAGE_TREE_DEPTH,
+          voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,
+        },
+        unserializedKey.asContractParam(),
+        extContracts,
+      ],
+      network: "localhost",
+    });
+    expect(mockStorage.register).toHaveBeenNthCalledWith(2, {
+      id: EContracts.MessageProcessor,
+      key: `poll-${pollId}`,
+      contract: mockContract,
+      args: [ZeroAddress, ZeroAddress, ZeroAddress, EMode.NON_QV],
+      network: "localhost",
+    });
+    expect(mockStorage.register).toHaveBeenNthCalledWith(3, {
+      id: EContracts.Tally,
+      key: `poll-${pollId}`,
+      contract: mockContract,
+      args: [ZeroAddress, ZeroAddress, ZeroAddress, ZeroAddress, EMode.NON_QV],
+      network: "localhost",
+    });
+    expect(mockStorage.register).toHaveBeenNthCalledWith(4, {
+      id: EContracts.AccQueueQuinaryMaci,
+      key: `poll-${pollId}`,
+      contract: mockContract,
+      args: [MESSAGE_BATCH_DEPTH],
+      network: "localhost",
+    });
+  });
+
+  test("Should get MACI address", async () => {
+    const service = new MaciService(mockDeployer);
+
+    const maciAddress = await service.getMaciAddress();
+    expect(maciAddress).toBe(ZeroAddress);
   });
 });

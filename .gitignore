@@ -42,6 +42,3 @@ deployed-contracts.json
 
 # typescript
 *.tsbuildinfo
-
-# vkeys file
-vk_10-2-1-2_test.0.json
