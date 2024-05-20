@@ -13,7 +13,7 @@ Follow these instructions to deploy your own instance of MACI-RPGF.
 
 The `.env.example` file contains instructions for most of these steps.
 
-At the very minimum you need to configure a postgres database, nextauth, admin address, MACI address, the EAS Schema and the voting periods under App Configuration.
+At the very minimum you need to configure a postgres database, nextauth, admin address, and the EAS Schema under App Configuration.
 
 #### Database
 
@@ -50,7 +50,6 @@ To create your own round you need to do a few things:
 
 - Update `NEXT_PUBLIC_ADMIN_ADDRESS` a wallet address that approve the applications and voters (badgeholders)
 - Set `NEXT_PUBLIC_ROUND_ID` to a unique identifier that will group the applications and lists you want to list
-- Set `NEXT_PUBLIC_MACI_ADDRESS` - your deployed maci contract
 - Set `NEXT_PUBLIC_MACI_START_BLOCK` - block where your maci contract is deployed (optional)
 - Set `NEXT_PUBLIC_TALLY_URL` - your endpoint for vote results, where you host `tally-{pollId}.json` files.
 
@@ -60,22 +59,7 @@ If you are running on a different network than Optimism you need to update the c
 
 You can also configure your own schemas here if you wish to, or deploy the EAS contracts to a network that doesn't have them.
 
-## 3. Deploy MACI
-
-As a coordinator you need to deploy a MACI instance and poll.
-
-### Install MACI
-
-You can read about the [MACI requirements here](https://maci.pse.dev/docs/installation). To install MACI run the following commands:
-
-```bash
-git clone https://github.com/privacy-scaling-explorations/maci.git && \
-cd maci && \
-pnpm i && \
-pnpm run build
-```
-
-### Download .zkey files
+## 3. Download .zkey files
 
 Note the locations of the .zkey files as the CLI requires them as command-line flags. Download ceremony artifacts:
 
@@ -83,58 +67,7 @@ Note the locations of the .zkey files as the CLI requires them as command-line f
 pnpm download:ceremony-zkeys
 ```
 
-### Set .env Files
-
-Head to the `contracts` folder and copy the `.env.example` file. Make sure to include a mnemonic and RPC url.
-
-```
-MNEMONIC="your_ethereum_secret_key"
-ETH_PROVIDER="the_eth_provider_url"
-ETHERSCAN_API_KEY="etherscan api key"
-```
-
-### Generate MACI Keys
-
-Generate a new key pair and save it in a secure place.
-
-```bash
-node build/ts/index.js genMaciKeyPair
-```
-
-### Set the configuration file
-
-Head to the contracts folder.
-
-```bash
-cd contracts
-```
-
-Copy the config example and update the fields as necessary:
-
-```bash
-cp deploy-config-example.json deploy-config.json
-```
-
-> [!IMPORTANT]
-> Make sure that you use the production zkeys, set `useQuadraticVoting` to false, and set the pollDuration with the correct time on seconds.
-
-### Deploy MACI Contracts
-
-Run `pnpm deploy` to deploy the contracts (you can specify the network by appending `:network` to the command, e.g. pnpm deploy:sepolia - please refer to the available networks on the package.json scripts section)
-
-```bash
-pnpm deploy:NETWORK
-```
-
-Run pnpm deploy-poll to deploy your first Poll (you can specify the network by appending :network to the command, e.g. pnpm deploy-poll:sepolia - please refer to the available networks on the package.json scripts section).
-
-```sh
-pnpm deploy-poll:NETWORK
-```
-
-See [MACI docs](https://maci.pse.dev/docs/integrating#deployment) for more information.
-
-## 4. Deploy
+## 4. Deploy Frontend
 
 https://vercel.com/new
 
