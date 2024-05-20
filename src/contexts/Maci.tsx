@@ -22,7 +22,7 @@ import type { Attestation } from "~/utils/fetchAttestations";
 import { config } from "~/config";
 import { api } from "~/utils/api";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
-import { MaciService } from "~/services/maci";
+import { MaciService } from "~/services";
 import {
   type IVoteArgs,
   type MaciContextType,

@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useState, useCallback, useMemo } from "react";
 
-import { MaciService } from "~/services/maci";
+import { MaciService } from "~/services";
 import { useEthersSigner } from "./useEthersSigner";
 import { eas } from "~/config";
 
@@ -74,7 +74,6 @@ export function useDeployment() {
         setDeployStatus(8);
         // TODO: should be updated to read filepath and name from user input
         const vks = require("./vk_10-2-1-2_test.0.json");
-        console.log("vks:", vks);
 
         await maci.deployVkRegistry({
           processMessagesZkeyQv: vks.processVkQv,
