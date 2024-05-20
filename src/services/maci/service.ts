@@ -19,13 +19,14 @@ import {
   Tally__factory as TallyFactory,
   AccQueueQuinaryMaci__factory as AccQueueQuinaryMaciFactory,
   type MACI,
-  type EASGatekeeper,
   type IVerifyingKeyStruct,
   type VkRegistry,
   type IVkObjectParams,
+  type EASGatekeeper,
   type Poll,
   type MessageProcessor,
   type Tally,
+  type AccQueueQuinaryMaci,
 } from "maci-cli/sdk";
 
 import { type Signer, Contract } from "ethers";
@@ -367,11 +368,14 @@ export class MaciService {
         STATE_TREE_DEPTH,
       );
 
-    const gatekeeperContract = new Contract(
-      gatekeeperContractAddress,
-      EASGatekeeperFactory.abi,
-      this.deployer,
-    ) as unknown as EASGatekeeper;
+    const gatekeeperContract = await this.deployment.getContract<EASGatekeeper>(
+      {
+        name: EContracts.EASGatekeeper,
+        address: gatekeeperContractAddress,
+        abi: EASGatekeeperFactory.abi,
+        signer: this.deployer,
+      },
+    );
     const maciInstanceAddress = await maciContract.getAddress();
 
     if (!gatekeeperContract)
@@ -476,11 +480,12 @@ export class MaciService {
       network,
     );
 
-    const maciContract = new Contract(
-      maciContractAddress,
-      MACIFactory.abi,
-      this.deployer,
-    ) as unknown as MACI;
+    const maciContract = await this.deployment.getContract<MACI>({
+      name: EContracts.MACI,
+      address: maciContractAddress,
+      abi: MACIFactory.abi,
+      signer: this.deployer,
+    });
 
     const pollId = await maciContract.nextPollId();
     const unserializedKey = PubKey.deserialize(pubKey);
@@ -506,53 +511,60 @@ export class MaciService {
       mode,
     );
 
-    const tx = await maciContract.deployPoll(
-      duration,
-      {
-        intStateTreeDepth: INT_STATE_TREE_DEPTH,
-        messageTreeSubDepth: MESSAGE_BATCH_DEPTH,
-        messageTreeDepth: MESSAGE_TREE_DEPTH,
-        voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,
-      },
-      unserializedKey.asContractParam(),
-      verifierContractAddress,
-      vkRegistryContractAddress,
-      EMode.NON_QV,
-    );
-
-    const receipt = await tx.wait();
+    const receipt = await maciContract
+      .deployPoll(
+        duration,
+        {
+          intStateTreeDepth: INT_STATE_TREE_DEPTH,
+          messageTreeSubDepth: MESSAGE_BATCH_DEPTH,
+          messageTreeDepth: MESSAGE_TREE_DEPTH,
+          voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,
+        },
+        unserializedKey.asContractParam(),
+        verifierContractAddress,
+        vkRegistryContractAddress,
+        EMode.NON_QV,
+      )
+      .then((tx) => tx.wait());
 
     if (receipt?.status !== 1) {
       throw new Error("Deploy poll transaction is failed");
     }
 
-    const pollContract = new Contract(
-      pollContractAddress,
-      PollFactory.abi,
-      this.deployer,
-    ) as unknown as Poll;
+    const pollContract = await this.deployment.getContract<Poll>({
+      name: EContracts.Poll,
+      address: pollContractAddress,
+      abi: PollFactory.abi,
+      signer: this.deployer,
+    });
+
     const [maxValues, extContracts] = await Promise.all([
       pollContract.maxValues(),
       pollContract.extContracts(),
     ]);
 
-    const messageProcessorContract = new Contract(
-      messageProcessorContractAddress,
-      MessageProcessorFactory.abi,
-      this.deployer,
-    ) as unknown as MessageProcessor;
+    const messageProcessorContract =
+      await this.deployment.getContract<MessageProcessor>({
+        name: EContracts.MessageProcessor,
+        address: messageProcessorContractAddress,
+        abi: MessageProcessorFactory.abi,
+        signer: this.deployer,
+      });
 
-    const tallyContract = new Contract(
-      tallyContractAddress,
-      TallyFactory.abi,
-      this.deployer,
-    ) as unknown as Tally;
+    const tallyContract = await this.deployment.getContract<Tally>({
+      name: EContracts.Tally,
+      address: tallyContractAddress,
+      abi: TallyFactory.abi,
+      signer: this.deployer,
+    });
 
-    const messageAccQueueContract = new Contract(
-      extContracts[1],
-      AccQueueQuinaryMaciFactory.abi,
-      this.deployer,
-    );
+    const messageAccQueueContract =
+      await this.deployment.getContract<AccQueueQuinaryMaci>({
+        name: EContracts.AccQueueQuinaryMaci,
+        address: extContracts[1],
+        abi: AccQueueQuinaryMaciFactory.abi,
+        signer: this.deployer,
+      });
 
     await Promise.all([
       this.register({
