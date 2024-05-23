@@ -61,11 +61,39 @@ You can also configure your own schemas here if you wish to, or deploy the EAS c
 
 ## 3. Download .zkey files
 
-Note the locations of the .zkey files as the CLI requires them as command-line flags. Download ceremony artifacts:
+Download ceremony artifacts with:
 
 ```bash
-pnpm download:ceremony-zkeys
+pnpm download-zkeys
 ```
+
+or you could download your own zkey files with:
+
+```bash
+pnpm download-zkeys -i <zkey_url>
+```
+
+Then, you could extract vkeys from the zkey files with:
+
+```bash
+pnpm extract-vkeys
+```
+
+This command would extract vkeys and put them with a default file name and put the file in the `/public` folder.
+
+You could specify output file name with:
+
+```bash
+pnpm extract-vkeys -o <vkey_file_name>
+```
+
+It would be easier to run the following command that combines the above two commands:
+
+```bash
+pnpm prepare
+```
+
+After this step, you should put the vkey file path in the app configuration, which means you should update the `NEXT_PUBLIC_VKEY_FILE_PATH` in the `.env` file. The default path is `vkeys.json`.
 
 ## 4. Deploy Frontend
 
