@@ -89,6 +89,8 @@ describe("MaciService", () => {
     (Deployment.getInstance as Mock).mockReturnValue(mockDeployment);
 
     (ContractStorage.getInstance as Mock).mockReturnValue(mockStorage);
+
+    mockStorage.getAddress = vi.fn(() => undefined);
   });
 
   afterEach(() => {
@@ -118,6 +120,21 @@ describe("MaciService", () => {
       args: ["10"],
       network: "localhost",
     });
+
+    mockStorage.getAddress = vi.fn(() => ZeroAddress);
+
+    const secondAddress = await service.deployInitialVoiceCreditProxy({
+      amount: 10,
+    });
+    expect(secondAddress).toBe(ZeroAddress);
+    expect(mockDeployment.deployContract).toHaveBeenCalledTimes(1);
+
+    const thirdAddress = await service.deployInitialVoiceCreditProxy({
+      amount: 10,
+      forceDeploy: true,
+    });
+    expect(thirdAddress).toBe(ZeroAddress);
+    expect(mockDeployment.deployContract).toHaveBeenCalledTimes(2);
   });
 
   test("should deploy gatekeeper contract properly", async () => {
@@ -149,12 +166,31 @@ describe("MaciService", () => {
       args: [ZeroAddress, ZeroAddress, "1"],
       network: "localhost",
     });
+
+    mockStorage.getAddress = vi.fn(() => ZeroAddress);
+
+    const secondAddress = await service.deployGatekeeper({
+      easAddress: ZeroAddress,
+      encodedSchema: "1",
+      attester: ZeroAddress,
+    });
+    expect(secondAddress).toBe(ZeroAddress);
+    expect(mockDeployment.deployContract).toHaveBeenCalledTimes(1);
+
+    const thirdAddress = await service.deployGatekeeper({
+      easAddress: ZeroAddress,
+      encodedSchema: "1",
+      attester: ZeroAddress,
+      forceDeploy: true,
+    });
+    expect(thirdAddress).toBe(ZeroAddress);
+    expect(mockDeployment.deployContract).toHaveBeenCalledTimes(2);
   });
 
   test("should deploy verifier properly", async () => {
     const service = new MaciService(mockDeployer);
 
-    const address = await service.deployVerifier();
+    const address = await service.deployVerifier({});
 
     expect(address).toBe(ZeroAddress);
     expect(mockDeployment.deployContract).toHaveBeenCalledTimes(1);
@@ -171,12 +207,22 @@ describe("MaciService", () => {
       args: [],
       network: "localhost",
     });
+
+    mockStorage.getAddress = vi.fn(() => ZeroAddress);
+
+    const secondAddress = await service.deployVerifier({});
+    expect(secondAddress).toBe(ZeroAddress);
+    expect(mockDeployment.deployContract).toHaveBeenCalledTimes(1);
+
+    const thirdAddress = await service.deployVerifier({ forceDeploy: true });
+    expect(thirdAddress).toBe(ZeroAddress);
+    expect(mockDeployment.deployContract).toHaveBeenCalledTimes(2);
   });
 
   test("should deploy poll factory properly", async () => {
     const service = new MaciService(mockDeployer);
 
-    const address = await service.deployPollFactory();
+    const address = await service.deployPollFactory({});
 
     expect(address).toBe(ZeroAddress);
     expect(mockDeployment.createContractFactory).toHaveBeenCalledTimes(1);
@@ -209,12 +255,26 @@ describe("MaciService", () => {
       args: [],
       network: "localhost",
     });
+
+    mockStorage.getAddress = vi.fn(() => ZeroAddress);
+
+    const secondAddress = await service.deployPollFactory({});
+    expect(secondAddress).toBe(ZeroAddress);
+    expect(
+      mockDeployment.deployContractWithLinkedLibraries,
+    ).toHaveBeenCalledTimes(1);
+
+    const thirdAddress = await service.deployPollFactory({ forceDeploy: true });
+    expect(thirdAddress).toBe(ZeroAddress);
+    expect(
+      mockDeployment.deployContractWithLinkedLibraries,
+    ).toHaveBeenCalledTimes(2);
   });
 
   test("should deploy message processor factory properly", async () => {
     const service = new MaciService(mockDeployer);
 
-    const address = await service.deployMessageProcessorFactory();
+    const address = await service.deployMessageProcessorFactory({});
 
     expect(address).toBe(ZeroAddress);
     expect(mockDeployment.createContractFactory).toHaveBeenCalledTimes(1);
@@ -247,12 +307,28 @@ describe("MaciService", () => {
       args: [],
       network: "localhost",
     });
+
+    mockStorage.getAddress = vi.fn(() => ZeroAddress);
+
+    const secondAddress = await service.deployMessageProcessorFactory({});
+    expect(secondAddress).toBe(ZeroAddress);
+    expect(
+      mockDeployment.deployContractWithLinkedLibraries,
+    ).toHaveBeenCalledTimes(1);
+
+    const thirdAddress = await service.deployMessageProcessorFactory({
+      forceDeploy: true,
+    });
+    expect(thirdAddress).toBe(ZeroAddress);
+    expect(
+      mockDeployment.deployContractWithLinkedLibraries,
+    ).toHaveBeenCalledTimes(2);
   });
 
   test("should deploy tally factory properly", async () => {
     const service = new MaciService(mockDeployer);
 
-    const address = await service.deployTallyFactory();
+    const address = await service.deployTallyFactory({});
 
     expect(address).toBe(ZeroAddress);
     expect(mockDeployment.createContractFactory).toHaveBeenCalledTimes(1);
@@ -285,12 +361,28 @@ describe("MaciService", () => {
       args: [],
       network: "localhost",
     });
+
+    mockStorage.getAddress = vi.fn(() => ZeroAddress);
+
+    const secondAddress = await service.deployTallyFactory({});
+    expect(secondAddress).toBe(ZeroAddress);
+    expect(
+      mockDeployment.deployContractWithLinkedLibraries,
+    ).toHaveBeenCalledTimes(1);
+
+    const thirdAddress = await service.deployTallyFactory({
+      forceDeploy: true,
+    });
+    expect(thirdAddress).toBe(ZeroAddress);
+    expect(
+      mockDeployment.deployContractWithLinkedLibraries,
+    ).toHaveBeenCalledTimes(2);
   });
 
   test("should deploy maci properly", async () => {
     const service = new MaciService(mockDeployer);
 
-    const address = await service.deployMaci();
+    const address = await service.deployMaci({});
 
     expect(address).toBe(ZeroAddress);
     expect(mockDeployment.createContractFactory).toHaveBeenCalledTimes(1);
@@ -339,6 +431,20 @@ describe("MaciService", () => {
       ],
       network: "localhost",
     });
+
+    mockStorage.getAddress = vi.fn(() => ZeroAddress);
+
+    const secondAddress = await service.deployMaci({});
+    expect(secondAddress).toBe(ZeroAddress);
+    expect(
+      mockDeployment.deployContractWithLinkedLibraries,
+    ).toHaveBeenCalledTimes(1);
+
+    const thirdAddress = await service.deployMaci({ forceDeploy: true });
+    expect(thirdAddress).toBe(ZeroAddress);
+    expect(
+      mockDeployment.deployContractWithLinkedLibraries,
+    ).toHaveBeenCalledTimes(2);
   });
 
   test("should deploy VK registry properly", async () => {
@@ -406,6 +512,19 @@ describe("MaciService", () => {
         (vk) => VerifyingKey.fromObj(vk).asContractParam(),
       ),
     );
+
+    mockStorage.getAddress = vi.fn(() => ZeroAddress);
+
+    const secondAddress = await service.deployVkRegistry(defaultArgs);
+    expect(secondAddress).toBe(ZeroAddress);
+    expect(mockDeployment.deployContract).toHaveBeenCalledTimes(1);
+
+    const thirdAddress = await service.deployVkRegistry({
+      ...defaultArgs,
+      forceDeploy: true,
+    });
+    expect(thirdAddress).toBe(ZeroAddress);
+    expect(mockDeployment.deployContract).toHaveBeenCalledTimes(2);
   });
 
   test("should deploy poll properly", async () => {
