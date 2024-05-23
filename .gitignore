@@ -38,3 +38,9 @@ deployed-contracts.json
 
 # typescript
 *.tsbuildinfo
+
+# vkeys file
+vkeys.json
+
+# zkeys file
+zkeys/

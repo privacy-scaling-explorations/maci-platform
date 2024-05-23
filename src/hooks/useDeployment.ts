@@ -3,7 +3,7 @@ import { useState, useCallback, useMemo } from "react";
 
 import { MaciService } from "~/services";
 import { useEthersSigner } from "./useEthersSigner";
-import { eas } from "~/config";
+import { eas, config } from "~/config";
 
 interface IDeployArgs {
   amount: number;
@@ -72,8 +72,8 @@ export function useDeployment() {
 
         // 8. deploy VkRegistry contract
         setDeployStatus(8);
-        // TODO: should be updated to read filepath and name from user input
-        const vks = require("./vk_10-2-1-2_test.0.json");
+
+        const vks = await fetch(config.vkeyFilePath).then((res) => res.json());
 
         await maci.deployVkRegistry({
           processMessagesZkeyQv: vks.processVkQv,
