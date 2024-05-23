@@ -50,6 +50,9 @@ describe("MaciService", () => {
   const mockDeployer = {
     provider: {
       getNetwork: vi.fn(() => Promise.resolve({ name: "localhost" })),
+      getTransaction: vi.fn((txHash?) =>
+        Promise.resolve(txHash ? { blockNumber: 123 } : undefined),
+      ),
     },
   } as unknown as Signer;
 
@@ -83,6 +86,7 @@ describe("MaciService", () => {
     register: vi.fn(),
     mustGetAddress: vi.fn(() => ZeroAddress),
     getAddress: vi.fn(() => undefined),
+    getDeploymentTxHash: vi.fn(() => undefined),
   } as unknown as ContractStorage;
 
   beforeEach(() => {
@@ -632,10 +636,17 @@ describe("MaciService", () => {
     });
   });
 
-  test("Should get MACI address", async () => {
+  test("Should get MACI data", async () => {
     const service = new MaciService(mockDeployer);
 
-    const maciAddress = await service.getMaciAddress();
-    expect(maciAddress).toBe(ZeroAddress);
+    const maciDataShouldBeEmpty = await service.getMaciData();
+    expect(maciDataShouldBeEmpty.address).toBe(ZeroAddress);
+    expect(maciDataShouldBeEmpty.startBlock).toBe(0);
+
+    mockStorage.getDeploymentTxHash = vi.fn(() => "0x123456");
+
+    const maciDataShouldNotBeEmpty = await service.getMaciData();
+    expect(maciDataShouldNotBeEmpty.address).toBe(ZeroAddress);
+    expect(maciDataShouldNotBeEmpty.startBlock).toBe(123);
   });
 });

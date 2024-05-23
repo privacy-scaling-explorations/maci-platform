@@ -22,7 +22,7 @@ import type { Attestation } from "~/utils/fetchAttestations";
 import { config } from "~/config";
 import { api } from "~/utils/api";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
-import { MaciService } from "~/services";
+import { MaciService, type IMACIData } from "~/services";
 import {
   type IVoteArgs,
   type MaciContextType,
@@ -45,7 +45,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
   const [error, setError] = useState<string>();
   const [pollData, setPollData] = useState<IGetPollData>();
   const [tallyData, setTallyData] = useState<TallyData>();
-  const [maciAddress, setMaciAddress] = useState<string>();
+  const [maci, setMaci] = useState<IMACIData>();
 
   const attestations = api.voters.approvedAttestations.useQuery({
     address,
@@ -54,8 +54,8 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
   const attestationId = useMemo(() => {
     const values = attestations.data?.valueOf() as Attestation[] | undefined;
 
-    const attestation = values?.find((attestation) =>
-      config.admin === attestation.attester,
+    const attestation = values?.find(
+      (attestation) => config.admin === attestation.attester,
     );
 
     return attestation?.id;
@@ -84,7 +84,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
 
   const onSignup = useCallback(
     async (onError: () => void) => {
-      if (!data?.publicKey || !signer || !attestationId || !maciAddress) {
+      if (!data?.publicKey || !signer || !attestationId || !maci) {
         return;
       }
 
@@ -93,7 +93,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
       try {
         const { stateIndex: index, hash } = await signup({
           maciPubKey: data.publicKey,
-          maciAddress,
+          maciAddress: maci.address,
           sgDataArg: attestationId,
           signer,
         });
@@ -117,7 +117,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
       address,
       signer,
       maciService,
-      maciAddress,
+      maci,
       setIsRegistered,
       setStateIndex,
       setIsLoading,
@@ -130,7 +130,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
       onError: () => Promise<void>,
       onSuccess: () => Promise<void>,
     ) => {
-      if (!signer || !data || !stateIndex || !pollData || !maciAddress) {
+      if (!signer || !data || !stateIndex || !pollData || !maci) {
         return;
       }
 
@@ -145,7 +145,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
           newVoteWeight,
           voteOptionIndex,
           stateIndex: BigInt(stateIndex),
-          maciContractAddress: maciAddress,
+          maciContractAddress: maci.address,
           nonce: BigInt(index + 1),
         }),
       );
@@ -153,7 +153,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
       setIsLoading(true);
       await publishBatch({
         messages,
-        maciAddress: maciAddress,
+        maciAddress: maci.address,
         publicKey: data.publicKey,
         privateKey: data.privateKey,
         pollId: BigInt(pollData.id),
@@ -174,7 +174,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
       data?.publicKey,
       data?.privateKey,
       signer,
-      maciAddress,
+      maci,
       setIsLoading,
       setError,
     ],
@@ -185,8 +185,8 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
     if (!signer || !maciService) return;
 
     maciService
-      .getMaciAddress()
-      .then((addr) => setMaciAddress(addr))
+      .getMaciData()
+      .then((data) => setMaci(data))
       .catch(console.error);
   }, [signer, maciService]);
 
@@ -198,15 +198,15 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
       !data?.publicKey ||
       !address ||
       isLoading ||
-      !maciAddress
+      !maci
     ) {
       return;
     }
 
     isRegisteredUser({
       maciPubKey: data.publicKey,
-      maciAddress,
-      startBlock: config.maciStartBlock,
+      maciAddress: maci.address,
+      startBlock: maci.startBlock,
       signer,
     })
       .then(({ isRegistered: registered, voiceCredits, stateIndex: index }) => {
@@ -224,7 +224,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
     signer,
     stateIndex,
     maciService,
-    maciAddress,
+    maci,
     setIsRegistered,
     setStateIndex,
     setInitialVoiceCredits,
@@ -232,14 +232,14 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
 
   /// check the poll data and tally data
   useEffect(() => {
-    if (!signer || !maciAddress) {
+    if (!signer || !maci) {
       return;
     }
 
     setIsLoading(true);
     Promise.all([
       getPoll({
-        maciAddress,
+        maciAddress: maci.address,
         signer,
         provider: signer.provider,
       })
@@ -264,7 +264,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [signer, maciAddress, setIsLoading, setTallyData, setPollData]);
+  }, [signer, maci, setIsLoading, setTallyData, setPollData]);
 
   const value: MaciContextType = {
     isLoading,
@@ -277,7 +277,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
     error,
     pollData,
     tallyData,
-    maciAddress,
+    maciAddress: maci?.address,
     onSignup,
     onVote,
   };
