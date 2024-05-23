@@ -122,4 +122,9 @@ export interface IDeployPollArgs {
   pubKey: string;
 }
 
+export interface IMACIData {
+  address: string;
+  startBlock: number;
+}
+
 export type IAbi = Record<Partial<EContracts>, Interface | InterfaceAbi>;
