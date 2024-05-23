@@ -38,6 +38,7 @@ import type {
   IRegisterArgs,
   IDeployPollArgs,
   IDeployArgs,
+  IMACIData,
 } from "./types";
 import {
   ABI,
@@ -666,9 +667,21 @@ export class MaciService {
     });
   }
 
-  async getMaciAddress(): Promise<string> {
+  async getMaciData(): Promise<IMACIData> {
     const network = await this.getNetwork();
-    return this.storage.mustGetAddress(EContracts.MACI, network);
+    const address = this.storage.mustGetAddress(EContracts.MACI, network);
+    const deploymentTxHash = this.storage.getDeploymentTxHash(
+      EContracts.MACI,
+      network,
+      address,
+    );
+    const txReceipt =
+      await this.deployer.provider?.getTransaction(deploymentTxHash);
+
+    return {
+      address,
+      startBlock: txReceipt?.blockNumber ?? 0,
+    };
   }
 
   /**

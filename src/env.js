@@ -95,8 +95,6 @@ export const env = createEnv({
 
     NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK: z.string(),
 
-    NEXT_PUBLIC_MACI_START_BLOCK: z.string().optional(),
-
     NEXT_PUBLIC_TALLY_URL: z.string().url(),
     NEXT_PUBLIC_VKEY_FILE_PATH: z.string().default("vkeys.json"),
   },
@@ -141,8 +139,6 @@ export const env = createEnv({
     NEXT_PUBLIC_METADATA_SCHEMA: process.env.NEXT_PUBLIC_METADATA_SCHEMA,
 
     NEXT_PUBLIC_ROUND_ID: process.env.NEXT_PUBLIC_ROUND_ID,
-
-    NEXT_PUBLIC_MACI_START_BLOCK: process.env.NEXT_PUBLIC_MACI_START_BLOCK,
 
     NEXT_PUBLIC_TALLY_URL: process.env.NEXT_PUBLIC_TALLY_URL,
     NEXT_PUBLIC_VKEY_FILE_PATH: process.env.NEXT_PUBLIC_VKEY_FILE_PATH,
