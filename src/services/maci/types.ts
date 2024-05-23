@@ -7,6 +7,13 @@ import type {
 } from "ethers";
 
 /**
+ * Interface that represents deploy args for most of the deploy functions
+ */
+export interface IDeployArgs {
+  forceDeploy?: boolean;
+}
+
+/**
  * Interface that represents deploy args for initial voice credit proxy
  */
 export interface IDeployInitialVoiceCreditProxyArgs {
@@ -14,6 +21,11 @@ export interface IDeployInitialVoiceCreditProxyArgs {
    * Amount of voice credits
    */
   amount: number;
+
+  /**
+   * Force deploy regardless of stored contract
+   */
+  forceDeploy?: boolean;
 }
 
 /**
@@ -34,6 +46,11 @@ export interface IDeployGatekeeperArgs {
    * Attester address
    */
   attester: string;
+
+  /**
+   * Force deploy regardless of stored contract
+   */
+  forceDeploy?: boolean;
 }
 
 /**
@@ -59,6 +76,11 @@ export interface IDeployVkRegistryArgs {
    * Extracted tally votes zkey for Non-QV
    */
   tallyVotesZkeyNonQv: ISnarkJSVerificationKey;
+
+  /**
+   * Force deploy regardless of stored contract
+   */
+  forceDeploy?: boolean;
 }
 
 export interface IRegisterArgs {
