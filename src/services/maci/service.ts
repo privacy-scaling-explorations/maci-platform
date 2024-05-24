@@ -37,6 +37,7 @@ import type {
   IDeployVkRegistryArgs,
   IRegisterArgs,
   IDeployPollArgs,
+  IDeployArgs,
 } from "./types";
 import {
   ABI,
@@ -97,12 +98,14 @@ export class MaciService {
    */
   async deployInitialVoiceCreditProxy({
     amount,
+    forceDeploy = false,
   }: IDeployInitialVoiceCreditProxyArgs): Promise<string> {
     const address = this.storage.getAddress(
       EContracts.ConstantInitialVoiceCreditProxy,
       await this.getNetwork(),
     );
-    if (address) return address;
+
+    if (!forceDeploy && address) return address;
 
     const contract = await this.deployment.deployContract(
       {
@@ -133,12 +136,14 @@ export class MaciService {
     easAddress,
     encodedSchema,
     attester,
+    forceDeploy = false,
   }: IDeployGatekeeperArgs): Promise<string> {
     const address = this.storage.getAddress(
       EContracts.EASGatekeeper,
       await this.getNetwork(),
     );
-    if (address) return address;
+
+    if (!forceDeploy && address) return address;
 
     const contract = await this.deployment.deployContract(
       {
@@ -166,12 +171,13 @@ export class MaciService {
    *
    * @returns deployed contract address
    */
-  async deployVerifier(): Promise<string> {
+  async deployVerifier({ forceDeploy = false }: IDeployArgs): Promise<string> {
     const address = this.storage.getAddress(
       EContracts.Verifier,
       await this.getNetwork(),
     );
-    if (address) return address;
+
+    if (!forceDeploy && address) return address;
 
     const contract = await this.deployment.deployContract({
       name: EContracts.Verifier,
@@ -193,11 +199,13 @@ export class MaciService {
    *
    * @returns deployed contract address
    */
-  async deployPollFactory(): Promise<string> {
+  async deployPollFactory({
+    forceDeploy = false,
+  }: IDeployArgs): Promise<string> {
     const network = await this.getNetwork();
-
     const address = this.storage.getAddress(EContracts.PollFactory, network);
-    if (address) return address;
+
+    if (!forceDeploy && address) return address;
 
     const linkedPollFactoryContract =
       await this.deployment.createContractFactory(
@@ -231,14 +239,16 @@ export class MaciService {
    *
    * @returns deployed contract address
    */
-  async deployMessageProcessorFactory(): Promise<string> {
+  async deployMessageProcessorFactory({
+    forceDeploy = false,
+  }: IDeployArgs): Promise<string> {
     const network = await this.getNetwork();
-
     const address = this.storage.getAddress(
       EContracts.MessageProcessorFactory,
       network,
     );
-    if (address) return address;
+
+    if (!forceDeploy && address) return address;
 
     const linkedMessageProcessorFactoryContract =
       await this.deployment.createContractFactory(
@@ -273,11 +283,13 @@ export class MaciService {
    *
    * @returns deployed contract address
    */
-  async deployTallyFactory(): Promise<string> {
+  async deployTallyFactory({
+    forceDeploy = false,
+  }: IDeployArgs): Promise<string> {
     const network = await this.getNetwork();
-
     const address = this.storage.getAddress(EContracts.TallyFactory, network);
-    if (address) return address;
+
+    if (!forceDeploy && address) return address;
 
     const linkedTallyFactoryContract =
       await this.deployment.createContractFactory(
@@ -312,11 +324,11 @@ export class MaciService {
    *
    * @returns deployed contract address
    */
-  async deployMaci(): Promise<string> {
+  async deployMaci({ forceDeploy = false }: IDeployArgs): Promise<string> {
     const network = await this.getNetwork();
-
     const address = this.storage.getAddress(EContracts.MACI, network);
-    if (address) return address;
+
+    if (!forceDeploy && address) return address;
 
     const constantInitialVoiceCreditProxyContractAddress =
       this.storage.mustGetAddress(
@@ -412,12 +424,14 @@ export class MaciService {
     processMessagesZkeyNonQv,
     tallyVotesZkeyQv,
     tallyVotesZkeyNonQv,
+    forceDeploy = false,
   }: IDeployVkRegistryArgs): Promise<string> {
     const address = this.storage.getAddress(
       EContracts.VkRegistry,
       await this.getNetwork(),
     );
-    if (address) return address;
+
+    if (!forceDeploy && address) return address;
 
     const [qvProcessVk, qvTallyVk, nonQvProcessVk, nonQvTallyQv] = [
       processMessagesZkeyQv,
