@@ -52,23 +52,23 @@ export function useDeployment() {
 
         // 3. deploy verifier contract
         setDeployStatus(3);
-        await maci.deployVerifier();
+        await maci.deployVerifier({});
 
         // 4. deploy PollFactory contract
         setDeployStatus(4);
-        await maci.deployPollFactory();
+        await maci.deployPollFactory({});
 
         // 5. deploy MessageProcessorFactory contract
         setDeployStatus(5);
-        await maci.deployMessageProcessorFactory();
+        await maci.deployMessageProcessorFactory({});
 
         // 6. deploy TallyFactory contract
         setDeployStatus(6);
-        await maci.deployTallyFactory();
+        await maci.deployTallyFactory({});
 
         // 7. deploy MACI contract
         setDeployStatus(7);
-        await maci.deployMaci();
+        await maci.deployMaci({});
 
         // 8. deploy VkRegistry contract
         setDeployStatus(8);
