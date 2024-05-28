@@ -193,7 +193,7 @@ export function FieldArray<S extends z.Schema>({
   return (
     <div className="mb-8">
       {error && (
-        <div className="border border-red-900 p-2 dark:text-red-500">
+        <div className="border-red-900 dark:text-red-500 border p-2">
           {String(error)}
         </div>
       )}

@@ -5,36 +5,15 @@ import clsx from "clsx";
 
 import { ConnectButton } from "./ConnectButton";
 import { IconButton } from "./ui/Button";
-import { config, metadata } from "~/config";
+import { Logo } from "./ui/Logo";
 import { Menu, X } from "lucide-react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
-
-const Logo = () => (
-  <div className="h-10">
-    {config.logoUrl ? (
-      <Image alt="logo" className="max-h-full" src={config.logoUrl} />
-    ) : (
-      <div className="flex h-full items-center justify-center rounded-full border-2 border-dashed border-white px-4 text-xs font-medium tracking-wider text-white">
-        {metadata.title}
-      </div>
-    )}
-  </div>
-);
 
 const NavLink = ({
   isActive,
   ...props
 }: { isActive: boolean } & ComponentPropsWithRef<typeof Link>) => (
-  <Link
-    className={clsx(
-      "flex h-full items-center border-b-[3px] border-transparent p-4 font-semibold text-gray-400 hover:text-white",
-      {
-        ["!border-white  !text-white"]: isActive,
-      },
-    )}
-    {...props}
-  />
+  <Link className="flex h-full items-center p-4 font-sans" {...props} />
 );
 
 type NavLink = { href: string; children: string };
@@ -43,7 +22,7 @@ export const Header = ({ navLinks }: { navLinks: NavLink[] }) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
-    <header className="relative z-[100] bg-gray-900 shadow-md dark:shadow-none">
+    <header className="relative z-[100] border-b border-gray-200 bg-white">
       <div className="container mx-auto flex h-[72px] max-w-screen-2xl items-center px-2">
         <div className="mr-4 flex items-center md:mr-16">
           <IconButton
@@ -56,7 +35,7 @@ export const Header = ({ navLinks }: { navLinks: NavLink[] }) => {
             <Logo />
           </Link>
         </div>
-        <div className="hidden h-full items-center gap-4 overflow-x-auto md:flex">
+        <div className="hidden h-full items-center gap-4 overflow-x-auto uppercase md:flex">
           {navLinks?.map((link) => (
             <NavLink
               isActive={asPath.startsWith(link.href)}
