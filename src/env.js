@@ -89,6 +89,7 @@ export const env = createEnv({
     NEXT_PUBLIC_APPROVAL_SCHEMA: z.string().startsWith("0x"),
     NEXT_PUBLIC_METADATA_SCHEMA: z.string().startsWith("0x"),
 
+    NEXT_PUBLIC_EVENT_NAME: z.string().optional(),
     NEXT_PUBLIC_ROUND_ID: z.string(),
     NEXT_PUBLIC_WALLETCONNECT_ID: z.string().optional(),
     NEXT_PUBLIC_ALCHEMY_ID: z.string().optional(),
@@ -141,6 +142,7 @@ export const env = createEnv({
     NEXT_PUBLIC_APPROVAL_SCHEMA: process.env.NEXT_PUBLIC_APPROVAL_SCHEMA,
     NEXT_PUBLIC_METADATA_SCHEMA: process.env.NEXT_PUBLIC_METADATA_SCHEMA,
 
+    NEXT_PUBLIC_EVENT_NAME: process.env.NEXT_PUBLIC_EVENT_NAME,
     NEXT_PUBLIC_ROUND_ID: process.env.NEXT_PUBLIC_ROUND_ID,
 
     NEXT_PUBLIC_MACI_ADDRESS: process.env.NEXT_PUBLIC_MACI_ADDRESS,

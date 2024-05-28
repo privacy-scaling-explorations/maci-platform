@@ -1,26 +1,48 @@
-import { GithubIcon } from "lucide-react";
+import { FaXTwitter } from "react-icons/fa6";
+import { FaTelegramPlane, FaGithub, FaDiscord } from "react-icons/fa";
+import Image from "next/image";
+
+import { Logo } from "./ui/Logo";
 
 export function Footer() {
   return (
-    <footer className="flex flex-col items-center justify-center bg-gray-950 p-2 text-gray-400">
-      <a
-        href={"https://github.com/privacy-scaling-explorations/maci-rpgf/"}
-        target="_blank"
-        className="group py-4 text-sm hover:text-white"
-      >
-        <div className="flex">
-          Built with{" "}
-          <span className="relative -mt-1 w-6 px-1 text-xl text-red-600">
-            <span className="absolute">❤️</span>
-            <span className="absolute group-hover:animate-ping">❤️</span>
-          </span>
-          on EasyRetroPGF.
-        </div>
-        <div className="inline-flex">
-          Run your own RPGF Round
-          <GithubIcon className="ml-1 mt-0.5 h-4 w-4" />
-        </div>
-      </a>
+    <footer className="flex items-center justify-between border-t border-gray-300 bg-gray-50 px-12 py-9">
+      <div className="flex items-center justify-start gap-4">
+        <a href={"https://x.com/zkMACI"} target="_blank">
+          <FaXTwitter />
+        </a>
+        <a href={"https://telegram.com"} target="_blank">
+          <FaTelegramPlane />
+        </a>
+        <a
+          href={"https://github.com/privacy-scaling-explorations/maci-rpgf/"}
+          target="_blank"
+        >
+          <FaGithub />
+        </a>
+        <a href={"https://discord.com/invite/sF5CT5rzrR"} target="_blank">
+          <FaDiscord />
+        </a>
+      </div>
+      <div className="flex justify-end gap-4">
+        <a
+          href={"https://maci.pse.dev"}
+          target="_blank"
+          className="flex items-center gap-1"
+        >
+          <span>Documentation</span>
+          <Image alt="" width="18" height="18" src={"/arrow-go-to.svg"} />
+        </a>
+        <a
+          href={"https://maci.pse.dev"}
+          target="_blank"
+          className="flex items-center gap-1"
+        >
+          <span>About MACI-RPGF</span>
+          <Image alt="" width="18" height="18" src={"/arrow-go-to.svg"} />
+        </a>
+        <Logo />
+      </div>
     </footer>
   );
 }
