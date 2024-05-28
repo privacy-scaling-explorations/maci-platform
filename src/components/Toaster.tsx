@@ -6,12 +6,13 @@ export function Toaster() {
   return (
     <Sonner
       theme={theme as "light" | "dark"}
+      position="top-center"
       className="toaster group "
       toastOptions={{
         unstyled: true,
         classNames: {
           toast:
-            "bg-gray-900 font-sans w-full flex gap-2 p-4 border-2 rounded-xl",
+            "bg-red text-white font-sans w-full flex justify-center p-4 rounded-xl",
           error: "group-[.toaster]:border-red-950 text-red-500",
           title: "font-bold tracking-wider -mt-1",
           description: "text-sm",

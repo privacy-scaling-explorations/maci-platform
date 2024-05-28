@@ -1,9 +1,10 @@
 import { useMemo, type PropsWithChildren } from "react";
-
 import {
   type Chain,
   getDefaultConfig,
   RainbowKitProvider,
+  type Theme,
+  lightTheme,
 } from "@rainbow-me/rainbowkit";
 import { http, WagmiProvider } from "wagmi";
 import { SessionProvider } from "next-auth/react";
@@ -25,6 +26,26 @@ const getSiweMessageOptions: GetSiweMessageOptions = () => ({
   statement: process.env.NEXT_PUBLIC_SIGN_STATEMENT ?? "Sign in to OpenPGF",
 });
 
+const theme = lightTheme();
+
+const customTheme: Theme = {
+  blurs: {
+    ...theme.blurs,
+  },
+  colors: {
+    ...theme.colors,
+  },
+  fonts: {
+    body: "Share Tech Mono",
+  },
+  radii: {
+    ...theme.radii,
+  },
+  shadows: {
+    ...theme.shadows,
+  },
+};
+
 export function Providers({
   children,
   session,
@@ -39,7 +60,7 @@ export function Providers({
             <RainbowKitSiweNextAuthProvider
               getSiweMessageOptions={getSiweMessageOptions}
             >
-              <RainbowKitProvider>
+              <RainbowKitProvider theme={customTheme}>
                 <MaciProvider>
                   <BallotProvider>{children}</BallotProvider>
                   <Toaster />

@@ -1,26 +1,26 @@
 import * as wagmiChains from "wagmi/chains";
 
 export const metadata = {
-  title: "EasyRetroPGF",
+  title: "MACI RPGF",
   description: "Open-source Retro Public Goods Funding platform",
-  url: "https://easy-retro-pgf.vercel.app",
+  url: "https://maci-rpgf.vercel.app",
   image: "/api/og",
 };
 
 export const config = {
-  logoUrl: "",
+  logoUrl: "/Logo.svg",
   pageSize: 3 * 4,
   // TODO: temp solution until we come up with solid one
   // https://github.com/privacy-scaling-explorations/maci-rpgf/issues/31
   voteLimit: 50,
   startsAt: new Date(process.env.NEXT_PUBLIC_START_DATE!),
   registrationEndsAt: new Date(process.env.NEXT_PUBLIC_REGISTRATION_END_DATE!),
-  reviewEndsAt: new Date(process.env.NEXT_PUBLIC_REVIEW_END_DATE!),
   resultsAt: new Date(process.env.NEXT_PUBLIC_RESULTS_DATE!),
   skipApprovedVoterCheck: ["true", "1"].includes(
     process.env.NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK!,
   ),
   tokenName: process.env.NEXT_PUBLIC_TOKEN_NAME!,
+  eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "MACI-RPGF",
   roundId: process.env.NEXT_PUBLIC_ROUND_ID!,
   admin: (process.env.NEXT_PUBLIC_ADMIN_ADDRESS ?? "") as `0x${string}`,
   network:
@@ -31,7 +31,7 @@ export const config = {
 };
 
 export const theme = {
-  colorMode: "dark",
+  colorMode: "light",
 };
 
 export const eas = {
