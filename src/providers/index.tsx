@@ -1,9 +1,10 @@
 import { useMemo, type PropsWithChildren } from "react";
-
 import {
   type Chain,
   getDefaultConfig,
   RainbowKitProvider,
+  type Theme,
+  lightTheme,
 } from "@rainbow-me/rainbowkit";
 import { http, WagmiProvider } from "wagmi";
 import { ThemeProvider } from "next-themes";
@@ -15,6 +16,26 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MaciProvider } from "~/contexts/Maci";
 import { BallotProvider } from "~/contexts/Ballot";
 
+const theme = lightTheme();
+
+const customTheme: Theme = {
+  blurs: {
+    ...theme.blurs,
+  },
+  colors: {
+    ...theme.colors,
+  },
+  fonts: {
+    body: "Share Tech Mono",
+  },
+  radii: {
+    ...theme.radii,
+  },
+  shadows: {
+    ...theme.shadows,
+  },
+};
+
 export function Providers({
   children,
 }: PropsWithChildren) {
@@ -24,7 +45,7 @@ export function Providers({
     <ThemeProvider attribute="class" forcedTheme={appConfig.theme.colorMode}>
         <WagmiProvider config={config}>
           <QueryClientProvider client={queryClient}>
-              <RainbowKitProvider>
+              <RainbowKitProvider theme={customTheme}>
                 <MaciProvider>
                   <BallotProvider>{children}</BallotProvider>
                   <Toaster />

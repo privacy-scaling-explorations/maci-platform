@@ -69,7 +69,7 @@ dependencies:
     specifier: ^0.2.0
     version: 0.2.1(@types/react@18.3.2)(react-dom@18.2.0)(react@18.2.0)
   date-fns:
-    specifier: ^3.3.1
+    specifier: ^3.6.0
     version: 3.6.0
   ethers:
     specifier: ^6.11.2
@@ -9920,7 +9920,6 @@ packages:
 
   /glob@7.1.7:
     resolution: {integrity: sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==}
-    deprecated: Glob versions prior to v9 are no longer supported
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
