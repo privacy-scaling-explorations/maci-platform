@@ -101,6 +101,8 @@ export const env = createEnv({
     NEXT_PUBLIC_MACI_SUBGRAPH_URL: z.string().url().optional(),
 
     NEXT_PUBLIC_TALLY_URL: z.string().url(),
+
+    NEXT_PUBLIC_ROUND_LOGO: z.string().optional()
   },
 
   /**
@@ -150,6 +152,8 @@ export const env = createEnv({
     NEXT_PUBLIC_MACI_SUBGRAPH_URL: process.env.NEXT_PUBLIC_MACI_SUBGRAPH_URL,
 
     NEXT_PUBLIC_TALLY_URL: process.env.NEXT_PUBLIC_TALLY_URL,
+
+    NEXT_PUBLIC_ROUND_LOGO: process.env.NEXT_PUBLIC_ROUND_LOGO,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -29,6 +29,7 @@ export const config = {
   maciStartBlock: Number(process.env.NEXT_PUBLIC_MACI_START_BLOCK ?? 0),
   maciSubgraphUrl: process.env.NEXT_PUBLIC_MACI_SUBGRAPH_URL ?? "",
   tallyUrl: process.env.NEXT_PUBLIC_TALLY_URL,
+  roundLogo: process.env.NEXT_PUBLIC_ROUND_LOGO,
 };
 
 export const theme = {

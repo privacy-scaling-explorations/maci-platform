@@ -50,9 +50,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }) => {
 
   // remove certain project from the ballot
   const removeFromBallot = (projectId: string) => {
-    const votes = (ballot?.votes ?? []).filter(
-      (v) => v.projectId !== projectId,
-    );
+    const votes = ballot.votes.filter((v) => v.projectId !== projectId);
 
     setBallot({ ...ballot, votes, published: false });
   };

@@ -41,7 +41,16 @@
   }
 
   h3 {
+    font-family: "Share Tech Mono";
+    font-size: 32px;
+    color: black;
+    text-transform: uppercase;
+  }
+
+  h4 {
     font-size: 16px;
     font-weight: 800;
+    text-transform: uppercase;
+    color: #888888;
   }
 }
