@@ -38,7 +38,9 @@ export default function SignupPage() {
         )}
         {isConnected && !isRegistered && <JoinButton />}
         {!isConnected && <ConnectButton />}
-        <Info />
+        <div className="my-8">
+          <Info size="default" />
+        </div>
       </div>
     </Layout>
   );

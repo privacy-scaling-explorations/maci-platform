@@ -2,7 +2,7 @@ import { type ComponentPropsWithRef } from "react";
 import { NumericFormat } from "react-number-format";
 import { useFormContext, Controller } from "react-hook-form";
 
-import { Input, InputAddon, InputWrapper } from "~/components/ui/Form";
+import { Input, InputAddon, InputWrapper } from "~/components/ui/Input";
 import { config } from "~/config";
 
 export const AllocationInput = ({

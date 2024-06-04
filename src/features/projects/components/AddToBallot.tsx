@@ -31,7 +31,7 @@ export const ProjectAddToBallot = ({ id, name }: Props) => {
   const inBallot = ballotContains(id!);
   const allocations = ballot?.votes ?? [];
   const sum = sumBallot(allocations.filter((p) => p.projectId !== id));
-  const numVotes = ballot?.votes.length ?? 0;
+  const numVotes = ballot?.votes?.length ?? 0;
 
   if (getAppState() !== EAppState.VOTING) return null;
 

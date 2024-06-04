@@ -4,7 +4,7 @@ import { createComponent } from ".";
 export const Tag = createComponent(
   "div",
   tv({
-    base: "cursor-pointer inline-flex items-center border border-gray-200 justify-center gap-2 bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 text-gray-700 whitespace-nowrap transition",
+    base: "cursor-pointer inline-flex items-center border border-blue-400 justify-center gap-2 text-blue-400 whitespace-nowrap transition dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300",
     variants: {
       size: {
         sm: "rounded py-1 px-2 text-xs",

@@ -5,7 +5,6 @@ import { useMaci } from "~/contexts/Maci";
 import { Chip } from "./ui/Chip";
 import { getAppState } from "~/utils/state";
 import { EAppState } from "~/utils/types";
-import { Toaster } from "~/components/Toaster";
 
 export const JoinButton = () => {
   const { isLoading, isRegistered, isEligibleToVote, onSignup } = useMaci();
@@ -19,8 +18,6 @@ export const JoinButton = () => {
 
   return (
     <div>
-      <Toaster />
-
       {appState === EAppState.VOTING && !isEligibleToVote && (
         <Chip color="disabled">You are not allowed to vote</Chip>
       )}
