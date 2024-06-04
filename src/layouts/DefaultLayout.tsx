@@ -2,11 +2,13 @@ import type { ReactNode, PropsWithChildren } from "react";
 import { useAccount } from "wagmi";
 
 import Header from "~/components/Header";
-import BallotOverview from "~/features/ballot/components/BallotOverview";
 import { BaseLayout, type LayoutProps } from "./BaseLayout";
+import { Info } from "~/components/Info";
+import { BallotOverview } from "~/components/BallotOverview";
 import { getAppState } from "~/utils/state";
 import { EAppState } from "~/utils/types";
 import { config } from "~/config";
+import { useMaci } from "~/contexts/Maci";
 
 type Props = PropsWithChildren<
   {
@@ -22,6 +24,10 @@ export const Layout = ({ children, ...props }: Props) => {
     {
       href: "/projects",
       children: "Projects",
+    },
+    {
+      href: "/ballot",
+      children: "My Ballot",
     },
   ];
 
@@ -55,7 +61,19 @@ export const Layout = ({ children, ...props }: Props) => {
 };
 
 export function LayoutWithBallot(props: Props) {
+  const { isRegistered } = useMaci();
+  const { address } = useAccount();
+
   return (
-    <Layout sidebar="left" sidebarComponent={<BallotOverview />} {...props} />
+    <Layout
+      sidebar="left"
+      sidebarComponent={
+        <div>
+          <Info size="sm" showVotingInfo={true} />
+          {address && isRegistered && <BallotOverview />}
+        </div>
+      }
+      {...props}
+    />
   );
 }

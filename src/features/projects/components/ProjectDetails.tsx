@@ -1,33 +1,38 @@
+import { useMemo } from "react";
+
 import { ProjectBanner } from "~/features/projects/components/ProjectBanner";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
-import { Heading } from "~/components/ui/Heading";
-import ProjectContributions from "./ProjectContributions";
-import ProjectImpact from "./ProjectImpact";
-import { NameENS } from "~/components/ENS";
-import { suffixNumber } from "~/utils/suffixNumber";
 import { useProjectMetadata } from "../hooks/useProjects";
-import { type ReactNode } from "react";
 import { type Attestation } from "~/utils/fetchAttestations";
+import { Navigator } from "~/components/ui/Navigator";
+import { VotingWidget } from "~/features/projects/components/VotingWidget";
+import { ProjectContacts } from "./ProjectContacts";
+import { ProjectDescriptionSection } from "./ProjectDescriptionSection";
 
 export default function ProjectDetails({
   attestation,
-  action,
+  projectId,
 }: {
-  action: ReactNode;
   attestation?: Attestation;
+  projectId?: string;
 }) {
   const metadata = useProjectMetadata(attestation?.metadataPtr);
 
   const { bio, websiteUrl, payoutAddress, fundingSources } =
     metadata.data ?? {};
 
+  const github = useMemo(
+    () =>
+      metadata.data?.contributionLinks
+        ? metadata.data.contributionLinks.find((l) => l.type === "GITHUB_REPO")
+        : undefined,
+    [metadata, useProjectMetadata],
+  );
+
   return (
     <div className="relative">
-      <div className="sticky left-0 right-0 top-0 z-10 bg-white p-4 dark:bg-gray-900">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">{attestation?.name}</h1>
-          {action}
-        </div>
+      <div className="mb-7">
+        <Navigator projectName={attestation?.name ?? "project name"} />
       </div>
       <div className="overflow-hidden rounded-3xl">
         <ProjectBanner size="lg" profileId={attestation?.recipient} />
@@ -39,55 +44,36 @@ export default function ProjectDetails({
           className="-mt-20 ml-8"
           profileId={attestation?.recipient}
         />
-        <div>
-          <div className="">
-            <NameENS address={payoutAddress} />
-            <a href={websiteUrl} target="_blank" className="hover:underline">
-              {websiteUrl}
-            </a>
-          </div>
-        </div>
       </div>
-      <p className="text-2xl">{bio}</p>
-      <div>
-        <Heading as="h2" size="3xl">
-          Impact statements
-        </Heading>
-
-        <ProjectContributions
-          isLoading={metadata.isLoading}
-          project={metadata.data}
+      <div className="flex items-center justify-between">
+        <h3>{attestation?.name}</h3>
+        <VotingWidget projectId={projectId} />
+      </div>
+      <ProjectContacts
+        author={payoutAddress}
+        website={websiteUrl}
+        github={github?.url}
+      />
+      <p className="text-gray-400">{bio}</p>
+      <div className="my-8 flex flex-col gap-8">
+        <p className="text-xl uppercase">
+          <b>Impact statements</b>
+        </p>
+        <ProjectDescriptionSection
+          title="contributions"
+          description={metadata.data?.contributionDescription}
+          links={metadata.data?.contributionLinks}
         />
-
-        <ProjectImpact isLoading={metadata.isLoading} project={metadata.data} />
-        <Heading as="h3" size="2xl">
-          Past grants and funding
-        </Heading>
-        <div className="space-y-4">
-          {fundingSources?.map((source, i) => {
-            const type =
-              {
-                OTHER: "Other",
-                RETROPGF_2: "RetroPGF2",
-                GOVERNANCE_FUND: "Governance Fund",
-                PARTNER_FUND: "Partner Fund",
-                REVENUE: "Revenue",
-              }[source.type] ?? source.type;
-            return (
-              <div key={i} className="flex items-center gap-4">
-                <div className="flex-1 truncate text-xl">
-                  {source.description}
-                </div>
-                <div className="text-sm tracking-widest text-gray-700 dark:text-gray-400">
-                  {type}
-                </div>
-                <div className="w-32 text-xl font-medium">
-                  {suffixNumber(source.amount)} {source.currency}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <ProjectDescriptionSection
+          title="impact"
+          description={metadata.data?.impactDescription}
+          links={metadata.data?.impactMetrics}
+        />
+        <ProjectDescriptionSection
+          title="past grants and funding"
+          description={metadata.data?.impactDescription}
+          fundings={fundingSources}
+        />
       </div>
     </div>
   );

@@ -11,8 +11,6 @@ export function ProjectBanner(
   const { profileImageUrl, bannerImageUrl } = profile.data ?? {};
 
   return (
-    <div className="overflow-hidden rounded-3xl">
-      <Banner {...props} src={bannerImageUrl} fallbackSrc={profileImageUrl} />
-    </div>
+    <Banner {...props} src={bannerImageUrl} fallbackSrc={profileImageUrl} />
   );
 }

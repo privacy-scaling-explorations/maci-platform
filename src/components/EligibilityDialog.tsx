@@ -3,7 +3,6 @@ import { toast } from "sonner";
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import { Toaster } from "~/components/Toaster";
 import { Dialog } from "./ui/Dialog";
 import { useMaci } from "~/contexts/Maci";
 
@@ -12,7 +11,7 @@ export const EligibilityDialog = () => {
   const { disconnect } = useDisconnect();
 
   const [openDialog, setOpenDialog] = useState<boolean>(!!address);
-  const { onSignup, isEligibleToVote, isRegistered,  } = useMaci();
+  const { onSignup, isEligibleToVote, isRegistered } = useMaci();
   const router = useRouter();
 
   const onError = useCallback(() => toast.error("Signup error"), []);
@@ -28,8 +27,6 @@ export const EligibilityDialog = () => {
 
   return (
     <div>
-      <Toaster />
-
       {isRegistered && (
         <Dialog
           size="sm"
