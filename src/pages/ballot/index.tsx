@@ -6,10 +6,9 @@ import { useAccount } from "wagmi";
 import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
 import { Form } from "~/components/ui/Form";
-import { config } from "~/config";
 import { AllocationFormWrapper } from "~/features/ballot/components/AllocationList";
-import { BallotSchema, type Vote } from "~/features/ballot/types";
-import { LayoutWithBallot } from "~/layouts/DefaultLayout";
+import { BallotSchema } from "~/features/ballot/types";
+import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
 import { useBallot } from "~/contexts/Ballot";
 import { formatNumber } from "~/utils/formatNumber";
 import { getAppState } from "~/utils/state";
@@ -36,7 +35,7 @@ export default function BallotPage() {
   }
 
   return (
-    <LayoutWithBallot sidebar="right" requireAuth>
+    <LayoutWithSidebar sidebar="right" requireAuth showBallot showSubmitButton>
       <Form
         schema={BallotSchema}
         defaultValues={ballot}
@@ -45,43 +44,43 @@ export default function BallotPage() {
       >
         <BallotAllocationForm />
       </Form>
-
-      <div className="py-8" />
-    </LayoutWithBallot>
+    </LayoutWithSidebar>
   );
 }
 
 function BallotAllocationForm() {
   const appState = getAppState();
-  const { ballot } = useBallot();
+  const { ballot, sumBallot } = useBallot();
+
+  const sum = useMemo(
+    () => formatNumber(sumBallot(ballot?.votes)),
+    [ballot, sumBallot],
+  );
 
   return (
-    <div>
-      <h1 className="mb-2 text-2xl font-bold">Review your ballot</h1>
-      <p className="mb-6">
+    <div className="px-8">
+      <h1 className="text-4xl uppercase tracking-tighter">My Ballot</h1>
+      <p className="my-4 text-gray-400">
         Once you have reviewed your vote allocation, you can submit your ballot.
       </p>
-      <div className="mb-2 justify-between sm:flex">
+      <div className="mb-4 justify-end sm:flex">
         {ballot?.votes?.length ? <ClearBallot /> : null}
       </div>
-      <div className="relative rounded-2xl border border-gray-300 dark:border-gray-800">
+      <div className="border-t border-gray-300">
         <div className="p-8">
-          <div className="relative flex max-h-[500px] min-h-[360px] flex-col overflow-auto">
-            {ballot?.votes?.length ? (
-              <AllocationFormWrapper
-                disabled={appState === EAppState.RESULTS}
-              />
-            ) : (
-              <EmptyBallot />
-            )}
-          </div>
+          {ballot?.votes?.length ? (
+            <AllocationFormWrapper
+              disabled={appState === EAppState.RESULTS}
+              projectIsLink
+            />
+          ) : (
+            <EmptyBallot />
+          )}
         </div>
 
-        <div className="flex h-16 items-center justify-between rounded-b-2xl border-t border-gray-300 px-8 py-4 text-lg font-semibold dark:border-gray-800">
-          <div>Total votes in ballot</div>
-          <div className="flex items-center gap-2">
-            <TotalAllocation />
-          </div>
+        <div className="flex h-16 items-center justify-end gap-2">
+          <h4>Total votes:</h4>
+          <p>{sum}</p>
         </div>
       </div>
     </div>
@@ -104,30 +103,20 @@ function ClearBallot() {
 
   return (
     <>
-      <Button variant="outline" onClick={() => setOpen(true)}>
-        Remove all projects from ballot
-      </Button>
+      <div className="cursor-pointer underline" onClick={() => setOpen(true)}>
+        Remove all projects
+      </div>
 
       <Dialog
         title="Are you sure?"
         size="sm"
         isOpen={isOpen}
         onOpenChange={setOpen}
-      >
-        <p className="mb-6 leading-6">
-          This will empty your ballot and remove all the projects you have
-          added.
-        </p>
-        <div className="flex justify-end">
-          <Button
-            variant="primary"
-            // disabled={isPending}
-            onClick={handleClearBallot}
-          >
-            Yes I'm sure
-          </Button>
-        </div>
-      </Dialog>
+        description="This will empty your ballot and remove all the projects you have added."
+        button="primary"
+        buttonName="Yes, Clear my ballot"
+        buttonAction={handleClearBallot}
+      />
     </>
   );
 }
@@ -148,16 +137,3 @@ const EmptyBallot = () => (
     </div>
   </div>
 );
-
-const TotalAllocation = () => {
-  const { sumBallot } = useBallot();
-  const form = useFormContext<{ votes: Vote[] }>();
-  const votes = form.watch("votes") ?? [];
-  const sum = sumBallot(votes);
-
-  return (
-    <div>
-      {formatNumber(sum)} {config.tokenName}
-    </div>
-  );
-};

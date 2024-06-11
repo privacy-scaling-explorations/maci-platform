@@ -20,7 +20,7 @@ export const AllocationInput = ({
   const form = useFormContext();
 
   return (
-    <InputWrapper className="min-w-[160px]">
+    <InputWrapper className="min-w-[132px]">
       <Controller
         control={form.control}
         name={name!}

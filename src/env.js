@@ -102,7 +102,7 @@ export const env = createEnv({
 
     NEXT_PUBLIC_TALLY_URL: z.string().url(),
 
-    NEXT_PUBLIC_ROUND_LOGO: z.string().optional()
+    NEXT_PUBLIC_ROUND_LOGO: z.string().optional(),
   },
 
   /**

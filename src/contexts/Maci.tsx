@@ -150,7 +150,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
   const onVote = useCallback(
     async (
       votes: IVoteArgs[],
-      onError: () => Promise<void>,
+      onError: () => void,
       onSuccess: () => Promise<void>,
     ) => {
       if (!signer || !stateIndex || !pollData) {
@@ -158,7 +158,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
       }
 
       if (!votes.length) {
-        await onError();
+        onError();
         setError("No votes provided");
         return;
       }

@@ -7,7 +7,7 @@ const button = tv({
   variants: {
     variant: {
       primary:
-        "bg-primary-600 hover:bg-primary-700 dark:bg-white dark:hover:bg-primary-500 dark:text-gray-900 text-white dark:disabled:bg-gray-500",
+        "bg-black text-white w-full uppercase rounded-lg hover:bg-gray-400",
       ghost: "hover:bg-gray-100 dark:hover:bg-gray-800",
       default:
         "bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-700",

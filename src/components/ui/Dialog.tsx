@@ -1,18 +1,20 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
 import type { ReactNode, PropsWithChildren, ComponentProps } from "react";
-import { IconButton } from "./Button";
-import { createComponent } from ".";
 import { tv } from "tailwind-variants";
 import { X } from "lucide-react";
 import clsx from "clsx";
 
+import { IconButton } from "./Button";
+import { createComponent } from ".";
 import { theme } from "~/config";
+import { Spinner } from "./Spinner";
 
 export const Dialog = ({
   title,
   description,
   size,
   isOpen,
+  isLoading,
   button,
   buttonName,
   buttonAction,
@@ -23,6 +25,7 @@ export const Dialog = ({
   description?: string | ReactNode;
   size?: "sm" | "md";
   isOpen?: boolean;
+  isLoading?: boolean;
   button?: "primary" | "secondary";
   buttonName?: string;
   buttonAction?: () => void;
@@ -42,7 +45,8 @@ export const Dialog = ({
               {description}
             </RadixDialog.Description>
             {children}
-            {button && buttonName && buttonAction && (
+            {isLoading && <Spinner className="h-6 w-6 py-4" />}
+            {!isLoading && button && buttonName && buttonAction && (
               <button
                 className={clsx(
                   "mt-6 rounded-md border-none px-4 py-2 uppercase text-white",

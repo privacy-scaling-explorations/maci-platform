@@ -6,6 +6,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useCallback,
 } from "react";
 import { useAccount } from "wagmi";
 
@@ -22,7 +23,10 @@ export type LayoutProps = {
   requireAuth?: boolean;
   eligibilityCheck?: boolean;
   showBallot?: boolean;
+  showInfo?: boolean;
+  showSubmitButton?: boolean;
 };
+
 export const BaseLayout = ({
   header,
   title,
@@ -43,11 +47,15 @@ export const BaseLayout = ({
   const router = useRouter();
   const { address, isConnecting } = useAccount();
 
-  useEffect(() => {
+  const manageDisplay = useCallback(async () => {
     if (requireAuth && !address && !isConnecting) {
-      void router.push("/");
+      await router.push("/");
     }
   }, [requireAuth, address, isConnecting, router]);
+
+  useEffect(() => {
+    manageDisplay();
+  }, [manageDisplay]);
 
   const wrappedSidebar = <Sidebar side={sidebar}>{sidebarComponent}</Sidebar>;
 
