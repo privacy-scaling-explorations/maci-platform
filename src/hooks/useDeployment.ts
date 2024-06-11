@@ -1,9 +1,9 @@
-import { useSession } from "next-auth/react";
 import { useState, useCallback, useMemo } from "react";
 
 import { MaciService } from "~/services";
 import { useEthersSigner } from "./useEthersSigner";
 import { eas, config } from "~/config";
+import { useMaci } from "~/contexts/Maci";
 
 interface IDeployArgs {
   amount: number;
@@ -24,7 +24,7 @@ export function useDeployment() {
    */
   const [deployStatus, setDeployStatus] = useState<number>(0);
   const signer = useEthersSigner();
-  const { data } = useSession();
+  const { maciPubKey } = useMaci();
 
   const maci = useMemo(
     () => (signer ? new MaciService(signer) : undefined),
@@ -33,7 +33,7 @@ export function useDeployment() {
 
   const deploy = useCallback(
     async ({ amount }: IDeployArgs) => {
-      if (!signer || !maci) throw new Error("no signer");
+      if (!signer || !maci || !maciPubKey) throw new Error("no signer");
 
       const attester = await signer.getAddress();
 
@@ -94,10 +94,8 @@ export function useDeployment() {
   const deployPoll = useCallback(async () => {
     if (!signer || !maci) throw new Error("no signer");
 
-    if (!data) throw new Error("maci keypair not generated");
-
-    await maci.deployPoll({ duration: 100000, pubKey: data.publicKey });
-  }, [deployStatus, setDeployStatus, Boolean(signer), Boolean(maci), data]);
+    await maci.deployPoll({ duration: 100000, pubKey: maciPubKey });
+  }, [deployStatus, setDeployStatus, Boolean(signer), Boolean(maci)]);
 
   return {
     deployStatus,
