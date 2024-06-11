@@ -10,7 +10,7 @@ export const inputBase = [
   "outline-none",
   "border-gray-200",
   "rounded-lg",
-  "border-2",
+  "border",
 ];
 
 export const Input = createComponent(

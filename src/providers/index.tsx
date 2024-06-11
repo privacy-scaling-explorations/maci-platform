@@ -36,23 +36,21 @@ const customTheme: Theme = {
   },
 };
 
-export function Providers({
-  children,
-}: PropsWithChildren) {
+export function Providers({ children }: PropsWithChildren) {
   const { config, queryClient } = useMemo(() => createWagmiConfig(), []);
 
   return (
     <ThemeProvider attribute="class" forcedTheme={appConfig.theme.colorMode}>
-        <WagmiProvider config={config}>
-          <QueryClientProvider client={queryClient}>
-              <RainbowKitProvider theme={customTheme}>
-                <MaciProvider>
-                  <BallotProvider>{children}</BallotProvider>
-                  <Toaster />
-                </MaciProvider>
-              </RainbowKitProvider>
-          </QueryClientProvider>
-        </WagmiProvider>
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider theme={customTheme}>
+            <MaciProvider>
+              <BallotProvider>{children}</BallotProvider>
+              <Toaster />
+            </MaciProvider>
+          </RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
     </ThemeProvider>
   );
 }

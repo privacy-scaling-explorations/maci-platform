@@ -27,7 +27,7 @@ export function ProjectItem({
   const metadata = useProjectMetadata(attestation?.metadataPtr);
   const appState = getAppState();
   const defaultButtonStyle =
-    "uppercase text-xs rounded-md border border-black p-1.5 cursor-pointer";
+    "uppercase text-xs rounded-md border border-black p-1.5";
 
   return (
     <article

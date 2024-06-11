@@ -1,10 +1,10 @@
-import { LayoutWithBallot } from "~/layouts/DefaultLayout";
+import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
 import { Projects } from "~/features/projects/components/Projects";
 
 export default function ProjectsPage() {
   return (
-    <LayoutWithBallot sidebar="left" eligibilityCheck showBallot>
+    <LayoutWithSidebar sidebar="left" eligibilityCheck showBallot showInfo>
       <Projects />
-    </LayoutWithBallot>
+    </LayoutWithSidebar>
   );
 }

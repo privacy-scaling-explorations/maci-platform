@@ -2,12 +2,15 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { type ComponentPropsWithRef, useState } from "react";
 import clsx from "clsx";
+import { Menu, X } from "lucide-react";
+import dynamic from "next/dynamic";
 
 import { ConnectButton } from "./ConnectButton";
 import { IconButton } from "./ui/Button";
 import { Logo } from "./ui/Logo";
-import { Menu, X } from "lucide-react";
-import dynamic from "next/dynamic";
+import { useBallot } from "~/contexts/Ballot";
+import { getAppState } from "~/utils/state";
+import { EAppState } from "~/utils/types";
 
 const NavLink = ({
   isActive,
@@ -26,6 +29,8 @@ type NavLink = { href: string; children: string };
 export const Header = ({ navLinks }: { navLinks: NavLink[] }) => {
   const { asPath } = useRouter();
   const [isOpen, setOpen] = useState(false);
+  const { ballot } = useBallot();
+  const appState = getAppState();
 
   return (
     <header className="relative z-[100] border-b border-gray-200 bg-white">
@@ -42,15 +47,26 @@ export const Header = ({ navLinks }: { navLinks: NavLink[] }) => {
           </Link>
         </div>
         <div className="hidden h-full items-center gap-4 overflow-x-auto uppercase md:flex">
-          {navLinks?.map((link) => (
-            <NavLink
-              isActive={asPath.startsWith(link.href)}
-              key={link.href}
-              href={link.href}
-            >
-              {link.children}
-            </NavLink>
-          ))}
+          {navLinks?.map((link) => {
+            const pageName = `/${link.href.split("/")[1]}`;
+            return (
+              <NavLink
+                isActive={asPath.startsWith(pageName)}
+                key={link.href}
+                href={link.href}
+              >
+                {link.children}
+                {appState === EAppState.VOTING &&
+                  pageName === "/ballot" &&
+                  ballot &&
+                  ballot.votes.length > 0 && (
+                    <div className="ml-2 h-5 w-5 rounded-full border-2 border-blue-400 bg-blue-50 text-center text-sm leading-4 text-blue-400">
+                      {ballot.votes.length}
+                    </div>
+                  )}
+              </NavLink>
+            );
+          })}
         </div>
         <div className="flex-1 md:ml-8"></div>
         <div className="ml-4 flex gap-4 md:ml-8 xl:ml-32">
