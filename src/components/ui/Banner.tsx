@@ -8,11 +8,8 @@ export const Banner = createComponent(
     base: "bg-gray-200 dark:bg-gray-800",
     variants: {
       size: {
-        md: "h-24 rounded-2xl",
-        lg: "h-80 rounded-3xl",
-      },
-      rounded: {
-        full: "rounded-full",
+        md: "h-24 rounded-t-xl",
+        lg: "h-80 rounded-t-xl",
       },
     },
     defaultVariants: {

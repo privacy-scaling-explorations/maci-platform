@@ -28,6 +28,7 @@ export const config = {
   maciAddress: process.env.NEXT_PUBLIC_MACI_ADDRESS,
   maciStartBlock: Number(process.env.NEXT_PUBLIC_MACI_START_BLOCK ?? 0),
   tallyUrl: process.env.NEXT_PUBLIC_TALLY_URL,
+  roundLogo: process.env.NEXT_PUBLIC_ROUND_LOGO,
 };
 
 export const theme = {
