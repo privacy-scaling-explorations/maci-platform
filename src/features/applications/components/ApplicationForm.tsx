@@ -8,11 +8,11 @@ import {
   Form,
   FormControl,
   FormSection,
-  Input,
   Label,
   Select,
   Textarea,
 } from "~/components/ui/Form";
+import { Input } from "~/components/ui/Input";
 import { Spinner } from "~/components/ui/Spinner";
 import { impactCategories } from "~/config";
 import {
