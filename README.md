@@ -61,14 +61,12 @@ cp .env.example .env # and update .env variables
 
 ```
 
-At the very minimum you need to configure a postgres database, nextauth, admin address, maci address and the voting periods. For more details head to [Setup & Deployment](./docs/01_setup.md). Once you have set everything run:
+At the very minimum you need to configure the subgraph url, admin address, maci address and the voting periods. For more details head to [Setup & Deployment](./docs/01_setup.md). Once you have set everything run:
 
 ```sh
 pnpm install
 
 pnpm run dev
-
-pnpm run db:push # create database tables
 
 open localhost:3000
 ```
@@ -78,6 +76,4 @@ open localhost:3000
 - **EAS** - Projects, profiles, etc are all stored on-chain in Ethereum Attestation Service
 - **Batched requests with tRPC** - Multiple requests are batched into one (for example when the frontend requests the metadata for 24 projects they are batched into 1 request)
 - **Server-side caching of requests to EAS and IPFS** - Immediately returns the data without calling EAS and locally serving ipfs cids.
-- **SQL database for ballots** - Votes are stored privately in a Postgres database
-  - Could votes be stored on EAS as well? It would need to happen server-side from an admin signer to keep voters anonymous.
 - **MACI** - Minimal Anti-Collusion Infrastructure (MACI) is an open-source public good that serves as infrastructure for private on-chain voting, handles the rounds and private voting of the badgeholders.
