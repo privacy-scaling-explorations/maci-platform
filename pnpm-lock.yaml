@@ -87,8 +87,8 @@ dependencies:
     specifier: ^0.316.0
     version: 0.316.0(react@18.2.0)
   maci-cli:
-    specifier: 0.0.0-ci.c40fe72
-    version: 0.0.0-ci.c40fe72(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ethers@3.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5)
+    specifier: 0.0.0-ci.34e3ad7
+    version: 0.0.0-ci.34e3ad7(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ethers@3.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(@types/snarkjs@0.7.8)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5)
   next:
     specifier: ^14.1.0
     version: 14.2.3(@babel/core@7.24.5)(react-dom@18.2.0)(react@18.2.0)
@@ -420,7 +420,7 @@ packages:
       '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-compilation-targets': 7.23.6
+      '@babel/helper-compilation-targets': 7.24.6
       '@babel/helper-plugin-utils': 7.24.6
       debug: 4.3.4(supports-color@8.1.1)
       lodash.debounce: 4.0.8
@@ -718,8 +718,8 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-environment-visitor': 7.22.20
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-environment-visitor': 7.24.6
+      '@babel/helper-plugin-utils': 7.24.6
       '@babel/helper-remap-async-to-generator': 7.24.6(@babel/core@7.24.5)
       '@babel/plugin-syntax-async-generators': 7.8.4(@babel/core@7.24.5)
     dev: false
@@ -733,7 +733,7 @@ packages:
     dependencies:
       '@babel/core': 7.24.5
       '@babel/helper-create-class-features-plugin': 7.24.6(@babel/core@7.24.5)
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
     dev: false
 
   /@babel/plugin-proposal-export-default-from@7.24.6(@babel/core@7.24.5):
@@ -755,7 +755,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
       '@babel/plugin-syntax-logical-assignment-operators': 7.10.4(@babel/core@7.24.5)
     dev: false
 
@@ -767,7 +767,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
       '@babel/plugin-syntax-nullish-coalescing-operator': 7.8.3(@babel/core@7.24.5)
     dev: false
 
@@ -779,7 +779,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
       '@babel/plugin-syntax-numeric-separator': 7.10.4(@babel/core@7.24.5)
     dev: false
 
@@ -790,10 +790,10 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.24.4
+      '@babel/compat-data': 7.24.6
       '@babel/core': 7.24.5
-      '@babel/helper-compilation-targets': 7.23.6
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-compilation-targets': 7.24.6
+      '@babel/helper-plugin-utils': 7.24.6
       '@babel/plugin-syntax-object-rest-spread': 7.8.3(@babel/core@7.24.5)
       '@babel/plugin-transform-parameters': 7.24.6(@babel/core@7.24.5)
     dev: false
@@ -806,7 +806,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
       '@babel/plugin-syntax-optional-catch-binding': 7.8.3(@babel/core@7.24.5)
     dev: false
 
@@ -818,7 +818,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
       '@babel/helper-skip-transparent-expression-wrappers': 7.24.6
       '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.24.5)
     dev: false
@@ -838,7 +838,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
     dev: false
 
   /@babel/plugin-syntax-class-properties@7.12.13(@babel/core@7.24.5):
@@ -866,7 +866,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
     dev: false
 
   /@babel/plugin-syntax-export-default-from@7.24.6(@babel/core@7.24.5):
@@ -952,7 +952,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
     dev: false
 
   /@babel/plugin-syntax-nullish-coalescing-operator@7.8.3(@babel/core@7.24.5):
@@ -961,7 +961,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
     dev: false
 
   /@babel/plugin-syntax-numeric-separator@7.10.4(@babel/core@7.24.5):
@@ -970,7 +970,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
     dev: false
 
   /@babel/plugin-syntax-object-rest-spread@7.8.3(@babel/core@7.24.5):
@@ -979,7 +979,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
     dev: false
 
   /@babel/plugin-syntax-optional-catch-binding@7.8.3(@babel/core@7.24.5):
@@ -988,7 +988,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
     dev: false
 
   /@babel/plugin-syntax-optional-chaining@7.8.3(@babel/core@7.24.5):
@@ -997,7 +997,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-plugin-utils': 7.24.5
+      '@babel/helper-plugin-utils': 7.24.6
     dev: false
 
   /@babel/plugin-syntax-private-property-in-object@7.14.5(@babel/core@7.24.5):
@@ -1766,7 +1766,7 @@ packages:
     dependencies:
       '@babel/core': 7.24.5
       '@babel/helper-plugin-utils': 7.24.6
-      '@babel/types': 7.24.5
+      '@babel/types': 7.24.6
       esutils: 2.0.3
     dev: false
 
@@ -5003,7 +5003,7 @@ packages:
       '@babel/plugin-transform-sticky-regex': 7.24.6(@babel/core@7.24.5)
       '@babel/plugin-transform-typescript': 7.24.6(@babel/core@7.24.5)
       '@babel/plugin-transform-unicode-regex': 7.24.6(@babel/core@7.24.5)
-      '@babel/template': 7.24.0
+      '@babel/template': 7.24.6
       '@react-native/babel-plugin-codegen': 0.74.83(@babel/preset-env@7.24.6)
       babel-plugin-transform-flow-enums: 0.0.2(@babel/core@7.24.5)
       react-refresh: 0.14.2
@@ -5018,7 +5018,7 @@ packages:
     peerDependencies:
       '@babel/preset-env': ^7.1.6
     dependencies:
-      '@babel/parser': 7.24.5
+      '@babel/parser': 7.24.6
       '@babel/preset-env': 7.24.6(@babel/core@7.24.5)
       glob: 7.2.3
       hermes-parser: 0.19.1
@@ -6166,6 +6166,10 @@ packages:
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
     dev: true
 
+  /@types/snarkjs@0.7.8:
+    resolution: {integrity: sha512-x37Jsv1vx6I6RMJdfvYEmDUOLYgzYMecwlk13gniDOcN20xLVe9hy9DlQxWeCPirqpDY/jwugQSqCi2RxehU3g==}
+    dev: false
+
   /@types/stack-utils@2.0.3:
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
     dev: false
@@ -6902,8 +6906,8 @@ packages:
       circomlib: 2.0.5
     dev: false
 
-  /@zk-kit/eddsa-poseidon@1.0.1:
-    resolution: {integrity: sha512-dl3sFiu2NHBRs1KYBPBPiJyN6lY0q2UhtQwTZteVxpCywilhA5yTIO1NU2hkucAF+/iLyeOlVpLemJXY9wosfg==}
+  /@zk-kit/eddsa-poseidon@1.0.2:
+    resolution: {integrity: sha512-3ON/6LFHjSqrK+ndIYPJoevzXUkqNGrpVHgfZbYX6x1CoCHHxQG83HH7EBhdWRQsMjcIiw5GVL8h6Xa6irNOYw==}
     dependencies:
       '@zk-kit/baby-jubjub': 1.0.1
       '@zk-kit/utils': 1.0.0
@@ -7372,7 +7376,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
     dependencies:
-      '@babel/compat-data': 7.24.4
+      '@babel/compat-data': 7.24.6
       '@babel/core': 7.24.5
       '@babel/helper-define-polyfill-provider': 0.6.2(@babel/core@7.24.5)
       semver: 6.3.1
@@ -7905,13 +7909,17 @@ packages:
       util: 0.12.5
     dev: false
 
-  /circomkit@0.1.0:
-    resolution: {integrity: sha512-Mnc9IuOoaN7FitfURvbg2Q5j62S7/zQl6l18u5dcIhZg3Ot9MZYLiGIotCaF1Gfp/vAUKnvO2lnS3Xc1TdTISA==}
+  /circomkit@0.2.1(@types/snarkjs@0.7.8)(snarkjs@0.7.4):
+    resolution: {integrity: sha512-7O8QsOLUq2QvwGMimvWxwdg7OgV33OT7ZBND+81dv3JrVp8ove93yV16jF3TW6XBncSY92/Aka8F4CAi/H9VQw==}
     engines: {node: '>=12.0.0'}
     hasBin: true
+    peerDependencies:
+      '@types/snarkjs': ^0.7.x
+      snarkjs: ^0.7.x
     dependencies:
-      chai: 4.4.1
+      '@types/snarkjs': 0.7.8
       circom_tester: 0.0.19
+      commander: 12.1.0
       loglevel: 1.9.1
       snarkjs: 0.7.4
     dev: false
@@ -11111,7 +11119,7 @@ packages:
     resolution: {integrity: sha512-GBEV4GRADeP+qtB2+6u61stea8mGcOT4mCtrYISZwfu9/ISHFJ/5zOMXYbpBE9RsS5+Gb63DW4FgmnKJ79Kf6w==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@babel/code-frame': 7.24.2
+      '@babel/code-frame': 7.24.6
       '@jest/types': 29.6.3
       '@types/stack-utils': 2.0.3
       chalk: 4.1.2
@@ -11230,7 +11238,7 @@ packages:
       '@babel/preset-env': ^7.1.6
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/parser': 7.24.5
+      '@babel/parser': 7.24.6
       '@babel/plugin-proposal-class-properties': 7.18.6(@babel/core@7.24.5)
       '@babel/plugin-proposal-nullish-coalescing-operator': 7.18.6(@babel/core@7.24.5)
       '@babel/plugin-proposal-optional-chaining': 7.21.0(@babel/core@7.24.5)
@@ -11660,23 +11668,24 @@ packages:
     hasBin: true
     dev: false
 
-  /maci-circuits@0.0.0-ci.c40fe72:
-    resolution: {integrity: sha512-EuSYRk3onZdoFpsxolQPUBxoGc1ES0Xumy97H4Fh62EoU39gHUlrv14cLoSaY542KwEQ+/hSAKG/NXuWWXhx8Q==}
+  /maci-circuits@0.0.0-ci.34e3ad7(@types/snarkjs@0.7.8):
+    resolution: {integrity: sha512-eLL6WStuBtFKxZzHgUiWlK4yCeAa8SebRTsNJe3czfFvKQcSGvEun+vjbr71lMv5bhVNIlyq2mIDj8Udjbblsg==}
     dependencies:
       '@zk-kit/circuits': 0.4.0
-      circomkit: 0.1.0
+      circomkit: 0.2.1(@types/snarkjs@0.7.8)(snarkjs@0.7.4)
       circomlib: 2.0.5
-      maci-core: 0.0.0-ci.c40fe72
-      maci-crypto: 0.0.0-ci.c40fe72
-      maci-domainobjs: 0.0.0-ci.c40fe72
+      maci-core: 0.0.0-ci.34e3ad7
+      maci-crypto: 0.0.0-ci.34e3ad7
+      maci-domainobjs: 0.0.0-ci.34e3ad7
       snarkjs: 0.7.4
     transitivePeerDependencies:
+      - '@types/snarkjs'
       - bufferutil
       - utf-8-validate
     dev: false
 
-  /maci-cli@0.0.0-ci.c40fe72(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ethers@3.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5):
-    resolution: {integrity: sha512-1lSUjTmEHgeHwZsF8EZrNzbyPy8zUpBt1rlDYAnhrjqp5NMlooWOMjYXTmUYYfrTyFc7nIBIIo3ogJ8dDnc5MA==}
+  /maci-cli@0.0.0-ci.34e3ad7(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ethers@3.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(@types/snarkjs@0.7.8)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5):
+    resolution: {integrity: sha512-+LUGaHi5uoj39ANVP5Lq1A/ZCwEZ4/YPWq7SsSOJbeG9E3r3UK0iy9s+iD+5Gvto0QcS1UYt10nojm5qobB4tw==}
     hasBin: true
     dependencies:
       '@commander-js/extra-typings': 12.1.0(commander@12.1.0)
@@ -11685,11 +11694,11 @@ packages:
       dotenv: 16.4.5
       ethers: 6.12.1
       hardhat: 2.22.4(ts-node@10.9.2)(typescript@5.4.5)
-      maci-circuits: 0.0.0-ci.c40fe72
-      maci-contracts: 0.0.0-ci.c40fe72(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5)
-      maci-core: 0.0.0-ci.c40fe72
-      maci-crypto: 0.0.0-ci.c40fe72
-      maci-domainobjs: 0.0.0-ci.c40fe72
+      maci-circuits: 0.0.0-ci.34e3ad7(@types/snarkjs@0.7.8)
+      maci-contracts: 0.0.0-ci.34e3ad7(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(@types/snarkjs@0.7.8)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5)
+      maci-core: 0.0.0-ci.34e3ad7
+      maci-crypto: 0.0.0-ci.34e3ad7
+      maci-domainobjs: 0.0.0-ci.34e3ad7
       prompt: 1.3.0
     transitivePeerDependencies:
       - '@nomicfoundation/hardhat-chai-matchers'
@@ -11702,6 +11711,7 @@ packages:
       - '@types/chai'
       - '@types/mocha'
       - '@types/node'
+      - '@types/snarkjs'
       - bufferutil
       - c-kzg
       - chai
@@ -11714,8 +11724,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /maci-contracts@0.0.0-ci.c40fe72(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5):
-    resolution: {integrity: sha512-kqe4gZYpRfWba6HZtQp0smHkEffVDZ97Rs5RYWzxmexqowAso9LXk0mmkl37oaxPE2linNYVdf1RSr4Rh0+vtA==}
+  /maci-contracts@0.0.0-ci.34e3ad7(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(@types/snarkjs@0.7.8)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5):
+    resolution: {integrity: sha512-Sudrz7QptRqD5pYHfkateM6cIo+b196WbTW7EluHASQVApkPX/TmxDI+pauMMXuqeZd+EgktgJwbZuRA1gQYaQ==}
     hasBin: true
     dependencies:
       '@nomicfoundation/hardhat-ethers': 3.0.6(ethers@6.12.1)(hardhat@2.22.4)
@@ -11726,11 +11736,12 @@ packages:
       ethers: 6.12.1
       hardhat: 2.22.4(ts-node@10.9.2)(typescript@5.4.5)
       lowdb: 1.0.0
-      maci-circuits: 0.0.0-ci.c40fe72
-      maci-core: 0.0.0-ci.c40fe72
-      maci-crypto: 0.0.0-ci.c40fe72
-      maci-domainobjs: 0.0.0-ci.c40fe72
+      maci-circuits: 0.0.0-ci.34e3ad7(@types/snarkjs@0.7.8)
+      maci-core: 0.0.0-ci.34e3ad7
+      maci-crypto: 0.0.0-ci.34e3ad7
+      maci-domainobjs: 0.0.0-ci.34e3ad7
       solidity-docgen: 0.6.0-beta.36(hardhat@2.22.4)
+      uuid: 10.0.0
     transitivePeerDependencies:
       - '@nomicfoundation/hardhat-chai-matchers'
       - '@nomicfoundation/hardhat-ignition-ethers'
@@ -11741,6 +11752,7 @@ packages:
       - '@types/chai'
       - '@types/mocha'
       - '@types/node'
+      - '@types/snarkjs'
       - bufferutil
       - c-kzg
       - chai
@@ -11753,21 +11765,21 @@ packages:
       - utf-8-validate
     dev: false
 
-  /maci-core@0.0.0-ci.c40fe72:
-    resolution: {integrity: sha512-NrmWGaz+QVul5fFtVhjZPYC3vXGUELz8j5HBRCac+dwni9UB2US607zLjyGnPlP8FlCMv60/IIwCKk8FBPsNXA==}
+  /maci-core@0.0.0-ci.34e3ad7:
+    resolution: {integrity: sha512-+gXac46xGJhOpEZjzcXtoxXmV9Mgjm5FBVOSkWRqMrBewz/xV8bD1iioIut/KysyMOn7oXHok5euZa30com8MQ==}
     dependencies:
-      maci-crypto: 0.0.0-ci.c40fe72
-      maci-domainobjs: 0.0.0-ci.c40fe72
+      maci-crypto: 0.0.0-ci.34e3ad7
+      maci-domainobjs: 0.0.0-ci.34e3ad7
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
     dev: false
 
-  /maci-crypto@0.0.0-ci.c40fe72:
-    resolution: {integrity: sha512-A21g75zQsOoZH1mgxraqcdxRL2vz/7w3w25ZaT+SkTZuqN0ecxQC4xEFkv4keOCdv3T0UzpvadoJf9fQTu0lQw==}
+  /maci-crypto@0.0.0-ci.34e3ad7:
+    resolution: {integrity: sha512-M/gCMKXrhClO/TIFGI/zx5N1SHPNZY0ddJwQ6f++jJW8E2Xfw6G0/z+j0kkMVxYaI3SwA1tKp0iRmLxsAsgL7w==}
     dependencies:
       '@zk-kit/baby-jubjub': 1.0.1
-      '@zk-kit/eddsa-poseidon': 1.0.1
+      '@zk-kit/eddsa-poseidon': 1.0.2
       '@zk-kit/poseidon-cipher': 0.3.1
       ethers: 6.12.1
     transitivePeerDependencies:
@@ -11775,10 +11787,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /maci-domainobjs@0.0.0-ci.c40fe72:
-    resolution: {integrity: sha512-EbAk5C1/KUV8WHco3VF6IxmnyR90FR7DDve1Sd+a7eoTPw2GCJ5u2BeuwazR2FbXYYwLf3D1tO4S87gdJhQlhA==}
+  /maci-domainobjs@0.0.0-ci.34e3ad7:
+    resolution: {integrity: sha512-b4xje0u6ynWq9Pv/g2m6OyVwddAsq8flXEP0lC+nJpAIds/5LQVoZ4cKGCgtvivDrkMBDGx7WfTIPU+am6stOg==}
     dependencies:
-      maci-crypto: 0.0.0-ci.c40fe72
+      maci-crypto: 0.0.0-ci.34e3ad7
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -12052,7 +12064,7 @@ packages:
     engines: {node: '>=18'}
     dependencies:
       '@babel/traverse': 7.24.5
-      '@babel/types': 7.24.5
+      '@babel/types': 7.24.6
       invariant: 2.2.4
       metro-symbolicate: 0.80.9
       nullthrows: 1.1.1
@@ -12084,7 +12096,7 @@ packages:
     dependencies:
       '@babel/core': 7.24.5
       '@babel/generator': 7.24.5
-      '@babel/template': 7.24.0
+      '@babel/template': 7.24.6
       '@babel/traverse': 7.24.5
       nullthrows: 1.1.1
     transitivePeerDependencies:
@@ -12097,8 +12109,8 @@ packages:
     dependencies:
       '@babel/core': 7.24.5
       '@babel/generator': 7.24.5
-      '@babel/parser': 7.24.5
-      '@babel/types': 7.24.5
+      '@babel/parser': 7.24.6
+      '@babel/types': 7.24.6
       metro: 0.80.9
       metro-babel-transformer: 0.80.9
       metro-cache: 0.80.9
@@ -12119,13 +12131,13 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
-      '@babel/code-frame': 7.24.2
+      '@babel/code-frame': 7.24.6
       '@babel/core': 7.24.5
       '@babel/generator': 7.24.5
-      '@babel/parser': 7.24.5
-      '@babel/template': 7.24.0
+      '@babel/parser': 7.24.6
+      '@babel/template': 7.24.6
       '@babel/traverse': 7.24.5
-      '@babel/types': 7.24.5
+      '@babel/types': 7.24.6
       accepts: 1.3.8
       chalk: 4.1.2
       ci-info: 2.0.0
@@ -16237,6 +16249,11 @@ packages:
   /utils-merge@1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
+    dev: false
+
+  /uuid@10.0.0:
+    resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    hasBin: true
     dev: false
 
   /uuid@8.3.2:
