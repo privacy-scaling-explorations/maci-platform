@@ -97,6 +97,7 @@ export const env = createEnv({
 
     NEXT_PUBLIC_TALLY_URL: z.string().url(),
     NEXT_PUBLIC_VKEY_FILE_PATH: z.string().default("vkeys.json"),
+    NEXT_PUBLIC_COORDINATOR_SERVICE_URL: z.string().url().optional(),
   },
 
   /**
@@ -142,6 +143,8 @@ export const env = createEnv({
 
     NEXT_PUBLIC_TALLY_URL: process.env.NEXT_PUBLIC_TALLY_URL,
     NEXT_PUBLIC_VKEY_FILE_PATH: process.env.NEXT_PUBLIC_VKEY_FILE_PATH,
+    NEXT_PUBLIC_COORDINATOR_SERVICE_URL:
+      process.env.NEXT_COORDINATOR_SERVICE_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

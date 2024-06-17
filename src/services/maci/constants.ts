@@ -9,6 +9,7 @@ import {
   VkRegistry__factory as VkRegistryFactory,
 } from "maci-cli/sdk";
 import type { IAbi } from "./types";
+import { config } from "~/config";
 
 /**
  * Constant variables
@@ -38,3 +39,9 @@ export const ABI: IAbi = {
   MACI: MACIFactory.abi,
   VkRegistry: VkRegistryFactory.abi,
 };
+
+/**
+ *
+ */
+export const PUBKEY_URL = `${config.coordinatorService}/v1/proof/publicKey`;
+export const GENPROOF_URL = `${config.coordinatorService}/v1/proof/generate`;

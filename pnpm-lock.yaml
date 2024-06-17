@@ -87,8 +87,8 @@ dependencies:
     specifier: ^0.316.0
     version: 0.316.0(react@18.2.0)
   maci-cli:
-    specifier: 0.0.0-ci.1abb096
-    version: 0.0.0-ci.1abb096(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ethers@3.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(@types/snarkjs@0.7.8)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5)
+    specifier: 0.0.0-ci.780a416
+    version: 0.0.0-ci.780a416(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ethers@3.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(@types/snarkjs@0.7.8)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5)
   next:
     specifier: ^14.1.0
     version: 14.2.3(@babel/core@7.24.5)(react-dom@18.2.0)(react@18.2.0)
@@ -15705,18 +15705,18 @@ packages:
     hasBin: true
     dev: false
 
-  /maci-circuits@0.0.0-ci.1abb096(@types/snarkjs@0.7.8):
+  /maci-circuits@0.0.0-ci.780a416(@types/snarkjs@0.7.8):
     resolution:
       {
-        integrity: sha512-r6AtiXKXTR8aVt6YOUHEfKjrQeFC0z2NlK2CnhNrYCQZt8bX/YkkCgjdvQdUO1vT6mgD349Xm+6HQonFGGkRuw==,
+        integrity: sha512-T+Kf68YqNqJYzXbjH5PTfn6BoRXsNg+YZ4Pfv/Z4GjeYfywTP6nZcPnFoEqh7J4bL7plZiYuguS0l6040/IEDQ==,
       }
     dependencies:
       "@zk-kit/circuits": 0.4.0
       circomkit: 0.2.1(@types/snarkjs@0.7.8)(snarkjs@0.7.4)
       circomlib: 2.0.5
-      maci-core: 0.0.0-ci.1abb096
-      maci-crypto: 0.0.0-ci.1abb096
-      maci-domainobjs: 0.0.0-ci.1abb096
+      maci-core: 0.0.0-ci.780a416
+      maci-crypto: 0.0.0-ci.780a416
+      maci-domainobjs: 0.0.0-ci.780a416
       snarkjs: 0.7.4
     transitivePeerDependencies:
       - "@types/snarkjs"
@@ -15724,10 +15724,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /maci-cli@0.0.0-ci.1abb096(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ethers@3.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(@types/snarkjs@0.7.8)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5):
+  /maci-cli@0.0.0-ci.780a416(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ethers@3.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(@types/snarkjs@0.7.8)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5):
     resolution:
       {
-        integrity: sha512-dJ83M/AFAwo9Ws/RBkSlOHcMe8J1FxIYEOpjOwYbyRhQ/VW2vHzsmWyNZNr/eyPDYBvXUoBHWaIDCR2jymyAIw==,
+        integrity: sha512-WKfGlw4PsOSy+vvEl22UQvpbpBPFmYCKblFrmF5GO2dd4JJh0cu9ZZmwrYIv74KJbqeIW75+m5HgVhBYaLLBLA==,
       }
     hasBin: true
     dependencies:
@@ -15737,11 +15737,11 @@ packages:
       dotenv: 16.4.5
       ethers: 6.12.1
       hardhat: 2.22.4(ts-node@10.9.2)(typescript@5.4.5)
-      maci-circuits: 0.0.0-ci.1abb096(@types/snarkjs@0.7.8)
-      maci-contracts: 0.0.0-ci.1abb096(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(@types/snarkjs@0.7.8)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5)
-      maci-core: 0.0.0-ci.1abb096
-      maci-crypto: 0.0.0-ci.1abb096
-      maci-domainobjs: 0.0.0-ci.1abb096
+      maci-circuits: 0.0.0-ci.780a416(@types/snarkjs@0.7.8)
+      maci-contracts: 0.0.0-ci.780a416(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(@types/snarkjs@0.7.8)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5)
+      maci-core: 0.0.0-ci.780a416
+      maci-crypto: 0.0.0-ci.780a416
+      maci-domainobjs: 0.0.0-ci.780a416
       prompt: 1.3.0
     transitivePeerDependencies:
       - "@nomicfoundation/hardhat-chai-matchers"
@@ -15767,10 +15767,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /maci-contracts@0.0.0-ci.1abb096(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(@types/snarkjs@0.7.8)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5):
+  /maci-contracts@0.0.0-ci.780a416(@nomicfoundation/hardhat-chai-matchers@2.0.6)(@nomicfoundation/hardhat-ignition-ethers@0.15.3)(@nomicfoundation/hardhat-network-helpers@1.0.10)(@nomicfoundation/hardhat-verify@2.0.6)(@typechain/ethers-v6@0.5.1)(@typechain/hardhat@9.1.0)(@types/chai@4.3.16)(@types/mocha@10.0.6)(@types/node@20.12.11)(@types/snarkjs@0.7.8)(chai@4.4.1)(hardhat-gas-reporter@1.0.10)(solidity-coverage@0.8.12)(ts-node@10.9.2)(typechain@8.3.2)(typescript@5.4.5):
     resolution:
       {
-        integrity: sha512-PL8FIVwNe2GP+3XGIVvXb3KEYGilPrffadybDRWybv99uaZeT5SNiKj3oWdDmtGov7MQJOeGEZ6j+uIRfp0nhw==,
+        integrity: sha512-uWuHGnwb3BMwbHqNprr5joNNr8p8mn5fDMqfc+HqMChFV046ocnbJuuxVLXHnR0kk5gBRU4OBjPt+tDjyIA2Ow==,
       }
     hasBin: true
     dependencies:
@@ -15782,10 +15782,10 @@ packages:
       ethers: 6.12.1
       hardhat: 2.22.4(ts-node@10.9.2)(typescript@5.4.5)
       lowdb: 1.0.0
-      maci-circuits: 0.0.0-ci.1abb096(@types/snarkjs@0.7.8)
-      maci-core: 0.0.0-ci.1abb096
-      maci-crypto: 0.0.0-ci.1abb096
-      maci-domainobjs: 0.0.0-ci.1abb096
+      maci-circuits: 0.0.0-ci.780a416(@types/snarkjs@0.7.8)
+      maci-core: 0.0.0-ci.780a416
+      maci-crypto: 0.0.0-ci.780a416
+      maci-domainobjs: 0.0.0-ci.780a416
       solidity-docgen: 0.6.0-beta.36(hardhat@2.22.4)
       uuid: 10.0.0
     transitivePeerDependencies:
@@ -15811,23 +15811,23 @@ packages:
       - utf-8-validate
     dev: false
 
-  /maci-core@0.0.0-ci.1abb096:
+  /maci-core@0.0.0-ci.780a416:
     resolution:
       {
-        integrity: sha512-2JwCPMhJiUaMrtfRfIRXTBdNnXPSDO3VKqv0d8JvIeMITY73HgBAaD4p3MPsLQSLtH98LGAhp3JPG2HiEdt8Qw==,
+        integrity: sha512-KDK8C5Awv4V3R/Db3v1HuAN1kiESWtxf+Kzoo9L3yVIDVDyhvFhT01DJNDYIOGLpKh2FIUWeAiJNJ/9Vie1aPQ==,
       }
     dependencies:
-      maci-crypto: 0.0.0-ci.1abb096
-      maci-domainobjs: 0.0.0-ci.1abb096
+      maci-crypto: 0.0.0-ci.780a416
+      maci-domainobjs: 0.0.0-ci.780a416
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
     dev: false
 
-  /maci-crypto@0.0.0-ci.1abb096:
+  /maci-crypto@0.0.0-ci.780a416:
     resolution:
       {
-        integrity: sha512-oDCMFBoOfJi2oPDmYHMjfjyu0N5sAXXTWRgtpL0+L73gue05MZT/GTL1nTbQf9hWAZ7cATLFGhMeUl5kJSA17Q==,
+        integrity: sha512-Z9d1Ytlrw55HEeEoYTlSH84BC/dWnlfmf6qTxXbnQcyl8RKoAv0/dgYF8TjBH1IscAiceZNU31KYeDYFPbDL4g==,
       }
     dependencies:
       "@zk-kit/baby-jubjub": 1.0.1
@@ -15839,13 +15839,13 @@ packages:
       - utf-8-validate
     dev: false
 
-  /maci-domainobjs@0.0.0-ci.1abb096:
+  /maci-domainobjs@0.0.0-ci.780a416:
     resolution:
       {
-        integrity: sha512-nIdywM2gJfhGhOJrhBHCwLfJgQbXm0uUas0qRmM6rHgPcWStjkw/LsBbR7FPcWusJyZ5N/FvYohDfjX0PgEpDg==,
+        integrity: sha512-Whsh/QGqzh4GwkZlq2CuP9/AbnhoV8yVXkBYrlrSXMzKrv9qrYzOJ4VuR90BTRGF+5htkcENXZ914EU8qwpyAg==,
       }
     dependencies:
-      maci-crypto: 0.0.0-ci.1abb096
+      maci-crypto: 0.0.0-ci.780a416
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate

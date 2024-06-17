@@ -328,6 +328,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
     pollData,
     tallyData,
     maciPubKey,
+    maciPrivKey,
     maciAddress: maci?.address,
     onSignup,
     onVote,

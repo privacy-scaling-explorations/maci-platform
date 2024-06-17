@@ -27,6 +27,8 @@ export const config = {
     wagmiChains[process.env.NEXT_PUBLIC_CHAIN_NAME as keyof typeof wagmiChains],
   tallyUrl: process.env.NEXT_PUBLIC_TALLY_URL,
   vkeyFilePath: process.env.NEXT_PUBLIC_VKEY_FILE_PATH,
+  coordinatorService:
+    process.env.NEXT_PUBLIC_COORDINATOR_SERVICE_URL ?? "http://localhost:3001",
 };
 
 export const theme = {
