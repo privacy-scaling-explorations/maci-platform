@@ -9,7 +9,7 @@ import { JoinButton } from "~/components/JoinButton";
 import { Info } from "~/components/Info";
 import { EligibilityDialog } from "~/components/EligibilityDialog";
 import { useMaci } from "~/contexts/Maci";
-import { Chip } from "~/components/ui/Chip";
+import { Button } from "~/components/ui/Button";
 
 export default function SignupPage() {
   const { isConnected } = useAccount();
@@ -32,9 +32,9 @@ export default function SignupPage() {
           <span>{format(config.resultsAt, "d MMMM, yyyy")}</span>
         </p>
         {isConnected && isRegistered && (
-          <Chip color="primary">
+          <Button variant="primary" size="auto">
             <Link href="/projects">View projects</Link>
-          </Chip>
+          </Button>
         )}
         {isConnected && !isRegistered && <JoinButton />}
         {!isConnected && <ConnectButton />}

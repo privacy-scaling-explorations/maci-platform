@@ -2,7 +2,7 @@ import { toast } from "sonner";
 import { useCallback } from "react";
 
 import { useMaci } from "~/contexts/Maci";
-import { Chip } from "./ui/Chip";
+import { Button } from "./ui/Button";
 import { getAppState } from "~/utils/state";
 import { EAppState } from "~/utils/types";
 
@@ -16,39 +16,43 @@ export const JoinButton = () => {
     [onSignup, onError],
   );
 
+  const applyApplication = () => {};
+
+  const viewResults = () => {};
+
   return (
     <div>
       {appState === EAppState.VOTING && !isEligibleToVote && (
-        <Chip color="disabled">You are not allowed to vote</Chip>
+        <Button variant="disabled">You are not allowed to vote</Button>
       )}
 
       {appState === EAppState.VOTING && isEligibleToVote && !isRegistered && (
-        <Chip
-          color={
+        <Button
+          variant={
             isRegistered === undefined || isLoading ? "disabled" : "primary"
           }
           onClick={handleSignup}
         >
           Voter sign up
-        </Chip>
+        </Button>
       )}
 
       {appState === EAppState.APPLICATION && (
-        <Chip color="secondary" onClick={applyApplication}>
+        <Button variant="secondary" onClick={applyApplication}>
           Project sign up
-        </Chip>
+        </Button>
       )}
 
       {appState === EAppState.TALLYING && (
-        <Chip color="disabled">
+        <Button variant="disabled">
           Voting round is over, the result is tallying.
-        </Chip>
+        </Button>
       )}
 
       {appState === EAppState.RESULTS && (
-        <Chip color="primary" onClick={viewResults}>
+        <Button variant="primary" onClick={viewResults}>
           View results
-        </Chip>
+        </Button>
       )}
     </div>
   );

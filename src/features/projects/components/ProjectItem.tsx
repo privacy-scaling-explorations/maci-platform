@@ -4,6 +4,7 @@ import { ProjectAvatar } from "./ProjectAvatar";
 import { ProjectBanner } from "./ProjectBanner";
 import { Heading } from "~/components/ui/Heading";
 import { Skeleton } from "~/components/ui/Skeleton";
+import { Button } from "~/components/ui/Button";
 import { useProjectMetadata } from "../hooks/useProjects";
 import { type Attestation } from "~/utils/fetchAttestations";
 import { ImpactCategories } from "./ImpactCategories";
@@ -26,13 +27,11 @@ export function ProjectItem({
 }) {
   const metadata = useProjectMetadata(attestation?.metadataPtr);
   const appState = getAppState();
-  const defaultButtonStyle =
-    "uppercase text-xs rounded-md border border-black p-1.5";
 
   return (
     <article
       data-testid={`project-${attestation.id}`}
-      className="group rounded-xl bg-white hover:border-primary-500 dark:border-gray-700 dark:hover:border-primary-500"
+      className="group rounded-xl bg-white shadow-lg hover:shadow-sm"
     >
       <div className="opacity-70 transition-opacity group-hover:opacity-100">
         <ProjectBanner profileId={attestation?.recipient} />
@@ -58,25 +57,20 @@ export function ProjectItem({
           <div className="flex justify-end pt-6">
             <Skeleton>
               {state === EProjectState.DEFAULT && (
-                <button onClick={action} className={defaultButtonStyle}>
+                <Button onClick={action} variant="inverted" size="sm">
                   Add to ballot
-                </button>
+                </Button>
               )}
               {state === EProjectState.ADDED && (
-                <button
-                  onClick={action}
-                  className={`${defaultButtonStyle} flex justify-center gap-1 bg-black text-white`}
-                >
+                <Button onClick={action} size="sm" variant="primary">
                   Added
                   <Image alt="" width="18" height="18" src="check-white.svg" />
-                </button>
+                </Button>
               )}
               {state === EProjectState.SUBMITTED && (
-                <button
-                  className={`${defaultButtonStyle} cursor-not-allowed bg-gray-200 text-white`}
-                >
+                <Button size="sm" variant="disabled">
                   Submitted
-                </button>
+                </Button>
               )}
             </Skeleton>
           </div>

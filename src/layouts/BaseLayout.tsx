@@ -84,12 +84,17 @@ export const BaseLayout = ({
       </Head>
       <div
         className={clsx(
-          " flex h-full min-h-screen flex-1 flex-col bg-blue-50 dark:bg-gray-900 dark:text-white",
+          " flex h-full min-h-screen flex-1 flex-col bg-white dark:bg-gray-900 dark:text-white",
           theme,
         )}
       >
         {header}
-        <div className="mx-auto w-full flex-1 pt-12 2xl:container md:flex">
+        <div
+          className={clsx(
+            "mx-auto w-full flex-1 pt-12 2xl:container md:flex",
+            router.asPath === "/signup" && "bg-blue-50",
+          )}
+        >
           {sidebar === "left" ? wrappedSidebar : null}
           <div
             className={clsx("w-full min-w-0 px-2 pb-24", {

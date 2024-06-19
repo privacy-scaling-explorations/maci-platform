@@ -83,7 +83,7 @@ export function AllocationFormWrapper({
                 <IconButton
                   tabIndex={-1}
                   type="button"
-                  variant="ghost"
+                  variant="none"
                   icon={HiOutlineTrash}
                   disabled={disabled}
                   onClick={() => {

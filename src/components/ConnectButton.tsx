@@ -47,7 +47,7 @@ export const ConnectButton = () => {
                   <Button
                     suppressHydrationWarning
                     onClick={openConnectModal}
-                    className="rounded-md bg-black px-5 py-2 uppercase text-white"
+                    variant="primary"
                   >
                     {isMobile ? "Connect" : "Connect wallet"}
                   </Button>
