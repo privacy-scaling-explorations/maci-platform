@@ -143,7 +143,7 @@ function BallotOverview() {
 
 const SubmitBallotButton = ({ disabled = false }) => {
   const [isOpen, setOpen] = useState(false);
-const { isLoading, error, onVote } = useMaci();
+  const { isLoading, error, onVote } = useMaci();
   const { ballot, publishBallot } = useBallot();
 
   const projectIndices = useProjectIdMapping(ballot);

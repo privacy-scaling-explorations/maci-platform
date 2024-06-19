@@ -241,7 +241,14 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
 
   /// check if the user already registered
   useEffect(() => {
-    if (!isConnected || !signer || !maciPubKey || !address || isLoading || !maci) {
+    if (
+      !isConnected ||
+      !signer ||
+      !maciPubKey ||
+      !address ||
+      isLoading ||
+      !maci
+    ) {
       return;
     }
 
