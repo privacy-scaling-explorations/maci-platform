@@ -69,7 +69,7 @@ cp .env.example .env # and update .env variables
 
 ```
 
-At the very minimum you need to configure a postgres database, nextauth, admin address, maci address and the voting periods. For more details head to [Setup & Deployment](./docs/01_setup.md). Once you have set everything run:
+At the very minimum you need to configure the subgraph url, admin address, maci address and the voting periods. For more details head to [Setup & Deployment](./docs/01_setup.md). Once you have set everything run:
 
 ```sh
 pnpm install

@@ -7,4 +7,5 @@ pnpm-lock.yaml
 CHANGELOG.md
 CODEOWNERS
 .eslintignore
-
+zkeys
+public/mockServiceWorker.js
