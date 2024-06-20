@@ -4,6 +4,8 @@
 <a href="https://maci-rpgf.vercel.app/">View demo</a>
 <span>|</span>
 <a href="https://discord.com/invite/sF5CT5rzrR">Discord (#🗳️-maci channel)</a>
+<span>|</span>
+<a href="https://www.youtube.com/watch?v=86VBbO1E4Vk">Video Tutorial</a>
 </div>
 
 [<img src="./docs/images/screenshot.png"/>](https://easy-retro-pgf.vercel.app)
@@ -11,6 +13,12 @@
 ## Documentation
 
 MACI-RPGF uses EAS as backbone to run Retroactive Public Goods Funding to reward contributors ([As used by the Optimism Collective](https://community.optimism.io/docs/governance/citizens-house/#how-retro-funding-works)) while adding a privacy layer to reduce bribery and collusion using MACI.
+
+## Video Tutorial
+
+A complete installation tutorial can be seen here:
+
+[![Watch the Video](https://img.youtube.com/vi/86VBbO1E4Vk/0.jpg)](https://www.youtube.com/watch?v=86VBbO1E4Vk)
 
 ### MACI-RPGF docs
 

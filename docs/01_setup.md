@@ -2,6 +2,12 @@
 
 Follow these instructions to deploy your own instance of MACI-RPGF.
 
+## Video Tutorial
+
+A complete installation tutorial can be seen here:
+
+[![Watch the Video](https://img.youtube.com/vi/86VBbO1E4Vk/0.jpg)](https://www.youtube.com/watch?v=86VBbO1E4Vk)
+
 ## 1. Fork Repo
 
 [Fork MACI-RPGF](https://github.com/privacy-scaling-explorations/maci-rpgf/tree/main)
