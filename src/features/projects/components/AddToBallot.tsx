@@ -75,12 +75,12 @@ const ProjectAllocation = ({
 
       <div className="space-y-2 pt-2">
         <Button className="w-full" disabled={isError} type="submit" variant="primary">
-          {inBallot ? "Update" : "Add"} votes
+          {inBallot ? "Update" : "Add"} vote
         </Button>
 
         {inBallot ? (
           <Button className="w-full" type="button" variant="ghost" onClick={onRemove}>
-            Remove from ballot
+            Remove from vote
           </Button>
         ) : null}
       </div>
@@ -100,6 +100,9 @@ export const ProjectAddToBallot = ({ id = "", name = "" }: IProjectAddToBallotPr
   const sum = sumBallot(allocations.filter((p) => p.projectId !== id));
   const numVotes = ballot?.votes.length ?? 0;
 
+  const dialogMessage = `How much ${config.tokenName} should this Project receive to fill the gap between the impact they generated for
+  ${config.roundOrganizer} and the profit they received for generating this impact`;
+
   const handleOpen = useCallback(() => {
     setOpen(true);
   }, [setOpen]);
@@ -118,7 +121,7 @@ export const ProjectAddToBallot = ({ id = "", name = "" }: IProjectAddToBallotPr
 
       {isEligibleToVote && isRegistered ? (
         <>
-          {ballot?.published && <Button disabled>Ballot published</Button>}
+          {ballot?.published && <Button disabled>Vote published</Button>}
 
           {!ballot?.published && inBallot && (
             <IconButton icon={Check} variant="primary" onClick={handleOpen}>
@@ -133,17 +136,14 @@ export const ProjectAddToBallot = ({ id = "", name = "" }: IProjectAddToBallotPr
               variant="primary"
               onClick={handleOpen}
             >
-              Add to ballot
+              Add to vote
             </Button>
           )}
         </>
       ) : null}
 
       <Dialog isOpen={isOpen} size="sm" title={`Vote for ${name}`} onOpenChange={setOpen}>
-        <p className="pb-4 leading-relaxed">
-          How much {config.tokenName} should this Project receive to fill the gap between the impact they generated for
-          Optimism and the profit they received for generating this impact
-        </p>
+        <p className="pb-4 leading-relaxed">{dialogMessage}</p>
 
         <Form
           defaultValues={{ amount: inBallot?.amount }}
