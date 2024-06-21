@@ -20,7 +20,7 @@ export const SortByDropdown = ({ value, onChange, options = [] }: Props) => {
           icon={ArrowUpDown}
           variant="outline"
           aria-label="Sort by"
-          className="w-48 justify-start"
+          className="my-0 w-48"
         >
           Sort by: {value && sortLabels[value]}
         </IconButton>

@@ -4,7 +4,7 @@ import { tv } from "tailwind-variants";
 import { X } from "lucide-react";
 import clsx from "clsx";
 
-import { IconButton } from "./Button";
+import { IconButton, Button } from "./Button";
 import { createComponent } from ".";
 import { theme } from "~/config";
 import { Spinner } from "./Spinner";
@@ -38,7 +38,7 @@ export const Dialog = ({
         {/* Because of Portal we need to set the theme here */}
         <div className={theme.colorMode}>
           <Content size={size}>
-            <RadixDialog.Title className="mb-6 text-2xl font-bold uppercase">
+            <RadixDialog.Title className="text-2xl font-bold uppercase">
               {title}
             </RadixDialog.Title>
             <RadixDialog.Description className="text-gray-400">
@@ -47,15 +47,9 @@ export const Dialog = ({
             {children}
             {isLoading && <Spinner className="h-6 w-6 py-4" />}
             {!isLoading && button && buttonName && buttonAction && (
-              <button
-                className={clsx(
-                  "mt-6 rounded-md border-none px-4 py-2 uppercase text-white",
-                  button === "primary" ? "bg-blue-500" : "bg-blue-50",
-                )}
-                onClick={buttonAction}
-              >
+              <Button variant={button} onClick={buttonAction} size="auto">
                 {buttonName}
-              </button>
+              </Button>
             )}
             {onOpenChange ? (
               <RadixDialog.Close asChild>
@@ -75,7 +69,7 @@ export const Dialog = ({
 const Content = createComponent(
   RadixDialog.Content,
   tv({
-    base: "z-20 fixed bottom-0 rounded-md bg-white p-12 flex flex-col justify-center items-center text-center w-full font-sans sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2",
+    base: "z-20 fixed bottom-0 rounded-md bg-white p-12 flex flex-col justify-center gap-4 items-center text-center w-full font-sans sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2",
     variants: {
       size: {
         sm: "sm:w-[456px] md:w-[456px]",

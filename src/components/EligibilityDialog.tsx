@@ -43,7 +43,7 @@ export const EligibilityDialog = () => {
               <p>Please submit your ballot by X date!</p>
             </div>
           }
-          button="primary"
+          button="secondary"
           buttonName="See all projects"
           buttonAction={() => router.push("/projects")}
         />
@@ -68,7 +68,7 @@ export const EligibilityDialog = () => {
               </p>
             </div>
           }
-          button="primary"
+          button="secondary"
           buttonName="Join voting round"
           buttonAction={handleSignup}
         />
@@ -80,7 +80,7 @@ export const EligibilityDialog = () => {
           onOpenChange={() => setOpenDialog(false)}
           title="Sorry, this account does not have the credentials to be verified."
           description="To participate in this round, you must be in the voter's registry. Contact the round organizers to get access as a voter."
-          button="primary"
+          button="secondary"
           buttonName="Disconnect"
           buttonAction={() => disconnect()}
         />

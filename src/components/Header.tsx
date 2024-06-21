@@ -18,7 +18,7 @@ const NavLink = ({
 }: { isActive: boolean } & ComponentPropsWithRef<typeof Link>) => (
   <Link
     className={clsx(
-      "flex h-full items-center p-4 font-sans",
+      "flex h-full items-center p-4 font-sans hover:font-extrabold",
       isActive && "border-b-2 border-blue-400",
     )}
     {...props}

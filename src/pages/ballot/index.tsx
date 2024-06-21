@@ -103,7 +103,10 @@ function ClearBallot() {
 
   return (
     <>
-      <div className="cursor-pointer underline" onClick={() => setOpen(true)}>
+      <div
+        className="cursor-pointer text-gray-400 underline hover:text-black"
+        onClick={() => setOpen(true)}
+      >
         Remove all projects
       </div>
 
@@ -130,7 +133,7 @@ const EmptyBallot = () => (
         through the available projects.
       </p>
       <div className="flex items-center justify-center gap-3">
-        <Button as={Link} href={"/projects"}>
+        <Button as={Link} href={"/projects"} variant="primary" size="auto">
           View projects
         </Button>
       </div>

@@ -1,6 +1,6 @@
 import { FaGithub, FaEthereum } from "react-icons/fa";
 import { RiGlobalLine } from "react-icons/ri";
-import Link from "next/link";
+import { Link } from "~/components/ui/Link";
 
 import {
   type ImpactMetrix,
@@ -30,11 +30,7 @@ export const ProjectDescriptionSection = ({
         <div className="border-l border-gray-200 px-4">
           <p className="text-sm uppercase text-gray-800">{title} links</p>
           {links.map((link) => (
-            <Link
-              href={link.url}
-              target="_blank"
-              className="flex items-center gap-1 text-blue-400"
-            >
+            <Link href={link.url} target="_blank">
               {link.type && link.type === EContributionType.GITHUB_REPO && (
                 <FaGithub />
               )}

@@ -3,6 +3,7 @@ import { useMemo, useCallback, useState } from "react";
 import { useMaci } from "~/contexts/Maci";
 import { useBallot } from "~/contexts/Ballot";
 import { Input } from "~/components/ui/Input";
+import { Button } from "~/components/ui/Button";
 import { EButtonState } from "../types";
 
 export const VotingWidget = ({ projectId }: { projectId: string }) => {
@@ -59,7 +60,7 @@ export const VotingWidget = ({ projectId }: { projectId: string }) => {
       {projectIncluded && (
         <div
           onClick={handleRemove}
-          className="cursor-pointer text-gray-400 underline"
+          className="cursor-pointer text-gray-400 underline hover:text-black"
         >
           Remove from My Ballot
         </div>
@@ -73,12 +74,9 @@ export const VotingWidget = ({ projectId }: { projectId: string }) => {
           className="w-auto"
         />
         {buttonState === EButtonState.DEFAULT && (
-          <button
-            onClick={handleButtonAction}
-            className="rounded-lg border border-black px-5 py-2 uppercase"
-          >
+          <Button onClick={handleButtonAction} variant="inverted">
             add votes
-          </button>
+          </Button>
         )}
         {buttonState === EButtonState.ADDED && (
           <div className="flex justify-center gap-2 uppercase">
@@ -87,12 +85,9 @@ export const VotingWidget = ({ projectId }: { projectId: string }) => {
           </div>
         )}
         {buttonState === EButtonState.EDIT && (
-          <button
-            onClick={handleButtonAction}
-            className="rounded-lg border border-black px-5 py-2 uppercase"
-          >
+          <Button onClick={handleButtonAction} variant="inverted">
             edit votes
-          </button>
+          </Button>
         )}
         {buttonState === EButtonState.UPDATED && (
           <div className="flex justify-center gap-2 uppercase">
