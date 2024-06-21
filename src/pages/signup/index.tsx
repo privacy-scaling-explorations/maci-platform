@@ -10,16 +10,17 @@ import { Info } from "~/components/Info";
 import { EligibilityDialog } from "~/components/EligibilityDialog";
 import { useMaci } from "~/contexts/Maci";
 import { Button } from "~/components/ui/Button";
+import { FAQList } from "~/features/signup/components/faqList";
 
 export default function SignupPage() {
   const { isConnected } = useAccount();
   const { isRegistered } = useMaci();
 
   return (
-    <Layout>
+    <Layout marginTop={false} paddingX={false}>
       <EligibilityDialog />
 
-      <div className="flex flex-col items-center justify-center gap-4">
+      <div className="flex h-[90vh] flex-col items-center justify-center gap-4 bg-blue-50">
         <h1 className="max-w-screen-lg text-center font-mono">
           {config.eventName.toUpperCase()}
         </h1>
@@ -42,6 +43,7 @@ export default function SignupPage() {
           <Info size="default" />
         </div>
       </div>
+      <FAQList />
     </Layout>
   );
 }

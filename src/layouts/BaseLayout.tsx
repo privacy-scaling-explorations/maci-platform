@@ -25,6 +25,8 @@ export type LayoutProps = {
   showBallot?: boolean;
   showInfo?: boolean;
   showSubmitButton?: boolean;
+  marginTop?: boolean;
+  paddingX?: boolean;
 };
 
 export const BaseLayout = ({
@@ -35,6 +37,8 @@ export const BaseLayout = ({
   requireAuth,
   eligibilityCheck = false,
   showBallot = false,
+  marginTop = true,
+  paddingX = true,
   children,
 }: PropsWithChildren<
   {
@@ -84,25 +88,20 @@ export const BaseLayout = ({
       </Head>
       <div
         className={clsx(
-          " flex h-full min-h-screen flex-1 flex-col bg-white dark:bg-gray-900 dark:text-white",
+          "flex h-full min-h-screen flex-1 flex-col bg-white dark:bg-gray-900 dark:text-white",
           theme,
         )}
       >
         {header}
         <div
           className={clsx(
-            "mx-auto w-full flex-1 pt-12 2xl:container md:flex",
-            router.asPath === "/signup" && "bg-blue-50",
+            "w-full flex-1 2xl:container md:flex",
+            marginTop && "mt-12",
+            paddingX && "pl-2 pr-6",
           )}
         >
           {sidebar === "left" ? wrappedSidebar : null}
-          <div
-            className={clsx("w-full min-w-0 px-2 pb-24", {
-              ["mx-auto max-w-5xl"]: !sidebar,
-            })}
-          >
-            {children}
-          </div>
+          <div className="w-full min-w-0 pb-24">{children}</div>
           {sidebar === "right" ? wrappedSidebar : null}
         </div>
         <Footer />
