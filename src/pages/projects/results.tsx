@@ -1,10 +1,10 @@
-import { Layout } from "~/layouts/DefaultLayout";
 import { ProjectsResults } from "~/features/projects/components/ProjectsResults";
+import { Layout } from "~/layouts/DefaultLayout";
 
-export default function ProjectsResultsPage() {
-  return (
-    <Layout>
-      <ProjectsResults />
-    </Layout>
-  );
-}
+const ProjectsResultsPage = (): JSX.Element => (
+  <Layout>
+    <ProjectsResults />
+  </Layout>
+);
+
+export default ProjectsResultsPage;

@@ -1,4 +1,5 @@
 import { tv } from "tailwind-variants";
+
 import { createComponent } from ".";
 
 const chip = tv({

@@ -1,20 +1,25 @@
 import { useAccount } from "wagmi";
+
 import { Alert } from "~/components/ui/Alert";
 import { Spinner } from "~/components/ui/Spinner";
 import { useApprovedVoter } from "~/features/voters/hooks/useApprovedVoter";
 import { Layout } from "~/layouts/DefaultLayout";
 
-export default function VotersPage() {
+const VotersPage = (): JSX.Element => {
   const { address } = useAccount();
   const approved = useApprovedVoter(address!);
 
+  if (approved.isLoading) {
+    return (
+      <Alert className="flex justify-center">
+        <Spinner className="size-6" />
+      </Alert>
+    );
+  }
+
   return (
     <Layout title="Manage voters">
-      {approved.isLoading ? (
-        <Alert className="flex justify-center">
-          <Spinner className="size-6" />
-        </Alert>
-      ) : approved.data ? (
+      {approved.data ? (
         <Alert title="You have been approved" variant="success">
           The connected wallet has been attested as an approved voter.
         </Alert>
@@ -25,4 +30,6 @@ export default function VotersPage() {
       )}
     </Layout>
   );
-}
+};
+
+export default VotersPage;

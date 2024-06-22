@@ -4,11 +4,13 @@ import { type Address } from "viem";
 import { Avatar } from "~/components/ui/Avatar";
 import { useProfileWithMetadata } from "~/hooks/useProfile";
 
-export function ProjectAvatar(
-  props: { profileId?: Address } & ComponentProps<typeof Avatar>,
-) {
-  const profile = useProfileWithMetadata(props.profileId);
+export interface IProjectAvatarProps extends ComponentProps<typeof Avatar> {
+  profileId?: Address;
+}
+
+export const ProjectAvatar = ({ profileId = undefined, ...rest }: IProjectAvatarProps): JSX.Element => {
+  const profile = useProfileWithMetadata(profileId);
   const { profileImageUrl } = profile.data ?? {};
 
-  return <Avatar {...props} src={profileImageUrl} />;
-}
+  return <Avatar {...rest} src={profileImageUrl} />;
+};

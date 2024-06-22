@@ -1,0 +1,10 @@
+build/
+dist/
+.next/
+node_modules/
+coverage/
+pnpm-lock.yaml
+CHANGELOG.md
+CODEOWNERS
+.eslintignore
+

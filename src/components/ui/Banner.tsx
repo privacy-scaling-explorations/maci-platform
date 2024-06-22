@@ -1,5 +1,7 @@
 import { tv } from "tailwind-variants";
+
 import { createComponent } from "~/components/ui";
+
 import { BackgroundImage } from "./BackgroundImage";
 
 export const Banner = createComponent(

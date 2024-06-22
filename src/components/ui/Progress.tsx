@@ -1,4 +1,5 @@
 import { tv } from "tailwind-variants";
+
 import { createComponent } from ".";
 
 const ProgressWrapper = createComponent(
@@ -8,7 +9,12 @@ const ProgressWrapper = createComponent(
   }),
 );
 
-export const Progress = ({ value = 0, max = 100 }) => (
+export interface IProgressProps {
+  value?: number;
+  max?: number;
+}
+
+export const Progress = ({ value = 0, max = 100 }: IProgressProps): JSX.Element => (
   <ProgressWrapper>
     <div
       className="absolute h-1 rounded-full bg-primary-600 transition-all"

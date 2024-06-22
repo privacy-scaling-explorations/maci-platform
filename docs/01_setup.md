@@ -172,7 +172,7 @@ pnpm run prove:[network] --poll [poll-id] \
 > [!IMPORTANT]
 > We suggest including the --start-block flag, proving requires fetching all events from the smart contracts and by default starts from block zero, this would take a lot of time and is error-prone due to RPC provider limitations.
 
-Once you have the tally.json file you can rename it (tally-{pollId}.json), upload it and add it as an enviroment variable `NEXT_PUBLIC_TALLY_URL` to show the results.
+Once you have the tally.json file you can rename it (tally-{pollId}.json), upload it and add it as an environment variable `NEXT_PUBLIC_TALLY_URL` to show the results.
 
 ## Additional configuration
 

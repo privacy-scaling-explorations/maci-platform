@@ -1,35 +1,34 @@
-import Link from "next/link";
 import { useAccount, useDisconnect } from "wagmi";
 
 import { metadata } from "~/config";
-import { Dialog } from "./ui/Dialog";
 import { useApprovedVoter } from "~/features/voters/hooks/useApprovedVoter";
 
-export const EligibilityDialog = () => {
+import { Dialog } from "./ui/Dialog";
+
+export const EligibilityDialog = (): JSX.Element | null => {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
   const { data, isLoading, error } = useApprovedVoter(address!);
 
-  if (isLoading || !address || error) return null;
+  if (isLoading || !address || error) {
+    return null;
+  }
 
   return (
     <Dialog
-      size="sm"
       isOpen={!data}
-      onOpenChange={() => disconnect()}
+      size="sm"
       title={
         <>
           You are not eligible to vote <span className="font-serif">😔</span>
         </>
       }
+      onOpenChange={() => {
+        disconnect();
+      }}
     >
       <div>
-        Only badgeholders are able to vote in {metadata.title}. You can find out
-        more about how badgeholders are selected{" "}
-        <Link href="" target="_blank" className="underline underline-offset-2">
-          here
-        </Link>
-        .
+        <p className="mr-1">Only badgeholders are able to vote in {metadata.title}</p>
       </div>
     </Dialog>
   );

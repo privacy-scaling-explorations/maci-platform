@@ -1,9 +1,9 @@
-import { resultsRouter } from "~/server/api/routers/results";
-import { projectsRouter } from "~/server/api/routers/projects";
-import { metadataRouter } from "~/server/api/routers/metadata";
 import { applicationsRouter } from "~/server/api/routers/applications";
 import { maciRouter } from "~/server/api/routers/maci";
+import { metadataRouter } from "~/server/api/routers/metadata";
 import { profileRouter } from "~/server/api/routers/profile";
+import { projectsRouter } from "~/server/api/routers/projects";
+import { resultsRouter } from "~/server/api/routers/results";
 import { votersRouter } from "~/server/api/routers/voters";
 import { createTRPCRouter } from "~/server/api/trpc";
 

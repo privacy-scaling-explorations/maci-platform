@@ -1,12 +1,14 @@
-import type { ReactNode, PropsWithChildren } from "react";
 import { useAccount } from "wagmi";
 
 import Header from "~/components/Header";
-import BallotOverview from "~/features/ballot/components/BallotOverview";
-import { BaseLayout, type LayoutProps } from "./BaseLayout";
-import { getAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
 import { config } from "~/config";
+import BallotOverview from "~/features/ballot/components/BallotOverview";
+import { useAppState } from "~/utils/state";
+import { EAppState } from "~/utils/types";
+
+import type { ReactNode, PropsWithChildren } from "react";
+
+import { BaseLayout, type LayoutProps } from "./BaseLayout";
 
 type Props = PropsWithChildren<
   {
@@ -14,9 +16,10 @@ type Props = PropsWithChildren<
     sidebarComponent?: ReactNode;
   } & LayoutProps
 >;
-export const Layout = ({ children, ...props }: Props) => {
+
+export const Layout = ({ children = null, ...props }: Props): JSX.Element => {
   const { address } = useAccount();
-  const appState = getAppState();
+  const appState = useAppState();
 
   const navLinks = [
     {
@@ -58,8 +61,6 @@ export const Layout = ({ children, ...props }: Props) => {
   );
 };
 
-export function LayoutWithBallot(props: Props) {
-  return (
-    <Layout sidebar="left" sidebarComponent={<BallotOverview />} {...props} />
-  );
-}
+export const LayoutWithBallot = ({ ...props }: Props): JSX.Element => (
+  <Layout sidebar="left" sidebarComponent={<BallotOverview />} {...props} />
+);

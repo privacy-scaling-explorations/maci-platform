@@ -1,6 +1,3 @@
-/* eslint-disable */
-/* tslint:disable */
-
 /**
  * Mock Service Worker.
  * @see https://github.com/mswjs/msw
@@ -257,10 +254,7 @@ function sendToClient(client, message, transferrables = []) {
       resolve(event.data);
     };
 
-    client.postMessage(
-      message,
-      [channel.port2].concat(transferrables.filter(Boolean)),
-    );
+    client.postMessage(message, [channel.port2].concat(transferrables.filter(Boolean)));
   });
 }
 

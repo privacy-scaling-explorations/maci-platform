@@ -26,66 +26,61 @@ const steps = [
   },
 ];
 
-export default function InfoPage() {
+const InfoPage = (): JSX.Element => {
   const { progress, currentStepIndex } = calculateProgress(steps);
 
   return (
     <Layout>
       <div className="hidden h-4 w-4/5 overflow-hidden rounded-full border md:block">
-        <div
-          className={"h-full bg-white transition-all"}
-          style={{ width: `${progress * 100}%` }}
-        />
+        <div className="h-full bg-white transition-all" style={{ width: `${progress * 100}%` }} />
       </div>
+
       <div className="px-2 md:flex">
         {steps.map((step, i) => (
           <div
-            key={i}
+            key={step.label}
             className={cn("border-b border-l p-4 transition-opacity md:w-1/5", {
-              ["opacity-50"]: currentStepIndex <= i,
+              "opacity-50": currentStepIndex <= i,
             })}
           >
             <h3 className="font-semibold">{step.label}</h3>
+
             {step.date && <div>{formatDate(step.date)}</div>}
           </div>
         ))}
       </div>
     </Layout>
   );
-}
+};
 
-function calculateProgress(steps: { label: string; date?: Date }[]) {
+export default InfoPage;
+
+function calculateProgress(items: { label: string; date?: Date }[]) {
   const now = Number(new Date());
 
-  let currentStepIndex = steps.findIndex(
-    (step, index) =>
-      now < Number(step.date) &&
-      (index === 0 || now >= Number(steps[index - 1]?.date)),
+  let currentStepIndex = items.findIndex(
+    (step, index) => now < Number(step.date) && (index === 0 || now >= Number(items[index - 1]?.date)),
   );
 
   if (currentStepIndex === -1) {
-    currentStepIndex = steps.length;
+    currentStepIndex = items.length;
   }
 
   let progress = 0;
 
   if (currentStepIndex > 0) {
     // Calculate progress for completed segments
-    for (let i = 0; i < currentStepIndex - 1; i++) {
-      progress += 1 / (steps.length - 1);
+    for (let i = 0; i < currentStepIndex - 1; i += 1) {
+      progress += 1 / (items.length - 1);
     }
 
     // Calculate progress within the current segment
-    const segmentStart =
-      currentStepIndex === 0 ? 0 : Number(steps[currentStepIndex - 1]?.date);
-    const segmentEnd = Number(steps[currentStepIndex]?.date);
+    const segmentStart = currentStepIndex === 0 ? 0 : Number(items[currentStepIndex - 1]?.date);
+    const segmentEnd = Number(items[currentStepIndex]?.date);
     const segmentDuration = segmentEnd - segmentStart;
     const timeElapsedInSegment = now - segmentStart;
 
-    progress +=
-      Math.min(timeElapsedInSegment, segmentDuration) /
-      segmentDuration /
-      (steps.length - 1);
+    progress += Math.min(timeElapsedInSegment, segmentDuration) / segmentDuration / (items.length - 1);
   }
 
   progress = Math.min(Math.max(progress, 0), 1);

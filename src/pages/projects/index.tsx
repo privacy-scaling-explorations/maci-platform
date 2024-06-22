@@ -1,10 +1,10 @@
-import { LayoutWithBallot } from "~/layouts/DefaultLayout";
 import { Projects } from "~/features/projects/components/Projects";
+import { LayoutWithBallot } from "~/layouts/DefaultLayout";
 
-export default function ProjectsPage() {
-  return (
-    <LayoutWithBallot sidebar="left" eligibilityCheck showBallot>
-      <Projects />
-    </LayoutWithBallot>
-  );
-}
+const ProjectsPage = (): JSX.Element => (
+  <LayoutWithBallot eligibilityCheck showBallot sidebar="left">
+    <Projects />
+  </LayoutWithBallot>
+);
+
+export default ProjectsPage;

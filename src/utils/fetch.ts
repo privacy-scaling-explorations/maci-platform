@@ -1,13 +1,19 @@
 import NodeFetchCache, { MemoryCache } from "node-fetch-cache";
 
-export function createCachedFetch({ ttl = 1000 * 60 }) {
-  const _fetch = NodeFetchCache.create({ cache: new MemoryCache({ ttl }) });
+export interface ICreateCachedFetchArgs {
+  ttl?: number;
+}
 
-  return function fetch<T>(
-    url: string,
-    opts?: { method: "POST" | "GET"; body?: string },
-  ) {
-    return _fetch(url, {
+export type TCachedFetch = <T>(
+  url: string,
+  opts?: { method: "POST" | "GET"; body?: string },
+) => Promise<{ data: T; error: Error }>;
+
+export function createCachedFetch({ ttl = 1000 * 60 }: ICreateCachedFetchArgs): TCachedFetch {
+  const cachedFetch = NodeFetchCache.create({ cache: new MemoryCache({ ttl }) });
+
+  return async <T>(url: string, opts?: { method: "POST" | "GET"; body?: string }): Promise<{ data: T; error: Error }> =>
+    cachedFetch(url, {
       method: opts?.method ?? "GET",
       body: opts?.body,
       headers: { "Content-Type": "application/json" },
@@ -19,5 +25,4 @@ export function createCachedFetch({ ttl = 1000 * 60 }) {
 
       return (await r.json()) as { data: T; error: Error };
     });
-  };
 }

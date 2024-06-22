@@ -1,23 +1,25 @@
 import { type GetServerSideProps } from "next";
 
+import ApproveButton from "~/features/applications/components/ApproveButton";
 import ProjectDetails from "~/features/projects/components/ProjectDetails";
 import { useProjectById } from "~/features/projects/hooks/useProjects";
-import ApproveButton from "~/features/applications/components/ApproveButton";
 import { Layout } from "~/layouts/DefaultLayout";
 
-export default function ApplicationDetailsPage({ projectId = "" }) {
-  const project = useProjectById(projectId);
-
-  return (
-    <Layout title={project.data?.name}>
-      <ProjectDetails
-        attestation={project.data}
-        action={<ApproveButton projectIds={[projectId]} />}
-      />
-    </Layout>
-  );
+export interface IApplicationDetailsPageProps {
+  projectId?: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query: { projectId },
-}) => ({ props: { projectId } });
+const ApplicationDetailsPage = ({ projectId = "" }: IApplicationDetailsPageProps): JSX.Element => {
+  const projects = useProjectById(projectId);
+
+  return (
+    <Layout title={projects.data?.[0]?.name}>
+      <ProjectDetails action={<ApproveButton projectIds={[projectId]} />} attestation={projects.data?.[0]} />
+    </Layout>
+  );
+};
+
+export default ApplicationDetailsPage;
+
+export const getServerSideProps: GetServerSideProps = async ({ query: { projectId } }) =>
+  Promise.resolve({ props: { projectId } });

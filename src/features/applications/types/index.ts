@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { EthAddressSchema } from "~/features/voters/types";
 import { reverseKeys } from "~/utils/reverseKeys";
 
@@ -35,10 +36,10 @@ export const ApplicationSchema = z.object({
   websiteUrl: z
     .string()
     .min(1)
-    .transform((url) => {
+    .transform((url) =>
       // Automatically prepend "https://" if it's missing
-      return /^(http:\/\/|https:\/\/)/i.test(url) ? url : `https://${url}`;
-    }),
+      /^(http:\/\/|https:\/\/)/i.test(url) ? url : `https://${url}`,
+    ),
   payoutAddress: EthAddressSchema,
   contributionDescription: z.string().min(3),
   impactDescription: z.string().min(3),
@@ -51,12 +52,10 @@ export const ApplicationSchema = z.object({
         url: z
           .string()
           .min(1)
-          .transform((url) => {
+          .transform((url) =>
             // Automatically prepend "https://" if it's missing
-            return /^(http:\/\/|https:\/\/)/i.test(url)
-              ? url
-              : `https://${url}`;
-          }),
+            /^(http:\/\/|https:\/\/)/i.test(url) ? url : `https://${url}`,
+          ),
       }),
     )
     .min(1),
@@ -67,12 +66,10 @@ export const ApplicationSchema = z.object({
         url: z
           .string()
           .min(1)
-          .transform((url) => {
+          .transform((url) =>
             // Automatically prepend "https://" if it's missing
-            return /^(http:\/\/|https:\/\/)/i.test(url)
-              ? url
-              : `https://${url}`;
-          }),
+            /^(http:\/\/|https:\/\/)/i.test(url) ? url : `https://${url}`,
+          ),
         number: z.number(),
       }),
     )

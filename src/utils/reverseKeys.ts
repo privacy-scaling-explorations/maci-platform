@@ -1,2 +1,2 @@
-export const reverseKeys = (obj: Record<string, string>) =>
+export const reverseKeys = (obj: Record<string, string>): Record<string, string> =>
   Object.fromEntries(Object.entries(obj).map(([k, v]) => [v, k]));

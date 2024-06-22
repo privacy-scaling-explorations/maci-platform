@@ -9,9 +9,10 @@
 
 import { initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import type { NextApiResponse } from "next";
 import superjson from "superjson";
 import { ZodError } from "zod";
+
+import type { NextApiResponse } from "next";
 
 /**
  * 1. CONTEXT
@@ -35,11 +36,9 @@ interface CreateContextOptions {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (opts: CreateContextOptions) => {
-  return {
-    res: opts.res,
-  };
-};
+const createInnerTRPCContext = (opts: CreateContextOptions) => ({
+  res: opts.res,
+});
 
 /**
  * This is the actual context you will use in your router. It will be used to process every request
@@ -47,7 +46,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+export const createTRPCContext = (opts: CreateNextContextOptions): { res: NextApiResponse } => {
   const { res } = opts;
 
   return createInnerTRPCContext({
@@ -70,8 +69,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
       ...shape,
       data: {
         ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
+        zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
       },
     };
   },

@@ -1,7 +1,8 @@
-import { tv } from "tailwind-variants";
-import { createComponent } from ".";
-import { type ComponentProps, createElement } from "react";
 import { type LucideIcon } from "lucide-react";
+import { type ComponentProps, createElement } from "react";
+import { tv } from "tailwind-variants";
+
+import { createComponent } from ".";
 
 const alert = tv({
   base: "rounded-xl p-4",
@@ -16,19 +17,18 @@ const alert = tv({
 
 export const AlertComponent = createComponent("div", alert);
 
-export const Alert = ({
-  icon,
-  title,
-  children,
-  ...props
-}: { icon?: LucideIcon } & ComponentProps<typeof AlertComponent>) => {
-  return (
-    <AlertComponent {...props}>
-      <div className="flex items-center gap-2">
-        {icon ? createElement(icon, { className: "w-4 h-4" }) : null}
-        <div className="mb-2 text-lg font-semibold">{title}</div>
-      </div>
-      {children}
-    </AlertComponent>
-  );
-};
+export interface IAlertProps extends ComponentProps<typeof AlertComponent> {
+  icon?: LucideIcon;
+}
+
+export const Alert = ({ icon = undefined, title, children, ...props }: IAlertProps): JSX.Element => (
+  <AlertComponent {...props}>
+    <div className="flex items-center gap-2">
+      {icon ? createElement(icon, { className: "w-4 h-4" }) : null}
+
+      <div className="mb-2 text-lg font-semibold">{title}</div>
+    </div>
+
+    {children}
+  </AlertComponent>
+);

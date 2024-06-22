@@ -1,4 +1,4 @@
-import { parseAsString, parseAsStringEnum, useQueryStates } from "nuqs";
+import { UseQueryStatesReturn, parseAsString, parseAsStringEnum, useQueryStates } from "nuqs";
 
 import { OrderBy, SortOrder } from "../types";
 
@@ -8,21 +8,21 @@ export const sortLabels = {
   time_asc: "Oldest",
   time_desc: "Newest",
 };
+
 export type SortType = keyof typeof sortLabels;
 
-export function useFilter() {
-  const [filter, setFilter] = useQueryStates(
-    {
-      search: parseAsString.withDefault(""),
-      orderBy: parseAsStringEnum<OrderBy>(Object.values(OrderBy)).withDefault(
-        OrderBy.name,
-      ),
-      sortOrder: parseAsStringEnum<SortOrder>(
-        Object.values(SortOrder),
-      ).withDefault(SortOrder.asc),
-    },
-    { history: "replace" },
-  );
+const queryParams = {
+  search: parseAsString.withDefault(""),
+  orderBy: parseAsStringEnum<OrderBy>(Object.values(OrderBy)).withDefault(OrderBy.name),
+  sortOrder: parseAsStringEnum<SortOrder>(Object.values(SortOrder)).withDefault(SortOrder.asc),
+};
+
+export type TUseFilterReturn = UseQueryStatesReturn<typeof queryParams>[0] & {
+  setFilter: UseQueryStatesReturn<typeof queryParams>[1];
+};
+
+export function useFilter(): TUseFilterReturn {
+  const [filter, setFilter] = useQueryStates(queryParams, { history: "replace" });
 
   return { ...filter, setFilter };
 }

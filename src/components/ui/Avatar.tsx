@@ -1,6 +1,8 @@
 import { tv } from "tailwind-variants";
-import { createComponent } from ".";
+
 import { BackgroundImage } from "./BackgroundImage";
+
+import { createComponent } from ".";
 
 export const Avatar = createComponent(
   BackgroundImage,

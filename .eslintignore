@@ -1,0 +1,11 @@
+node_modules
+dist
+.next
+coverage
+build
+typechain-types
+.eslintrc.js
+commitlint.config.js
+subgraph/generated
+public/mockServiceWorker.js
+

@@ -1,4 +1,5 @@
 import { tv } from "tailwind-variants";
+
 import { createComponent } from ".";
 
 export const Card = createComponent(

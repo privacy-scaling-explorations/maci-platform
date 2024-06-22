@@ -1,113 +1,116 @@
 import clsx from "clsx";
 import Head from "next/head";
-import {
-  type ReactNode,
-  type PropsWithChildren,
-  createContext,
-  useContext,
-  useEffect,
-} from "react";
+import { useRouter } from "next/router";
+import { useTheme } from "next-themes";
+import { type ReactNode, type PropsWithChildren, createContext, useContext, useEffect, useMemo } from "react";
 import { useAccount } from "wagmi";
 
-import { useRouter } from "next/router";
-import { metadata } from "~/config";
-import { useTheme } from "next-themes";
 import { Footer } from "~/components/Footer";
+import { metadata } from "~/config";
 
 const Context = createContext({ eligibilityCheck: false, showBallot: false });
-export const useLayoutOptions = () => useContext(Context);
 
-export type LayoutProps = {
+export const useLayoutOptions = (): { eligibilityCheck: boolean; showBallot: boolean } => useContext(Context);
+
+const Sidebar = ({ side = undefined, ...props }: { side?: "left" | "right" } & PropsWithChildren) => (
+  <div>
+    <div
+      className={clsx("px-2 md:w-[336px] md:px-4", {
+        "left-0 top-[2rem] md:sticky": side === "left",
+      })}
+      {...props}
+    />
+  </div>
+);
+
+export interface LayoutProps {
   title?: string;
   requireAuth?: boolean;
   eligibilityCheck?: boolean;
   showBallot?: boolean;
-};
+}
+
 export const BaseLayout = ({
-  header,
-  title,
-  sidebar,
-  sidebarComponent,
-  requireAuth,
+  header = null,
+  title = "",
+  sidebar = undefined,
+  sidebarComponent = null,
+  requireAuth = false,
   eligibilityCheck = false,
   showBallot = false,
-  children,
+  children = null,
 }: PropsWithChildren<
   {
     sidebar?: "left" | "right";
     sidebarComponent?: ReactNode;
     header?: ReactNode;
   } & LayoutProps
->) => {
+>): JSX.Element => {
   const { theme } = useTheme();
   const router = useRouter();
   const { address, isConnecting } = useAccount();
 
   useEffect(() => {
     if (requireAuth && !address && !isConnecting) {
-      void router.push("/");
+      router.push("/");
     }
   }, [requireAuth, address, isConnecting, router]);
 
   const wrappedSidebar = <Sidebar side={sidebar}>{sidebarComponent}</Sidebar>;
 
-  title = title ? `${title} - ${metadata.title}` : metadata.title;
-  return (
-    <Context.Provider value={{ eligibilityCheck, showBallot }}>
-      <Head>
-        <title>{title}</title>
-        <meta name="description" content={metadata.description} />
-        <link rel="icon" href="favicon.svg" />
-        <meta property="og:url" content={metadata.url} />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={metadata.description} />
-        <meta property="og:image" content={metadata.image} />
+  const contextValue = useMemo(() => ({ eligibilityCheck, showBallot }), [eligibilityCheck, showBallot]);
 
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          property="twitter:domain"
-          content="https://github.com/privacy-scaling-explorations/maci-rpgf"
-        />
-        <meta property="twitter:url" content={metadata.url} />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={metadata.description} />
-        <meta name="twitter:image" content={metadata.image} />
+  return (
+    <Context.Provider value={contextValue}>
+      <Head>
+        <title>{title ? `${title} - ${metadata.title}` : metadata.title}</title>
+
+        <meta content={metadata.description} name="description" />
+
+        <link href="favicon.svg" rel="icon" />
+
+        <meta content={metadata.url} property="og:url" />
+
+        <meta content="website" property="og:type" />
+
+        <meta content={title} property="og:title" />
+
+        <meta content={metadata.description} property="og:description" />
+
+        <meta content={metadata.image} property="og:image" />
+
+        <meta content="summary_large_image" name="twitter:card" />
+
+        <meta content="https://github.com/privacy-scaling-explorations/maci-rpgf" property="twitter:domain" />
+
+        <meta content={metadata.url} property="twitter:url" />
+
+        <meta content={title} name="twitter:title" />
+
+        <meta content={metadata.description} name="twitter:description" />
+
+        <meta content={metadata.image} name="twitter:image" />
       </Head>
-      <div
-        className={clsx(
-          " flex h-full min-h-screen flex-1 flex-col dark:bg-gray-900 dark:text-white",
-          theme,
-        )}
-      >
+
+      <div className={clsx(" flex h-full min-h-screen flex-1 flex-col dark:bg-gray-900 dark:text-white", theme)}>
         {header}
+
         <div className="mx-auto w-full flex-1 pt-12 2xl:container md:flex">
           {sidebar === "left" ? wrappedSidebar : null}
+
           <div
             className={clsx("w-full min-w-0 px-2 pb-24", {
-              ["mx-auto max-w-5xl"]: !sidebar,
+              "mx-auto max-w-5xl": !sidebar,
             })}
           >
             {children}
           </div>
+
           {sidebar === "right" ? wrappedSidebar : null}
         </div>
+
         <Footer />
       </div>
     </Context.Provider>
   );
 };
-
-const Sidebar = ({
-  side,
-  ...props
-}: { side?: "left" | "right" } & PropsWithChildren) => (
-  <div>
-    <div
-      className={clsx("px-2 md:w-[336px] md:px-4", {
-        ["left-0 top-[2rem] md:sticky"]: side === "left",
-      })}
-      {...props}
-    />
-  </div>
-);

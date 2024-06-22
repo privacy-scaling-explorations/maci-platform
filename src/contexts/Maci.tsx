@@ -1,12 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { useAccount, useSignMessage } from "wagmi";
+/* eslint-disable no-console */
 import { isAfter } from "date-fns";
 import {
   signup,
@@ -17,18 +9,19 @@ import {
   getPoll,
   genKeyPair,
 } from "maci-cli/sdk";
+import React, { createContext, useContext, useCallback, useEffect, useMemo, useState } from "react";
+import { useAccount, useSignMessage } from "wagmi";
 
-import type { Attestation } from "~/utils/fetchAttestations";
 import { config } from "~/config";
-import { api } from "~/utils/api";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
+import { api } from "~/utils/api";
+
 import type { IVoteArgs, MaciContextType, MaciProviderProps } from "./types";
+import type { Attestation } from "~/utils/fetchAttestations";
 
-export const MaciContext = createContext<MaciContextType | undefined>(
-  undefined,
-);
+export const MaciContext = createContext<MaciContextType | undefined>(undefined);
 
-export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
+export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProviderProps) => {
   const signer = useEthersSigner();
   const { address, isConnected, isDisconnected } = useAccount();
 
@@ -58,17 +51,12 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
   const attestationId = useMemo(() => {
     const values = attestations.data?.valueOf() as Attestation[] | undefined;
 
-    const attestation = values?.find(
-      (attestation) => config.admin === attestation.attester,
-    );
+    const attestation = values?.find(({ attester }) => config.admin === attester);
 
     return attestation?.id;
   }, [attestations]);
 
-  const isEligibleToVote = useMemo(
-    () => Boolean(attestationId) && Boolean(address),
-    [attestationId, address],
-  );
+  const isEligibleToVote = useMemo(() => Boolean(attestationId) && Boolean(address), [attestationId, address]);
 
   // on load get the key pair from local storage and set the signature message
   useEffect(() => {
@@ -94,17 +82,11 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
     localStorage.setItem("maciPubKey", userKeyPair.publicKey);
     setMaciPrivKey(userKeyPair.privateKey);
     setMaciPubKey(userKeyPair.publicKey);
-  }, [address, signMessageAsync, setMaciPrivKey, setMaciPubKey]);
+  }, [address, signatureMessage, signMessageAsync, setMaciPrivKey, setMaciPubKey]);
 
   const votingEndsAt = useMemo(
-    () =>
-      pollData
-        ? new Date(
-            Number(pollData.deployTime) * 1000 +
-              Number(pollData.duration) * 1000,
-          )
-        : new Date(),
-    [pollData?.deployTime, pollData?.duration],
+    () => (pollData ? new Date(Number(pollData.deployTime) * 1000 + Number(pollData.duration) * 1000) : new Date()),
+    [pollData],
   );
 
   const onSignup = useCallback(
@@ -136,23 +118,11 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
         setIsLoading(false);
       }
     },
-    [
-      attestationId,
-      maciPubKey,
-      address,
-      signer,
-      setIsRegistered,
-      setStateIndex,
-      setIsLoading,
-    ],
+    [attestationId, maciPubKey, signer, setIsRegistered, setStateIndex, setIsLoading],
   );
 
   const onVote = useCallback(
-    async (
-      votes: IVoteArgs[],
-      onError: () => Promise<void>,
-      onSuccess: () => Promise<void>,
-    ) => {
+    async (votes: IVoteArgs[], onError: () => Promise<void>, onSuccess: () => Promise<void>) => {
       if (!signer || !stateIndex || !pollData) {
         return;
       }
@@ -163,15 +133,13 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
         return;
       }
 
-      const messages = votes.map(
-        ({ newVoteWeight, voteOptionIndex }, index) => ({
-          newVoteWeight,
-          voteOptionIndex,
-          stateIndex: BigInt(stateIndex),
-          maciContractAddress: config.maciAddress!,
-          nonce: BigInt(index + 1),
-        }),
-      );
+      const messages = votes.map(({ newVoteWeight, voteOptionIndex }, index) => ({
+        newVoteWeight,
+        voteOptionIndex,
+        stateIndex: BigInt(stateIndex),
+        maciContractAddress: config.maciAddress!,
+        nonce: BigInt(index + 1),
+      }));
 
       setIsLoading(true);
 
@@ -184,23 +152,15 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
         signer,
       })
         .then(() => onSuccess())
-        .catch((error: Error) => {
-          setError(error.message);
+        .catch((err: Error) => {
+          setError(err.message);
           return onError();
         })
         .finally(() => {
           setIsLoading(false);
         });
     },
-    [
-      stateIndex,
-      pollData?.id,
-      maciPubKey,
-      maciPrivKey,
-      signer,
-      setIsLoading,
-      setError,
-    ],
+    [stateIndex, pollData, maciPubKey, maciPrivKey, signer, setIsLoading, setError],
   );
 
   useEffect(() => {
@@ -239,13 +199,11 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
         startBlock: config.maciStartBlock,
         signer,
       })
-        .then(
-          ({ isRegistered: registered, voiceCredits, stateIndex: index }) => {
-            setIsRegistered(registered);
-            setStateIndex(index);
-            setInitialVoiceCredits(Number(voiceCredits));
-          },
-        )
+        .then(({ isRegistered: registered, voiceCredits, stateIndex: index }) => {
+          setIsRegistered(registered);
+          setStateIndex(index);
+          setInitialVoiceCredits(Number(voiceCredits));
+        })
         .catch(console.error);
     } else if (account) {
       const { id, voiceCreditBalance } = account;
@@ -288,7 +246,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
         })
         .then(async (data) => {
           if (!data.isStateAqMerged || isAfter(votingEndsAt, new Date())) {
-            return;
+            return undefined;
           }
 
           return fetch(`${config.tallyUrl}/tally-${data.id}.json`)
@@ -303,25 +261,41 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [Boolean(signer), setIsLoading, setTallyData, setPollData]);
+  }, [signer, votingEndsAt, setIsLoading, setTallyData, setPollData]);
 
-  const value: MaciContextType = {
-    isLoading,
-    isEligibleToVote,
-    initialVoiceCredits,
-    votingEndsAt,
-    stateIndex,
-    isRegistered: isRegistered ?? false,
-    pollId: pollData?.id.toString(),
-    error,
-    pollData,
-    tallyData,
-    maciPubKey,
-    onSignup,
-    onVote,
-  };
+  const value = useMemo(
+    () => ({
+      isLoading,
+      isEligibleToVote,
+      initialVoiceCredits,
+      votingEndsAt,
+      stateIndex,
+      isRegistered: isRegistered ?? false,
+      pollId: pollData?.id.toString(),
+      error,
+      pollData,
+      tallyData,
+      maciPubKey,
+      onSignup,
+      onVote,
+    }),
+    [
+      isLoading,
+      isEligibleToVote,
+      initialVoiceCredits,
+      votingEndsAt,
+      stateIndex,
+      isRegistered,
+      pollData,
+      tallyData,
+      error,
+      maciPubKey,
+      onSignup,
+      onVote,
+    ],
+  );
 
-  return <MaciContext.Provider value={value}>{children}</MaciContext.Provider>;
+  return <MaciContext.Provider value={value as MaciContextType}>{children}</MaciContext.Provider>;
 };
 
 export const useMaci = (): MaciContextType => {
