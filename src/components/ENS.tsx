@@ -1,9 +1,11 @@
-import { Avatar } from "~/components/ui/Avatar";
 import { useEnsAvatar, useEnsName } from "wagmi";
+
+import { Avatar } from "~/components/ui/Avatar";
 import { truncate } from "~/utils/truncate";
+
 import type { Address } from "viem";
 
-export function AvatarENS({ address }: { address: Address }) {
+export const AvatarENS = ({ address }: { address: Address }): JSX.Element => {
   const { data: name } = useEnsName({
     address,
     chainId: 1,
@@ -18,13 +20,14 @@ export function AvatarENS({ address }: { address: Address }) {
   });
   return (
     <div className="flex items-center gap-2">
-      <Avatar rounded="full" size="xs" src={src} />
+      <Avatar rounded="full" size="xs" src={src || undefined} />
+
       <div>{name ?? truncate(address)}</div>
     </div>
   );
-}
+};
 
-export function NameENS({ address }: { address?: string }) {
+export const NameENS = ({ address = "" }: { address?: string }): JSX.Element => {
   const { data: name } = useEnsName({
     address: address as Address,
     chainId: 1,
@@ -34,4 +37,4 @@ export function NameENS({ address }: { address?: string }) {
   });
 
   return <div>{name ?? truncate(address)}</div>;
-}
+};

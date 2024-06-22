@@ -1,14 +1,15 @@
-import { Layout } from "~/layouts/DefaultLayout";
-
 import { type GetServerSideProps } from "next";
 
-export default function ProjectsPage({}) {
-  return <Layout>...</Layout>;
-}
+import { Layout } from "~/layouts/DefaultLayout";
 
-export const getServerSideProps: GetServerSideProps = async () => ({
-  redirect: {
-    destination: "/projects",
-    permanent: false,
-  },
-});
+const ProjectsPage = (): JSX.Element => <Layout>...</Layout>;
+
+export default ProjectsPage;
+
+export const getServerSideProps: GetServerSideProps = async () =>
+  Promise.resolve({
+    redirect: {
+      destination: "/projects",
+      permanent: false,
+    },
+  });

@@ -1,12 +1,11 @@
 import { Heading } from "~/components/ui/Heading";
 
-export function InvalidAdmin() {
-  return (
-    <div>
-      <Heading size="2xl" as="h3">
-        Invalid Admin Account
-      </Heading>
-      <p>Only admins can access this page.</p>
-    </div>
-  );
-}
+export const InvalidAdmin = (): JSX.Element => (
+  <div>
+    <Heading as="h3" size="2xl">
+      Invalid Admin Account
+    </Heading>
+
+    <p>Only admins can access this page.</p>
+  </div>
+);

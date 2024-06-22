@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+
 import { calculateVotes } from "./calculateResults";
 
 describe("Calculate results", () => {
@@ -62,7 +63,6 @@ describe("Calculate results", () => {
   ];
   test("custom payout", () => {
     const actual = calculateVotes(ballots, { style: "custom" });
-    console.log(actual);
 
     expect(actual).toMatchInlineSnapshot(`
       {
@@ -83,7 +83,6 @@ describe("Calculate results", () => {
   });
   test("OP-style payout", () => {
     const actual = calculateVotes(ballots, { style: "op", threshold: 3 });
-    console.log(actual);
     expect(actual).toMatchInlineSnapshot(`
       {
         "projectA": {

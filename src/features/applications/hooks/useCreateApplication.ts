@@ -1,28 +1,35 @@
-import { useMutation } from "@tanstack/react-query";
+import { type UseMutationResult, useMutation } from "@tanstack/react-query";
+
 import { config, eas } from "~/config";
-import { useUploadMetadata } from "~/hooks/useMetadata";
-import { useAttest, useCreateAttestation } from "~/hooks/useEAS";
-import type { Application, Profile } from "../types";
 import { type TransactionError } from "~/features/voters/hooks/useApproveVoters";
+import { useAttest, useCreateAttestation } from "~/hooks/useEAS";
+import { useUploadMetadata } from "~/hooks/useMetadata";
+
+import type { Application, Profile } from "../types";
+import type { Transaction } from "@ethereum-attestation-service/eas-sdk";
+
+export type TUseCreateApplicationReturn = Omit<
+  UseMutationResult<Transaction<string[]>, Error | TransactionError, { application: Application; profile: Profile }>,
+  "error"
+> & {
+  error: Error | TransactionError | null;
+  isAttesting: boolean;
+  isUploading: boolean;
+};
 
 export function useCreateApplication(options: {
   onSuccess: () => void;
   onError: (err: TransactionError) => void;
-}) {
+}): TUseCreateApplicationReturn {
   const attestation = useCreateAttestation();
   const attest = useAttest();
   const upload = useUploadMetadata();
 
   const mutation = useMutation({
-    mutationFn: async (values: {
-      application: Application;
-      profile: Profile;
-    }) => {
-      console.log("Uploading profile and application metadata");
-      return Promise.all([
-        upload.mutateAsync(values.application).then(({ url: metadataPtr }) => {
-          console.log("Creating application attestation data");
-          return attestation.mutateAsync({
+    mutationFn: async (values: { application: Application; profile: Profile }) =>
+      Promise.all([
+        upload.mutateAsync(values.application).then(({ url: metadataPtr }) =>
+          attestation.mutateAsync({
             schemaUID: eas.schemas.metadata,
             values: {
               name: values.application.name,
@@ -31,11 +38,10 @@ export function useCreateApplication(options: {
               type: "application",
               round: config.roundId,
             },
-          });
-        }),
-        upload.mutateAsync(values.profile).then(({ url: metadataPtr }) => {
-          console.log("Creating profile attestation data");
-          return attestation.mutateAsync({
+          }),
+        ),
+        upload.mutateAsync(values.profile).then(({ url: metadataPtr }) =>
+          attestation.mutateAsync({
             schemaUID: eas.schemas.metadata,
             values: {
               name: values.profile.name,
@@ -44,15 +50,9 @@ export function useCreateApplication(options: {
               type: "profile",
               round: config.roundId,
             },
-          });
-        }),
-      ]).then((attestations) => {
-        console.log("Creating onchain attestations", attestations, values);
-        return attest.mutateAsync(
-          attestations.map((att) => ({ ...att, data: [att.data] })),
-        );
-      });
-    },
+          }),
+        ),
+      ]).then((attestations) => attest.mutateAsync(attestations.map((att) => ({ ...att, data: [att.data] })))),
 
     ...options,
   });

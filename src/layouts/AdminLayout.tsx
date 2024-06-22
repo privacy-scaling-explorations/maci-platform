@@ -1,8 +1,10 @@
-import type { ReactNode, PropsWithChildren } from "react";
-import { type LayoutProps } from "./BaseLayout";
-import { Layout } from "./DefaultLayout";
 import { InvalidAdmin } from "~/features/admin/components/InvalidAdmin";
 import { useIsAdmin } from "~/hooks/useIsAdmin";
+
+import type { ReactNode, PropsWithChildren } from "react";
+
+import { type LayoutProps } from "./BaseLayout";
+import { Layout } from "./DefaultLayout";
 
 type Props = PropsWithChildren<
   {
@@ -10,7 +12,8 @@ type Props = PropsWithChildren<
     sidebarComponent?: ReactNode;
   } & LayoutProps
 >;
-export const AdminLayout = ({ children, ...props }: Props) => {
+
+export const AdminLayout = ({ children = null, ...props }: Props): JSX.Element => {
   const isAdmin = useIsAdmin();
   if (isAdmin) {
     return <Layout {...props}>{children}</Layout>;

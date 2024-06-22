@@ -1,10 +1,10 @@
-export const truncate = (str = "", max = 20, sep = "...") => {
+export const truncate = (str = "", max = 20, sep = "..."): string => {
   const len = str.length;
   if (len > max) {
     const seplen = sep.length;
 
-    // If seperator is larger than character limit,
-    // well then we don't want to just show the seperator,
+    // If separator is larger than character limit,
+    // well then we don't want to just show the separator,
     // so just show right hand side of the string.
     if (seplen > max) {
       return str.substr(len - max);

@@ -9,7 +9,11 @@ OP-style:
 - Median value is counted
 */
 
-export type PayoutOptions = { style: "custom" | "op"; threshold?: number };
+export interface PayoutOptions {
+  style: "custom" | "op";
+  threshold?: number;
+}
+
 export type BallotResults = Record<
   string,
   {
@@ -17,6 +21,7 @@ export type BallotResults = Record<
     votes: number;
   }
 >;
+
 export function calculateVotes(
   ballots: { voterId: string; votes: Vote[] }[],
   payoutOpts: PayoutOptions = { style: "custom" },
@@ -30,8 +35,8 @@ export function calculateVotes(
     }
   > = {};
 
-  for (const ballot of ballots) {
-    for (const vote of ballot.votes) {
+  ballots.forEach((ballot) => {
+    ballot.votes.forEach((vote) => {
       if (!projectVotes[vote.projectId]) {
         projectVotes[vote.projectId] = {
           total: 0,
@@ -42,33 +47,29 @@ export function calculateVotes(
       projectVotes[vote.projectId]!.total += vote.amount;
       projectVotes[vote.projectId]!.amounts.push(vote.amount);
       projectVotes[vote.projectId]!.voterIds.add(ballot.voterId);
-    }
-  }
+    });
+  });
 
   const projects: BallotResults = {};
-  for (const projectId in projectVotes) {
-    const { total, amounts, voterIds } = projectVotes[projectId]!;
+
+  Object.entries(projectVotes).forEach(([projectId, value]) => {
+    const { total, amounts, voterIds } = value;
+
     const voteIsCounted =
-      payoutOpts.style === "custom" ||
-      (payoutOpts.threshold && voterIds.size >= payoutOpts.threshold);
+      payoutOpts.style === "custom" || (payoutOpts.threshold && voterIds.size >= payoutOpts.threshold);
 
     if (voteIsCounted) {
       projects[projectId] = {
         voters: voterIds.size,
-        votes:
-          payoutOpts.style === "op"
-            ? calculateMedian(amounts.sort((a, b) => a - b))
-            : total,
+        votes: payoutOpts.style === "op" ? calculateMedian(amounts.sort((a, b) => a - b)) : total,
       };
     }
-  }
+  });
 
   return projects;
 }
 
 function calculateMedian(arr: number[]): number {
   const mid = Math.floor(arr.length / 2);
-  return arr.length % 2 !== 0
-    ? arr[mid] ?? 0
-    : ((arr[mid - 1] ?? 0) + (arr[mid] ?? 0)) / 2;
+  return arr.length % 2 !== 0 ? arr[mid] ?? 0 : ((arr[mid - 1] ?? 0) + (arr[mid] ?? 0)) / 2;
 }

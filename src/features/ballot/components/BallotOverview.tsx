@@ -1,147 +1,45 @@
-import { type PropsWithChildren, type ReactNode, useState } from "react";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { type PropsWithChildren, type ReactNode, useState, useCallback } from "react";
+import { toast } from "sonner";
 import { useAccount } from "wagmi";
 
 import { Alert } from "~/components/ui/Alert";
 import { Button } from "~/components/ui/Button";
-import { Progress } from "~/components/ui/Progress";
-import { formatNumber } from "~/utils/formatNumber";
 import { Dialog } from "~/components/ui/Dialog";
-import { VotingEndsIn } from "./VotingEndsIn";
+import { Progress } from "~/components/ui/Progress";
 import { Spinner } from "~/components/ui/Spinner";
-import {
-  useProjectCount,
-  useProjectIdMapping,
-} from "~/features/projects/hooks/useProjects";
 import { config } from "~/config";
-import { getAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
-import dynamic from "next/dynamic";
-import { useMaci } from "~/contexts/Maci";
 import { useBallot } from "~/contexts/Ballot";
+import { useMaci } from "~/contexts/Maci";
+import { useProjectCount, useProjectIdMapping } from "~/features/projects/hooks/useProjects";
+import { formatNumber } from "~/utils/formatNumber";
+import { useAppState } from "~/utils/state";
+import { EAppState } from "~/utils/types";
 
-function BallotOverview() {
-  const router = useRouter();
+import { VotingEndsIn } from "./VotingEndsIn";
 
-  const { isRegistered, isEligibleToVote, initialVoiceCredits } = useMaci();
-  const { sumBallot, ballot } = useBallot();
+const BallotHeader = ({ children, ...props }: PropsWithChildren): JSX.Element => (
+  <h3 className="text-sm font-semibold uppercase tracking-widest text-gray-700 dark:text-gray-300" {...props}>
+    {children}
+  </h3>
+);
 
-  const sum = sumBallot(ballot?.votes);
+const BallotSection = ({ title, children }: { title: string | ReactNode } & PropsWithChildren) => (
+  <div className="space-y-1 text-gray-500">
+    <h4 className="text-sm font-semibold ">{title}</h4>
 
-  const allocations = ballot?.votes ?? [];
-  const canSubmit = router.route === "/ballot" && allocations.length;
-  const viewBallot = router.route !== "/ballot" && allocations.length;
+    <div className="space-y-1 text-lg font-semibold">{children}</div>
+  </div>
+);
 
-  const { data: projectCount } = useProjectCount();
-
-  const appState = getAppState();
-
-  const { address } = useAccount();
-
-  if (appState === EAppState.LOADING) {
-    return <Spinner className="h-6 w-6" />;
-  }
-
-  if (appState === EAppState.RESULTS)
-    return (
-      <div className="flex flex-col items-center gap-2 pt-8 ">
-        <BallotHeader>Results are live!</BallotHeader>
-        <Button as={Link} href={"/projects/results"}>
-          Go to results
-        </Button>
-      </div>
-    );
-
-  if (appState === EAppState.TALLYING)
-    return (
-      <div className="flex flex-col items-center gap-2 pt-8 ">
-        <BallotHeader>Voting has ended</BallotHeader>
-        <BallotSection title="Results are being tallied"></BallotSection>
-      </div>
-    );
-
-  if (appState !== EAppState.VOTING)
-    return (
-      <div className="flex flex-col items-center gap-2 pt-8 ">
-        <BallotHeader>Voting hasn't started yet</BallotHeader>
-        {appState === EAppState.REVIEWING ? (
-          <BallotSection title="Applications are being reviewed" />
-        ) : (
-          <Button className="border-1" as={Link} href={"/applications/new"}>
-            Create application
-          </Button>
-        )}
-      </div>
-    );
-
-  return (
-    <div className="space-y-6">
-      <BallotHeader>Voting Round: {config.roundId}</BallotHeader>
-      <BallotSection title="Voting ends in:">
-        <VotingEndsIn />
-      </BallotSection>
-      {address && isRegistered && (
-        <>
-          <BallotHeader>Your ballot</BallotHeader>
-          <BallotSection title="Projects added:">
-            <div>
-              <span className="text-gray-900 dark:text-gray-300">
-                {allocations.length}
-              </span>
-              /{projectCount?.count}
-            </div>
-          </BallotSection>
-          <BallotSection
-            title={
-              <div className="flex justify-between">
-                {config.tokenName} allocated:
-                <div
-                  className={clsx("text-gray-900 dark:text-gray-300", {
-                    ["text-primary-500"]: sum > initialVoiceCredits,
-                  })}
-                >
-                  {formatNumber(sum)} {config.tokenName}
-                </div>
-              </div>
-            }
-          >
-            <Progress value={sum} max={initialVoiceCredits} />
-            <div className="flex justify-between text-xs">
-              <div>Total</div>
-              <div>
-                {formatNumber(initialVoiceCredits)} {config.tokenName}
-              </div>
-            </div>
-          </BallotSection>
-        </>
-      )}
-      {!isRegistered || !isEligibleToVote ? null : ballot?.published ? (
-        <Button
-          className="w-full"
-          variant="primary"
-          as={Link}
-          href={`/ballot/confirmation`}
-        >
-          View submitted ballot
-        </Button>
-      ) : canSubmit ? (
-        <SubmitBallotButton disabled={sum > initialVoiceCredits} />
-      ) : viewBallot ? (
-        <Button className="w-full" variant="primary" as={Link} href={`/ballot`}>
-          View my ballot
-        </Button>
-      ) : (
-        <Button className={"w-full"} variant="primary" disabled>
-          No projects added yet
-        </Button>
-      )}
-    </div>
-  );
+interface ISubmitBallotButtonProps {
+  disabled?: boolean;
 }
 
-const SubmitBallotButton = ({ disabled = false }) => {
+const SubmitBallotButton = ({ disabled = false }: ISubmitBallotButtonProps): JSX.Element => {
   const [isOpen, setOpen] = useState(false);
   const { isLoading, error, onVote } = useMaci();
   const { ballot, publishBallot } = useBallot();
@@ -149,6 +47,14 @@ const SubmitBallotButton = ({ disabled = false }) => {
   const projectIndices = useProjectIdMapping(ballot);
 
   const router = useRouter();
+
+  const handleOpen = useCallback(() => {
+    setOpen(true);
+  }, [setOpen]);
+
+  const handleClose = useCallback(() => {
+    setOpen(false);
+  }, [setOpen]);
 
   const submit = {
     isLoading,
@@ -162,7 +68,9 @@ const SubmitBallotButton = ({ disabled = false }) => {
 
       await onVote(
         votes,
-        async () => {},
+        () => {
+          toast.error("Voting is failed");
+        },
         async () => {
           await router.push("/ballot/confirmation");
           publishBallot();
@@ -174,8 +82,7 @@ const SubmitBallotButton = ({ disabled = false }) => {
   const messages = {
     signing: {
       title: "Sign ballot",
-      instructions:
-        "Confirm the transactions in your wallet to submit your  ballot.",
+      instructions: "Confirm the transactions in your wallet to submit your  ballot.",
     },
     submitting: {
       title: "Submit ballot",
@@ -185,50 +92,35 @@ const SubmitBallotButton = ({ disabled = false }) => {
     error: {
       title: "Error submitting ballot",
       instructions: (
-        <Alert
-          variant="warning"
-          title={(submit.error as { message?: string })?.message}
-        >
+        <Alert title={(submit.error as { message?: string }).message} variant="warning">
           There was an error submitting the ballot.
         </Alert>
       ),
     },
   };
 
-  const { title, instructions } =
-    messages[
-      submit.isLoading ? "signing" : submit.error ? "error" : "submitting"
-    ];
+  const messageKey = submit.error ? "error" : "submitting";
+  const { title, instructions } = messages[submit.isLoading ? "signing" : messageKey];
 
   return (
     <>
-      <Button
-        className="w-full"
-        variant="primary"
-        disabled={disabled}
-        onClick={async () => setOpen(true)}
-      >
+      <Button className="w-full" disabled={disabled} variant="primary" onClick={handleOpen}>
         Submit ballot
       </Button>
-      <Dialog size="sm" isOpen={isOpen} onOpenChange={setOpen} title={title}>
+
+      <Dialog isOpen={isOpen} size="sm" title={title} onOpenChange={setOpen}>
         <p className="pb-8">{instructions}</p>
+
         <div
           className={clsx("flex gap-2", {
-            ["hidden"]: submit.isLoading,
+            hidden: submit.isLoading,
           })}
         >
-          <Button
-            variant="ghost"
-            className="flex-1"
-            onClick={() => setOpen(false)}
-          >
+          <Button className="flex-1" variant="ghost" onClick={handleClose}>
             Back
           </Button>
-          <Button
-            className="flex-1"
-            variant="primary"
-            onClick={() => submit.mutate()}
-          >
+
+          <Button className="flex-1" variant="primary" onClick={() => submit.mutate()}>
             Submit ballot
           </Button>
         </div>
@@ -237,25 +129,133 @@ const SubmitBallotButton = ({ disabled = false }) => {
   );
 };
 
-function BallotHeader(props: PropsWithChildren) {
-  return (
-    <h3
-      className="text-sm font-semibold uppercase tracking-widest text-gray-700 dark:text-gray-300"
-      {...props}
-    />
-  );
-}
+const BallotOverview = () => {
+  const router = useRouter();
 
-function BallotSection({
-  title,
-  children,
-}: { title: string | ReactNode } & PropsWithChildren) {
+  const { isRegistered, isEligibleToVote, initialVoiceCredits } = useMaci();
+  const { sumBallot, ballot } = useBallot();
+
+  const sum = sumBallot(ballot?.votes);
+
+  const allocations = ballot?.votes ?? [];
+  const canSubmit = router.route === "/ballot" && allocations.length;
+  const viewBallot = router.route !== "/ballot" && allocations.length;
+
+  const { data: projectCount } = useProjectCount();
+
+  const appState = useAppState();
+
+  const { address } = useAccount();
+
+  if (appState === EAppState.LOADING) {
+    return <Spinner className="h-6 w-6" />;
+  }
+
+  if (appState === EAppState.RESULTS) {
+    return (
+      <div className="flex flex-col items-center gap-2 pt-8 ">
+        <BallotHeader>Results are live!</BallotHeader>
+
+        <Button as={Link} href="/projects/results">
+          Go to results
+        </Button>
+      </div>
+    );
+  }
+
+  if (appState === EAppState.TALLYING) {
+    return (
+      <div className="flex flex-col items-center gap-2 pt-8 ">
+        <BallotHeader>Voting has ended</BallotHeader>
+
+        <BallotSection title="Results are being tallied" />
+      </div>
+    );
+  }
+
+  if (appState !== EAppState.VOTING) {
+    return (
+      <div className="flex flex-col items-center gap-2 pt-8 ">
+        <BallotHeader>Voting has not started yet</BallotHeader>
+
+        {appState === EAppState.REVIEWING ? (
+          <BallotSection title="Applications are being reviewed" />
+        ) : (
+          <Button as={Link} className="border-1" href="/applications/new">
+            Create application
+          </Button>
+        )}
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-1 text-gray-500">
-      <h4 className="text-sm font-semibold ">{title}</h4>
-      <div className="space-y-1 text-lg font-semibold">{children}</div>
+    <div className="space-y-6">
+      <BallotHeader>Voting Round: {config.roundId}</BallotHeader>
+
+      <BallotSection title="Voting ends in:">
+        <VotingEndsIn />
+      </BallotSection>
+
+      {address && isRegistered && (
+        <>
+          <BallotHeader>Your ballot</BallotHeader>
+
+          <BallotSection title="Projects added:">
+            <div>
+              <span className="text-gray-900 dark:text-gray-300">{`${allocations.length}/${projectCount?.count}`}</span>
+            </div>
+          </BallotSection>
+
+          <BallotSection
+            title={
+              <div className="flex justify-between">
+                <span className="mr-1">{config.tokenName} allocated:</span>
+
+                <div
+                  className={clsx("text-gray-900 dark:text-gray-300", {
+                    "text-primary-500": sum > initialVoiceCredits,
+                  })}
+                >
+                  {`${formatNumber(sum)} ${config.tokenName}`}
+                </div>
+              </div>
+            }
+          >
+            <Progress max={initialVoiceCredits} value={sum} />
+
+            <div className="flex justify-between text-xs">
+              <div>Total</div>
+
+              <div>{`${formatNumber(initialVoiceCredits)} ${config.tokenName}`}</div>
+            </div>
+          </BallotSection>
+        </>
+      )}
+
+      {isRegistered && isEligibleToVote ? (
+        <>
+          {ballot?.published && (
+            <Button as={Link} className="w-full" href="/ballot/confirmation" variant="primary">
+              View submitted ballot
+            </Button>
+          )}
+
+          {!ballot?.published && canSubmit && <SubmitBallotButton disabled={sum > initialVoiceCredits} />}
+
+          {!ballot?.published && !canSubmit && viewBallot ? (
+            <Button as={Link} className="w-full" href="/ballot" variant="primary">
+              View my ballot
+            </Button>
+          ) : (
+            <Button disabled className="w-full" variant="primary">
+              No projects added yet
+            </Button>
+          )}
+        </>
+      ) : null}
     </div>
   );
-}
+};
 
 export default dynamic(() => Promise.resolve(BallotOverview), { ssr: false });

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
   SchemaEncoder,
   SchemaRegistry,
@@ -6,19 +7,17 @@ import {
 } from "@ethereum-attestation-service/eas-sdk";
 import { type TransactionSigner } from "@ethereum-attestation-service/eas-sdk/dist/transaction";
 import { type JsonRpcSigner } from "ethers";
+
 import * as config from "~/config";
 
-type Params = {
+interface Params {
   values: Record<string, unknown>;
   schemaUID: string;
   recipient?: string;
   refUID?: string;
-};
+}
 
-export async function createAttestation(
-  params: Params,
-  signer: JsonRpcSigner,
-): Promise<AttestationRequest> {
+export async function createAttestation(params: Params, signer: JsonRpcSigner): Promise<AttestationRequest> {
   console.log("Getting recipient address");
   const recipient = params.recipient ?? (await signer.getAddress());
 
@@ -37,13 +36,8 @@ export async function createAttestation(
   };
 }
 
-async function encodeData(
-  { values, schemaUID }: Params,
-  signer: JsonRpcSigner,
-) {
-  const schemaRegistry = new SchemaRegistry(
-    config.eas.contracts.schemaRegistry,
-  );
+async function encodeData({ values, schemaUID }: Params, signer: JsonRpcSigner) {
+  const schemaRegistry = new SchemaRegistry(config.eas.contracts.schemaRegistry);
   console.log("Connecting signer to SchemaRegistry...");
   schemaRegistry.connect(signer as unknown as TransactionSigner);
 
@@ -53,16 +47,13 @@ async function encodeData(
   const schemaEncoder = new SchemaEncoder(schemaRecord.schema);
 
   console.log("Creating data to encode from schema record...");
-  const dataToEncode = schemaRecord?.schema.split(",").map((param) => {
+  const dataToEncode = schemaRecord.schema.split(",").map((param) => {
     const [type, name] = param.trim().split(" ");
-    if (name && type && values) {
+    if (name && type) {
       const value = values[name] as SchemaValue;
       return { name, type, value };
-    } else {
-      throw new Error(
-        `Attestation data: ${name} not found in ${JSON.stringify(values)}`,
-      );
     }
+    throw new Error(`Attestation data: ${name} not found in ${JSON.stringify(values)}`);
   });
 
   console.log("Encoding data with schema...");

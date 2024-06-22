@@ -2,7 +2,7 @@ import { config } from "~/config";
 
 import { createCachedFetch } from "./fetch";
 
-const fetch = createCachedFetch({ ttl: 1000 * 60 * 10 });
+const cachedFetch = createCachedFetch({ ttl: 1000 * 60 * 10 });
 
 export interface User {
   id: string;
@@ -39,14 +39,11 @@ const UserQuery = `
   }
 `;
 
-export async function fetchUser(publicKey: [bigint, bigint]) {
-  return fetch<{ user: User }>(config.maciSubgraphUrl, {
+export async function fetchUser(publicKey: [bigint, bigint]): Promise<User | undefined> {
+  return cachedFetch<{ user: User }>(config.maciSubgraphUrl, {
     method: "POST",
     body: JSON.stringify({
-      query: UserQuery.replace(
-        "id: $id",
-        `id: "${publicKey[0]} ${publicKey[1]}"`,
-      ),
+      query: UserQuery.replace("id: $id", `id: "${publicKey[0]} ${publicKey[1]}"`),
     }),
   }).then((response: GraphQLResponse) => response.data?.user);
 }

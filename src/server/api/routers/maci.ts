@@ -7,7 +7,5 @@ import { fetchUser } from "~/utils/fetchUser";
 export const maciRouter = createTRPCRouter({
   user: publicProcedure
     .input(z.object({ publicKey: z.string() }))
-    .query(async ({ input }) =>
-      fetchUser(PubKey.deserialize(input.publicKey).rawPubKey),
-    ),
+    .query(async ({ input }) => fetchUser(PubKey.deserialize(input.publicKey).rawPubKey)),
 });

@@ -1,13 +1,11 @@
+/* eslint-disable no-console */
+import { SchemaRegistry, ZERO_ADDRESS, getSchemaUID } from "@ethereum-attestation-service/eas-sdk";
 import "dotenv/config";
 import { ethers, formatEther } from "ethers";
-import {
-  SchemaRegistry,
-  ZERO_ADDRESS,
-  getSchemaUID,
-} from "@ethereum-attestation-service/eas-sdk";
-import type { TransactionSigner } from "@ethereum-attestation-service/eas-sdk/dist/transaction";
 
 import { eas, config } from "~/config";
+
+import type { TransactionSigner } from "@ethereum-attestation-service/eas-sdk/dist/transaction";
 
 /*
 This file defines and registers the EAS schemas. 
@@ -20,8 +18,7 @@ Run: npx tsx src/lib/eas/registerSchemas
 */
 
 const approvalSchema = "bytes32 type, bytes32 round";
-const metadataSchema =
-  "string name, string metadataPtr, uint256 metadataType, bytes32 type, bytes32 round";
+const metadataSchema = "string name, string metadataPtr, uint256 metadataType, bytes32 type, bytes32 round";
 
 const schemas = [
   { name: "Voter Approval", schema: approvalSchema },
@@ -30,19 +27,14 @@ const schemas = [
   { name: "Profile Metadata", schema: metadataSchema },
 ];
 
-const provider = new ethers.AlchemyProvider(
-  config.network.name,
-  process.env.NEXT_PUBLIC_ALCHEMY_ID,
-);
+const provider = new ethers.AlchemyProvider(config.network.name, process.env.NEXT_PUBLIC_ALCHEMY_ID);
 
-const wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY!).connect(
-  provider,
-);
+const wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY!).connect(provider);
 
 const schemaRegistry = new SchemaRegistry(eas.contracts.schemaRegistry);
 schemaRegistry.connect(wallet as unknown as TransactionSigner);
 
-export async function registerSchemas() {
+export async function registerSchemas(): Promise<{ name: string; uid: string }[]> {
   console.log("Balance: ", await provider.getBalance(wallet).then(formatEther));
   return Promise.all(
     schemas.map(async ({ name, schema }) => {
@@ -52,19 +44,20 @@ export async function registerSchemas() {
         .getSchema({
           uid: getSchemaUID(schema, ZERO_ADDRESS, true),
         })
-        .catch();
+        .catch(console.error);
       console.log("exists", exists);
-      if (exists) return { name, ...exists };
 
-      return schemaRegistry
-        .register({ schema, revocable: true })
-        .then(async (tx) => ({ name, uid: await tx.wait() }));
+      if (exists) {
+        return { name, ...exists };
+      }
+
+      return schemaRegistry.register({ schema, revocable: true }).then(async (tx) => ({ name, uid: await tx.wait() }));
     }),
   ).then((registered) => {
     console.log(`Schemas registered!`);
-    registered.forEach((schema) =>
-      console.log(`  ${schema.name}: ${schema.uid}`),
-    );
+    registered.forEach((schema) => {
+      console.log(`  ${schema.name}: ${schema.uid}`);
+    });
 
     return registered;
   });

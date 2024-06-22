@@ -1,16 +1,13 @@
-import { expect, test, vi } from "vitest";
-import { createAttestation } from "../createAttestation";
-import type { Transaction } from "@ethereum-attestation-service/eas-sdk/dist/transaction";
 import { ethers, type JsonRpcSigner } from "ethers";
-import type {
-  AttestationRequest,
-  SchemaRecord,
-} from "@ethereum-attestation-service/eas-sdk";
+import { expect, test, vi } from "vitest";
+
+import type { AttestationRequest, SchemaRecord } from "@ethereum-attestation-service/eas-sdk";
+import type { Transaction } from "@ethereum-attestation-service/eas-sdk/dist/transaction";
+
+import { createAttestation } from "../createAttestation";
 import { createEAS } from "../createEAS";
 
-const signer = ethers.Wallet.createRandom().connect(
-  ethers.getDefaultProvider(),
-) as unknown as JsonRpcSigner;
+const signer = ethers.Wallet.createRandom().connect(ethers.getDefaultProvider()) as unknown as JsonRpcSigner;
 test("createAttestation", async () => {
   const application = {
     name: "foo",
@@ -23,8 +20,7 @@ test("createAttestation", async () => {
   const attestation = await createAttestation(
     {
       values: application,
-      schemaUID:
-        "0x76e98cce95f3ba992c2ee25cef25f756495147608a3da3aa2e5ca43109fe77cc",
+      schemaUID: "0x76e98cce95f3ba992c2ee25cef25f756495147608a3da3aa2e5ca43109fe77cc",
     },
     signer,
   );
@@ -32,16 +28,14 @@ test("createAttestation", async () => {
   expect(attestation.data.recipient).toEqual(await signer.getAddress());
 });
 
-test("createEAS", async () => {
+test("createEAS", () => {
   const eas = createEAS(signer);
 
   expect(eas.attest.bind(eas)).toBeDefined();
 });
 
 vi.hoisted(() => ({
-  attestMock: vi
-    .fn<[AttestationRequest], Transaction<string>>()
-    .mockResolvedValue({} as Transaction<string>),
+  attestMock: vi.fn<[AttestationRequest], Transaction<string>>().mockResolvedValue({} as Transaction<string>),
 }));
 
 vi.mock("@ethereum-attestation-service/eas-sdk", async () => {
@@ -49,8 +43,7 @@ vi.mock("@ethereum-attestation-service/eas-sdk", async () => {
   const metadataSchemaRecord: SchemaRecord = {
     resolver: "0x0000000000000000000000000000000000000000",
     revocable: true,
-    schema:
-      "string name,uint256 metadataType,string metadataPtr,bytes32 type,bytes32 round",
+    schema: "string name,uint256 metadataType,string metadataPtr,bytes32 type,bytes32 round",
     uid: "0x58e80750f091c47b3e55ac89942b30df23de405399edad95920fe15bd22309b7",
   };
   return {

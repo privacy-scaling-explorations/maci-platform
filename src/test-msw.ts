@@ -1,10 +1,10 @@
 import "@testing-library/jest-dom";
-
-import superjson from "superjson";
-import { createTRPCMsw } from "msw-trpc";
-import { type AppRouter } from "./server/api/root";
-import { setupServer } from "msw/node";
 import { HttpResponse, http } from "msw";
+import { setupServer } from "msw/node";
+import { createTRPCMsw } from "msw-trpc";
+import superjson from "superjson";
+
+import { type AppRouter } from "./server/api/root";
 
 export const mockTrpc = createTRPCMsw<AppRouter>({
   baseUrl: "http://localhost:3000/api/trpc",
@@ -15,9 +15,7 @@ export const mockTrpc = createTRPCMsw<AppRouter>({
 });
 
 export const server = setupServer(
-  http.get("/api/auth/session", () => {
-    return HttpResponse.json({});
-  }),
+  http.get("/api/auth/session", () => HttpResponse.json({})),
   // mockTrpc.projects.search.query(() => {
   //   return mockProjects;
   // }),

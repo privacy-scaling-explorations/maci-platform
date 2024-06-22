@@ -1,32 +1,35 @@
-import { Layout } from "~/layouts/DefaultLayout";
-
-import { ApplicationForm } from "~/features/applications/components/ApplicationForm";
-import { Markdown } from "~/components/ui/Markdown";
 import { useAccount } from "wagmi";
-import { getAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+
 import { Alert } from "~/components/ui/Alert";
+import { Markdown } from "~/components/ui/Markdown";
+import { ApplicationForm } from "~/features/applications/components/ApplicationForm";
+import { Layout } from "~/layouts/DefaultLayout";
+import { useAppState } from "~/utils/state";
+import { EAppState } from "~/utils/types";
 
-export default function NewProjectPage() {
-  const { address } = useAccount();
-  const state = getAppState();
-
-  return (
-    <Layout>
-      <Markdown className={"mb-8"}>
-        {`
+const APPLICATION_TEXT = `
 ### New Application
 Fill out this form to create an application for your project. It will
 then be reviewed by our admins. 
 
 Your progress is saved locally so you can return to this page to resume your application.
-`}
-      </Markdown>
+`;
+
+const NewProjectPage = (): JSX.Element => {
+  const { address } = useAccount();
+  const state = useAppState();
+
+  return (
+    <Layout>
+      <Markdown className="mb-8">{APPLICATION_TEXT}</Markdown>
+
       {state !== EAppState.APPLICATION ? (
-        <Alert variant="info" title="Application period has ended"></Alert>
+        <Alert title="Application period has ended" variant="info" />
       ) : (
         <ApplicationForm address={address} />
       )}
     </Layout>
   );
-}
+};
+
+export default NewProjectPage;

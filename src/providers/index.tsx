@@ -1,21 +1,15 @@
-import { useMemo, type PropsWithChildren } from "react";
-
-import {
-  type Chain,
-  getDefaultConfig,
-  RainbowKitProvider,
-} from "@rainbow-me/rainbowkit";
-import { http, WagmiProvider } from "wagmi";
-import { ThemeProvider } from "next-themes";
-
-import * as appConfig from "~/config";
-import { Toaster } from "~/components/Toaster";
+import { type Chain, getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
+import { useMemo, type PropsWithChildren } from "react";
+import { http, WagmiProvider } from "wagmi";
 
-import { MaciProvider } from "~/contexts/Maci";
+import { Toaster } from "~/components/Toaster";
+import * as appConfig from "~/config";
 import { BallotProvider } from "~/contexts/Ballot";
+import { MaciProvider } from "~/contexts/Maci";
 
-export function Providers({ children }: PropsWithChildren) {
+export const Providers = ({ children }: PropsWithChildren): JSX.Element => {
   const { config, queryClient } = useMemo(() => createWagmiConfig(), []);
 
   return (
@@ -25,6 +19,7 @@ export function Providers({ children }: PropsWithChildren) {
           <RainbowKitProvider>
             <MaciProvider>
               <BallotProvider>{children}</BallotProvider>
+
               <Toaster />
             </MaciProvider>
           </RainbowKitProvider>
@@ -32,7 +27,7 @@ export function Providers({ children }: PropsWithChildren) {
       </WagmiProvider>
     </ThemeProvider>
   );
-}
+};
 
 function createWagmiConfig() {
   const activeChains: Chain[] = [appConfig.config.network];

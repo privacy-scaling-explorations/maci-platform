@@ -1,5 +1,5 @@
-import { type z } from "zod";
-import { tv } from "tailwind-variants";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon, Search, Trash } from "lucide-react";
 import {
   type ComponentPropsWithRef,
   type PropsWithChildren,
@@ -18,12 +18,14 @@ import {
   type UseFormProps,
   useFieldArray,
 } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { tv } from "tailwind-variants";
+import { type z } from "zod";
+
+import { cn } from "~/utils/classNames";
+
+import { IconButton } from "./Button";
 
 import { createComponent } from ".";
-import { cn } from "~/utils/classNames";
-import { IconButton } from "./Button";
-import { PlusIcon, Search, Trash } from "lucide-react";
 
 const inputBase = [
   "dark:bg-gray-900",
@@ -33,6 +35,7 @@ const inputBase = [
   "disabled:opacity-30",
   "checked:bg-gray-800",
 ];
+
 export const Input = createComponent(
   "input",
   tv({
@@ -44,6 +47,7 @@ export const Input = createComponent(
     },
   }),
 );
+
 export const InputWrapper = createComponent(
   "div",
   tv({
@@ -51,6 +55,7 @@ export const InputWrapper = createComponent(
     variants: {},
   }),
 );
+
 export const InputAddon = createComponent(
   "div",
   tv({
@@ -85,10 +90,7 @@ export const Select = createComponent(
 export const Checkbox = createComponent(
   "input",
   tv({
-    base: [
-      ...inputBase,
-      "checked:focus:dark:bg-gray-700 checked:hover:dark:bg-gray-700",
-    ],
+    base: [...inputBase, "checked:focus:dark:bg-gray-700 checked:hover:dark:bg-gray-700"],
   }),
 );
 
@@ -99,89 +101,77 @@ export const Label = createComponent(
     variants: { required: { true: "after:content-['*']" } },
   }),
 );
-export const Textarea = createComponent(
-  "textarea",
-  tv({ base: [...inputBase, "w-full"] }),
-);
 
-export const SearchInput = forwardRef(function SearchInput(
-  { ...props }: ComponentPropsWithRef<typeof Input>,
-  ref,
-) {
-  return (
-    <InputWrapper className="">
-      <InputIcon>
-        <Search />
-      </InputIcon>
-      <Input ref={ref} {...props} className="rounded-full pl-10" />
-    </InputWrapper>
-  );
-});
+export const ErrorMessage = createComponent("div", tv({ base: "pt-1 text-xs text-red-500" }));
 
-export const FormControl = ({
-  name,
-  label,
-  hint,
-  required,
-  children,
-  valueAsNumber,
-  className,
-}: {
+export const Textarea = createComponent("textarea", tv({ base: [...inputBase, "w-full"] }));
+
+export const SearchInput = forwardRef(({ ...props }: ComponentPropsWithRef<typeof Input>, ref) => (
+  <InputWrapper className="">
+    <InputIcon>
+      <Search />
+    </InputIcon>
+
+    <Input ref={ref} {...props} className="rounded-full pl-10" />
+  </InputWrapper>
+));
+
+SearchInput.displayName = "SearchInput";
+
+export interface IFormControlProps extends ComponentPropsWithoutRef<"fieldset"> {
   name: string;
   label?: string;
   required?: boolean;
   valueAsNumber?: boolean;
   hint?: string;
-} & ComponentPropsWithoutRef<"fieldset">) => {
+}
+
+export const FormControl = ({
+  name,
+  label = "",
+  hint = "",
+  required = false,
+  children = null,
+  valueAsNumber = false,
+  className = "",
+}: IFormControlProps): JSX.Element => {
   const {
     register,
     formState: { errors },
   } = useFormContext();
 
   // Get error for name - handles field arrays (field.index.prop)
-  const error = name.split(".").reduce(
-    /* eslint-disable-next-line */
-    (err, key) => (err as any)?.[key],
-    errors,
-  ) as unknown as { message: string };
+  const [index] = name.split(".");
+  const error = index && errors[index];
 
   return (
     <fieldset className={cn("mb-4", className)}>
       {label && (
-        <Label
-          className="mb-1"
-          htmlFor={name}
-          required={required}
-          children={label}
-        />
+        <Label className="mb-1" htmlFor={name} required={required}>
+          {label}
+        </Label>
       )}
+
       {cloneElement(children as ReactElement, {
         id: name,
         error: Boolean(error),
         ...register(name, { valueAsNumber }),
       })}
-      {hint && (
-        <div className="pt-1 text-xs text-gray-500 dark:text-gray-400">
-          {hint}
-        </div>
-      )}
+
+      {hint && <div className="pt-1 text-xs text-gray-500 dark:text-gray-400">{hint}</div>}
+
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
     </fieldset>
   );
 };
 
-export const ErrorMessage = createComponent(
-  "div",
-  tv({ base: "pt-1 text-xs text-red-500" }),
-);
-
-export function FieldArray<S extends z.Schema>({
+export const FieldArray = <S extends z.Schema>({
   name,
   renderField,
 }: {
   name: string;
   renderField: (field: z.infer<S>, index: number) => ReactNode;
-}) {
+}): JSX.Element => {
   const form = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -192,55 +182,55 @@ export function FieldArray<S extends z.Schema>({
 
   return (
     <div className="mb-8">
-      {error && (
-        <div className="border border-red-900 p-2 dark:text-red-500">
-          {String(error)}
-        </div>
-      )}
+      {error && <div className="border border-red-900 p-2 dark:text-red-500">{String(error)}</div>}
+
       {fields.map((field, i) => (
         <div key={field.id} className="gap-4 md:flex">
           {renderField(field, i)}
 
           <div className="flex justify-end">
             <IconButton
+              icon={Trash}
               tabIndex={-1}
               type="button"
               variant="ghost"
-              icon={Trash}
-              onClick={() => remove(i)}
+              onClick={() => {
+                remove(i);
+              }}
             />
           </div>
         </div>
       ))}
+
       <div className="flex justify-end">
         <IconButton
-          type="button"
-          size="sm"
           icon={PlusIcon}
-          onClick={() => append({})}
+          size="sm"
+          type="button"
+          onClick={() => {
+            append({});
+          }}
         >
           Add row
         </IconButton>
       </div>
     </div>
   );
-}
+};
 
-export function FormSection({
+export const FormSection = ({
   title,
   description,
   children,
-}: { title: string; description: string } & ComponentProps<"section">) {
-  return (
-    <section className="mb-8">
-      <h3 className="mb-1 text-xl font-semibold">{title}</h3>
-      <p className="mb-4 leading-loose text-gray-600 dark:text-gray-400">
-        {description}
-      </p>
-      {children}
-    </section>
-  );
-}
+}: { title: string; description: string } & ComponentProps<"section">): JSX.Element => (
+  <section className="mb-8">
+    <h3 className="mb-1 text-xl font-semibold">{title}</h3>
+
+    <p className="mb-4 leading-loose text-gray-600 dark:text-gray-400">{description}</p>
+
+    {children}
+  </section>
+);
 
 export interface FormProps<S extends z.Schema> extends PropsWithChildren {
   defaultValues?: UseFormProps<z.infer<S>>["defaultValues"];
@@ -249,13 +239,13 @@ export interface FormProps<S extends z.Schema> extends PropsWithChildren {
   onSubmit: (values: z.infer<S>, form: UseFormReturn<z.infer<S>>) => void;
 }
 
-export function Form<S extends z.Schema>({
+export const Form = <S extends z.Schema>({
   schema,
   children,
-  values,
-  defaultValues,
+  values = undefined,
+  defaultValues = undefined,
   onSubmit,
-}: FormProps<S>) {
+}: FormProps<S>): JSX.Element => {
   // Initialize the form with defaultValues and schema for validation
   const form = useForm({
     defaultValues,
@@ -267,9 +257,13 @@ export function Form<S extends z.Schema>({
   // Pass the form methods to a FormProvider. This lets us access the form from components with useFormContext
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit((values) => onSubmit(values, form))}>
+      <form
+        onSubmit={form.handleSubmit((data) => {
+          onSubmit(data, form);
+        })}
+      >
         {children}
       </form>
     </FormProvider>
   );
-}
+};

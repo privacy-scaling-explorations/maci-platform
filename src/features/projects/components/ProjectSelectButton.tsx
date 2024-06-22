@@ -1,6 +1,6 @@
+import { AlbumIcon, CheckIcon, PlusIcon } from "lucide-react";
 import { type ComponentProps } from "react";
 import { tv } from "tailwind-variants";
-import { AlbumIcon, CheckIcon, PlusIcon } from "lucide-react";
 
 import { createComponent } from "~/components/ui";
 
@@ -12,19 +12,19 @@ const ActionButton = createComponent(
       color: {
         default:
           "dark:border-white/50 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 dark:hover:border-white",
-        highlight:
-          "hover:bg-white dark:hover:bg-gray-800 dark:border-white dark:text-white",
-        green:
-          "border-transparent border-gray-100 dark:border-gray-900 text-gray-500",
+        highlight: "hover:bg-white dark:hover:bg-gray-800 dark:border-white dark:text-white",
+        green: "border-transparent border-gray-100 dark:border-gray-900 text-gray-500",
       },
     },
     defaultVariants: { color: "default" },
   }),
 );
 
-type Props = { state: 2 | 1 | 0 } & ComponentProps<typeof ActionButton>;
+interface IProjectSelectButtonProps extends ComponentProps<typeof ActionButton> {
+  state: 0 | 1 | 2;
+}
 
-export function ProjectSelectButton({ state, ...props }: Props) {
+export const ProjectSelectButton = ({ state, ...props }: IProjectSelectButtonProps): JSX.Element => {
   const { color, icon: Icon } = {
     0: { color: "default", icon: PlusIcon },
     1: { color: "highlight", icon: CheckIcon },
@@ -32,8 +32,8 @@ export function ProjectSelectButton({ state, ...props }: Props) {
   }[state];
 
   return (
-    <ActionButton role="button" disabled={state === 2} color={color} {...props}>
+    <ActionButton color={color} disabled={state === 2} role="button" {...props}>
       <Icon className="h-4 w-4" />
     </ActionButton>
   );
-}
+};

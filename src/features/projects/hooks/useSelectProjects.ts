@@ -1,8 +1,17 @@
 import { useMemo, useState } from "react";
+
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 
-export function useSelectProjects() {
+export interface IUseSelectProjectsReturn {
+  count: number;
+  add: () => void;
+  reset: () => void;
+  toggle: (id: string) => void;
+  getState: (id: string) => 0 | 1 | 2;
+}
+
+export function useSelectProjects(): IUseSelectProjectsReturn {
   const { addToBallot, ballotContains } = useBallot();
   const { pollId } = useMaci();
 
@@ -20,17 +29,25 @@ export function useSelectProjects() {
     count: toAdd.length,
     // isLoading: add.isPending,
     add: () => {
-      addToBallot(toAdd, pollId);
+      addToBallot(toAdd, pollId!);
       setSelected({});
     },
-    reset: () => setSelected({}),
-    toggle: (id: string) => {
-      if (!id) return;
-      selected[id]
-        ? setSelected((s) => ({ ...s, [id]: false }))
-        : setSelected((s) => ({ ...s, [id]: true }));
+    reset: () => {
+      setSelected({});
     },
-    getState: (id: string) =>
-      Boolean(ballotContains(id)) ? 2 : selected[id] ? 1 : 0,
+    toggle: (id: string) => {
+      if (!id) {
+        return;
+      }
+
+      setSelected((s) => ({ ...s, [id]: !selected[id] }));
+    },
+    getState: (id: string) => {
+      if (ballotContains(id)) {
+        return 2;
+      }
+
+      return selected[id] ? 1 : 0;
+    },
   };
 }

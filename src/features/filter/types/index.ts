@@ -15,10 +15,7 @@ export const FilterSchema = z.object({
   seed: z.coerce.number().default(0),
   orderBy: z.nativeEnum(OrderBy).default(OrderBy.name),
   sortOrder: z.nativeEnum(SortOrder).default(SortOrder.asc),
-  search: z.preprocess(
-    (v) => (v === "null" || v === "undefined" ? null : v),
-    z.string().nullish(),
-  ),
+  search: z.preprocess((v) => (v === "null" || v === "undefined" ? null : v), z.string().nullish()),
 });
 
 export type Filter = z.infer<typeof FilterSchema>;

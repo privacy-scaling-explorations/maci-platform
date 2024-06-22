@@ -1,22 +1,24 @@
 import { type ComponentPropsWithRef } from "react";
-import { NumericFormat } from "react-number-format";
 import { useFormContext, Controller } from "react-hook-form";
+import { NumericFormat } from "react-number-format";
 
 import { Input, InputAddon, InputWrapper } from "~/components/ui/Form";
 import { config } from "~/config";
 
-export const AllocationInput = ({
-  votingMaxProject,
-  name,
-  onBlur,
-  tokenAddon,
-  ...props
-}: {
+export interface IAllocationInputProps extends ComponentPropsWithRef<"input"> {
   votingMaxProject?: number;
   disabled?: boolean;
   tokenAddon?: boolean;
   error?: boolean;
-} & ComponentPropsWithRef<"input">) => {
+}
+
+export const AllocationInput = ({
+  votingMaxProject = undefined,
+  name,
+  tokenAddon = false,
+  onBlur,
+  ...props
+}: IAllocationInputProps): JSX.Element => {
   const form = useFormContext();
 
   return (
@@ -33,25 +35,24 @@ export const AllocationInput = ({
             {...field}
             autoComplete="off"
             className="pr-16"
-            isAllowed={({ floatValue }) =>
-              votingMaxProject !== undefined
-                ? (floatValue ?? 0) <= votingMaxProject
-                : true
-            }
-            disabled={props.disabled}
             defaultValue={props.defaultValue as string}
+            disabled={props.disabled}
+            isAllowed={({ floatValue }) =>
+              votingMaxProject !== undefined ? (floatValue ?? 0) <= votingMaxProject : true
+            }
+            thousandSeparator=","
+            onBlur={onBlur}
             onChange={(v) =>
               // Parse decimal string to number to adhere to AllocationSchema
-              field.onChange(parseFloat(v.target.value.replace(/,/g, "")))
+              {
+                field.onChange(parseFloat(v.target.value.replace(/,/g, "")));
+              }
             }
-            onBlur={onBlur}
-            thousandSeparator=","
           />
         )}
       />
-      {tokenAddon && (
-        <InputAddon disabled={props.disabled}>{config.tokenName}</InputAddon>
-      )}
+
+      {tokenAddon && <InputAddon disabled={props.disabled}>{config.tokenName}</InputAddon>}
     </InputWrapper>
   );
 };

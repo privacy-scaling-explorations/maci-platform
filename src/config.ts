@@ -17,14 +17,11 @@ export const config = {
   registrationEndsAt: new Date(process.env.NEXT_PUBLIC_REGISTRATION_END_DATE!),
   reviewEndsAt: new Date(process.env.NEXT_PUBLIC_REVIEW_END_DATE!),
   resultsAt: new Date(process.env.NEXT_PUBLIC_RESULTS_DATE!),
-  skipApprovedVoterCheck: ["true", "1"].includes(
-    process.env.NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK!,
-  ),
+  skipApprovedVoterCheck: ["true", "1"].includes(process.env.NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK!),
   tokenName: process.env.NEXT_PUBLIC_TOKEN_NAME!,
   roundId: process.env.NEXT_PUBLIC_ROUND_ID!,
   admin: (process.env.NEXT_PUBLIC_ADMIN_ADDRESS ?? "") as `0x${string}`,
-  network:
-    wagmiChains[process.env.NEXT_PUBLIC_CHAIN_NAME as keyof typeof wagmiChains],
+  network: wagmiChains[process.env.NEXT_PUBLIC_CHAIN_NAME as keyof typeof wagmiChains],
   maciAddress: process.env.NEXT_PUBLIC_MACI_ADDRESS,
   maciStartBlock: Number(process.env.NEXT_PUBLIC_MACI_START_BLOCK ?? 0),
   maciSubgraphUrl: process.env.NEXT_PUBLIC_MACI_SUBGRAPH_URL ?? "",
@@ -40,12 +37,8 @@ export const eas = {
   attesterAddress: process.env.NEXT_PUBLIC_APPROVED_APPLICATIONS_ATTESTER ?? "",
 
   contracts: {
-    eas:
-      process.env.NEXT_PUBLIC_EAS_CONTRACT_ADDRESS ??
-      "0x4200000000000000000000000000000000000021",
-    schemaRegistry:
-      process.env.NEXT_PUBLIC_EAS_SCHEMA_REGISTRY_ADDRESS ??
-      "0x4200000000000000000000000000000000000020",
+    eas: process.env.NEXT_PUBLIC_EAS_CONTRACT_ADDRESS ?? "0x4200000000000000000000000000000000000021",
+    schemaRegistry: process.env.NEXT_PUBLIC_EAS_SCHEMA_REGISTRY_ADDRESS ?? "0x4200000000000000000000000000000000000020",
   },
   schemas: {
     metadata: process.env.NEXT_PUBLIC_METADATA_SCHEMA!,
