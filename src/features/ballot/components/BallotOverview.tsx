@@ -69,7 +69,7 @@ const SubmitBallotButton = ({ disabled = false }: ISubmitBallotButtonProps): JSX
       await onVote(
         votes,
         () => {
-          toast.error("Voting is failed");
+          toast.error("Voting failed");
         },
         async () => {
           await router.push("/ballot/confirmation");
@@ -81,19 +81,18 @@ const SubmitBallotButton = ({ disabled = false }: ISubmitBallotButtonProps): JSX
 
   const messages = {
     signing: {
-      title: "Sign ballot",
-      instructions: "Confirm the transactions in your wallet to submit your  ballot.",
+      title: "Sign vote",
+      instructions: "Confirm the transactions in your wallet to submit your vote.",
     },
     submitting: {
-      title: "Submit ballot",
-      instructions:
-        "Once you submit your ballot, you won’t be able to change it. If you are ready, go ahead and submit!",
+      title: "Submit vote",
+      instructions: "Once you submit your vote, you won’t be able to change it. If you are ready, go ahead and submit!",
     },
     error: {
-      title: "Error submitting ballot",
+      title: "Error submitting vote",
       instructions: (
         <Alert title={(submit.error as { message?: string }).message} variant="warning">
-          There was an error submitting the ballot.
+          There was an error submitting the vote.
         </Alert>
       ),
     },
@@ -105,7 +104,7 @@ const SubmitBallotButton = ({ disabled = false }: ISubmitBallotButtonProps): JSX
   return (
     <>
       <Button className="w-full" disabled={disabled} variant="primary" onClick={handleOpen}>
-        Submit ballot
+        Submit vote
       </Button>
 
       <Dialog isOpen={isOpen} size="sm" title={title} onOpenChange={setOpen}>
@@ -121,7 +120,7 @@ const SubmitBallotButton = ({ disabled = false }: ISubmitBallotButtonProps): JSX
           </Button>
 
           <Button className="flex-1" variant="primary" onClick={() => submit.mutate()}>
-            Submit ballot
+            Submit vote
           </Button>
         </div>
       </Dialog>
@@ -199,7 +198,7 @@ const BallotOverview = () => {
 
       {address && isRegistered && (
         <>
-          <BallotHeader>Your ballot</BallotHeader>
+          <BallotHeader>Your vote</BallotHeader>
 
           <BallotSection title="Projects added:">
             <div>
@@ -237,7 +236,7 @@ const BallotOverview = () => {
         <>
           {ballot?.published && (
             <Button as={Link} className="w-full" href="/ballot/confirmation" variant="primary">
-              View submitted ballot
+              View submitted vote
             </Button>
           )}
 
@@ -245,7 +244,7 @@ const BallotOverview = () => {
 
           {!ballot?.published && !canSubmit && viewBallot ? (
             <Button as={Link} className="w-full" href="/ballot" variant="primary">
-              View my ballot
+              View my vote
             </Button>
           ) : (
             <Button disabled className="w-full" variant="primary">

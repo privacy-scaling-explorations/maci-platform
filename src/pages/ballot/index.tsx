@@ -39,11 +39,11 @@ const ClearBallot = () => {
           setOpen(true);
         }}
       >
-        Remove all projects from ballot
+        Remove all projects from vote
       </Button>
 
       <Dialog isOpen={isOpen} size="sm" title="Are you sure?" onOpenChange={setOpen}>
-        <p className="mb-6 leading-6">This will empty your ballot and remove all the projects you have added.</p>
+        <p className="mb-6 leading-6">This will empty your vote and remove all the projects you have added.</p>
 
         <div className="flex justify-end">
           <Button
@@ -62,10 +62,10 @@ const ClearBallot = () => {
 const EmptyBallot = () => (
   <div className="flex flex-1 items-center justify-center">
     <div className=" max-w-[360px] space-y-4">
-      <h3 className="text-center text-lg font-bold">Your ballot is empty</h3>
+      <h3 className="text-center text-lg font-bold">Your vote is empty</h3>
 
       <p className="text-center text-sm text-gray-700">
-        Your ballot currently doesn&apos;t have any projects added. Browse through the available projects.
+        Your vote currently doesn&apos;t have any projects added. Browse through the available projects.
       </p>
 
       <div className="flex items-center justify-center gap-3">
@@ -92,9 +92,9 @@ const BallotAllocationForm = () => {
 
   return (
     <div>
-      <h1 className="mb-2 text-2xl font-bold">Review your ballot</h1>
+      <h1 className="mb-2 text-2xl font-bold">Review your vote</h1>
 
-      <p className="mb-6">Once you have reviewed your vote allocation, you can submit your ballot.</p>
+      <p className="mb-6">Once you have reviewed your votes allocation, you can submit your vote.</p>
 
       <div className="mb-2 justify-between sm:flex">{ballot?.votes.length ? <ClearBallot /> : null}</div>
 
@@ -110,7 +110,7 @@ const BallotAllocationForm = () => {
         </div>
 
         <div className="flex h-16 items-center justify-between rounded-b-2xl border-t border-gray-300 px-8 py-4 text-lg font-semibold dark:border-gray-800">
-          <div>Total votes in ballot</div>
+          <div>Total votes</div>
 
           <div className="flex items-center gap-2">
             <TotalAllocation />
