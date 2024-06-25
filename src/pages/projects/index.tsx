@@ -1,10 +1,12 @@
+import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
 import { Projects } from "~/features/projects/components/Projects";
-import { LayoutWithBallot } from "~/layouts/DefaultLayout";
 
-const ProjectsPage = (): JSX.Element => (
-  <LayoutWithBallot eligibilityCheck showBallot sidebar="left">
-    <Projects />
-  </LayoutWithBallot>
-);
+const ProjectsPage = (): JSX.Element => {
+  return (
+    <LayoutWithSidebar sidebar="left" eligibilityCheck showBallot showInfo>
+      <Projects />
+    </LayoutWithSidebar>
+  );
+}
 
 export default ProjectsPage;

@@ -13,11 +13,11 @@ import {
   Form,
   FormControl,
   FormSection,
-  Input,
   Label,
   Select,
   Textarea,
 } from "~/components/ui/Form";
+import { Input } from "~/components/ui/Input";
 import { Spinner } from "~/components/ui/Spinner";
 import { Tag } from "~/components/ui/Tag";
 import { impactCategories } from "~/config";

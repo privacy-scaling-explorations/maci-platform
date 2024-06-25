@@ -1,8 +1,13 @@
 export enum EAppState {
   LOADING = "LOADING",
   APPLICATION = "APPLICATION",
-  REVIEWING = "REVIEWING",
   VOTING = "VOTING",
-  RESULTS = "RESULTS",
   TALLYING = "TALLYING",
+  RESULTS = "RESULTS",
+}
+
+export enum EInfoCardState {
+  PASSED = "PASSED",
+  ONGOING = "ONGOING",
+  UPCOMING = "UPCOMING",
 }
