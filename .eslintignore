@@ -8,4 +8,4 @@ typechain-types
 commitlint.config.js
 subgraph/generated
 public/mockServiceWorker.js
-
+zkeys

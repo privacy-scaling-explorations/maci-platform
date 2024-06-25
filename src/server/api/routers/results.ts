@@ -67,7 +67,7 @@ export async function calculateMaciResults(pollId?: string | null): Promise<{
   }
 
   const results = tallyData.results.tally.reduce((acc, tally, index) => {
-    if (projects[index]) {
+    if (projects[index]?.id) {
       acc.set(projects[index]!.id, { votes: Number(tally), voters: 0 });
     }
 
