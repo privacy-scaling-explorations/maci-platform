@@ -28,3 +28,7 @@ This will create an Attestation with the Metadata schema and populate the fields
 > It can take 10 minutes for the applications to be approved in the UI
 
 [<img width="100%" src="https://cdn.loom.com/sessions/thumbnails/cfe9bb7ad0b44aaca4d26a446006386a-with-play.gif" width="50%">](https://www.loom.com/embed/cfe9bb7ad0b44aaca4d26a446006386a?sid=a3765630-b097-41bb-aa8b-7600b6901fe4)
+
+:::info
+Please be advised that currently due to the MACI's trusted setup artifacts available, you can only have up to 125 projects per round. Please refer to the [trusted setup](https://maci.pse.dev/docs/security/trusted-setup) documentation for more details on the available artifacts and their limits.
+:::
