@@ -1,35 +1,39 @@
-import { type ReactNode } from "react";
+import { useMemo } from "react";
 
-import { NameENS } from "~/components/ENS";
-import { Heading } from "~/components/ui/Heading";
-import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { ProjectBanner } from "~/features/projects/components/ProjectBanner";
-import { type Attestation } from "~/utils/fetchAttestations";
-import { suffixNumber } from "~/utils/suffixNumber";
-
+import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { useProjectMetadata } from "../hooks/useProjects";
-
-import ProjectContributions from "./ProjectContributions";
-import ProjectImpact from "./ProjectImpact";
+import { type Attestation } from "~/utils/fetchAttestations";
+import { Navigator } from "~/components/ui/Navigator";
+import { VotingWidget } from "~/features/projects/components/VotingWidget";
+import { ProjectContacts } from "./ProjectContacts";
+import { ProjectDescriptionSection } from "./ProjectDescriptionSection";
 
 export interface IProjectDetailsProps {
-  action: ReactNode;
+  projectId: string;
   attestation?: Attestation;
 }
 
-const ProjectDetails = ({ attestation = undefined, action }: IProjectDetailsProps): JSX.Element => {
+const ProjectDetails({
+  projectId,
+  attestation = undefined,
+}: IProjectDetailsProps) {
   const metadata = useProjectMetadata(attestation?.metadataPtr);
 
   const { bio, websiteUrl, payoutAddress, fundingSources } = metadata.data ?? {};
 
+  const github = useMemo(
+    () =>
+      metadata.data?.contributionLinks
+        ? metadata.data.contributionLinks.find((l) => l.type === "GITHUB_REPO")
+        : undefined,
+    [metadata, useProjectMetadata],
+  );
+
   return (
     <div className="relative">
-      <div className="sticky left-0 right-0 top-0 z-10 bg-white p-4 dark:bg-gray-900">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">{attestation?.name}</h1>
-
-          {action}
-        </div>
+      <div className="mb-7">
+        <Navigator projectName={attestation?.name ?? "project name"} />
       </div>
 
       <div className="overflow-hidden rounded-3xl">
@@ -37,55 +41,42 @@ const ProjectDetails = ({ attestation = undefined, action }: IProjectDetailsProp
       </div>
 
       <div className="mb-8 flex items-end gap-4">
-        <ProjectAvatar className="-mt-20 ml-8" profileId={attestation?.recipient} rounded="full" size="lg" />
-
-        <div>
-          <div className="">
-            <NameENS address={payoutAddress} />
-
-            <a className="hover:underline" href={websiteUrl} rel="noreferrer" target="_blank">
-              {websiteUrl}
-            </a>
-          </div>
-        </div>
+        <ProjectAvatar
+          rounded="full"
+          size={"lg"}
+          className="-mt-20 ml-8"
+          profileId={attestation?.recipient}
+        />
       </div>
-
-      <p className="text-2xl">{bio}</p>
-
-      <div>
-        <Heading as="h2" size="3xl">
-          Impact statements
-        </Heading>
-
-        <ProjectContributions isLoading={metadata.isLoading} project={metadata.data} />
-
-        <ProjectImpact isLoading={metadata.isLoading} project={metadata.data} />
-
-        <Heading as="h3" size="2xl">
-          Past grants and funding
-        </Heading>
-
-        <div className="space-y-4">
-          {fundingSources?.map((source) => {
-            const type =
-              {
-                OTHER: "Other",
-                RETROPGF_2: "RetroPGF2",
-                GOVERNANCE_FUND: "Governance Fund",
-                PARTNER_FUND: "Partner Fund",
-                REVENUE: "Revenue",
-              }[source.type] ?? source.type;
-            return (
-              <div key={source.type} className="flex items-center gap-4">
-                <div className="flex-1 truncate text-xl">{source.description}</div>
-
-                <div className="text-sm tracking-widest text-gray-700 dark:text-gray-400">{type}</div>
-
-                <div className="w-32 text-xl font-medium">{`${suffixNumber(source.amount)} ${source.currency}`}</div>
-              </div>
-            );
-          })}
-        </div>
+      <div className="flex items-center justify-between">
+        <h3>{attestation?.name}</h3>
+        <VotingWidget projectId={projectId} />
+      </div>
+      <ProjectContacts
+        author={payoutAddress}
+        website={websiteUrl}
+        github={github?.url}
+      />
+      <p className="text-gray-400">{bio}</p>
+      <div className="my-8 flex flex-col gap-8">
+        <p className="text-xl uppercase">
+          <b>Impact statements</b>
+        </p>
+        <ProjectDescriptionSection
+          title="contributions"
+          description={metadata.data?.contributionDescription}
+          links={metadata.data?.contributionLinks}
+        />
+        <ProjectDescriptionSection
+          title="impact"
+          description={metadata.data?.impactDescription}
+          links={metadata.data?.impactMetrics}
+        />
+        <ProjectDescriptionSection
+          title="past grants and funding"
+          description={metadata.data?.impactDescription}
+          fundings={fundingSources}
+        />
       </div>
     </div>
   );

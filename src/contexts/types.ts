@@ -33,7 +33,8 @@ export interface MaciProviderProps {
 }
 
 export interface BallotContextType {
-  ballot?: Ballot;
+  ballot: Ballot;
+  isLoading: boolean;
   addToBallot: (votes: Vote[], pollId: string) => void;
   removeFromBallot: (projectId: string) => void;
   deleteBallot: () => void;

@@ -2,7 +2,15 @@ import clsx from "clsx";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
-import { type ReactNode, type PropsWithChildren, createContext, useContext, useEffect, useMemo } from "react";
+import {
+  type ReactNode,
+  type PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { useAccount } from "wagmi";
 
 import { Footer } from "~/components/Footer";
@@ -28,7 +36,9 @@ export interface LayoutProps {
   requireAuth?: boolean;
   eligibilityCheck?: boolean;
   showBallot?: boolean;
-}
+  showInfo?: boolean;
+  showSubmitButton?: boolean;
+};
 
 export const BaseLayout = ({
   header = null,
@@ -50,11 +60,15 @@ export const BaseLayout = ({
   const router = useRouter();
   const { address, isConnecting } = useAccount();
 
-  useEffect(() => {
+  const manageDisplay = useCallback(async () => {
     if (requireAuth && !address && !isConnecting) {
-      router.push("/");
+      await router.push("/");
     }
   }, [requireAuth, address, isConnecting, router]);
+
+  useEffect(() => {
+    manageDisplay();
+  }, [manageDisplay]);
 
   const wrappedSidebar = <Sidebar side={sidebar}>{sidebarComponent}</Sidebar>;
 
@@ -91,11 +105,19 @@ export const BaseLayout = ({
 
         <meta content={metadata.image} name="twitter:image" />
       </Head>
-
-      <div className={clsx(" flex h-full min-h-screen flex-1 flex-col dark:bg-gray-900 dark:text-white", theme)}>
+      <div
+        className={clsx(
+          " flex h-full min-h-screen flex-1 flex-col bg-white dark:bg-gray-900 dark:text-white",
+          theme,
+        )}
+      >
         {header}
-
-        <div className="mx-auto w-full flex-1 pt-12 2xl:container md:flex">
+        <div
+          className={clsx(
+            "mx-auto w-full flex-1 pt-12 2xl:container md:flex",
+            router.asPath === "/signup" && "bg-blue-50",
+          )}
+        >
           {sidebar === "left" ? wrappedSidebar : null}
 
           <div
