@@ -6,6 +6,9 @@ import {
   EMode,
   VerifyingKey,
   PubKey,
+  getPoll,
+  mergeSignups,
+  mergeMessages,
   PollFactory__factory as PollFactoryFactory,
   MessageProcessorFactory__factory as MessageProcessorFactoryFactory,
   TallyFactory__factory as TallyFactoryFactory,
@@ -29,7 +32,8 @@ import {
   type AccQueueQuinaryMaci,
 } from "maci-cli/sdk";
 
-import { type Signer, Contract } from "ethers";
+import { type Signer, Contract, getBytes, hashMessage } from "ethers";
+import { publicEncrypt } from "crypto";
 
 import type {
   IDeployGatekeeperArgs,
@@ -38,6 +42,7 @@ import type {
   IRegisterArgs,
   IDeployPollArgs,
   IDeployArgs,
+  IGenProofArgs,
   IMACIData,
 } from "./types";
 import {
@@ -51,6 +56,8 @@ import {
   POSEIDON_T4_ADDRESS,
   POSEIDON_T5_ADDRESS,
   POSEIDON_T6_ADDRESS,
+  PUBKEY_URL,
+  GENPROOF_URL,
 } from "./constants";
 
 /**
@@ -682,6 +689,96 @@ export class MaciService {
       address,
       startBlock: txReceipt?.blockNumber ?? 0,
     };
+  }
+
+  async genProof({
+    signature,
+    message,
+    maciPrivKey,
+  }: IGenProofArgs): Promise<string> {
+    // get data from local storage
+    const maciData = await this.getMaciData();
+
+    const { id, isMerged } = await getPoll({
+      maciAddress: maciData.address,
+      signer: this.deployer,
+      provider: this.deployer.provider,
+    });
+
+    const pollId = BigInt(id);
+    const network = await this.getNetwork();
+    const tallyContractAddress = this.storage.mustGetAddress(
+      EContracts.Tally,
+      network,
+      `poll-${Number(id)}`,
+    );
+
+    if (!isMerged) {
+      // merge signups
+      try {
+        await mergeSignups({
+          pollId,
+          maciAddress: maciData.address,
+          signer: this.deployer,
+        });
+      } catch (error) {
+        throw new Error(`Merge signups error: ${error}`);
+      }
+    }
+
+    // merge messages
+    try {
+      await mergeMessages({
+        pollId,
+        maciAddress: maciData.address,
+        signer: this.deployer,
+      });
+    } catch (error) {
+      throw new Error(`Merge messages error: ${error}`);
+    }
+
+    // get RSA public key
+    const pubKey = await fetch(PUBKEY_URL)
+      .then((res) => res.json())
+      .then((data) => data.publicKey);
+
+    // generate headers
+    const digest = Buffer.from(getBytes(hashMessage(message))).toString("hex");
+    const encryptedString = publicEncrypt(
+      pubKey,
+      Buffer.from(`${signature}:${digest}`),
+    ).toString("base64");
+    const authString = `Bearer ${encryptedString}`;
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: authString,
+    };
+
+    // generate body data
+    const encryptedCoordinatorPrivateKey = publicEncrypt(
+      pubKey,
+      Buffer.from(maciPrivKey),
+    ).toString("base64");
+
+    const body = {
+      poll: 0,
+      maciContractAddress: maciData.address,
+      tallyContractAddress,
+      useQuadraticVoting: false,
+      encryptedCoordinatorPrivateKey,
+      startBlock: maciData.startBlock,
+      blocksPerBatch: 1000,
+    };
+
+    return fetch(GENPROOF_URL, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    }).then(async (r) => {
+      if (!r.ok) throw new Error("Gen proof error");
+      return r.json();
+    });
   }
 
   /**

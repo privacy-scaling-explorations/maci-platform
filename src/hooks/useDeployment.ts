@@ -94,7 +94,7 @@ export function useDeployment() {
   const deployPoll = useCallback(async () => {
     if (!signer || !maci) throw new Error("no signer");
 
-    await maci.deployPoll({ duration: 100000, pubKey: maciPubKey });
+    await maci.deployPoll({ duration: 100, pubKey: maciPubKey });
   }, [deployStatus, setDeployStatus, Boolean(signer), Boolean(maci)]);
 
   return {

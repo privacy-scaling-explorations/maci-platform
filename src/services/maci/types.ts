@@ -122,6 +122,23 @@ export interface IDeployPollArgs {
   pubKey: string;
 }
 
+export interface IGenProofArgs {
+  /**
+   * signature signed by coordinator
+   */
+  signature: string;
+
+  /**
+   * signed message
+   */
+  message: string;
+
+  /**
+   * coordinator maci private key
+   */
+  maciPrivKey: string;
+}
+
 export interface IMACIData {
   address: string;
   startBlock: number;
