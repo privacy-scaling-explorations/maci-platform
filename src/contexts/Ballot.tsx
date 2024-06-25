@@ -12,6 +12,7 @@ const defaultBallot = { votes: [], published: false };
 
 export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: BallotProviderProps) => {
   const [ballot, setBallot] = useState<Ballot>(defaultBallot);
+  const [isLoading, setLoading] = useState<boolean>(true);
 
   const { isDisconnected } = useAccount();
 
@@ -90,6 +91,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
     ) as typeof defaultBallot;
 
     setBallot(savedBallot);
+    setLoading(false);
   }, [setBallot]);
 
   /// store ballot to localStorage once it changes
@@ -108,6 +110,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
   const value = useMemo(
     () => ({
       ballot,
+      isLoading,
       addToBallot,
       removeFromBallot,
       deleteBallot,
@@ -115,7 +118,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
       sumBallot,
       publishBallot,
     }),
-    [ballot, addToBallot, removeFromBallot, deleteBallot, ballotContains, sumBallot, publishBallot],
+    [ballot, isLoading, addToBallot, removeFromBallot, deleteBallot, ballotContains, sumBallot, publishBallot],
   );
 
   return <BallotContext.Provider value={value as BallotContextType}>{children}</BallotContext.Provider>;

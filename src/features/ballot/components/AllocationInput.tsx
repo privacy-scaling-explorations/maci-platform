@@ -2,7 +2,7 @@ import { type ComponentPropsWithRef } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 
-import { Input, InputAddon, InputWrapper } from "~/components/ui/Form";
+import { Input, InputAddon, InputWrapper } from "~/components/ui/Input";
 import { config } from "~/config";
 
 export interface IAllocationInputProps extends ComponentPropsWithRef<"input"> {
@@ -22,7 +22,7 @@ export const AllocationInput = ({
   const form = useFormContext();
 
   return (
-    <InputWrapper className="min-w-[160px]">
+    <InputWrapper className="min-w-[132px]">
       <Controller
         control={form.control}
         name={name!}

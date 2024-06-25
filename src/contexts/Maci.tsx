@@ -137,7 +137,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       }
 
       if (!votes.length) {
-        await onError();
+        onError();
         setError("No votes provided");
         return;
       }

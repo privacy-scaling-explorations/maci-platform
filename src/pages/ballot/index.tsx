@@ -7,12 +7,11 @@ import { useAccount } from "wagmi";
 import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
 import { Form } from "~/components/ui/Form";
-import { config } from "~/config";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { AllocationFormWrapper } from "~/features/ballot/components/AllocationList";
 import { BallotSchema, type Vote } from "~/features/ballot/types";
-import { LayoutWithBallot } from "~/layouts/DefaultLayout";
+import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
 import { formatNumber } from "~/utils/formatNumber";
 import { useAppState } from "~/utils/state";
 import { EAppState } from "~/utils/types";
@@ -34,28 +33,23 @@ const ClearBallot = () => {
 
   return (
     <>
-      <Button
-        variant="outline"
-        onClick={() => {
-          setOpen(true);
-        }}
+      <div
+        className="cursor-pointer text-gray-400 underline hover:text-black"
+        onClick={() => setOpen(true)}
       >
-        Remove all projects from vote
-      </Button>
+        Remove all projects
+      </div>
 
-      <Dialog isOpen={isOpen} size="sm" title="Are you sure?" onOpenChange={setOpen}>
-        <p className="mb-6 leading-6">This will empty your vote and remove all the projects you have added.</p>
-
-        <div className="flex justify-end">
-          <Button
-            variant="primary"
-            // disabled={isPending}
-            onClick={handleClearBallot}
-          >
-            Yes I am sure
-          </Button>
-        </div>
-      </Dialog>
+      <Dialog
+        title="Are you sure?"
+        size="sm"
+        isOpen={isOpen}
+        onOpenChange={setOpen}
+        description="This will empty your ballot and remove all the projects you have added."
+        button="primary"
+        buttonName="Yes, Clear my ballot"
+        buttonAction={handleClearBallot}
+      />
     </>
   );
 };
@@ -70,7 +64,7 @@ const EmptyBallot = () => (
       </p>
 
       <div className="flex items-center justify-center gap-3">
-        <Button as={Link} href="/projects">
+        <Button as={Link} href={"/projects"} variant="primary" size="auto">
           View projects
         </Button>
       </div>
@@ -78,50 +72,44 @@ const EmptyBallot = () => (
   </div>
 );
 
-const TotalAllocation = () => {
-  const { sumBallot } = useBallot();
-  const { initialVoiceCredits } = useMaci();
-  const form = useFormContext<{ votes: Vote[] }>();
-  const votes = form.watch("votes");
-  const sum = sumBallot(votes);
-
-  return <div>{`${formatNumber(sum)} / ${initialVoiceCredits} ${config.tokenName}`}</div>;
-};
-
 const BallotAllocationForm = () => {
   const appState = useAppState();
-  const { ballot } = useBallot();
+  const { ballot, sumBallot } = useBallot();
+
+  const sum = useMemo(
+    () => formatNumber(sumBallot(ballot?.votes)),
+    [ballot, sumBallot],
+  );
 
   return (
-    <div>
-      <h1 className="mb-2 text-2xl font-bold">Review your vote</h1>
-
-      <p className="mb-6">Once you have reviewed your votes allocation, you can submit your vote.</p>
-
-      <div className="mb-2 justify-between sm:flex">{ballot?.votes.length ? <ClearBallot /> : null}</div>
-
-      <div className="relative rounded-2xl border border-gray-300 dark:border-gray-800">
+    <div className="px-8">
+      <h1 className="text-4xl uppercase tracking-tighter">My Ballot</h1>
+      <p className="my-4 text-gray-400">
+        Once you have reviewed your vote allocation, you can submit your ballot.
+      </p>
+      <div className="mb-4 justify-end sm:flex">
+        {ballot?.votes?.length ? <ClearBallot /> : null}
+      </div>
+      <div className="border-t border-gray-300">
         <div className="p-8">
-          <div className="relative flex max-h-[500px] min-h-[360px] flex-col overflow-auto">
-            {ballot?.votes.length ? (
-              <AllocationFormWrapper disabled={appState === EAppState.RESULTS} />
-            ) : (
-              <EmptyBallot />
-            )}
-          </div>
+          {ballot?.votes?.length ? (
+            <AllocationFormWrapper
+              disabled={appState === EAppState.RESULTS}
+              projectIsLink
+            />
+          ) : (
+            <EmptyBallot />
+          )}
         </div>
 
-        <div className="flex h-16 items-center justify-between rounded-b-2xl border-t border-gray-300 px-8 py-4 text-lg font-semibold dark:border-gray-800">
-          <div>Total votes</div>
-
-          <div className="flex items-center gap-2">
-            <TotalAllocation />
-          </div>
+        <div className="flex h-16 items-center justify-end gap-2">
+          <h4>Total votes:</h4>
+          <p>{sum}</p>
         </div>
       </div>
     </div>
   );
-};
+}
 
 const BallotPage = (): JSX.Element => {
   const { address, isConnecting } = useAccount();
@@ -130,26 +118,31 @@ const BallotPage = (): JSX.Element => {
 
   useEffect(() => {
     if (!address && !isConnecting) {
-      // eslint-disable-next-line no-console
-      router.push("/").catch(console.error);
+      router.push("/").catch(console.log);
     }
   }, [address, isConnecting, router]);
 
-  const votes = useMemo(() => ballot?.votes.sort((a, b) => b.amount - a.amount), [ballot]);
+  const votes = useMemo(
+    () => ballot?.votes?.sort((a, b) => b.amount - a.amount),
+    [ballot],
+  );
 
   if (!votes) {
     return <EmptyBallot />;
   }
 
   return (
-    <LayoutWithBallot requireAuth sidebar="right">
-      <Form defaultValues={ballot} schema={BallotSchema} values={ballot} onSubmit={() => null}>
+    <LayoutWithSidebar sidebar="right" requireAuth showBallot showSubmitButton>
+      <Form
+        schema={BallotSchema}
+        defaultValues={ballot}
+        values={ballot}
+        onSubmit={console.log}
+      >
         <BallotAllocationForm />
       </Form>
-
-      <div className="py-8" />
-    </LayoutWithBallot>
+    </LayoutWithSidebar>
   );
-};
+}
 
 export default BallotPage;
