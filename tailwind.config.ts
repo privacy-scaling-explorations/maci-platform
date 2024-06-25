@@ -32,6 +32,37 @@ const customColors = {
   highlight: {
     600: "#F3CF00",
   },
+  gray: {
+    50: "#F6F6F6",
+    100: "#E7E7E7",
+    200: "#D1D1D1",
+    300: "#B0B0B0",
+    400: "#888888",
+    500: "#6D6D6D",
+    600: "#5D5D5D",
+    700: "#4F4F4F",
+    800: "#454545",
+    900: "#3D3D3D",
+    950: "#0B0B0B",
+  },
+  blue: {
+    50: "#F0F7FE",
+    100: "#DEECFB",
+    200: "#C4E0F9",
+    300: "#9BCCF5",
+    400: "#6BB1EF",
+    500: "#579BEA",
+    600: "#3476DC",
+    700: "#2B62CA",
+    800: "#2950A4",
+    900: "#264682",
+    950: "#1B2B50",
+  },
+  black: "#0B0B0B",
+  darkGray: "#5E5E5E",
+  lightGray: "#CDCDCD",
+  green: "#00FF00",
+  red: "#EF4444",
 };
 
 export default {
@@ -42,10 +73,14 @@ export default {
       colors: {
         ...colors,
         ...customColors,
-        gray: colors.stone,
       },
       fontFamily: {
-        sans: ["var(--font-inter)", ...theme.fontFamily.sans],
+        sans: ["DM Sans", ...theme.fontFamily.sans],
+        mono: ["Share Tech Mono", ...theme.fontFamily.mono],
+      },
+      width: {
+        "112": "28rem",
+        "128": "32rem",
       },
     },
   },

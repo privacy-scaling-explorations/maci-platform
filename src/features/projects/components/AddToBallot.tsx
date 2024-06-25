@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { Check } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useAccount } from "wagmi";
 import { z } from "zod";
@@ -88,63 +88,62 @@ const ProjectAllocation = ({
   );
 };
 
-export const ProjectAddToBallot = ({ id = "", name = "" }: IProjectAddToBallotProps): JSX.Element | null => {
+export const ProjectAddToBallot = ({ id, name }: IProjectAddToBallotProps) => {
   const { address } = useAccount();
   const [isOpen, setOpen] = useState(false);
 
-  const { isRegistered, isEligibleToVote, initialVoiceCredits, pollId } = useMaci();
-  const { ballot, ballotContains, sumBallot, addToBallot, removeFromBallot } = useBallot();
+  const { isRegistered, isEligibleToVote, initialVoiceCredits, pollId } =
+    useMaci();
+  const { ballot, ballotContains, sumBallot, addToBallot, removeFromBallot } =
+    useBallot();
 
-  const inBallot = ballotContains(id);
+  const inBallot = ballotContains(id!);
   const allocations = ballot?.votes ?? [];
   const sum = sumBallot(allocations.filter((p) => p.projectId !== id));
-  const numVotes = ballot?.votes.length ?? 0;
+  const numVotes = ballot?.votes?.length ?? 0;
 
-  const dialogMessage = `How much ${config.tokenName} should this Project receive to fill the gap between the impact they generated for
-  ${config.roundOrganizer} and the profit they received for generating this impact`;
-
-  const handleOpen = useCallback(() => {
-    setOpen(true);
-  }, [setOpen]);
-
-  if (useAppState() !== EAppState.VOTING) {
-    return null;
-  }
+  if (useAppState() !== EAppState.VOTING) return null;
 
   return (
     <div>
       {numVotes > config.voteLimit && (
         <Alert variant="warning">
-          You have exceeded your vote limit. You can only vote for {config.voteLimit} options.
+          You have exceeded your vote limit. You can only vote for{" "}
+          {config.voteLimit} options.
         </Alert>
       )}
 
-      {isEligibleToVote && isRegistered ? (
-        <>
-          {ballot?.published && <Button disabled>Vote published</Button>}
-
-          {!ballot?.published && inBallot && (
-            <IconButton icon={Check} variant="primary" onClick={handleOpen}>
-              {formatNumber(config.pollMode === "qv" ? inBallot.amount ** 2 : inBallot.amount)} allocated
-            </IconButton>
-          )}
-
-          {!ballot?.published && !inBallot && (
-            <Button
-              className="w-full md:w-auto"
-              disabled={!address || numVotes > config.voteLimit}
-              variant="primary"
-              onClick={handleOpen}
-            >
-              Add to vote
-            </Button>
-          )}
-        </>
-      ) : null}
-
-      <Dialog isOpen={isOpen} size="sm" title={`Vote for ${name}`} onOpenChange={setOpen}>
-        <p className="pb-4 leading-relaxed">{dialogMessage}</p>
-
+      {!isEligibleToVote || !isRegistered ? null : ballot?.published ? (
+        <Button disabled>Ballot published</Button>
+      ) : inBallot ? (
+        <IconButton
+          onClick={() => setOpen(true)}
+          variant="primary"
+          icon={Check}
+        >
+          {formatNumber(config.pollMode === "qv" ? inBallot.amount ** 2 : inBallot.amount)} allocated
+        </IconButton>
+      ) : (
+        <Button
+          disabled={!address || numVotes > config.voteLimit}
+          onClick={() => setOpen(true)}
+          variant="primary"
+          className="w-full md:w-auto"
+        >
+          Add to ballot
+        </Button>
+      )}
+      <Dialog
+        size="sm"
+        isOpen={isOpen}
+        onOpenChange={setOpen}
+        title={`Vote for ${name}`}
+      >
+        <p className="pb-4 leading-relaxed">
+          How much {config.tokenName} should this Project receive to fill the
+          gap between the impact they generated for Optimism and the profit they
+          received for generating this impact
+        </p>
         <Form
           defaultValues={{ amount: inBallot?.amount }}
           schema={z.object({
@@ -155,7 +154,7 @@ export const ProjectAddToBallot = ({ id = "", name = "" }: IProjectAddToBallotPr
               .default(0),
           })}
           onSubmit={({ amount }) => {
-            addToBallot([{ projectId: id, amount }], pollId!);
+            addToBallot([{ projectId: id!, amount }], pollId);
             setOpen(false);
           }}
         >
@@ -163,7 +162,7 @@ export const ProjectAddToBallot = ({ id = "", name = "" }: IProjectAddToBallotPr
             current={sum}
             inBallot={Boolean(inBallot)}
             onRemove={() => {
-              removeFromBallot(id);
+              removeFromBallot(id!);
               setOpen(false);
             }}
           />
