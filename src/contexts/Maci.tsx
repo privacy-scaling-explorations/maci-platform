@@ -44,6 +44,8 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     { enabled: Boolean(maciPubKey && config.maciSubgraphUrl) },
   );
 
+  const poll = api.maci.poll.useQuery(undefined, { enabled: Boolean(config.maciSubgraphUrl) });
+
   const attestations = api.voters.approvedAttestations.useQuery({
     address,
   });
@@ -69,6 +71,15 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       setMaciPubKey(storedMaciPubKey);
     }
   }, [setMaciPrivKey, setMaciPubKey]);
+
+  // on load we fetch the data from the poll
+  useEffect(() => {
+    if (poll.data) {
+      return;
+    }
+
+    poll.refetch().catch(console.error);
+  }, [poll]);
 
   const generateKeypair = useCallback(async () => {
     // if we are not connected then do not generate the key pair
@@ -98,14 +109,12 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       setIsLoading(true);
 
       try {
-        const { stateIndex: index, hash } = await signup({
+        const { stateIndex: index } = await signup({
           maciPubKey,
           maciAddress: config.maciAddress!,
           sgDataArg: attestationId,
           signer,
         });
-
-        console.log(`Signup transaction hash: ${hash}`);
 
         if (index) {
           setIsRegistered(true);
@@ -234,7 +243,28 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
 
     setIsLoading(true);
 
-    Promise.all([
+    // if we have the subgraph url then it means we can get the poll data through there
+    if (config.maciSubgraphUrl) {
+      if (!poll.data) {
+        setIsLoading(false);
+        return;
+      }
+
+      const { isStateAqMerged, id } = poll.data;
+
+      setPollData(poll.data);
+
+      if (isStateAqMerged) {
+        fetch(`${config.tallyUrl}/tally-${id}.json`)
+          .then((res) => res.json() as Promise<TallyData>)
+          .then((res) => {
+            setTallyData(res);
+          })
+          .catch(() => undefined);
+      }
+
+      setIsLoading(false);
+    } else {
       getPoll({
         maciAddress: config.maciAddress!,
         signer,
@@ -255,13 +285,13 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
               setTallyData(res);
             })
             .catch(() => undefined);
-        }),
-    ])
-      .catch(console.error)
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [signer, votingEndsAt, setIsLoading, setTallyData, setPollData]);
+        })
+        .catch(console.error)
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [signer, votingEndsAt, setIsLoading, setTallyData, setPollData, poll.data]);
 
   const value = useMemo(
     () => ({
