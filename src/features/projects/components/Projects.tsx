@@ -1,16 +1,19 @@
 import clsx from "clsx";
 import Link from "next/link";
+import { useCallback } from "react";
 
 import { InfiniteLoading } from "~/components/InfiniteLoading";
-import { useSearchProjects } from "../hooks/useProjects";
+import { SortFilter } from "~/components/SortFilter";
+import { useBallot } from "~/contexts/Ballot";
+import { useMaci } from "~/contexts/Maci";
+import { useResults } from "~/hooks/useResults";
 import { useAppState } from "~/utils/state";
 import { EAppState } from "~/utils/types";
+
+import { useSearchProjects } from "../hooks/useProjects";
 import { EProjectState } from "../types";
-import { useResults } from "~/hooks/useResults";
-import { SortFilter } from "~/components/SortFilter";
+
 import { ProjectItem, ProjectItemAwarded } from "./ProjectItem";
-import { useMaci } from "~/contexts/Maci";
-import { useBallot } from "~/contexts/Ballot";
 
 export const Projects = (): JSX.Element => {
   const projects = useSearchProjects();
@@ -19,37 +22,49 @@ export const Projects = (): JSX.Element => {
   const { addToBallot, removeFromBallot, ballotContains, ballot } = useBallot();
   const results = useResults(pollData);
 
-  const handleAction = (e: Event, projectId: string) => {
-    e.preventDefault();
+  const handleAction = useCallback(
+    (projectId: string) => (e: Event) => {
+      e.preventDefault();
 
-    if (!ballotContains(projectId)) {
-      addToBallot(
-        [
-          {
-            projectId,
-            amount: 0,
-          },
-        ],
-        pollId,
-      );
-    } else {
-      removeFromBallot(projectId);
-    }
-  };
+      if (!pollId) {
+        return;
+      }
+
+      if (!ballotContains(projectId)) {
+        addToBallot(
+          [
+            {
+              projectId,
+              amount: 0,
+            },
+          ],
+          pollId,
+        );
+      } else {
+        removeFromBallot(projectId);
+      }
+    },
+    [ballotContains, addToBallot, removeFromBallot, pollId],
+  );
 
   const defineState = (projectId: string): EProjectState => {
-    if (!isRegistered) return EProjectState.UNREGISTERED;
-    else if (ballotContains(projectId) && ballot?.published)
+    if (!isRegistered) {
+      return EProjectState.UNREGISTERED;
+    }
+    if (ballotContains(projectId) && ballot.published) {
       return EProjectState.SUBMITTED;
-    else if (ballotContains(projectId) && !ballot?.published)
+    }
+    if (ballotContains(projectId) && !ballot.published) {
       return EProjectState.ADDED;
-    else return EProjectState.DEFAULT;
+    }
+    return EProjectState.DEFAULT;
   };
 
   return (
     <div>
       <div className="flex justify-between">
         <h3>Projects</h3>
+
         <div>
           <SortFilter />
         </div>
@@ -57,27 +72,24 @@ export const Projects = (): JSX.Element => {
 
       <InfiniteLoading
         {...projects}
-        renderItem={(item, { isLoading }) => {
-          return (
-            <Link
-              key={item.id}
-              href={`/projects/${item.id}`}
-              className={clsx("relative", { ["animate-pulse"]: isLoading })}
-            >
-              {!results.isLoading && appState === EAppState.RESULTS ? (
-                <ProjectItemAwarded
-                  amount={results.data?.projects?.[item.id]?.votes}
-                />
-              ) : null}
-              <ProjectItem
-                isLoading={isLoading}
-                attestation={item}
-                state={defineState(item.id)}
-                action={(e: Event) => handleAction(e, item.id)}
-              />
-            </Link>
-          );
-        }}
+        renderItem={(item, { isLoading }) => (
+          <Link
+            key={item.id}
+            className={clsx("relative", { "animate-pulse": isLoading })}
+            href={`/projects/${item.id}`}
+          >
+            {!results.isLoading && appState === EAppState.RESULTS ? (
+              <ProjectItemAwarded amount={results.data?.projects[item.id]?.votes} />
+            ) : null}
+
+            <ProjectItem
+              action={handleAction(item.id)}
+              attestation={item}
+              isLoading={isLoading}
+              state={defineState(item.id)}
+            />
+          </Link>
+        )}
       />
     </div>
   );

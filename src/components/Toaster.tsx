@@ -6,13 +6,12 @@ export const Toaster = (): JSX.Element => {
   return (
     <Sonner
       className="toaster group "
-      theme={theme as "light" | "dark"}
       position="top-center"
+      theme={theme as "light" | "dark"}
       toastOptions={{
         unstyled: true,
         classNames: {
-          toast:
-            "bg-red text-white font-sans w-full flex justify-center p-4 rounded-xl",
+          toast: "bg-red text-white font-sans w-full flex justify-center p-4 rounded-xl",
           error: "group-[.toaster]:border-red-950 text-red-500",
           title: "font-bold tracking-wider -mt-1",
           description: "text-sm",

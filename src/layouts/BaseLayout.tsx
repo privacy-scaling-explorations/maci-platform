@@ -36,9 +36,7 @@ export interface LayoutProps {
   requireAuth?: boolean;
   eligibilityCheck?: boolean;
   showBallot?: boolean;
-  showInfo?: boolean;
-  showSubmitButton?: boolean;
-};
+}
 
 export const BaseLayout = ({
   header = null,
@@ -60,9 +58,9 @@ export const BaseLayout = ({
   const router = useRouter();
   const { address, isConnecting } = useAccount();
 
-  const manageDisplay = useCallback(async () => {
+  const manageDisplay = useCallback(() => {
     if (requireAuth && !address && !isConnecting) {
-      await router.push("/");
+      router.push("/");
     }
   }, [requireAuth, address, isConnecting, router]);
 
@@ -105,13 +103,12 @@ export const BaseLayout = ({
 
         <meta content={metadata.image} name="twitter:image" />
       </Head>
+
       <div
-        className={clsx(
-          " flex h-full min-h-screen flex-1 flex-col bg-white dark:bg-gray-900 dark:text-white",
-          theme,
-        )}
+        className={clsx(" flex h-full min-h-screen flex-1 flex-col bg-white dark:bg-gray-900 dark:text-white", theme)}
       >
         {header}
+
         <div
           className={clsx(
             "mx-auto w-full flex-1 pt-12 2xl:container md:flex",

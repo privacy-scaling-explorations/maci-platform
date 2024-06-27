@@ -1,22 +1,25 @@
 import { type ReactNode, type PropsWithChildren, useMemo } from "react";
 import { useAccount } from "wagmi";
 
-import Header from "~/components/Header";
-import { BaseLayout, type LayoutProps } from "./BaseLayout";
-import { Info } from "~/components/Info";
 import { BallotOverview } from "~/components/BallotOverview";
+import Header from "~/components/Header";
+import { Info } from "~/components/Info";
+import { Notice } from "~/components/ui/Notice";
+import { config } from "~/config";
+import { useBallot } from "~/contexts/Ballot";
+import { useMaci } from "~/contexts/Maci";
+import { SubmitBallotButton } from "~/features/ballot/components/SubmitBallotButton";
 import { useAppState } from "~/utils/state";
 import { EAppState } from "~/utils/types";
-import { config } from "~/config";
-import { useMaci } from "~/contexts/Maci";
-import { useBallot } from "~/contexts/Ballot";
-import { Notification } from "~/components/ui/Notification";
-import { SubmitBallotButton } from "~/features/ballot/components/SubmitBallotButton";
+
+import { BaseLayout, type LayoutProps } from "./BaseLayout";
 
 type Props = PropsWithChildren<
   {
     sidebar?: "left" | "right";
     sidebarComponent?: ReactNode;
+    showInfo?: boolean;
+    showSubmitButton?: boolean;
   } & LayoutProps
 >;
 
@@ -26,34 +29,34 @@ export const Layout = ({ children = null, ...props }: Props): JSX.Element => {
   const { ballot } = useBallot();
 
   const navLinks = useMemo(() => {
-    const navLinks = [
+    const links = [
       {
         href: "/projects",
         children: "Projects",
       },
     ];
 
-    if (ballot?.published) {
-      navLinks.push({
+    if (ballot.published) {
+      links.push({
         href: "/ballot/confirmation",
         children: "My Ballot",
       });
     } else {
-      navLinks.push({
+      links.push({
         href: "/ballot",
         children: "My Ballot",
       });
     }
 
     if (appState === EAppState.RESULTS) {
-      navLinks.push({
+      links.push({
         href: "/stats",
         children: "Stats",
       });
     }
 
     if (config.admin === address!) {
-      navLinks.push(
+      links.push(
         ...[
           {
             href: "/applications",
@@ -67,7 +70,7 @@ export const Layout = ({ children = null, ...props }: Props): JSX.Element => {
       );
     }
 
-    return navLinks;
+    return links;
   }, [ballot, appState, address]);
 
   return (
@@ -77,7 +80,7 @@ export const Layout = ({ children = null, ...props }: Props): JSX.Element => {
   );
 };
 
-export function LayoutWithSidebar({ ...props }: Props) {
+export const LayoutWithSidebar = ({ ...props }: Props): JSX.Element => {
   const { isRegistered } = useMaci();
   const { address } = useAccount();
   const { ballot } = useBallot();
@@ -87,21 +90,25 @@ export function LayoutWithSidebar({ ...props }: Props) {
       sidebar="left"
       sidebarComponent={
         <div>
-          {props.showInfo && <Info size="sm" showVotingInfo={true} />}
+          {props.showInfo && <Info showVotingInfo size="sm" />}
+
           {props.showBallot && address && isRegistered && <BallotOverview />}
-          {props.showSubmitButton && ballot && ballot.votes.length > 0 && (
+
+          {props.showSubmitButton && ballot.votes.length > 0 && (
             <div className="flex flex-col gap-4">
               <SubmitBallotButton />
-              <Notification
-                content="This is not a final submission, you can edit your ballot and resubmit it anytime during the voting period."
+
+              <Notice
                 italic
+                content="This is not a final submission, you can edit your ballot and resubmit it anytime during the voting period."
               />
             </div>
           )}
-          <div className="h-2"></div>
+
+          <div className="h-2" />
         </div>
       }
       {...props}
     />
   );
-}
+};

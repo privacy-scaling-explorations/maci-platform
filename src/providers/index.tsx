@@ -1,15 +1,8 @@
-import {
-  type Chain,
-  getDefaultConfig,
-  RainbowKitProvider,
-  type Theme,
-  lightTheme,
-} from "@rainbow-me/rainbowkit";
+import { type Chain, getDefaultConfig, RainbowKitProvider, type Theme, lightTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { useMemo, type PropsWithChildren } from "react";
 import { http, WagmiProvider } from "wagmi";
-
 
 import { Toaster } from "~/components/Toaster";
 import * as appConfig from "~/config";
@@ -36,7 +29,7 @@ const customTheme: Theme = {
   },
 };
 
-export function Providers({ children }: PropsWithChildren) {
+export const Providers = ({ children }: PropsWithChildren): JSX.Element => {
   const { config, queryClient } = useMemo(() => createWagmiConfig(), []);
 
   return (

@@ -1,22 +1,18 @@
-import { useMemo, useCallback, useState } from "react";
+import { useMemo, useCallback, useState, type ChangeEvent } from "react";
 
-import { useMaci } from "~/contexts/Maci";
-import { useBallot } from "~/contexts/Ballot";
-import { Input } from "~/components/ui/Input";
 import { Button } from "~/components/ui/Button";
+import { Input } from "~/components/ui/Input";
+import { useBallot } from "~/contexts/Ballot";
+import { useMaci } from "~/contexts/Maci";
+
 import { EButtonState } from "../types";
 
-export const VotingWidget = ({ projectId }: { projectId: string }) => {
+export const VotingWidget = ({ projectId }: { projectId: string }): JSX.Element => {
   const { pollId } = useMaci();
   const { ballotContains, removeFromBallot, addToBallot } = useBallot();
-  const projectBallot = useMemo(
-    () => ballotContains(projectId),
-    [ballotContains, projectId],
-  );
+  const projectBallot = useMemo(() => ballotContains(projectId), [ballotContains, projectId]);
   const projectIncluded = useMemo(() => !!projectBallot, [projectBallot]);
-  const [amount, setAmount] = useState<number | undefined>(
-    projectBallot?.amount,
-  );
+  const [amount, setAmount] = useState<number | undefined>(projectBallot?.amount);
 
   /**
    * buttonState
@@ -33,66 +29,67 @@ export const VotingWidget = ({ projectId }: { projectId: string }) => {
     removeFromBallot(projectId);
     setAmount(undefined);
     setButtonState(0);
-  }, [removeFromBallot]);
+  }, [projectId, removeFromBallot]);
 
-  const handleInput = (e: Event) => {
-    setAmount(e.target?.value as number);
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setAmount(e.target.value as unknown as number);
 
-    if (
-      buttonState === EButtonState.ADDED ||
-      buttonState === EButtonState.UPDATED
-    ) {
+    if (buttonState === EButtonState.ADDED || buttonState === EButtonState.UPDATED) {
       setButtonState(EButtonState.EDIT);
     }
   };
 
   const handleButtonAction = () => {
-    if (!amount) return;
+    if (!amount) {
+      return;
+    }
 
     addToBallot([{ projectId, amount }], pollId);
-    if (buttonState === EButtonState.DEFAULT)
+    if (buttonState === EButtonState.DEFAULT) {
       setButtonState(EButtonState.ADDED);
-    else setButtonState(EButtonState.UPDATED);
+    } else {
+      setButtonState(EButtonState.UPDATED);
+    }
   };
 
   return (
     <div className="flex items-center justify-center gap-5">
       {projectIncluded && (
-        <div
-          onClick={handleRemove}
+        <button
           className="cursor-pointer text-gray-400 underline hover:text-black"
+          type="button"
+          onClick={handleRemove}
         >
           Remove from My Ballot
-        </div>
+        </button>
       )}
+
       <div className="flex items-center justify-center gap-5 rounded-xl border border-gray-200 p-5">
-        <Input
-          type="number"
-          placeholder="Add votes here"
-          onChange={handleInput}
-          value={amount}
-          className="w-auto"
-        />
+        <Input className="w-auto" placeholder="Add votes here" type="number" value={amount} onChange={handleInput} />
+
         {buttonState === EButtonState.DEFAULT && (
-          <Button onClick={handleButtonAction} variant="inverted">
+          <Button variant="inverted" onClick={handleButtonAction}>
             add votes
           </Button>
         )}
+
         {buttonState === EButtonState.ADDED && (
           <div className="flex justify-center gap-2 uppercase">
             votes added
-            <img src="/check-black.svg" alt="" />
+            <img alt="check-black" src="/check-black.svg" />
           </div>
         )}
+
         {buttonState === EButtonState.EDIT && (
-          <Button onClick={handleButtonAction} variant="inverted">
+          <Button variant="inverted" onClick={handleButtonAction}>
             edit votes
           </Button>
         )}
+
         {buttonState === EButtonState.UPDATED && (
           <div className="flex justify-center gap-2 uppercase">
             votes updated
-            <img src="/check-black.svg" alt="" />
+            <img alt="check-black" src="/check-black.svg" />
           </div>
         )}
       </div>

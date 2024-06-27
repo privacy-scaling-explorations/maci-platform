@@ -34,12 +34,12 @@ export interface ImpactMetrix {
 
 export interface ContributionLink {
   url: string;
-  type: EContributionType;
+  type: EContributionType | string;
   description: string;
 }
 
 export interface FundingSource {
-  type: EFundingSourceType;
+  type: EFundingSourceType | string;
   description: string;
   currency: string;
   amount: number;
