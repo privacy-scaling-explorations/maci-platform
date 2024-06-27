@@ -1,5 +1,6 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { ArrowUpDown, Check } from "lucide-react";
+import { useCallback } from "react";
 
 import { type SortType, sortLabels } from "~/features/filter/hooks/useFilter";
 
@@ -16,7 +17,7 @@ interface IRadioItemProps {
   value?: string;
 }
 
-const RadioItem = ({ value = "", label = "" }: IRadioItemProps) => (
+const RadioItem = ({ value = "", label = "" }: IRadioItemProps): JSX.Element => (
   <DropdownMenu.RadioItem
     className="cursor-pointer rounded p-2 pl-8 text-sm text-gray-900 outline-none hover:bg-gray-100 focus-visible:ring-0 dark:text-gray-300 dark:hover:bg-gray-800"
     value={value}
@@ -24,24 +25,24 @@ const RadioItem = ({ value = "", label = "" }: IRadioItemProps) => (
     <DropdownMenu.ItemIndicator className="absolute left-4">
       <Check className="h-4 w-4" />
     </DropdownMenu.ItemIndicator>
+
     {label}
   </DropdownMenu.RadioItem>
 );
 
-export const SortByDropdown = ({ value, onChange, options = [] }: ISortByDropdownProps) => {
+export const SortByDropdown = ({ value, onChange, options = [] }: ISortByDropdownProps): JSX.Element => {
+  const handleOnChange = useCallback(
+    (v: string) => {
+      onChange(v);
+    },
+    [onChange],
+  );
+
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger
-        className="rounded-md border-gray-200 text-gray-600"
-        asChild
-      >
-        <IconButton
-          icon={ArrowUpDown}
-          variant="outline"
-          aria-label="Sort by"
-          className="my-0 w-48"
-        >
-          Sort by: {value && sortLabels[value]}
+      <DropdownMenu.Trigger asChild className="rounded-md border-gray-200 text-gray-600">
+        <IconButton aria-label="Sort by" className="my-0 w-48" icon={ArrowUpDown} variant="outline">
+          Sort by: {sortLabels[value]}
         </IconButton>
       </DropdownMenu.Trigger>
 
@@ -53,12 +54,10 @@ export const SortByDropdown = ({ value, onChange, options = [] }: ISortByDropdow
           <DropdownMenu.Label className="dark:gray-500 p-2 text-xs font-semibold uppercase text-gray-700">
             Sort By
           </DropdownMenu.Label>
-          <DropdownMenu.RadioGroup
-            value={value}
-            onValueChange={(v) => onChange(v)}
-          >
-            {options.map((value) => (
-              <RadioItem key={value} value={value} label={sortLabels[value]} />
+
+          <DropdownMenu.RadioGroup value={value} onValueChange={handleOnChange}>
+            {options.map((option) => (
+              <RadioItem key={option} label={sortLabels[option]} value={option} />
             ))}
           </DropdownMenu.RadioGroup>
         </DropdownMenu.Content>

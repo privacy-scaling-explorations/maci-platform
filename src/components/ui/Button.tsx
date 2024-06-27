@@ -9,15 +9,12 @@ const button = tv({
   variants: {
     variant: {
       primary: "bg-black text-white hover:bg-blue-950",
-      inverted:
-        "text-black border border-black hover:text-blue-500 hover:border-blue-500",
-      tertiary:
-        "bg-blue-50 text-blue-500 border border-blue-500 hover:bg-blue-100",
+      inverted: "text-black border border-black hover:text-blue-500 hover:border-blue-500",
+      tertiary: "bg-blue-50 text-blue-500 border border-blue-500 hover:bg-blue-100",
       secondary: "bg-blue-500 text-white hover:bg-blue-600",
       ghost: "hover:bg-gray-100 dark:hover:bg-gray-800",
       outline: "border border-gray-200 hover:border-gray-300",
-      disabled:
-        "border border-gray-200 bg-gray-50 text-gray-200 cursor-not-allowed",
+      disabled: "border border-gray-200 bg-gray-50 text-gray-200 cursor-not-allowed",
       none: "",
     },
     size: {

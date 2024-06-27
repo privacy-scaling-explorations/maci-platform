@@ -32,17 +32,17 @@ export function useSearchProjects(
   );
 }
 
-export function useProjectIdMapping(ballot?: Ballot): Record<string, number> {
+export function useProjectIdMapping(ballot: Ballot): Record<string, number> {
   const { data } = api.projects.allApproved.useQuery();
 
   const projectIndices = useMemo(
     () =>
-      ballot?.votes.reduce<Record<string, number>>((acc, { projectId }) => {
+      ballot.votes.reduce<Record<string, number>>((acc, { projectId }) => {
         const index = data?.findIndex((attestation) => attestation.id.toLowerCase() === projectId.toLowerCase());
         acc[projectId] = index ?? -1;
 
         return acc;
-      }, {}) ?? {},
+      }, {}),
     [data, ballot],
   );
 
