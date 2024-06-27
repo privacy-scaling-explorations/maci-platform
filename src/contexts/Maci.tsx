@@ -86,7 +86,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
 
   const votingEndsAt = useMemo(
     () => (pollData ? new Date(Number(pollData.deployTime) * 1000 + Number(pollData.duration) * 1000) : new Date()),
-    [pollData],
+    [pollData?.deployTime, pollData?.duration],
   );
 
   const onSignup = useCallback(
@@ -268,7 +268,9 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       isLoading,
       isEligibleToVote,
       initialVoiceCredits,
-      votingEndsAt,
+      votingEndsAt: pollData
+        ? new Date(Number(pollData.deployTime) * 1000 + Number(pollData.duration) * 1000)
+        : new Date(),
       stateIndex,
       isRegistered: isRegistered ?? false,
       pollId: pollData?.id.toString(),
@@ -283,7 +285,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       isLoading,
       isEligibleToVote,
       initialVoiceCredits,
-      votingEndsAt,
       stateIndex,
       isRegistered,
       pollData,
