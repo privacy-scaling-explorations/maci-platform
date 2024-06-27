@@ -1,8 +1,8 @@
 import { type GetServerSideProps } from "next";
 
-import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
 import ProjectDetails from "~/features/projects/components/ProjectDetails";
 import { useProjectById } from "~/features/projects/hooks/useProjects";
+import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
 
 export interface IProjectDetailsProps {
   projectId?: string;
@@ -10,16 +10,10 @@ export interface IProjectDetailsProps {
 
 const ProjectDetailsPage = ({ projectId = "" }: IProjectDetailsProps): JSX.Element => {
   const projects = useProjectById(projectId);
-  const { name } = projects.data?.[0] ?? {};;
+  const { name } = projects.data?.[0] ?? {};
 
   return (
-    <LayoutWithSidebar
-      sidebar="left"
-      title={name}
-      showBallot
-      eligibilityCheck
-      showInfo
-    >
+    <LayoutWithSidebar eligibilityCheck showBallot showInfo sidebar="left" title={name}>
       <ProjectDetails attestation={projects.data?.[0]} projectId={projectId} />
     </LayoutWithSidebar>
   );

@@ -1,15 +1,14 @@
 import { tv } from "tailwind-variants";
 
 import { createComponent } from "~/components/ui";
-import { EInfoCardState } from "~/utils/types";
-import { useMaci } from "~/contexts/Maci";
 import { config } from "~/config";
-import { getAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { useMaci } from "~/contexts/Maci";
+import { useAppState } from "~/utils/state";
+import { EInfoCardState, EAppState } from "~/utils/types";
 
+import { InfoCard } from "./InfoCard";
 import { RoundInfo } from "./RoundInfo";
 import { VotingInfo } from "./VotingInfo";
-import { InfoCard } from "./InfoCard";
 
 const InfoContainer = createComponent(
   "div",
@@ -29,9 +28,9 @@ interface InfoProps {
   showVotingInfo?: boolean;
 }
 
-export function Info({ size, showVotingInfo }: InfoProps) {
+export const Info = ({ size, showVotingInfo = false }: InfoProps): JSX.Element => {
   const { votingEndsAt } = useMaci();
-  const appState = getAppState();
+  const appState = useAppState();
 
   const steps = [
     {
@@ -62,33 +61,35 @@ export function Info({ size, showVotingInfo }: InfoProps) {
         {showVotingInfo && (
           <div className="w-full">
             <RoundInfo />
+
             {appState === EAppState.VOTING && <VotingInfo />}
           </div>
         )}
-        {steps.map((step, i) => (
+
+        {steps.map((step) => (
           <InfoCard
-            key={i}
+            key={step.label}
+            end={step.end}
+            start={step.start}
             state={defineState({ start: step.start, end: step.end })}
             title={step.label}
-            start={step.start}
-            end={step.end}
           />
         ))}
       </InfoContainer>
     </div>
   );
-}
+};
 
-function defineState({
-  start,
-  end,
-}: {
-  start: Date;
-  end: Date;
-}): EInfoCardState {
+function defineState({ start, end }: { start: Date; end: Date }): EInfoCardState {
   const now = new Date();
 
-  if (end < now) return EInfoCardState.PASSED;
-  else if (end > now && start < now) return EInfoCardState.ONGOING;
-  else return EInfoCardState.UPCOMING;
+  if (end < now) {
+    return EInfoCardState.PASSED;
+  }
+
+  if (end > now && start < now) {
+    return EInfoCardState.ONGOING;
+  }
+
+  return EInfoCardState.UPCOMING;
 }

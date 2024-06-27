@@ -1,12 +1,15 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
-import type { ReactNode, PropsWithChildren, ComponentProps } from "react";
 import { X } from "lucide-react";
 import { tv } from "tailwind-variants";
 
-import { IconButton, Button } from "./Button";
-import { createComponent } from ".";
 import { theme } from "~/config";
+
+import type { ReactNode, PropsWithChildren, ComponentProps } from "react";
+
+import { IconButton, Button } from "./Button";
 import { Spinner } from "./Spinner";
+
+import { createComponent } from ".";
 
 const Content = createComponent(
   RadixDialog.Content,
@@ -24,60 +27,58 @@ const Content = createComponent(
   }),
 );
 
+interface IDialogProps {
+  title: ReactNode;
+  description: ReactNode;
+  size: "sm" | "md";
+  isOpen: boolean;
+  isLoading?: boolean;
+  button?: "primary" | "secondary";
+  buttonName?: string;
+  buttonAction?: () => void;
+  onOpenChange: ComponentProps<typeof RadixDialog.Root>["onOpenChange"];
+}
+
 export const Dialog = ({
   title,
   description,
   size,
   isOpen,
-  isLoading,
-  button,
-  buttonName,
-  buttonAction,
-  children,
+  isLoading = false,
+  button = undefined,
+  buttonName = undefined,
+  buttonAction = undefined,
+  children = undefined,
   onOpenChange,
-}: {
-  title?: string | ReactNode;
-  description?: string | ReactNode;
-  size?: "sm" | "md";
-  isOpen?: boolean;
-  isLoading?: boolean;
-  button?: "primary" | "secondary";
-  buttonName?: string;
-  buttonAction?: () => void;
-  onOpenChange?: ComponentProps<typeof RadixDialog.Root>["onOpenChange"];
-} & PropsWithChildren) => {
-  return (
-    <RadixDialog.Root open={isOpen} onOpenChange={onOpenChange}>
-      <RadixDialog.Portal>
-        <RadixDialog.Overlay className="fixed left-0 top-0 z-10 h-full w-full bg-black/70" />
-        {/* Because of Portal we need to set the theme here */}
-        <div className={theme.colorMode}>
-          <Content size={size}>
-            <RadixDialog.Title className="text-2xl font-bold uppercase">
-              {title}
-            </RadixDialog.Title>
-            <RadixDialog.Description className="text-gray-400">
-              {description}
-            </RadixDialog.Description>
-            {children}
-            {isLoading && <Spinner className="h-6 w-6 py-4" />}
-            {!isLoading && button && buttonName && buttonAction && (
-              <Button variant={button} onClick={buttonAction} size="auto">
-                {buttonName}
-              </Button>
-            )}
-            {onOpenChange ? (
-              <RadixDialog.Close asChild>
-                <IconButton
-                  icon={X}
-                  variant="ghost"
-                  className="absolute right-4 top-4"
-                ></IconButton>
-              </RadixDialog.Close>
-            ) : null}
-          </Content>
-        </div>
-      </RadixDialog.Portal>
-    </RadixDialog.Root>
-  );
-};
+}: PropsWithChildren<IDialogProps>): JSX.Element => (
+  <RadixDialog.Root open={isOpen} onOpenChange={onOpenChange}>
+    <RadixDialog.Portal>
+      <RadixDialog.Overlay className="fixed left-0 top-0 z-10 h-full w-full bg-black/70" />
+
+      {/* Because of Portal we need to set the theme here */}
+      <div className={theme.colorMode}>
+        <Content size={size}>
+          <RadixDialog.Title className="text-2xl font-bold uppercase">{title}</RadixDialog.Title>
+
+          <RadixDialog.Description className="text-gray-400">{description}</RadixDialog.Description>
+
+          {children}
+
+          {isLoading && <Spinner className="h-6 w-6 py-4" />}
+
+          {!isLoading && button && buttonName && buttonAction && (
+            <Button size="auto" variant={button} onClick={buttonAction}>
+              {buttonName}
+            </Button>
+          )}
+
+          {onOpenChange ? (
+            <RadixDialog.Close asChild>
+              <IconButton className="absolute right-4 top-4" icon={X} variant="ghost" />
+            </RadixDialog.Close>
+          ) : null}
+        </Content>
+      </div>
+    </RadixDialog.Portal>
+  </RadixDialog.Root>
+);
