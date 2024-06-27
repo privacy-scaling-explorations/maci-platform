@@ -69,6 +69,8 @@ export const env = createEnv({
     NEXT_PUBLIC_MACI_SUBGRAPH_URL: z.string().url().optional(),
 
     NEXT_PUBLIC_TALLY_URL: z.string().url(),
+
+    NEXT_PUBLIC_POLL_MODE: z.enum(["qv", "non-qv"]).default("non-qv"),
   },
 
   /**
@@ -107,6 +109,8 @@ export const env = createEnv({
     NEXT_PUBLIC_MACI_SUBGRAPH_URL: process.env.NEXT_PUBLIC_MACI_SUBGRAPH_URL,
 
     NEXT_PUBLIC_TALLY_URL: process.env.NEXT_PUBLIC_TALLY_URL,
+
+    NEXT_PUBLIC_POLL_MODE: process.env.NEXT_PUBLIC_POLL_MODE,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
