@@ -27,7 +27,6 @@ export function useSelectProjects(): IUseSelectProjectsReturn {
 
   return {
     count: toAdd.length,
-    // isLoading: add.isPending,
     add: () => {
       addToBallot(toAdd, pollId!);
       setSelected({});

@@ -34,7 +34,7 @@ const ProjectAllocation = ({
   const form = useFormContext();
   const formAmount = form.watch("amount") as string;
   const amount = formAmount ? parseFloat(String(formAmount).replace(/,/g, "")) : 0;
-  const total = amount + current;
+  const total = (config.pollMode === "qv" ? amount ** 2 : amount) + current;
   const { initialVoiceCredits } = useMaci();
 
   const exceededProjectTokens = amount > initialVoiceCredits;
@@ -125,7 +125,7 @@ export const ProjectAddToBallot = ({ id = "", name = "" }: IProjectAddToBallotPr
 
           {!ballot?.published && inBallot && (
             <IconButton icon={Check} variant="primary" onClick={handleOpen}>
-              {formatNumber(inBallot.amount)} allocated
+              {formatNumber(config.pollMode === "qv" ? inBallot.amount ** 2 : inBallot.amount)} allocated
             </IconButton>
           )}
 
@@ -151,7 +151,7 @@ export const ProjectAddToBallot = ({ id = "", name = "" }: IProjectAddToBallotPr
             amount: z
               .number()
               .min(0)
-              .max(Math.min(initialVoiceCredits, initialVoiceCredits - sum))
+              .max(Math.sqrt(Math.min(initialVoiceCredits, initialVoiceCredits - sum)))
               .default(0),
           })}
           onSubmit={({ amount }) => {

@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
 import { useAccount } from "wagmi";
 
+import { config } from "~/config";
+
 import type { BallotContextType, BallotProviderProps } from "./types";
 import type { Ballot, Vote } from "~/features/ballot/types";
 
@@ -13,9 +15,14 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
 
   const { isDisconnected } = useAccount();
 
+  // when summing the ballot we take the individual vote and square it
+  // if the mode is quadratic voting, otherwise we just add the amount
   const sumBallot = useCallback(
     (votes?: Vote[]) =>
-      (votes ?? []).reduce((sum, x) => sum + (!Number.isNaN(Number(x.amount)) ? Number(x.amount) : 0), 0),
+      (votes ?? []).reduce((sum, x) => {
+        const amount = !Number.isNaN(Number(x.amount)) ? Number(x.amount) : 0;
+        return sum + (config.pollMode === "qv" ? amount ** 2 : amount);
+      }, 0),
     [],
   );
 
@@ -71,7 +78,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
     localStorage.removeItem("ballot");
   }, [setBallot]);
 
-  // set published to tru
+  // set published to true
   const publishBallot = useCallback(() => {
     setBallot({ ...ballot, published: true });
   }, [ballot, setBallot]);

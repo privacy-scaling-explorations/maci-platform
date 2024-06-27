@@ -27,6 +27,7 @@ export const config = {
   maciSubgraphUrl: process.env.NEXT_PUBLIC_MACI_SUBGRAPH_URL ?? "",
   tallyUrl: process.env.NEXT_PUBLIC_TALLY_URL,
   roundOrganizer: process.env.NEXT_PUBLIC_ROUND_ORGANIZER ?? "Optimism",
+  pollMode: process.env.NEXT_PUBLIC_POLL_MODE ?? "non-qv",
 };
 
 export const theme = {
