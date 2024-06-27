@@ -79,14 +79,13 @@ const ApproveVoters = () => {
         {!isCorrectNetwork ? `Connect to ${correctNetwork.name}` : buttonText}
       </IconButton>
 
-      <Dialog isOpen={isOpen} title="Approve voters" onOpenChange={setOpen}>
-        <p className="pb-4 leading-relaxed">Add voters who will be allowed to vote in the round.</p>
-
-        <p className="pb-4 leading-relaxed">
-          Enter all the addresses as a comma-separated list below. Duplicates and invalid addresses will automatically
-          be removed.
-        </p>
-
+      <Dialog
+        description="Add voters who will be allowed to vote in the round. Enter all the addresses as a comma-separated list below. Duplicates and invalid addresses will automatically be removed."
+        isOpen={isOpen}
+        size="md"
+        title="Approve voters"
+        onOpenChange={setOpen}
+      >
         <Form
           schema={z.object({
             voters: EthAddressSchema,

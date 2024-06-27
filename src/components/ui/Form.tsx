@@ -135,11 +135,8 @@ export const FieldArray = <S extends z.Schema>({
 
   return (
     <div className="mb-8">
-      {error && (
-        <div className="border-red-900 dark:text-red-500 border p-2">
-          {String(error)}
-        </div>
-      )}
+      {error && <div className="border-red-900 dark:text-red-500 border p-2">{String(error)}</div>}
+
       {fields.map((field, i) => (
         <div key={field.id} className="gap-4 md:flex">
           {renderField(field, i)}

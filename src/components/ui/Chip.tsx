@@ -9,8 +9,7 @@ const chip = tv({
       primary: "text-white bg-black border-none",
       secondary: "text-black bg-white border border-black",
       neutral: "text-blue-500 bg-blue-50 border border-blue-500",
-      disabled:
-        "cursor-not-allowed text-gray-500 bg-gray-50 border border-gray-500",
+      disabled: "cursor-not-allowed text-gray-500 bg-gray-50 border border-gray-500",
     },
   },
 });

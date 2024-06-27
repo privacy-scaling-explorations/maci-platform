@@ -1,16 +1,17 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { type ComponentPropsWithRef, useState } from "react";
 import clsx from "clsx";
 import { Menu, X } from "lucide-react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { type ComponentPropsWithRef, useState } from "react";
+
+import { useBallot } from "~/contexts/Ballot";
+import { useAppState } from "~/utils/state";
+import { EAppState } from "~/utils/types";
 
 import { ConnectButton } from "./ConnectButton";
 import { IconButton } from "./ui/Button";
 import { Logo } from "./ui/Logo";
-import { useBallot } from "~/contexts/Ballot";
-import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
 
 const NavLink = ({ isActive, ...props }: { isActive: boolean } & ComponentPropsWithRef<typeof Link>) => (
   <Link
@@ -22,7 +23,12 @@ const NavLink = ({ isActive, ...props }: { isActive: boolean } & ComponentPropsW
   />
 );
 
-const MobileMenu = ({ isOpen = false, navLinks }: { isOpen?: boolean; navLinks: INavLink[] }) => (
+interface IMobileMenuProps {
+  isOpen?: boolean;
+  navLinks: INavLink[];
+}
+
+const MobileMenu = ({ isOpen = false, navLinks }: IMobileMenuProps) => (
   <div
     className={clsx(
       "fixed left-0 top-16 z-10 h-full w-full bg-white transition-transform duration-150 dark:bg-gray-900",
@@ -65,24 +71,19 @@ const Header = ({ navLinks }: { navLinks: INavLink[] }) => {
             <Logo />
           </Link>
         </div>
+
         <div className="hidden h-full items-center gap-4 overflow-x-auto uppercase md:flex">
-          {navLinks?.map((link) => {
+          {navLinks.map((link) => {
             const pageName = `/${link.href.split("/")[1]}`;
             return (
-              <NavLink
-                isActive={asPath.startsWith(pageName)}
-                key={link.href}
-                href={link.href}
-              >
+              <NavLink key={link.href} href={link.href} isActive={asPath.startsWith(pageName)}>
                 {link.children}
-                {appState === EAppState.VOTING &&
-                  pageName === "/ballot" &&
-                  ballot &&
-                  ballot.votes.length > 0 && (
-                    <div className="ml-2 h-5 w-5 rounded-full border-2 border-blue-400 bg-blue-50 text-center text-sm leading-4 text-blue-400">
-                      {ballot.votes.length}
-                    </div>
-                  )}
+
+                {appState === EAppState.VOTING && pageName === "/ballot" && ballot.votes.length > 0 && (
+                  <div className="ml-2 h-5 w-5 rounded-full border-2 border-blue-400 bg-blue-50 text-center text-sm leading-4 text-blue-400">
+                    {ballot.votes.length}
+                  </div>
+                )}
               </NavLink>
             );
           })}

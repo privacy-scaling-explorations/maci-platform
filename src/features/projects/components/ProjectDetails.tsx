@@ -1,23 +1,27 @@
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 
-import { ProjectBanner } from "~/features/projects/components/ProjectBanner";
+import { Navigation } from "~/components/ui/Navigation";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
-import { useProjectMetadata } from "../hooks/useProjects";
-import { type Attestation } from "~/utils/fetchAttestations";
-import { Navigator } from "~/components/ui/Navigator";
+import { ProjectBanner } from "~/features/projects/components/ProjectBanner";
 import { VotingWidget } from "~/features/projects/components/VotingWidget";
+import { type Attestation } from "~/utils/fetchAttestations";
+
+import { useProjectMetadata } from "../hooks/useProjects";
+
 import { ProjectContacts } from "./ProjectContacts";
 import { ProjectDescriptionSection } from "./ProjectDescriptionSection";
 
 export interface IProjectDetailsProps {
-  projectId: string;
+  action?: ReactNode;
+  projectId?: string;
   attestation?: Attestation;
 }
 
-const ProjectDetails({
-  projectId,
+const ProjectDetails = ({
+  projectId = "",
   attestation = undefined,
-}: IProjectDetailsProps) {
+  action = undefined,
+}: IProjectDetailsProps): JSX.Element => {
   const metadata = useProjectMetadata(attestation?.metadataPtr);
 
   const { bio, websiteUrl, payoutAddress, fundingSources } = metadata.data ?? {};
@@ -33,7 +37,7 @@ const ProjectDetails({
   return (
     <div className="relative">
       <div className="mb-7">
-        <Navigator projectName={attestation?.name ?? "project name"} />
+        <Navigation projectName={attestation?.name ?? "project name"} />
       </div>
 
       <div className="overflow-hidden rounded-3xl">
@@ -41,42 +45,43 @@ const ProjectDetails({
       </div>
 
       <div className="mb-8 flex items-end gap-4">
-        <ProjectAvatar
-          rounded="full"
-          size={"lg"}
-          className="-mt-20 ml-8"
-          profileId={attestation?.recipient}
-        />
+        <ProjectAvatar className="-mt-20 ml-8" profileId={attestation?.recipient} rounded="full" size="lg" />
       </div>
+
       <div className="flex items-center justify-between">
         <h3>{attestation?.name}</h3>
+
         <VotingWidget projectId={projectId} />
       </div>
-      <ProjectContacts
-        author={payoutAddress}
-        website={websiteUrl}
-        github={github?.url}
-      />
+
+      <ProjectContacts author={payoutAddress} github={github?.url} website={websiteUrl} />
+
       <p className="text-gray-400">{bio}</p>
+
       <div className="my-8 flex flex-col gap-8">
         <p className="text-xl uppercase">
           <b>Impact statements</b>
         </p>
+
         <ProjectDescriptionSection
-          title="contributions"
+          contributions={metadata.data?.contributionLinks}
           description={metadata.data?.contributionDescription}
-          links={metadata.data?.contributionLinks}
+          title="contributions"
         />
+
         <ProjectDescriptionSection
-          title="impact"
           description={metadata.data?.impactDescription}
-          links={metadata.data?.impactMetrics}
+          impacts={metadata.data?.impactMetrics}
+          title="impact"
         />
+
         <ProjectDescriptionSection
-          title="past grants and funding"
           description={metadata.data?.impactDescription}
           fundings={fundingSources}
+          title="past grants and funding"
         />
+
+        {action}
       </div>
     </div>
   );
