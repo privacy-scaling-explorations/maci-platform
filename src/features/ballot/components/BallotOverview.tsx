@@ -91,7 +91,7 @@ const SubmitBallotButton = ({ disabled = false }: ISubmitBallotButtonProps): JSX
     error: {
       title: "Error submitting vote",
       instructions: (
-        <Alert title={(submit.error as { message?: string }).message} variant="warning">
+        <Alert title={submit.error ? (submit.error as { message?: string }).message : ""} variant="warning">
           There was an error submitting the vote.
         </Alert>
       ),
