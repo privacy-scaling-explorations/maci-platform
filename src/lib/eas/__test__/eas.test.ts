@@ -25,7 +25,7 @@ test("createAttestation", async () => {
     signer,
   );
 
-  expect(attestation.data.recipient).toEqual(await signer.getAddress());
+  expect(attestation.data.recipient).toStrictEqual(await signer.getAddress());
 });
 
 test("createEAS", () => {

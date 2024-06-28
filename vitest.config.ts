@@ -11,6 +11,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "happy-dom",
+    include: ["./src/**/*.{test,spec}.?(c|m)[jt]s?(x)"],
     setupFiles: ["./src/test-setup.ts"],
     pool: "forks",
   },

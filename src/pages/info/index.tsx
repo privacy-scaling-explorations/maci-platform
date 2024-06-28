@@ -45,7 +45,7 @@ const InfoPage = (): JSX.Element => {
           >
             <h3 className="font-semibold">{step.label}</h3>
 
-            {step.date && <div>{formatDate(step.date)}</div>}
+            {step.date instanceof Date && !Number.isNaN(step.date) && <div>{formatDate(step.date)}</div>}
           </div>
         ))}
       </div>
