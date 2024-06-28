@@ -64,7 +64,7 @@ const ProjectAllocation = ({
               "text-primary-500": exceededProjectTokens,
             })}
           >
-            {formatNumber(total - amount)}
+            {formatNumber(initialVoiceCredits - total)}
           </span>
 
           <span className="text-gray-600 dark:text-gray-400">/</span>

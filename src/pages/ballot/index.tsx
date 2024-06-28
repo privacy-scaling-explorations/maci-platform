@@ -9,6 +9,7 @@ import { Dialog } from "~/components/ui/Dialog";
 import { Form } from "~/components/ui/Form";
 import { config } from "~/config";
 import { useBallot } from "~/contexts/Ballot";
+import { useMaci } from "~/contexts/Maci";
 import { AllocationFormWrapper } from "~/features/ballot/components/AllocationList";
 import { BallotSchema, type Vote } from "~/features/ballot/types";
 import { LayoutWithBallot } from "~/layouts/DefaultLayout";
@@ -79,11 +80,12 @@ const EmptyBallot = () => (
 
 const TotalAllocation = () => {
   const { sumBallot } = useBallot();
+  const { initialVoiceCredits } = useMaci();
   const form = useFormContext<{ votes: Vote[] }>();
   const votes = form.watch("votes");
   const sum = sumBallot(votes);
 
-  return <div>{`${formatNumber(sum)} ${config.tokenName}`}</div>;
+  return <div>{`${formatNumber(sum)} / ${initialVoiceCredits} ${config.tokenName}`}</div>;
 };
 
 const BallotAllocationForm = () => {
