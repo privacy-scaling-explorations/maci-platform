@@ -105,7 +105,7 @@ jobs:
         run: pnpm run build
 
       - name: Run Playwright tests
-        uses: coactions/setup-xvfb@v1
+        uses: coactions/setup-xvfb@6b00cf1889f4e1d5a48635647013c0508128ee1a
         with:
           run: pnpm run test:e2e
 
