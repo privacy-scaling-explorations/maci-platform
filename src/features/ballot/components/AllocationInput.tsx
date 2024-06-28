@@ -1,9 +1,11 @@
-import { type ComponentPropsWithRef } from "react";
+import clsx from "clsx";
+import React, { type ComponentPropsWithRef, useState } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 
 import { Input, InputAddon, InputWrapper } from "~/components/ui/Form";
 import { config } from "~/config";
+import { useMaci } from "~/contexts/Maci";
 
 export interface IAllocationInputProps extends ComponentPropsWithRef<"input"> {
   votingMaxProject?: number;
@@ -20,9 +22,19 @@ export const AllocationInput = ({
   ...props
 }: IAllocationInputProps): JSX.Element => {
   const form = useFormContext();
+  const { initialVoiceCredits } = useMaci();
+  const [exceededMaxTokens, setExceededMaxTokens] = useState<boolean>(false);
+
+  const checkTotal = (amount: number) => {
+    const total = config.pollMode === "qv" ? amount ** 2 : amount;
+    const ret = total <= initialVoiceCredits;
+    setExceededMaxTokens(!ret);
+
+    return ret;
+  };
 
   return (
-    <InputWrapper className="min-w-[160px]">
+    <InputWrapper className={clsx("min-w-[160px]", exceededMaxTokens && "border-red")}>
       <Controller
         control={form.control}
         name={name!}
@@ -45,7 +57,10 @@ export const AllocationInput = ({
             onChange={(v) =>
               // Parse decimal string to number to adhere to AllocationSchema
               {
-                field.onChange(parseFloat(v.target.value.replace(/,/g, "")));
+                const amount = parseFloat(v.target.value.replace(/,/g, ""));
+                if (checkTotal(amount)) {
+                  field.onChange(amount);
+                }
               }
             }
           />

@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { Trash } from "lucide-react";
 import Link from "next/link";
+import { useCallback } from "react";
 import { type UseFormReturn, useFieldArray, useFormContext } from "react-hook-form";
 import { tv } from "tailwind-variants";
 
@@ -105,6 +106,10 @@ export const AllocationFormWrapper = ({
     control: form.control,
   });
 
+  const handleOnBlur = useCallback(() => {
+    onSave(form.getValues().votes, pollId!);
+  }, [pollId, onSave]);
+
   return (
     <AllocationListWrapper>
       <Table>
@@ -128,9 +133,7 @@ export const AllocationFormWrapper = ({
                     disabled={disabled}
                     name={`votes.${idx}.amount`}
                     votingMaxProject={initialVoiceCredits}
-                    onBlur={() => {
-                      onSave(form.getValues().votes, pollId!);
-                    }}
+                    onBlur={handleOnBlur}
                   />
                 </Td>
 

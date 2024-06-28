@@ -37,34 +37,22 @@ const ProjectAllocation = ({
   const total = (config.pollMode === "qv" ? amount ** 2 : amount) + current;
   const { initialVoiceCredits } = useMaci();
 
-  const exceededProjectTokens = amount > initialVoiceCredits;
   const exceededMaxTokens = total > initialVoiceCredits;
 
-  const isError = exceededProjectTokens || exceededMaxTokens;
   return (
     <div>
-      <AllocationInput tokenAddon error={isError} name="amount" votingMaxProject={initialVoiceCredits} />
+      <AllocationInput tokenAddon error={exceededMaxTokens} name="amount" votingMaxProject={initialVoiceCredits} />
 
       <div className="flex justify-between gap-2 pt-2 text-sm">
-        <div className="flex gap-2">
-          <span className="text-gray-600 dark:text-gray-400">Total allocated:</span>
+        <span className="text-gray-600 dark:text-gray-400">Total allocated:</span>
 
+        <div className="flex gap-2">
           <span
             className={clsx("font-semibold", {
               "text-primary-500": exceededMaxTokens,
             })}
           >
             {formatNumber(total)}
-          </span>
-        </div>
-
-        <div className="flex gap-2">
-          <span
-            className={clsx("font-semibold", {
-              "text-primary-500": exceededProjectTokens,
-            })}
-          >
-            {formatNumber(total - amount)}
           </span>
 
           <span className="text-gray-600 dark:text-gray-400">/</span>
@@ -74,7 +62,7 @@ const ProjectAllocation = ({
       </div>
 
       <div className="space-y-2 pt-2">
-        <Button className="w-full" disabled={isError} type="submit" variant="primary">
+        <Button className="w-full" disabled={exceededMaxTokens} type="submit" variant="primary">
           {inBallot ? "Update" : "Add"} vote
         </Button>
 
