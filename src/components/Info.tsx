@@ -66,15 +66,19 @@ export const Info = ({ size, showVotingInfo = false }: InfoProps): JSX.Element =
           </div>
         )}
 
-        {steps.map((step) => (
-          <InfoCard
-            key={step.label}
-            end={step.end}
-            start={step.start}
-            state={defineState({ start: step.start, end: step.end })}
-            title={step.label}
-          />
-        ))}
+        {steps.map(
+          (step) =>
+            step.start &&
+            step.end && (
+              <InfoCard
+                key={step.label}
+                end={step.end}
+                start={step.start}
+                state={defineState({ start: step.start, end: step.end })}
+                title={step.label}
+              />
+            ),
+        )}
       </InfoContainer>
     </div>
   );
