@@ -14,16 +14,14 @@ import { EAppState } from "~/utils/types";
 
 import { BaseLayout, type LayoutProps } from "./BaseLayout";
 
-type Props = PropsWithChildren<
-  {
-    sidebar?: "left" | "right";
-    sidebarComponent?: ReactNode;
-    showInfo?: boolean;
-    showSubmitButton?: boolean;
-  } & LayoutProps
->;
+interface ILayoutProps extends PropsWithChildren<LayoutProps> {
+  sidebar?: "left" | "right";
+  sidebarComponent?: ReactNode;
+  showInfo?: boolean;
+  showSubmitButton?: boolean;
+}
 
-export const Layout = ({ children = null, ...props }: Props): JSX.Element => {
+export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element => {
   const { address } = useAccount();
   const appState = useAppState();
   const { ballot } = useBallot();
@@ -80,21 +78,23 @@ export const Layout = ({ children = null, ...props }: Props): JSX.Element => {
   );
 };
 
-export const LayoutWithSidebar = ({ ...props }: Props): JSX.Element => {
+export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
   const { isRegistered } = useMaci();
   const { address } = useAccount();
   const { ballot } = useBallot();
+
+  const { showInfo, showBallot, showSubmitButton } = props;
 
   return (
     <Layout
       sidebar="left"
       sidebarComponent={
         <div>
-          {props.showInfo && <Info showVotingInfo size="sm" />}
+          {showInfo && <Info showVotingInfo size="sm" />}
 
-          {props.showBallot && address && isRegistered && <BallotOverview />}
+          {showBallot && address && isRegistered && <BallotOverview />}
 
-          {props.showSubmitButton && ballot.votes.length > 0 && (
+          {showSubmitButton && ballot.votes.length > 0 && (
             <div className="flex flex-col gap-4">
               <SubmitBallotButton />
 

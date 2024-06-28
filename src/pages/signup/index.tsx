@@ -9,6 +9,7 @@ import { JoinButton } from "~/components/JoinButton";
 import { Button } from "~/components/ui/Button";
 import { config } from "~/config";
 import { useMaci } from "~/contexts/Maci";
+import { FAQList } from "~/features/signup/components/FaqList";
 import { Layout } from "~/layouts/DefaultLayout";
 
 const SignupPage = (): JSX.Element => {
@@ -16,10 +17,10 @@ const SignupPage = (): JSX.Element => {
   const { isRegistered } = useMaci();
 
   return (
-    <Layout>
+    <Layout type="home">
       <EligibilityDialog />
 
-      <div className="flex flex-col items-center justify-center gap-4">
+      <div className="flex h-[90vh] w-screen flex-col items-center justify-center gap-4 bg-blue-50">
         <h1 className="max-w-screen-lg text-center font-mono">{config.eventName.toUpperCase()}</h1>
 
         <h2 className="max-w-screen-lg text-center font-mono">{config.roundId.toUpperCase()}</h2>
@@ -46,6 +47,8 @@ const SignupPage = (): JSX.Element => {
           <Info size="default" />
         </div>
       </div>
+
+      <FAQList />
     </Layout>
   );
 };
