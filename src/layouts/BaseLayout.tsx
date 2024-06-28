@@ -11,12 +11,30 @@ import {
   useCallback,
   useMemo,
 } from "react";
+import { tv } from "tailwind-variants";
 import { useAccount } from "wagmi";
 
 import { Footer } from "~/components/Footer";
+import { createComponent } from "~/components/ui";
 import { metadata } from "~/config";
 
 const Context = createContext({ eligibilityCheck: false, showBallot: false });
+
+const MainContainer = createComponent(
+  "div",
+  tv({
+    base: "w-full flex-1 2xl:container md:flex",
+    variants: {
+      type: {
+        default: "mt-12 pl-2 pr-6",
+        home: "mt-0 pl-0 pr-0",
+      },
+    },
+    defaultVariants: {
+      type: "default",
+    },
+  }),
+);
 
 export const useLayoutOptions = (): { eligibilityCheck: boolean; showBallot: boolean } => useContext(Context);
 
@@ -36,6 +54,7 @@ export interface LayoutProps {
   requireAuth?: boolean;
   eligibilityCheck?: boolean;
   showBallot?: boolean;
+  type?: string;
 }
 
 export const BaseLayout = ({
@@ -46,6 +65,7 @@ export const BaseLayout = ({
   requireAuth = false,
   eligibilityCheck = false,
   showBallot = false,
+  type = undefined,
   children = null,
 }: PropsWithChildren<
   {
@@ -104,29 +124,16 @@ export const BaseLayout = ({
         <meta content={metadata.image} name="twitter:image" />
       </Head>
 
-      <div
-        className={clsx(" flex h-full min-h-screen flex-1 flex-col bg-white dark:bg-gray-900 dark:text-white", theme)}
-      >
+      <div className={clsx("flex h-full min-h-screen flex-1 flex-col bg-white", theme)}>
         {header}
 
-        <div
-          className={clsx(
-            "mx-auto w-full flex-1 pt-12 2xl:container md:flex",
-            router.asPath === "/signup" && "bg-blue-50",
-          )}
-        >
+        <MainContainer type={type}>
           {sidebar === "left" ? wrappedSidebar : null}
 
-          <div
-            className={clsx("w-full min-w-0 px-2 pb-24", {
-              "mx-auto max-w-5xl": !sidebar,
-            })}
-          >
-            {children}
-          </div>
+          <div className="w-full min-w-0 pb-24">{children}</div>
 
           {sidebar === "right" ? wrappedSidebar : null}
-        </div>
+        </MainContainer>
 
         <Footer />
       </div>

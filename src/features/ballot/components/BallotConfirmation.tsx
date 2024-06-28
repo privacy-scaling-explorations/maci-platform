@@ -67,7 +67,7 @@ export const BallotConfirmation = (): JSX.Element => {
       </div>
 
       <Notice
-        content={format(config.resultsAt, "d MMM yyyy hh:mm")}
+        content={config.resultsAt ? format(config.resultsAt, "d MMM yyyy hh:mm") : "The date would be announced soon."}
         title="Results will be available after tallying."
         variant="block"
       />
