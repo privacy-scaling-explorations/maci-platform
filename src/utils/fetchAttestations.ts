@@ -64,7 +64,7 @@ const AttestationsQuery = `
 `;
 
 export async function fetchAttestations(schema: string[], filter?: AttestationsFilter): Promise<Attestation[]> {
-  const startsAt = Math.floor(+config.startsAt / 1000);
+  const startsAt = config.startsAt && Math.floor(+config.startsAt / 1000);
 
   return cachedFetch<{ attestations: AttestationWithMetadata[] }>(eas.url, {
     method: "POST",

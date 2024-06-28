@@ -1,0 +1,118 @@
+name: E2E
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "0 9 * * *" # run every day at 9:00 UTC
+
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  NEXT_PUBLIC_CHAIN_NAME: ${{ vars.NEXT_PUBLIC_CHAIN_NAME }}
+  NEXT_PUBLIC_ADMIN_ADDRESS: ${{ vars.NEXT_PUBLIC_ADMIN_ADDRESS }}
+  NEXT_PUBLIC_APPROVAL_SCHEMA: ${{ vars.NEXT_PUBLIC_APPROVAL_SCHEMA }}
+  NEXT_PUBLIC_METADATA_SCHEMA: ${{ vars.NEXT_PUBLIC_METADATA_SCHEMA }}
+  NEXT_PUBLIC_ROUND_ID: ${{ vars.NEXT_PUBLIC_ROUND_ID }}
+  NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK: false
+  NEXT_PUBLIC_MACI_ADDRESS: ${{ vars.NEXT_PUBLIC_MACI_ADDRESS }}
+  NEXT_PUBLIC_TALLY_URL: ${{ vars.NEXT_PUBLIC_TALLY_URL }}
+  NEXT_PUBLIC_WALLETCONNECT_ID: ${{ secrets.NEXT_PUBLIC_WALLETCONNECT_ID }}
+  NEXT_PUBLIC_FEEDBACK_URL: ${{ vars.NEXT_PUBLIC_FEEDBACK_URL }}
+  NEXT_PUBLIC_MACI_START_BLOCK: ${{ vars.NEXT_PUBLIC_MACI_START_BLOCK }}
+  NEXT_PUBLIC_MACI_SUBGRAPH_URL: ${{ vars.NEXT_PUBLIC_MACI_SUBGRAPH_URL }}
+  NEXT_PUBLIC_EAS_CONTRACT_ADDRESS: ${{ vars.NEXT_PUBLIC_EAS_CONTRACT_ADDRESS }}
+  NEXT_PUBLIC_EAS_SCHEMA_REGISTRY_ADDRESS: ${{ vars.NEXT_PUBLIC_EAS_SCHEMA_REGISTRY_ADDRESS }}
+  NEXT_PUBLIC_SIGN_STATEMENT: ${{ vars.NEXT_PUBLIC_SIGN_STATEMENT }}
+  NEXT_PUBLIC_TOKEN_NAME: ${{ vars.NEXT_PUBLIC_TOKEN_NAME }}
+  NEXT_PUBLIC_MAX_VOTES_TOTAL: ${{ vars.NEXT_PUBLIC_MAX_VOTES_TOTAL }}
+  NEXT_PUBLIC_MAX_VOTES_PROJECT: ${{ vars.NEXT_PUBLIC_MAX_VOTES_PROJECT }}
+  NEXT_PUBLIC_EASSCAN_URL: ${{ vars.NEXT_PUBLIC_EASSCAN_URL }}
+  BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
+  NEXT_PUBLIC_ALCHEMY_ID: ${{ secrets.NEXT_PUBLIC_ALCHEMY_ID }}
+  NEXT_PUBLIC_START_DATE: ${{ vars.NEXT_PUBLIC_START_DATE }}
+  NEXT_PUBLIC_REGISTRATION_END_DATE: ${{ vars.NEXT_PUBLIC_REGISTRATION_END_DATE }}
+  NEXT_PUBLIC_REVIEW_END_DATE: ${{ vars.NEXT_PUBLIC_REVIEW_END_DATE }}
+  NEXT_PUBLIC_VOTING_END_DATE: ${{ vars.NEXT_PUBLIC_VOTING_END_DATE }}
+  NEXT_PUBLIC_RESULTS_DATE: ${{ vars.NEXT_PUBLIC_RESULTS_DATE }}
+  NEXT_PUBLIC_POLL_MODE: ${{ vars.NEXT_PUBLIC_POLL_MODE }}
+  TEST_MNEMONIC: ${{ secrets.TEST_MNEMONIC }}
+  WALLET_PRIVATE_KEY: ""
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20]
+
+    timeout-minutes: 120
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        continue-on-error: true
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            /home/runner/.cache/Cypress
+          key: ${{ runner.os }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Get installed Playwright version
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package.json').devDependencies['@playwright/test'])")" >> $GITHUB_ENV
+
+      - name: Cache playwright binaries
+        uses: actions/cache@v4
+        id: playwright-cache
+        continue-on-error: true
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+
+      - name: Install dependencies
+        run: |-
+          pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: |-
+          pnpm run install:chromium
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Run Playwright tests
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: pnpm run test:e2e
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: playwright-report
+          path: ./playwright-report/
+          retention-days: 30

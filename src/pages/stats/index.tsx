@@ -87,7 +87,7 @@ const Stats = () => {
 
 const StatsPage = (): JSX.Element => {
   const appState = useAppState();
-  const duration = differenceInDays(config.resultsAt, new Date());
+  const duration = config.resultsAt && differenceInDays(config.resultsAt, new Date());
 
   return (
     <Layout>
@@ -99,7 +99,7 @@ const StatsPage = (): JSX.Element => {
         <Stats />
       ) : (
         <Alert className="mx-auto max-w-sm text-center" variant="info">
-          The results will be revealed in <div className="text-3xl">{duration > 0 ? duration : 0}</div>
+          The results will be revealed in <div className="text-3xl">{duration && duration > 0 ? duration : 0}</div>
           days
         </Alert>
       )}

@@ -9,3 +9,5 @@ CODEOWNERS
 .eslintignore
 zkeys
 public/mockServiceWorker.js
+playwright-report/
+test-results/

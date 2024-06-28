@@ -13,15 +13,18 @@ export const useAppState = (): EAppState => {
     return EAppState.LOADING;
   }
 
-  if (isAfter(config.registrationEndsAt, now)) {
+  if (config.registrationEndsAt && isAfter(config.registrationEndsAt, now)) {
     return EAppState.APPLICATION;
   }
-  if (isAfter(config.reviewEndsAt, now)) {
+
+  if (config.reviewEndsAt && isAfter(config.reviewEndsAt, now)) {
     return EAppState.REVIEWING;
   }
+
   if (isAfter(votingEndsAt, now)) {
     return EAppState.VOTING;
   }
+
   if (!pollData?.isStateAqMerged || !tallyData) {
     return EAppState.TALLYING;
   }

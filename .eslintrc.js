@@ -21,6 +21,7 @@ module.exports = {
     "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:import/typescript",
     "plugin:react/recommended",
+    "plugin:playwright/playwright-test",
   ],
   plugins: ["json", "prettier", "unused-imports", "import", "@typescript-eslint", "react-hooks"],
   parser: "@typescript-eslint/parser",
@@ -38,7 +39,7 @@ module.exports = {
       typescript: {},
       node: {
         extensions: [".ts", ".js", ".tsx", ".jsx"],
-        moduleDirectory: ["node_modules", "src"],
+        moduleDirectory: ["node_modules", "src", "playwright"],
       },
     },
   },
@@ -62,7 +63,15 @@ module.exports = {
     "import/no-extraneous-dependencies": [
       "error",
       {
-        devDependencies: ["**/*.test.ts", "./src/test-msw.ts", "./src/test-setup.ts", "./src/lib/eas/*.ts"],
+        devDependencies: [
+          "**/*.test.ts",
+          "./src/test-msw.ts",
+          "./src/test-setup.ts",
+          "./src/lib/eas/*.ts",
+          "./playwright/**/*.ts",
+          "./playwright.config.ts",
+          "./vitest.config.ts",
+        ],
       },
     ],
     "no-debugger": isProduction ? "error" : "off",
@@ -172,5 +181,18 @@ module.exports = {
     ],
     "react/no-unused-prop-types": "error",
     "react/function-component-definition": ["error", { namedComponents: ["arrow-function"] }],
+
+    "playwright/prefer-lowercase-title": "error",
+    "playwright/prefer-to-be": "error",
+    "playwright/prefer-to-have-length": "error",
+    "playwright/prefer-strict-equal": "error",
+    "playwright/max-nested-describe": ["error", { max: 1 }],
+    "playwright/no-restricted-matchers": [
+      "error",
+      {
+        toBeFalsy: "Use `toBe(false)` instead.",
+        not: null,
+      },
+    ],
   },
 };
