@@ -42,7 +42,8 @@ const ImpactTags = (): JSX.Element => {
     control,
   });
 
-  const selected = watch("application.impactCategory");
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const selected = watch("application.impactCategory") ?? [];
 
   const error = formState.errors.application?.impactCategory;
   return (
