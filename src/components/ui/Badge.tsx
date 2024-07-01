@@ -5,11 +5,12 @@ import { createComponent } from ".";
 export const Badge = createComponent(
   "div",
   tv({
-    base: "inline-flex items-center rounded font-semibold text-gray-500 text-sm",
+    base: "inline-flex items-center rounded font-semibold text-sm p-2",
     variants: {
       variant: {
         default: "bg-gray-100 dark:bg-gray-800",
-        success: "dark:bg-green-300 dark:text-green-900",
+        success: "bg-[#BBF7D0] text-[#14532D]",
+        pending: "bg-[#FFEDD5] text-[#4E1D0D]",
       },
       size: {
         md: "px-1 ",

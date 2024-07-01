@@ -1,4 +1,5 @@
-import { useMemo, type ReactNode } from "react";
+import clsx from "clsx";
+import { type ReactNode } from "react";
 
 import { Navigation } from "~/components/ui/Navigation";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
@@ -15,37 +16,32 @@ export interface IProjectDetailsProps {
   action?: ReactNode;
   projectId?: string;
   attestation?: Attestation;
+  disabled?: boolean;
 }
 
 const ProjectDetails = ({
   projectId = "",
   attestation = undefined,
   action = undefined,
+  disabled = false,
 }: IProjectDetailsProps): JSX.Element => {
   const metadata = useProjectMetadata(attestation?.metadataPtr);
 
-  const { bio, websiteUrl, payoutAddress, fundingSources } = metadata.data ?? {};
-
-  const github = useMemo(
-    () =>
-      metadata.data?.contributionLinks
-        ? metadata.data.contributionLinks.find((l) => l.type === "GITHUB_REPO")
-        : undefined,
-    [metadata, useProjectMetadata],
-  );
+  const { bio, websiteUrl, payoutAddress, github, twitter, fundingSources, profileImageUrl, bannerImageUrl } =
+    metadata.data ?? {};
 
   return (
-    <div className="relative">
+    <div className={clsx("relative", disabled && "opacity-30")}>
       <div className="mb-7">
         <Navigation projectName={attestation?.name ?? "project name"} />
       </div>
 
       <div className="overflow-hidden rounded-3xl">
-        <ProjectBanner profileId={attestation?.recipient} size="lg" />
+        <ProjectBanner size="lg" url={bannerImageUrl} />
       </div>
 
       <div className="mb-8 flex items-end gap-4">
-        <ProjectAvatar className="-mt-20 ml-8" profileId={attestation?.recipient} rounded="full" size="lg" />
+        <ProjectAvatar className="-mt-20 ml-8" rounded="full" size="lg" url={profileImageUrl} />
       </div>
 
       <div className="flex items-center justify-between">
@@ -54,7 +50,7 @@ const ProjectDetails = ({
         <VotingWidget projectId={projectId} />
       </div>
 
-      <ProjectContacts author={payoutAddress} github={github?.url} website={websiteUrl} />
+      <ProjectContacts author={payoutAddress} github={github} twitter={twitter} website={websiteUrl} />
 
       <p className="text-gray-400">{bio}</p>
 

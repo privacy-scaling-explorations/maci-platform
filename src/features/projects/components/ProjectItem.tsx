@@ -19,20 +19,25 @@ import { ProjectBanner } from "./ProjectBanner";
 export interface IProjectItemProps {
   attestation: Attestation;
   isLoading: boolean;
-  state: EProjectState;
-  action: (e: Event) => void;
+  state?: EProjectState;
+  action?: (e: Event) => void;
 }
 
-export const ProjectItem = ({ attestation, isLoading, state, action }: IProjectItemProps): JSX.Element => {
+export const ProjectItem = ({
+  attestation,
+  isLoading,
+  state = undefined,
+  action = undefined,
+}: IProjectItemProps): JSX.Element => {
   const metadata = useProjectMetadata(attestation.metadataPtr);
   const appState = useAppState();
 
   return (
     <article className="group rounded-xl bg-white shadow-lg hover:shadow-sm" data-testid={`project-${attestation.id}`}>
       <div className="opacity-70 transition-opacity group-hover:opacity-100">
-        <ProjectBanner profileId={attestation.recipient} />
+        <ProjectBanner url={metadata.data?.bannerImageUrl} />
 
-        <ProjectAvatar className="-mt-8 ml-4" profileId={attestation.recipient} rounded="full" />
+        <ProjectAvatar className="-mt-8 ml-4" rounded="full" url={metadata.data?.profileImageUrl} />
       </div>
 
       <div className="p-4 pt-2">
@@ -50,7 +55,7 @@ export const ProjectItem = ({ attestation, isLoading, state, action }: IProjectI
           <ImpactCategories tags={metadata.data?.impactCategory} />
         </Skeleton>
 
-        {!isLoading && appState === EAppState.VOTING && (
+        {!isLoading && state && action && appState === EAppState.VOTING && (
           <div className="flex justify-end pt-6">
             <Skeleton>
               {state === EProjectState.DEFAULT && (

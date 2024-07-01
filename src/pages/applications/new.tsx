@@ -1,33 +1,43 @@
-import { useAccount } from "wagmi";
+import { FiAlertCircle } from "react-icons/fi";
 
 import { Alert } from "~/components/ui/Alert";
-import { Markdown } from "~/components/ui/Markdown";
 import { ApplicationForm } from "~/features/applications/components/ApplicationForm";
 import { Layout } from "~/layouts/DefaultLayout";
 import { useAppState } from "~/utils/state";
 import { EAppState } from "~/utils/types";
 
-const APPLICATION_TEXT = `
-### New Application
-Fill out this form to create an application for your project. It will
-then be reviewed by our admins. 
-
-Your progress is saved locally so you can return to this page to resume your application.
-`;
-
 const NewProjectPage = (): JSX.Element => {
-  const { address } = useAccount();
   const state = useAppState();
 
   return (
     <Layout>
-      <Markdown className="mb-8">{APPLICATION_TEXT}</Markdown>
+      <div className="flex w-full justify-center">
+        <div className="flex flex-col gap-4 md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
+          <h3>New Application</h3>
 
-      {state !== EAppState.APPLICATION ? (
-        <Alert title="Application period has ended" variant="info" />
-      ) : (
-        <ApplicationForm address={address} />
-      )}
+          <p className="text-gray-400">
+            <span className="inline-block">
+              Fill out this form to create an application for your project. It will then be reviewed by our admins.
+            </span>
+
+            <span className="inline-block">
+              Your progress is saved locally so you can return to this page to resume your application.
+            </span>
+          </p>
+
+          <p className="flex gap-1 text-blue-400">
+            <FiAlertCircle className="h-4 w-4" />
+
+            <i className="text-sm">Applications can be edited and approved until the Registration period ends.</i>
+          </p>
+
+          {state !== EAppState.APPLICATION ? (
+            <Alert title="Application period has ended" variant="info" />
+          ) : (
+            <ApplicationForm />
+          )}
+        </div>
+      </div>
     </Layout>
   );
 };

@@ -10,6 +10,11 @@ import type { UseTRPCInfiniteQueryResult, UseTRPCQueryResult } from "@trpc/react
 import type { Ballot } from "~/features/ballot/types";
 import type { Attestation } from "~/utils/fetchAttestations";
 
+interface IUseSearchProjectsProps {
+  filterOverride?: Partial<Filter>;
+  needApproval?: boolean;
+}
+
 export function useProjectById(id: string): UseTRPCQueryResult<Attestation[], unknown> {
   return api.projects.get.useQuery({ ids: [id] }, { enabled: Boolean(id) });
 }
@@ -19,13 +24,14 @@ export function useProjectsById(ids: string[]): UseTRPCQueryResult<Attestation[]
 }
 
 const seed = 0;
-export function useSearchProjects(
-  filterOverride?: Partial<Filter>,
-): UseTRPCInfiniteQueryResult<Attestation[], unknown, unknown> {
+export function useSearchProjects({
+  filterOverride = {},
+  needApproval = true,
+}: IUseSearchProjectsProps): UseTRPCInfiniteQueryResult<Attestation[], unknown, unknown> {
   const { ...filter } = useFilter();
 
   return api.projects.search.useInfiniteQuery(
-    { seed, ...filter, ...filterOverride },
+    { seed, ...filter, ...filterOverride, needApproval },
     {
       getNextPageParam: (_, pages) => pages.length,
     },

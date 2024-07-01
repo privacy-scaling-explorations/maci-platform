@@ -6,11 +6,16 @@ import { useProfileWithMetadata } from "~/hooks/useProfile";
 
 export interface IProjectAvatarProps extends ComponentProps<typeof Avatar> {
   profileId?: Address;
+  url?: string;
 }
 
-export const ProjectAvatar = ({ profileId = undefined, ...rest }: IProjectAvatarProps): JSX.Element => {
+export const ProjectAvatar = ({
+  profileId = undefined,
+  url = undefined,
+  ...rest
+}: IProjectAvatarProps): JSX.Element => {
   const profile = useProfileWithMetadata(profileId);
   const { profileImageUrl } = profile.data ?? {};
 
-  return <Avatar {...rest} src={profileImageUrl} />;
+  return <Avatar {...rest} src={profileImageUrl ?? url} />;
 };

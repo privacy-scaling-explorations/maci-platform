@@ -1,222 +1,158 @@
-import { useController, useFormContext } from "react-hook-form";
+import { Transaction } from "@ethereum-attestation-service/eas-sdk";
+import { useRouter } from "next/router";
+import { useState, useCallback } from "react";
 import { useLocalStorage } from "react-use";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
-import { z } from "zod";
 
 import { ImageUpload } from "~/components/ImageUpload";
-import { Alert } from "~/components/ui/Alert";
-import { IconButton } from "~/components/ui/Button";
-import {
-  ErrorMessage,
-  FieldArray,
-  Form,
-  FormControl,
-  FormSection,
-  Label,
-  Select,
-  Textarea,
-} from "~/components/ui/Form";
+import { FieldArray, Form, FormControl, FormSection, Select, Textarea } from "~/components/ui/Form";
 import { Input } from "~/components/ui/Input";
-import { Spinner } from "~/components/ui/Spinner";
-import { Tag } from "~/components/ui/Tag";
-import { impactCategories } from "~/config";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
 import { useCreateApplication } from "../hooks/useCreateApplication";
-import { ApplicationSchema, ProfileSchema, contributionTypes, fundingSourceTypes } from "../types";
+import { ApplicationSchema, contributionTypes, fundingSourceTypes } from "../types";
 
-const ApplicationCreateSchema = z.object({
-  profile: ProfileSchema,
-  application: ApplicationSchema,
-});
+import { ApplicationButtons, EApplicationStep } from "./ApplicationButtons";
+import { ApplicationSteps } from "./ApplicationSteps";
+import { ImpactTags } from "./ImpactTags";
+import { ReviewApplicationDetails } from "./ReviewApplicationDetails";
 
-export interface IApplicationFormProps {
-  address?: string;
-}
+export const ApplicationForm = (): JSX.Element => {
+  const clearDraft = useLocalStorage("application-draft")[2];
 
-const ImpactTags = (): JSX.Element => {
-  const { control, watch, formState } = useFormContext<z.infer<typeof ApplicationCreateSchema>>();
-  const { field } = useController({
-    name: "application.impactCategory",
-    control,
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const selected = watch("application.impactCategory") ?? [];
-
-  const error = formState.errors.application?.impactCategory;
-  return (
-    <div className="mb-4">
-      <Label>
-        Impact categories<span className="text-red-300">*</span>
-      </Label>
-
-      <div className="flex flex-wrap gap-2">
-        {Object.entries(impactCategories).map(([value, { label }]) => {
-          const isSelected = selected.includes(value);
-          return (
-            <Tag
-              key={value}
-              selected={isSelected}
-              size="lg"
-              onClick={() => {
-                const currentlySelected = isSelected ? selected.filter((s) => s !== value) : selected.concat(value);
-
-                field.onChange(currentlySelected);
-              }}
-            >
-              {label}
-            </Tag>
-          );
-        })}
-      </div>
-
-      {error && <ErrorMessage>{error.message}</ErrorMessage>}
-    </div>
-  );
-};
-
-const CreateApplicationButton = ({ isLoading, buttonText }: { isLoading: boolean; buttonText: string }) => {
   const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
 
   const { address } = useAccount();
 
-  return (
-    <div className="flex items-center justify-between">
-      <div>
-        {!address && <div>You must connect wallet to create a list</div>}
+  const router = useRouter();
 
-        {!isCorrectNetwork && (
-          <div className="flex items-center gap-2">You must be connected to {correctNetwork.name}</div>
-        )}
-      </div>
+  /**
+   * There are 3 steps for creating an application.
+   * The first step is to set the project introduction (profile);
+   * the second step is to set the contributions, impacts, and funding sources (advanced);
+   * the last step is to review the input values, allow editing by going back to previous steps (review).
+   */
+  const [step, setStep] = useState<EApplicationStep>(EApplicationStep.PROFILE);
 
-      <IconButton
-        disabled={isLoading}
-        icon={isLoading ? Spinner : null}
-        isLoading={isLoading}
-        type="submit"
-        variant="primary"
-      >
-        {buttonText}
-      </IconButton>
-    </div>
-  );
-};
+  const handleNextStep = useCallback(() => {
+    if (step === EApplicationStep.PROFILE) {
+      setStep(EApplicationStep.ADVANCED);
+    } else if (step === EApplicationStep.ADVANCED) {
+      setStep(EApplicationStep.REVIEW);
+    }
+  }, [step, setStep]);
 
-export const ApplicationForm = ({ address = "" }: IApplicationFormProps): JSX.Element => {
-  const clearDraft = useLocalStorage("application-draft")[2];
+  const handleBackStep = useCallback(() => {
+    if (step === EApplicationStep.REVIEW) {
+      setStep(EApplicationStep.ADVANCED);
+    } else if (step === EApplicationStep.ADVANCED) {
+      setStep(EApplicationStep.PROFILE);
+    }
+  }, [step, setStep]);
 
   const create = useCreateApplication({
-    onSuccess: () => {
-      toast.success("Application created successfully!");
+    onSuccess: (data: Transaction<string[]>) => {
       clearDraft();
+      router.push(`/applications/confirmation?txHash=${data.tx.hash}`);
     },
     onError: (err: { reason?: string; data?: { message: string } }) =>
       toast.error("Application create error", {
         description: err.reason ?? err.data?.message,
       }),
   });
-  if (create.isSuccess) {
-    return (
-      <Alert title="Application created!" variant="success">
-        It will now be reviewed by our admins.
-      </Alert>
-    );
-  }
-  const { error } = create;
 
-  const text = create.isAttesting ? "Creating attestation" : "Create application";
+  const { error: createError } = create;
 
   return (
-    <div>
+    <div className="rounded-lg border border-gray-200 p-4">
+      <ApplicationSteps step={step} />
+
       <Form
         defaultValues={{
-          application: {
-            payoutAddress: address,
-            contributionLinks: [{}],
-            impactMetrics: [{}],
-            fundingSources: [{}],
-          },
+          payoutAddress: address,
+          contributionLinks: [{}],
+          impactMetrics: [{}],
+          fundingSources: [{}],
         }}
-        schema={ApplicationCreateSchema}
-        onSubmit={({ profile, application }) => {
-          create.mutate({ application, profile });
+        schema={ApplicationSchema}
+        onSubmit={(application) => {
+          create.mutate(application);
         }}
       >
         <FormSection
-          description="Configure your profile name and choose your avatar and background for your project."
-          title="Profile"
+          className={step === EApplicationStep.PROFILE ? "block" : "hidden"}
+          description="Please provide information about your project."
+          title="Project Profile"
         >
-          <FormControl required label="Profile name" name="profile.name">
-            <Input placeholder="Your name" />
+          <FormControl required label="Project name" name="name">
+            <Input placeholder="Type your project name" />
           </FormControl>
 
+          <FormControl required label="Description" name="bio">
+            <Textarea placeholder="Type project description" rows={4} />
+          </FormControl>
+
+          <div className="gap-4 md:flex">
+            <FormControl required className="flex-1" label="Website" name="websiteUrl">
+              <Input placeholder="https://" />
+            </FormControl>
+
+            <FormControl required className="flex-1" label="Payout address" name="payoutAddress">
+              <Input placeholder="0x..." />
+            </FormControl>
+          </div>
+
+          <div className="gap-4 md:flex">
+            <FormControl className="flex-1" label="X(Twitter)" name="twitter" required={false}>
+              <Input placeholder="Type your twitter username" />
+            </FormControl>
+
+            <FormControl className="flex-1" label="Github" name="github" required={false}>
+              <Input placeholder="Type your github username" />
+            </FormControl>
+          </div>
+
           <div className="mb-4 gap-4 md:flex">
-            <FormControl required label="Project avatar" name="profile.profileImageUrl">
+            <FormControl required label="Project avatar" name="profileImageUrl">
               <ImageUpload className="h-48 w-48 " />
             </FormControl>
 
-            <FormControl required className="flex-1" label="Project background image" name="profile.bannerImageUrl">
+            <FormControl required className="flex-1" label="Project background image" name="bannerImageUrl">
               <ImageUpload className="h-48 " />
             </FormControl>
           </div>
         </FormSection>
 
         <FormSection
-          description="Configure your application and the payout address to where tokens will be transferred."
-          title="Application"
+          className={step === EApplicationStep.ADVANCED ? "block" : "hidden"}
+          description="Describe the contribution and impact of your project."
+          title="Contribution & Impact"
         >
-          <FormControl required label="Name" name="application.name">
-            <Input placeholder="Project name" />
-          </FormControl>
-
-          <FormControl required label="Description" name="application.bio">
-            <Textarea placeholder="Project description" rows={4} />
-          </FormControl>
-
-          <div className="gap-4 md:flex">
-            <FormControl required className="flex-1" label="Website" name="application.websiteUrl">
-              <Input placeholder="https://" />
-            </FormControl>
-
-            <FormControl required className="flex-1" label="Payout address" name="application.payoutAddress">
-              <Input placeholder="0x..." />
-            </FormControl>
-          </div>
-        </FormSection>
-
-        <FormSection description="Describe the contribution and impact of your project." title="Contribution & Impact">
-          <FormControl required label="Contribution description" name="application.contributionDescription">
+          <FormControl required label="Contribution description" name="contributionDescription">
             <Textarea placeholder="What have your project contributed to?" rows={4} />
           </FormControl>
 
-          <FormControl required label="Impact description" name="application.impactDescription">
+          <FormControl required label="Impact description" name="impactDescription">
             <Textarea placeholder="What impact has your project had?" rows={4} />
           </FormControl>
 
           <ImpactTags />
-        </FormSection>
 
-        <FormSection description="Where can we find your contributions?" title="Contribution links">
           <FieldArray
-            name="application.contributionLinks"
+            description="Where can we find your contributions?"
+            name="contributionLinks"
             renderField={(field, i) => (
-              <>
-                <FormControl
-                  required
-                  className="min-w-96 flex-1"
-                  name={`application.contributionLinks.${i}.description`}
-                >
-                  <Input placeholder="Description" />
+              <div className="mb-4 flex flex-wrap gap-2">
+                <FormControl required className="min-w-96" name={`contributionLinks.${i}.description`}>
+                  <Input placeholder="Type the description of your contribution" />
                 </FormControl>
 
-                <FormControl required name={`application.contributionLinks.${i}.url`}>
+                <FormControl required className="min-w-72" name={`contributionLinks.${i}.url`}>
                   <Input placeholder="https://" />
                 </FormControl>
 
-                <FormControl required name={`application.contributionLinks.${i}.type`}>
+                <FormControl required name={`contributionLinks.${i}.type`}>
                   <Select>
                     {Object.entries(contributionTypes).map(([value, label]) => (
                       <option key={value} value={value}>
@@ -225,50 +161,50 @@ export const ApplicationForm = ({ address = "" }: IApplicationFormProps): JSX.El
                     ))}
                   </Select>
                 </FormControl>
-              </>
+              </div>
             )}
+            title="Contribution links"
           />
-        </FormSection>
 
-        <FormSection description="What kind of impact have your project made?" title="Impact metrics">
           <FieldArray
-            name="application.impactMetrics"
+            description="What kind of impact have your project made?"
+            name="impactMetrics"
             renderField={(field, i) => (
-              <>
-                <FormControl required className="min-w-96 flex-1" name={`application.impactMetrics.${i}.description`}>
-                  <Input placeholder="Description" />
+              <div className="mb-4 flex flex-wrap gap-2">
+                <FormControl required className="min-w-96" name={`impactMetrics.${i}.description`}>
+                  <Input placeholder="Type the name of your impact metric" />
                 </FormControl>
 
-                <FormControl required name={`application.impactMetrics.${i}.url`}>
+                <FormControl required className="min-w-72" name={`impactMetrics.${i}.url`}>
                   <Input placeholder="https://" />
                 </FormControl>
 
-                <FormControl required valueAsNumber name={`application.impactMetrics.${i}.number`}>
-                  <Input placeholder="Number" type="number" />
+                <FormControl required valueAsNumber name={`impactMetrics.${i}.number`}>
+                  <Input placeholder="Type a metric number" type="number" />
                 </FormControl>
-              </>
+              </div>
             )}
+            title="Impact metrics"
           />
-        </FormSection>
 
-        <FormSection description="From what sources have you received funding?" title="Funding sources">
           <FieldArray
-            name="application.fundingSources"
+            description="From what sources have you received funding?"
+            name="fundingSources"
             renderField={(field, i) => (
-              <>
-                <FormControl required className="min-w-96 flex-1" name={`application.fundingSources.${i}.description`}>
-                  <Input placeholder="Description" />
+              <div className="mb-4 flex flex-wrap gap-2">
+                <FormControl required className="min-w-96" name={`fundingSources.${i}.description`}>
+                  <Input placeholder="Type the name of your funding source" />
                 </FormControl>
 
-                <FormControl required valueAsNumber name={`application.fundingSources.${i}.amount`}>
+                <FormControl required valueAsNumber className="w-32" name={`fundingSources.${i}.amount`}>
                   <Input placeholder="Amount" type="number" />
                 </FormControl>
 
-                <FormControl required name={`application.fundingSources.${i}.currency`}>
-                  <Input placeholder="USD" />
+                <FormControl required className="w-32" name={`fundingSources.${i}.currency`}>
+                  <Input placeholder="e.g. USD" />
                 </FormControl>
 
-                <FormControl required name={`application.fundingSources.${i}.type`}>
+                <FormControl required name={`fundingSources.${i}.type`}>
                   <Select>
                     {Object.entries(fundingSourceTypes).map(([value, label]) => (
                       <option key={value} value={value}>
@@ -277,20 +213,34 @@ export const ApplicationForm = ({ address = "" }: IApplicationFormProps): JSX.El
                     ))}
                   </Select>
                 </FormControl>
-              </>
+              </div>
             )}
+            title="Funding sources"
           />
         </FormSection>
 
-        {error ? (
-          <div className="mb-4 text-center text-gray-600 dark:text-gray-400">
-            Make sure you&apos;re not connected to a VPN since this can cause problems with the RPC and your wallet.
-          </div>
-        ) : null}
+        {step === EApplicationStep.REVIEW && <ReviewApplicationDetails />}
 
-        <CreateApplicationButton
-          buttonText={create.isUploading ? "Uploading metadata" : text}
-          isLoading={create.isPending}
+        {step === EApplicationStep.REVIEW && (
+          <div className="mb-2 w-full text-right text-sm italic text-blue-400">
+            {!address && <p>You must connect wallet to create an application</p>}
+
+            {!isCorrectNetwork && <p className="gap-2">You must be connected to {correctNetwork.name}</p>}
+
+            {createError && (
+              <p>
+                Make sure you&apos;re not connected to a VPN since this can cause problems with the RPC and your wallet.
+              </p>
+            )}
+          </div>
+        )}
+
+        <ApplicationButtons
+          isPending={create.isPending}
+          isUploading={create.isUploading}
+          step={step}
+          onBackStep={handleBackStep}
+          onNextStep={handleNextStep}
         />
       </Form>
     </div>

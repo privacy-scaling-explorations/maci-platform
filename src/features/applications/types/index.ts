@@ -9,14 +9,6 @@ export const MetadataSchema = z.object({
   metadataPtr: z.string().min(3),
 });
 
-export const ProfileSchema = z.object({
-  name: z.string().min(3),
-  profileImageUrl: z.string(),
-  bannerImageUrl: z.string(),
-});
-
-export type Profile = z.infer<typeof ProfileSchema>;
-
 export const contributionTypes = {
   CONTRACT_ADDRESS: "Contract address",
   GITHUB_REPO: "Github repo",
@@ -33,6 +25,8 @@ export const fundingSourceTypes = {
 export const ApplicationSchema = z.object({
   name: z.string().min(3),
   bio: z.string().min(3),
+  profileImageUrl: z.string().optional(),
+  bannerImageUrl: z.string().optional(),
   websiteUrl: z
     .string()
     .min(1)
@@ -41,9 +35,11 @@ export const ApplicationSchema = z.object({
       /^(http:\/\/|https:\/\/)/i.test(url) ? url : `https://${url}`,
     ),
   payoutAddress: EthAddressSchema,
+  github: z.string().optional(),
+  twitter: z.string().optional(),
   contributionDescription: z.string().min(3),
   impactDescription: z.string().min(3),
-  impactCategory: z.array(z.string()).min(1),
+  impactCategory: z.array(z.string()).min(1).optional(),
   contributionLinks: z
     .array(
       z.object({

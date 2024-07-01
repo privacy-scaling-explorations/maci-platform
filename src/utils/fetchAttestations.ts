@@ -16,6 +16,7 @@ export interface AttestationWithMetadata {
   time: number;
   decodedDataJson: string;
   schemaId: string;
+  txid: string;
 }
 
 export type Attestation = Omit<AttestationWithMetadata, "decodedDataJson"> & {
@@ -35,6 +36,7 @@ interface MatchWhere {
   refUID?: MatchFilter;
   schemaId?: MatchFilter;
   time?: MatchFilter;
+  txid?: MatchFilter;
   decodedDataJson?: { contains: string };
   AND?: MatchWhere[];
 }
@@ -57,7 +59,7 @@ const AttestationsQuery = `
       recipient
       revoked
       schemaId
-      time
+      txid
       time
     }
   }

@@ -11,10 +11,13 @@ import { config } from "~/config";
 import { useMaci } from "~/contexts/Maci";
 import { FAQList } from "~/features/signup/components/FaqList";
 import { Layout } from "~/layouts/DefaultLayout";
+import { useAppState } from "~/utils/state";
+import { EAppState } from "~/utils/types";
 
 const SignupPage = (): JSX.Element => {
   const { isConnected } = useAccount();
   const { isRegistered } = useMaci();
+  const appState = useAppState();
 
   return (
     <Layout type="home">
@@ -33,15 +36,21 @@ const SignupPage = (): JSX.Element => {
           <span>{config.resultsAt && format(config.resultsAt, "d MMMM, yyyy")}</span>
         </p>
 
-        {isConnected && isRegistered && (
+        {!isConnected && <ConnectButton />}
+
+        {isConnected && appState === EAppState.APPLICATION && (
+          <Button size="auto" variant="primary">
+            <Link href="/applications/new">Start Application</Link>
+          </Button>
+        )}
+
+        {isConnected && isRegistered && appState === EAppState.VOTING && (
           <Button size="auto" variant="primary">
             <Link href="/projects">View projects</Link>
           </Button>
         )}
 
         {isConnected && !isRegistered && <JoinButton />}
-
-        {!isConnected && <ConnectButton />}
 
         <div className="my-8">
           <Info size="default" />
