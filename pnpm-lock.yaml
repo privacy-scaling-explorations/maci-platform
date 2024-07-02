@@ -110,9 +110,6 @@ dependencies:
   p-limit:
     specifier: ^5.0.0
     version: 5.0.0
-  papaparse:
-    specifier: ^5.4.1
-    version: 5.4.1
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -11315,7 +11312,6 @@ packages:
     dependencies:
       is-hex-prefixed: 1.0.0
       strip-hex-prefix: 1.0.0
-    bundledDependencies: false
 
   /event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
@@ -16420,10 +16416,6 @@ packages:
 
   /pako@2.1.0:
     resolution: {integrity: sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug==}
-    dev: false
-
-  /papaparse@5.4.1:
-    resolution: {integrity: sha512-HipMsgJkZu8br23pW15uvo6sib6wne/4woLZPlFf3rpDyMe9ywEXUsuD7+6K9PRkJlVT51j/sCOYDKGGS3ZJrw==}
     dev: false
 
   /param-case@3.0.4:

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { SchemaRegistry, ZERO_ADDRESS, getSchemaUID } from "@ethereum-attestation-service/eas-sdk";
 import "dotenv/config";
-import { ethers, formatEther } from "ethers";
+import { ethers } from "ethers";
 
 import { eas, config } from "~/config";
 
@@ -35,17 +35,13 @@ const schemaRegistry = new SchemaRegistry(eas.contracts.schemaRegistry);
 schemaRegistry.connect(wallet as unknown as TransactionSigner);
 
 export async function registerSchemas(): Promise<{ name: string; uid: string }[]> {
-  console.log("Balance: ", await provider.getBalance(wallet).then(formatEther));
   return Promise.all(
     schemas.map(async ({ name, schema }) => {
-      console.log(`Registering schema: ${name}`);
-
       const exists = await schemaRegistry
         .getSchema({
           uid: getSchemaUID(schema, ZERO_ADDRESS, true),
         })
         .catch(console.error);
-      console.log("exists", exists);
 
       if (exists) {
         return { name, ...exists };
@@ -54,7 +50,6 @@ export async function registerSchemas(): Promise<{ name: string; uid: string }[]
       return schemaRegistry.register({ schema, revocable: true }).then(async (tx) => ({ name, uid: await tx.wait() }));
     }),
   ).then((registered) => {
-    console.log(`Schemas registered!`);
     registered.forEach((schema) => {
       console.log(`  ${schema.name}: ${schema.uid}`);
     });

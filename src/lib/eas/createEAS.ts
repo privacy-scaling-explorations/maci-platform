@@ -6,8 +6,6 @@ import { type JsonRpcSigner } from "ethers";
 import * as config from "~/config";
 
 export function createEAS(signer: JsonRpcSigner): EAS {
-  console.log("Creating EAS instance");
   const eas = new EAS(config.eas.contracts.eas);
-  console.log("Connecting signer to EAS");
   return eas.connect(signer as unknown as TransactionSigner);
 }
