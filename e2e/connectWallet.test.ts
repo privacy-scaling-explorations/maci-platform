@@ -6,7 +6,7 @@ test.describe("connect wallet", () => {
   });
 
   test("should connect wallet using default metamask account", async ({ page }) => {
-    await page.getByText(/Connect wallet/).click();
+    await page.getByRole("button", { name: "Connect wallet" }).first().click();
     await page.getByTestId("rk-wallet-option-io.metamask").click();
 
     const metamask = await page.context().waitForEvent("page");
