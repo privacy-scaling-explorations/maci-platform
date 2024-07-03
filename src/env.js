@@ -31,7 +31,6 @@ module.exports = createEnv({
       "baseSepolia",
       "localhost",
     ]),
-    NEXT_PUBLIC_SIGN_STATEMENT: z.string().optional(),
 
     NEXT_PUBLIC_FEEDBACK_URL: z.string().default("#"),
 
@@ -50,10 +49,6 @@ module.exports = createEnv({
     NEXT_PUBLIC_PROFILE_SCHEMA: z
       .string()
       .default("0xac4c92fc5c7babed88f78a917cdbcdc1c496a8f4ab2d5b2ec29402736b2cf929"),
-
-    NEXT_PUBLIC_EAS_CONTRACT_ADDRESS: z.string().default("0x4200000000000000000000000000000000000021"),
-
-    NEXT_PUBLIC_EASSCAN_URL: z.string().default("https://optimism.easscan.org/graphql"),
 
     NEXT_PUBLIC_ADMIN_ADDRESS: z.string().startsWith("0x"),
     NEXT_PUBLIC_APPROVAL_SCHEMA: z.string().startsWith("0x"),
@@ -84,7 +79,6 @@ module.exports = createEnv({
     NODE_ENV: process.env.NODE_ENV,
 
     NEXT_PUBLIC_CHAIN_NAME: process.env.NEXT_PUBLIC_CHAIN_NAME,
-    NEXT_PUBLIC_SIGN_STATEMENT: process.env.NEXT_PUBLIC_SIGN_STATEMENT,
 
     NEXT_PUBLIC_FEEDBACK_URL: process.env.NEXT_PUBLIC_FEEDBACK_URL,
 
@@ -95,8 +89,6 @@ module.exports = createEnv({
     NEXT_PUBLIC_BADGEHOLDER_ATTESTER: process.env.NEXT_PUBLIC_BADGEHOLDER_ATTESTER,
     NEXT_PUBLIC_PROFILE_SCHEMA: process.env.NEXT_PUBLIC_PROFILE_SCHEMA,
 
-    NEXT_PUBLIC_EAS_CONTRACT_ADDRESS: process.env.NEXT_PUBLIC_EAS_CONTRACT_ADDRESS,
-    NEXT_PUBLIC_EASSCAN_URL: process.env.NEXT_PUBLIC_EASSCAN_URL,
     NEXT_PUBLIC_WALLETCONNECT_ID: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
     NEXT_PUBLIC_ALCHEMY_ID: process.env.NEXT_PUBLIC_ALCHEMY_ID,
     NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK: process.env.NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK,

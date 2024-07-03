@@ -9,6 +9,39 @@ export const metadata = {
 
 const parseDate = (env?: string) => (env ? new Date(env) : undefined);
 
+// URLs for the EAS GraphQL endpoint for each chain
+const easScanUrl = {
+  ethereum: "https://easscan.org/graphql",
+  optimism: "https://optimism.easscan.org/graphql",
+  optimismSepolia: "https://optimism-sepolia.easscan.org/graphql",
+  arbitrum: "	https://arbitrum.easscan.org/graphql",
+  linea: "https://linea.easscan.org/graphql",
+  sepolia: "https://sepolia.easscan.org/graphql",
+  base: "https://base.easscan.org/graphql",
+};
+
+// EAS contract addresses for each chain
+const easContractAddresses = {
+  ethereum: "0xA1207F3BBa224E2c9c3c6D5aF63D0eb1582Ce587",
+  optimism: "0x4200000000000000000000000000000000000021",
+  optimismSepolia: "0x4200000000000000000000000000000000000021",
+  arbitrum: "0xbD75f629A22Dc1ceD33dDA0b68c546A1c035c458",
+  linea: "0xaEF4103A04090071165F78D45D83A0C0782c2B2a",
+  sepolia: "0xC2679fBD37d54388Ce493F1DB75320D236e1815e",
+  base: "0x4200000000000000000000000000000000000021",
+};
+
+// EAS Schema Registry contract addresses for each chain
+const easSchemaRegistryContractAddresses = {
+  ethereum: "0xA7b39296258348C78294F95B872b282326A97BDF",
+  optimism: "0x4200000000000000000000000000000000000020",
+  optimismSepolia: "0x4200000000000000000000000000000000000020",
+  arbitrum: "0xA310da9c5B885E7fb3fbA9D66E9Ba6Df512b78eB",
+  linea: "0x55D26f9ae0203EF95494AE4C170eD35f4Cf77797",
+  sepolia: "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0",
+  base: "0x4200000000000000000000000000000000000020",
+};
+
 export const config = {
   logoUrl: "/Logo.svg",
   pageSize: 3 * 4,
@@ -29,7 +62,7 @@ export const config = {
   maciStartBlock: Number(process.env.NEXT_PUBLIC_MACI_START_BLOCK ?? 0),
   maciSubgraphUrl: process.env.NEXT_PUBLIC_MACI_SUBGRAPH_URL ?? "",
   tallyUrl: process.env.NEXT_PUBLIC_TALLY_URL,
-  roundOrganizer: process.env.NEXT_PUBLIC_ROUND_ORGANIZER ?? "Optimism",
+  roundOrganizer: process.env.NEXT_PUBLIC_ROUND_ORGANIZER ?? "PSE",
   pollMode: process.env.NEXT_PUBLIC_POLL_MODE ?? "non-qv",
   roundLogo: process.env.NEXT_PUBLIC_ROUND_LOGO,
 };
@@ -39,12 +72,15 @@ export const theme = {
 };
 
 export const eas = {
-  url: process.env.NEXT_PUBLIC_EASSCAN_URL ?? "",
+  url: easScanUrl[process.env.NEXT_PUBLIC_CHAIN_NAME as keyof typeof easScanUrl],
   attesterAddress: process.env.NEXT_PUBLIC_APPROVED_APPLICATIONS_ATTESTER ?? "",
 
   contracts: {
-    eas: process.env.NEXT_PUBLIC_EAS_CONTRACT_ADDRESS ?? "0x4200000000000000000000000000000000000021",
-    schemaRegistry: process.env.NEXT_PUBLIC_EAS_SCHEMA_REGISTRY_ADDRESS ?? "0x4200000000000000000000000000000000000020",
+    eas: easContractAddresses[process.env.NEXT_PUBLIC_CHAIN_NAME as keyof typeof easContractAddresses],
+    schemaRegistry:
+      easSchemaRegistryContractAddresses[
+        process.env.NEXT_PUBLIC_CHAIN_NAME as keyof typeof easSchemaRegistryContractAddresses
+      ],
   },
   schemas: {
     metadata: process.env.NEXT_PUBLIC_METADATA_SCHEMA!,
