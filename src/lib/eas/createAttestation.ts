@@ -18,10 +18,8 @@ interface Params {
 }
 
 export async function createAttestation(params: Params, signer: JsonRpcSigner): Promise<AttestationRequest> {
-  console.log("Getting recipient address");
   const recipient = params.recipient ?? (await signer.getAddress());
 
-  console.log("Encoding attestation data");
   const data = await encodeData(params, signer);
 
   return {
@@ -38,15 +36,13 @@ export async function createAttestation(params: Params, signer: JsonRpcSigner): 
 
 async function encodeData({ values, schemaUID }: Params, signer: JsonRpcSigner) {
   const schemaRegistry = new SchemaRegistry(config.eas.contracts.schemaRegistry);
-  console.log("Connecting signer to SchemaRegistry...");
+
   schemaRegistry.connect(signer as unknown as TransactionSigner);
 
-  console.log("Getting schema record...");
   const schemaRecord = await schemaRegistry.getSchema({ uid: schemaUID });
 
   const schemaEncoder = new SchemaEncoder(schemaRecord.schema);
 
-  console.log("Creating data to encode from schema record...");
   const dataToEncode = schemaRecord.schema.split(",").map((param) => {
     const [type, name] = param.trim().split(" ");
     if (name && type) {
@@ -56,6 +52,5 @@ async function encodeData({ values, schemaUID }: Params, signer: JsonRpcSigner) 
     throw new Error(`Attestation data: ${name} not found in ${JSON.stringify(values)}`);
   });
 
-  console.log("Encoding data with schema...");
   return schemaEncoder.encodeData(dataToEncode);
 }
