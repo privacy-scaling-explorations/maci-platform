@@ -67,6 +67,13 @@ export const config = {
   roundLogo: process.env.NEXT_PUBLIC_ROUND_LOGO,
 };
 
+export const ipfs = {
+  url: process.env.NEXT_PUBLIC_IPFS_URL ?? "",
+  apiKey: process.env.IPFS_API_KEY ?? "",
+  secret: process.env.IPFS_SECRET ?? "",
+  fetchingUrl: process.env.NEXT_PUBLIC_IPFS_FETCHING_URL ?? "",
+};
+
 export const theme = {
   colorMode: "light",
 };

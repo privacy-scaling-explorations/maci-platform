@@ -8,6 +8,13 @@ export function useMetadata<T>(metadataPtr?: string): UseTRPCQueryResult<T, unkn
   return api.metadata.get.useQuery({ metadataPtr: String(metadataPtr) }, { enabled: Boolean(metadataPtr) });
 }
 
+// based on API documentation of infura and pinata the hash could come
+// with different property names
+interface UploadResponse {
+  Hash?: string;
+  IpfsHash?: string;
+}
+
 export function useUploadMetadata(): UseMutationResult<{ url: string }, DefaultError, Record<string, unknown> | File> {
   return useMutation({
     mutationFn: async (data: Record<string, unknown> | File) => {
@@ -30,7 +37,9 @@ export function useUploadMetadata(): UseMutationResult<{ url: string }, DefaultE
         if (!r.ok) {
           throw new Error("Network error");
         }
-        return (await r.json()) as { url: string };
+        const res = (await r.json()) as unknown as UploadResponse;
+        const hash = res.Hash ?? res.IpfsHash;
+        return { url: hash! };
       });
     },
   });

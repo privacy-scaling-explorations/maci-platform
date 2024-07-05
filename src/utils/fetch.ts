@@ -6,17 +6,20 @@ export interface ICreateCachedFetchArgs {
 
 export type TCachedFetch = <T>(
   url: string,
-  opts?: { method: "POST" | "GET"; body?: string },
+  opts?: { method: "POST" | "GET"; body?: string; headers?: Record<string, string> },
 ) => Promise<{ data: T; error: Error }>;
 
 export function createCachedFetch({ ttl = 1000 * 60 }: ICreateCachedFetchArgs): TCachedFetch {
   const cachedFetch = NodeFetchCache.create({ cache: new MemoryCache({ ttl }) });
 
-  return async <T>(url: string, opts?: { method: "POST" | "GET"; body?: string }): Promise<{ data: T; error: Error }> =>
+  return async <T>(
+    url: string,
+    opts?: { method: "POST" | "GET"; body?: string; headers?: Record<string, string> },
+  ): Promise<{ data: T; error: Error }> =>
     cachedFetch(url, {
       method: opts?.method ?? "GET",
       body: opts?.body,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...opts?.headers },
     }).then(async (r) => {
       if (!r.ok) {
         await r.ejectFromCache();
