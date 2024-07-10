@@ -17,6 +17,7 @@ import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { api } from "~/utils/api";
 
 import type { IVoteArgs, MaciContextType, MaciProviderProps } from "./types";
+import type { Signer } from "ethers";
 import type { Attestation } from "~/utils/fetchAttestations";
 
 export const MaciContext = createContext<MaciContextType | undefined>(undefined);
@@ -113,7 +114,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
           maciPubKey,
           maciAddress: config.maciAddress!,
           sgDataArg: attestationId,
-          signer,
+          signer: signer as Signer,
         });
 
         if (index) {
@@ -158,7 +159,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         publicKey: maciPubKey!,
         privateKey: maciPrivKey!,
         pollId: BigInt(pollData.id),
-        signer,
+        signer: signer as Signer,
       })
         .then(() => onSuccess())
         .catch((err: Error) => {
@@ -206,7 +207,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         maciPubKey,
         maciAddress: config.maciAddress!,
         startBlock: config.maciStartBlock,
-        signer,
+        signer: signer as Signer,
       })
         .then(({ isRegistered: registered, voiceCredits, stateIndex: index }) => {
           setIsRegistered(registered);
@@ -250,11 +251,11 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         return;
       }
 
-      const { isStateAqMerged, id } = poll.data;
+      const { isMerged, id } = poll.data;
 
       setPollData(poll.data);
 
-      if (isStateAqMerged) {
+      if (isMerged) {
         fetch(`${config.tallyUrl}/tally-${id}.json`)
           .then((res) => res.json() as Promise<TallyData>)
           .then((res) => {
@@ -267,7 +268,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     } else {
       getPoll({
         maciAddress: config.maciAddress!,
-        signer,
+        signer: signer as Signer,
         provider: signer.provider,
       })
         .then((data) => {
@@ -275,7 +276,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
           return data;
         })
         .then(async (data) => {
-          if (!data.isStateAqMerged || isAfter(votingEndsAt, new Date())) {
+          if (!data.isMerged || isAfter(votingEndsAt, new Date())) {
             return undefined;
           }
 
