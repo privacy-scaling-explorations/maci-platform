@@ -35,21 +35,25 @@ export const Info = ({ size, showVotingInfo = false }: InfoProps): JSX.Element =
   const steps = [
     {
       label: "application",
+      state: EAppState.APPLICATION,
       start: config.startsAt,
       end: config.registrationEndsAt,
     },
     {
       label: "voting",
+      state: EAppState.VOTING,
       start: config.registrationEndsAt,
       end: votingEndsAt,
     },
     {
       label: "tallying",
+      state: EAppState.TALLYING,
       start: votingEndsAt,
       end: config.resultsAt,
     },
     {
       label: "results",
+      state: EAppState.RESULTS,
       start: config.resultsAt,
       end: config.resultsAt,
     },
@@ -74,7 +78,7 @@ export const Info = ({ size, showVotingInfo = false }: InfoProps): JSX.Element =
                 key={step.label}
                 end={step.end}
                 start={step.start}
-                state={defineState({ start: step.start, end: step.end })}
+                state={defineState({ state: step.state, appState })}
                 title={step.label}
               />
             ),
@@ -84,14 +88,16 @@ export const Info = ({ size, showVotingInfo = false }: InfoProps): JSX.Element =
   );
 };
 
-function defineState({ start, end }: { start: Date; end: Date }): EInfoCardState {
-  const now = new Date();
+function defineState({ state, appState }: { state: EAppState; appState: EAppState }): EInfoCardState {
+  const statesOrder = [EAppState.APPLICATION, EAppState.VOTING, EAppState.TALLYING, EAppState.RESULTS];
+  const currentStateOrder = statesOrder.indexOf(state);
+  const appStateOrder = statesOrder.indexOf(appState);
 
-  if (end < now) {
+  if (currentStateOrder < appStateOrder) {
     return EInfoCardState.PASSED;
   }
 
-  if (end > now && start < now) {
+  if (currentStateOrder === appStateOrder) {
     return EInfoCardState.ONGOING;
   }
 
