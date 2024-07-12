@@ -12,6 +12,7 @@ export const inputBase = [
   "border-gray-200",
   "rounded-lg",
   "border",
+  "placeholder:text-gray-300",
 ];
 
 export const Input = createComponent(

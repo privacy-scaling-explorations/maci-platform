@@ -13,11 +13,11 @@ export const VotersList = (): JSX.Element => {
   }
   return (
     <div className="space-y-1">
-      {(
-        data ??
-        Array(5)
-          .fill(0)
-          .map((_, i) => ({ recipient: i }))
+      {(data
+        ? data.filter(
+            ({ recipient }, index, array) => array.findIndex((item) => item.recipient === recipient) === index,
+          )
+        : []
       ).map((voter) => (
         <div key={voter.recipient}>
           <Skeleton className="min-h-4 w-96" isLoading={isLoading}>

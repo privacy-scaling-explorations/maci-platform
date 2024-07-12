@@ -43,7 +43,7 @@ export const Select = createComponent(
 export const Checkbox = createComponent(
   "input",
   tv({
-    base: [...inputBase, "checked:focus:dark:bg-gray-700 checked:hover:dark:bg-gray-700"],
+    base: [...inputBase, "rounded-none checked:focus:dark:bg-gray-700 checked:hover:dark:bg-gray-700"],
   }),
 );
 
@@ -51,7 +51,12 @@ export const Label = createComponent(
   "label",
   tv({
     base: "block tracking-wider dark:text-gray-300 font-semibold",
-    variants: { required: { true: "after:content-['*']" } },
+    variants: {
+      required: {
+        true: "after:content-['*'] after:text-blue-400",
+        false: "after:content-['(optional)'] after:text-gray-300 after:text-sm after:font-semibold after:ml-1",
+      },
+    },
   }),
 );
 
@@ -98,7 +103,7 @@ export const FormControl = ({
   const error = index && errors[index];
 
   return (
-    <fieldset className={cn("mb-4", className)}>
+    <fieldset className={cn(className)}>
       {label && (
         <Label className="mb-1" htmlFor={name} required={required}>
           {label}
@@ -119,9 +124,13 @@ export const FormControl = ({
 };
 
 export const FieldArray = <S extends z.Schema>({
+  title,
+  description,
   name,
   renderField,
 }: {
+  title: string;
+  description: string;
   name: string;
   renderField: (field: z.infer<S>, index: number) => ReactNode;
 }): JSX.Element => {
@@ -135,6 +144,14 @@ export const FieldArray = <S extends z.Schema>({
 
   return (
     <div className="mb-8">
+      <p>
+        {title}
+
+        <span className="text-blue-400">*</span>
+      </p>
+
+      <p className="mb-2 text-gray-300">{description}</p>
+
       {error && <div className="border-red-900 dark:text-red-500 border p-2">{String(error)}</div>}
 
       {fields.map((field, i) => (
@@ -155,11 +172,12 @@ export const FieldArray = <S extends z.Schema>({
         </div>
       ))}
 
-      <div className="flex justify-end">
+      <div className="flex justify-start">
         <IconButton
           icon={PlusIcon}
           size="sm"
           type="button"
+          variant="outline"
           onClick={() => {
             append({});
           }}
@@ -167,6 +185,8 @@ export const FieldArray = <S extends z.Schema>({
           Add row
         </IconButton>
       </div>
+
+      <div className="mt-4 h-[1px] w-full bg-gray-100" />
     </div>
   );
 };
@@ -175,11 +195,12 @@ export const FormSection = ({
   title,
   description,
   children,
+  ...props
 }: { title: string; description: string } & ComponentProps<"section">): JSX.Element => (
-  <section className="mb-8">
-    <h3 className="mb-1 text-xl font-semibold">{title}</h3>
+  <section className="mb-8" {...props}>
+    <h3 className="mb-1 font-sans text-xl font-semibold">{title}</h3>
 
-    <p className="mb-4 leading-loose text-gray-600 dark:text-gray-400">{description}</p>
+    <p className="mb-4 leading-loose text-gray-400">{description}</p>
 
     {children}
   </section>

@@ -1,9 +1,11 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { useCallback } from "react";
+import { FiAlertCircle } from "react-icons/fi";
 
 import { InfiniteLoading } from "~/components/InfiniteLoading";
 import { SortFilter } from "~/components/SortFilter";
+import { StatusBar } from "~/components/StatusBar";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useResults } from "~/hooks/useResults";
@@ -16,8 +18,9 @@ import { EProjectState } from "../types";
 import { ProjectItem, ProjectItemAwarded } from "./ProjectItem";
 
 export const Projects = (): JSX.Element => {
-  const projects = useSearchProjects();
   const appState = useAppState();
+  const projects = useSearchProjects({ needApproval: appState !== EAppState.APPLICATION });
+
   const { pollData, pollId, isRegistered } = useMaci();
   const { addToBallot, removeFromBallot, ballotContains, ballot } = useBallot();
   const results = useResults(pollData);
@@ -62,6 +65,18 @@ export const Projects = (): JSX.Element => {
 
   return (
     <div>
+      {appState === EAppState.APPLICATION && (
+        <StatusBar
+          content={
+            <div className="flex items-center gap-2">
+              <FiAlertCircle className="h-4 w-4" />
+              Voting is enabled until Registration period ends.
+            </div>
+          }
+          status="default"
+        />
+      )}
+
       <div className="flex justify-between">
         <h3>Projects</h3>
 

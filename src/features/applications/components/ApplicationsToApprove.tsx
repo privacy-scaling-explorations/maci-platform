@@ -2,14 +2,13 @@ import { ClockIcon } from "lucide-react";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
+import { FiAlertCircle } from "react-icons/fi";
 import { z } from "zod";
 
 import { EmptyState } from "~/components/EmptyState";
-import { Alert } from "~/components/ui/Alert";
 import { Badge } from "~/components/ui/Badge";
 import { Button } from "~/components/ui/Button";
 import { Checkbox, Form } from "~/components/ui/Form";
-import { Markdown } from "~/components/ui/Markdown";
 import { Skeleton } from "~/components/ui/Skeleton";
 import { Spinner } from "~/components/ui/Spinner";
 import { useApplications } from "~/features/applications/hooks/useApplications";
@@ -63,6 +62,7 @@ const ApproveButton = ({ isLoading = false }: IApproveButtonProps): JSX.Element 
     <Button
       suppressHydrationWarning
       disabled={!selectedCount || !isAdmin || isLoading || !isCorrectNetwork}
+      size="auto"
       type="submit"
       variant="primary"
     >
@@ -70,6 +70,20 @@ const ApproveButton = ({ isLoading = false }: IApproveButtonProps): JSX.Element 
     </Button>
   );
 };
+
+const ApplicationHeader = ({ applications = [] }: { applications: Attestation[] | undefined }): JSX.Element => (
+  <div className="flex items-center bg-gray-50 py-4">
+    <div className="flex-1 justify-center">
+      <SelectAllButton applications={applications} />
+    </div>
+
+    <div className="flex-[8] pl-6">Project</div>
+
+    <div className="flex-[3]">Submitted on</div>
+
+    <div className="flex-[2]">Status</div>
+  </div>
+);
 
 export const ApplicationItem = ({
   id,
@@ -84,34 +98,32 @@ export const ApplicationItem = ({
 
   const form = useFormContext();
 
-  const { bio, fundingSources = [], impactMetrics = [] } = metadata.data ?? {};
+  const { fundingSources = [], impactMetrics = [], profileImageUrl } = metadata.data ?? {};
 
   return (
-    <div className="flex items-center gap-2 rounded border-b dark:border-gray-800 hover:dark:bg-gray-800">
-      <label className="flex flex-1 cursor-pointer items-center gap-4 p-2">
-        <Checkbox disabled={isApproved} value={id} {...form.register(`selected`)} type="checkbox" />
+    <Link href={`/projects/${id}`} target="_blank">
+      <div className="flex cursor-pointer items-center gap-2 py-4 hover:bg-blue-50">
+        <label className="flex flex-1 cursor-pointer justify-center p-2">
+          <Checkbox disabled={isApproved} value={id} {...form.register(`selected`)} type="checkbox" />
+        </label>
 
-        <ProjectAvatar isLoading={isLoading} profileId={recipient} size="sm" />
+        <div className="flex flex-[8] items-center gap-4">
+          <ProjectAvatar isLoading={isLoading} profileId={recipient} size="sm" url={profileImageUrl} />
 
-        <div className=" flex-1">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col">
             <Skeleton className="mb-1 min-h-5 min-w-24" isLoading={isLoading}>
-              {name}
+              <span className="uppercase">{name}</span>
             </Skeleton>
-          </div>
 
-          <div>
-            <div className="flex gap-4 text-xs dark:text-gray-400">
+            <div className="text-sm text-gray-400">
               <div>{fundingSources.length} funding sources</div>
 
               <div>{impactMetrics.length} impact metrics</div>
             </div>
-
-            <div className="line-clamp-2 text-sm dark:text-gray-300">{bio}</div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-gray-700 dark:text-gray-400">
+        <div className="flex flex-[3] items-center gap-2 text-xs text-gray-700">
           <ClockIcon className="size-3" />
 
           <Skeleton className="mb-1 min-h-5 min-w-24" isLoading={isLoading}>
@@ -119,21 +131,11 @@ export const ApplicationItem = ({
           </Skeleton>
         </div>
 
-        {isApproved ? <Badge variant="success">Approved</Badge> : <Badge>Pending</Badge>}
-
-        <Button
-          as={Link}
-          className="transition-transform group-data-[state=closed]:rotate-180"
-          disabled={isLoading}
-          href={`/applications/${id}`}
-          target="_blank"
-          type="button"
-          variant=""
-        >
-          Review
-        </Button>
-      </label>
-    </div>
+        <div className="flex-[2]">
+          {isApproved ? <Badge variant="success">Approved</Badge> : <Badge variant="pending">Pending</Badge>}
+        </div>
+      </div>
+    </Link>
   );
 };
 
@@ -160,54 +162,59 @@ export const ApplicationsToApprove = (): JSX.Element => {
   const applicationsToApprove = applications.data?.filter((application) => !approvedById?.get(application.id));
 
   return (
-    <Form
-      defaultValues={{ selected: [] }}
-      schema={ApplicationsToApproveSchema}
-      onSubmit={(values) => {
-        approve.mutate(values.selected);
-      }}
-    >
-      <Markdown>{`### Review applications
-Select the applications you want to approve. You must be a configured admin to approve applications.
+    <div className="flex w-full justify-center">
+      <div className="flex flex-col gap-4 md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
+        <h3>Review Applications</h3>
 
-`}</Markdown>
+        <p className="text-gray-400">
+          Select the applications you want to approve. You must be a configured admin to approve applications.
+        </p>
 
-      <Alert>Newly submitted applications can take 10 minutes to show up.</Alert>
+        <p className="flex items-center gap-2 text-blue-400">
+          <FiAlertCircle className="h-4 w-4" />
 
-      <div className="my-2 flex items-center justify-between">
-        <div className="text-gray-300">
-          {applications.data?.length ? `${applications.data.length} applications found` : ""}
-        </div>
+          <span>Newly submitted applications can take 10 minutes to show up.</span>
+        </p>
 
-        <div className="flex gap-2">
-          <SelectAllButton applications={applicationsToApprove} />
+        <div className="mt-6 text-2xl font-extrabold uppercase text-black">{`${applications.data?.length} applications found`}</div>
 
-          <ApproveButton isLoading={approve.isPending} />
-        </div>
+        <Form
+          defaultValues={{ selected: [] }}
+          schema={ApplicationsToApproveSchema}
+          onSubmit={(values) => {
+            approve.mutate(values.selected);
+          }}
+        >
+          {applications.isLoading && (
+            <div className="flex items-center justify-center py-16">
+              <Spinner />
+            </div>
+          )}
+
+          {!applications.isLoading && !applications.data?.length ? (
+            <EmptyState title="No applications">
+              <Button as={Link} href="/applications/new" variant="primary">
+                Go to create application
+              </Button>
+            </EmptyState>
+          ) : null}
+
+          <div className="mb-2 flex justify-end">
+            <ApproveButton isLoading={approve.isPending} />
+          </div>
+
+          <ApplicationHeader applications={applicationsToApprove} />
+
+          {applications.data?.map((item) => (
+            <ApplicationItem
+              key={item.id}
+              {...item}
+              isApproved={approvedById?.get(item.id)}
+              isLoading={applications.isLoading}
+            />
+          ))}
+        </Form>
       </div>
-
-      {applications.isLoading && (
-        <div className="flex items-center justify-center py-16">
-          <Spinner />
-        </div>
-      )}
-
-      {!applications.isLoading && !applications.data?.length ? (
-        <EmptyState title="No applications">
-          <Button as={Link} href="/applications/new" variant="primary">
-            Go to create application
-          </Button>
-        </EmptyState>
-      ) : null}
-
-      {applications.data?.map((item) => (
-        <ApplicationItem
-          key={item.id}
-          {...item}
-          isApproved={approvedById?.get(item.id)}
-          isLoading={applications.isLoading}
-        />
-      ))}
-    </Form>
+    </div>
   );
 };

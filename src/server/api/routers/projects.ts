@@ -32,6 +32,14 @@ export const projectsRouter = createTRPCRouter({
     });
   }),
 
+  getByTransactionId: publicProcedure
+    .input(z.object({ transactionId: z.string() }))
+    .query(async ({ input: { transactionId } }) =>
+      fetchAttestations([eas.schemas.metadata], {
+        where: { txid: { equals: transactionId } },
+      }).then((applications) => applications[0]),
+    ),
+
   search: publicProcedure.input(FilterSchema).query(async ({ input }) => {
     const filters = [
       createDataFilter("type", "bytes32", "application"),
@@ -42,23 +50,34 @@ export const projectsRouter = createTRPCRouter({
       filters.push(createSearchFilter(input.search));
     }
 
-    return fetchAttestations([eas.schemas.approval], {
+    if (input.needApproval) {
+      return fetchAttestations([eas.schemas.approval], {
+        where: {
+          attester: { equals: config.admin },
+          ...createDataFilter("type", "bytes32", "application"),
+        },
+      }).then((attestations = []) => {
+        const approvedIds = attestations.map(({ refUID }) => refUID).filter(Boolean);
+
+        return fetchAttestations([eas.schemas.metadata], {
+          take: input.limit,
+          skip: input.cursor * input.limit,
+          orderBy: [createOrderBy(input.orderBy, input.sortOrder)],
+          where: {
+            id: { in: approvedIds },
+            AND: filters,
+          },
+        });
+      });
+    }
+
+    return fetchAttestations([eas.schemas.metadata], {
+      take: input.limit,
+      skip: input.cursor * input.limit,
+      orderBy: [createOrderBy(input.orderBy, input.sortOrder)],
       where: {
         attester: { equals: config.admin },
-        ...createDataFilter("type", "bytes32", "application"),
       },
-    }).then((attestations = []) => {
-      const approvedIds = attestations.map(({ refUID }) => refUID).filter(Boolean);
-
-      return fetchAttestations([eas.schemas.metadata], {
-        take: input.limit,
-        skip: input.cursor * input.limit,
-        orderBy: [createOrderBy(input.orderBy, input.sortOrder)],
-        where: {
-          id: { in: approvedIds },
-          AND: filters,
-        },
-      });
     });
   }),
 

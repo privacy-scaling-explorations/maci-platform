@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { useAccount, useDisconnect } from "wagmi";
 
 import { useMaci } from "~/contexts/Maci";
+import { useAppState } from "~/utils/state";
+import { EAppState } from "~/utils/types";
 
 import { Dialog } from "./ui/Dialog";
 
@@ -14,6 +16,8 @@ export const EligibilityDialog = (): JSX.Element | null => {
   const [openDialog, setOpenDialog] = useState<boolean>(!!address);
   const { onSignup, isEligibleToVote, isRegistered } = useMaci();
   const router = useRouter();
+
+  const appState = useAppState();
 
   const onError = useCallback(() => toast.error("Signup error"), []);
 
@@ -38,9 +42,13 @@ export const EligibilityDialog = (): JSX.Element | null => {
     router.push("/projects");
   }, [router]);
 
+  const handleGoToCreateApp = useCallback(() => {
+    router.push("/applications/new");
+  }, [router]);
+
   return (
     <div>
-      {isRegistered && (
+      {isRegistered && appState === EAppState.VOTING && (
         <Dialog
           button="secondary"
           buttonAction={handleGoToProjects}
@@ -60,6 +68,23 @@ export const EligibilityDialog = (): JSX.Element | null => {
           isOpen={openDialog}
           size="sm"
           title="You're all set to vote"
+          onOpenChange={handleCloseDialog}
+        />
+      )}
+
+      {isRegistered && appState === EAppState.APPLICATION && (
+        <Dialog
+          button="secondary"
+          buttonAction={handleGoToCreateApp}
+          buttonName="Create Application"
+          description={
+            <div className="flex flex-col gap-4">
+              <p>Start creating your own application now!</p>
+            </div>
+          }
+          isOpen={openDialog}
+          size="sm"
+          title="You're all set to apply"
           onOpenChange={handleCloseDialog}
         />
       )}
