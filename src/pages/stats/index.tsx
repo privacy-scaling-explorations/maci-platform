@@ -17,7 +17,7 @@ import { EAppState } from "~/utils/types";
 const ResultsChart = dynamic(async () => import("~/features/results/components/Chart"), { ssr: false });
 
 const Stat = ({ title, children = null }: PropsWithChildren<{ title: string }>) => (
-  <div className="rounded border p-2 dark:border-gray-700">
+  <div className="rounded border p-2">
     <h3 className="font-bold text-gray-500">{title}</h3>
 
     <div className="text-4xl">{children}</div>

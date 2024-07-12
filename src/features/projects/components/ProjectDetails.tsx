@@ -31,7 +31,7 @@ const ProjectDetails = ({
     metadata.data ?? {};
 
   return (
-    <div className={clsx("relative", disabled && "opacity-30")}>
+    <div className={clsx("relative dark:text-white", disabled && "opacity-30")}>
       <div className="mb-7">
         <Navigation projectName={attestation?.name ?? "project name"} />
       </div>

@@ -45,7 +45,7 @@ export const ReviewApplicationDetails = (): JSX.Element => {
         <p className="leading-loose text-gray-400">Please review and submit your project application.</p>
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 dark:text-white">
         <b className="text-lg">Project Profile</b>
 
         <ValueField required body={application.name} title="Project name" />
@@ -87,7 +87,7 @@ export const ReviewApplicationDetails = (): JSX.Element => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 dark:text-white">
         <b className="text-lg">Contribution & Impact</b>
 
         <ValueField required body={application.contributionDescription} title="Contribution description" />

@@ -1,8 +1,7 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
+import { useTheme } from "next-themes";
 import { tv } from "tailwind-variants";
-
-import { theme } from "~/config";
 
 import type { ReactNode, PropsWithChildren, ComponentProps } from "react";
 
@@ -14,7 +13,7 @@ import { createComponent } from ".";
 const Content = createComponent(
   RadixDialog.Content,
   tv({
-    base: "z-20 fixed bottom-0 rounded-md bg-white p-12 flex flex-col justify-center gap-4 items-center text-center w-full font-sans sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2",
+    base: "z-20 fixed bottom-0 rounded-md p-12 flex flex-col justify-center gap-4 items-center text-center w-full font-sans sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 dark:bg-lightBlack bg-white",
     variants: {
       size: {
         sm: "sm:w-[456px] md:w-[456px]",
@@ -50,35 +49,39 @@ export const Dialog = ({
   buttonAction = undefined,
   children = undefined,
   onOpenChange,
-}: PropsWithChildren<IDialogProps>): JSX.Element => (
-  <RadixDialog.Root open={isOpen} onOpenChange={onOpenChange}>
-    <RadixDialog.Portal>
-      <RadixDialog.Overlay className="fixed left-0 top-0 z-10 h-full w-full bg-black/70" />
+}: PropsWithChildren<IDialogProps>): JSX.Element => {
+  const { theme } = useTheme();
 
-      {/* Because of Portal we need to set the theme here */}
-      <div className={theme.colorMode}>
-        <Content size={size}>
-          <RadixDialog.Title className="text-2xl font-bold uppercase">{title}</RadixDialog.Title>
+  return (
+    <RadixDialog.Root open={isOpen} onOpenChange={onOpenChange}>
+      <RadixDialog.Portal>
+        <RadixDialog.Overlay className="fixed left-0 top-0 z-10 h-full w-full bg-black/70" />
 
-          <RadixDialog.Description className="text-gray-400">{description}</RadixDialog.Description>
+        {/* Because of Portal we need to set the theme here */}
+        <div className={theme}>
+          <Content size={size}>
+            <RadixDialog.Title className="text-2xl font-bold uppercase dark:text-white">{title}</RadixDialog.Title>
 
-          {children}
+            <RadixDialog.Description className="text-gray-400">{description}</RadixDialog.Description>
 
-          {isLoading && <Spinner className="h-6 w-6 py-4" />}
+            {children}
 
-          {!isLoading && button && buttonName && buttonAction && (
-            <Button size="auto" variant={button} onClick={buttonAction}>
-              {buttonName}
-            </Button>
-          )}
+            {isLoading && <Spinner className="h-6 w-6 py-4" />}
 
-          {onOpenChange ? (
-            <RadixDialog.Close asChild>
-              <IconButton className="absolute right-4 top-4" icon={X} variant="ghost" />
-            </RadixDialog.Close>
-          ) : null}
-        </Content>
-      </div>
-    </RadixDialog.Portal>
-  </RadixDialog.Root>
-);
+            {!isLoading && button && buttonName && buttonAction && (
+              <Button size="auto" variant={button} onClick={buttonAction}>
+                {buttonName}
+              </Button>
+            )}
+
+            {onOpenChange ? (
+              <RadixDialog.Close asChild>
+                <IconButton className="absolute right-4 top-4" icon={X} variant="ghost" />
+              </RadixDialog.Close>
+            ) : null}
+          </Content>
+        </div>
+      </RadixDialog.Portal>
+    </RadixDialog.Root>
+  );
+};

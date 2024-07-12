@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useMemo, useCallback, useState, type ChangeEvent } from "react";
 
 import { Button } from "~/components/ui/Button";
@@ -56,7 +57,7 @@ export const VotingWidget = ({ projectId }: { projectId: string }): JSX.Element 
     <div className="flex items-center justify-center gap-5">
       {projectIncluded && (
         <button
-          className="cursor-pointer text-gray-400 underline hover:text-black"
+          className="cursor-pointer text-gray-400 underline hover:text-black dark:hover:text-blue-400"
           type="button"
           onClick={handleRemove}
         >
@@ -64,8 +65,14 @@ export const VotingWidget = ({ projectId }: { projectId: string }): JSX.Element 
         </button>
       )}
 
-      <div className="flex items-center justify-center gap-5 rounded-xl border border-gray-200 p-5">
-        <Input className="w-auto" placeholder="Add votes here" type="number" value={amount} onChange={handleInput} />
+      <div className="flex items-center justify-center gap-5 rounded-xl border border-gray-200 p-5 dark:border-gray-800">
+        <Input
+          className="w-auto dark:bg-lightBlack dark:text-white"
+          placeholder="Add votes here"
+          type="number"
+          value={amount}
+          onChange={handleInput}
+        />
 
         {buttonState === EButtonState.DEFAULT && (
           <Button variant="inverted" onClick={handleButtonAction}>
@@ -74,9 +81,9 @@ export const VotingWidget = ({ projectId }: { projectId: string }): JSX.Element 
         )}
 
         {buttonState === EButtonState.ADDED && (
-          <div className="flex justify-center gap-2 uppercase">
+          <div className="flex justify-center gap-2 uppercase dark:text-white">
             votes added
-            <img alt="check-black" src="/check-black.svg" />
+            <Image alt="check-black" className="dark:invert" height="16" src="/check-black.svg" width="16" />
           </div>
         )}
 
@@ -89,7 +96,7 @@ export const VotingWidget = ({ projectId }: { projectId: string }): JSX.Element 
         {buttonState === EButtonState.UPDATED && (
           <div className="flex justify-center gap-2 uppercase">
             votes updated
-            <img alt="check-black" src="/check-black.svg" />
+            <Image alt="check-black" className="dark:invert" height="16" src="/check-black.svg" width="16" />
           </div>
         )}
       </div>

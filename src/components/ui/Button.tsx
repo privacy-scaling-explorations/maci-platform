@@ -8,12 +8,13 @@ const button = tv({
   base: "inline-flex items-center justify-center font-semibold uppercase rounded-lg text-center transition-colors duration-150 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   variants: {
     variant: {
-      primary: "bg-black text-white hover:bg-blue-950",
-      inverted: "text-black border border-black hover:text-blue-500 hover:border-blue-500",
+      primary: "bg-black text-white hover:bg-blue-950 dark:bg-white dark:text-black dark:hover:bg-blue-100",
+      inverted:
+        "text-black border border-black hover:text-blue-500 hover:border-blue-500 dark:border-white dark:text-white",
       tertiary: "bg-blue-50 text-blue-500 border border-blue-500 hover:bg-blue-100",
       secondary: "bg-blue-500 text-white hover:bg-blue-600",
-      ghost: "hover:bg-gray-100 dark:hover:bg-gray-800",
-      outline: "border border-gray-200 hover:border-gray-300",
+      ghost: "hover:bg-gray-100 dark:invert",
+      outline: "border border-gray-200 hover:border-gray-300 dark:text-white dark:border-white",
       disabled: "border border-gray-200 bg-gray-50 text-gray-200 cursor-not-allowed",
       none: "",
     },

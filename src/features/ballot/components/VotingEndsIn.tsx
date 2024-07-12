@@ -17,7 +17,7 @@ export function useVotingTimeLeft(votingEndsAt: Date): [number, number, number, 
   return state;
 }
 
-const TimeSlice = createComponent("span", tv({ base: "text-gray-900 dark:text-gray-300" }));
+const TimeSlice = createComponent("span", tv({ base: "text-gray-900" }));
 
 export const VotingEndsIn = (): JSX.Element => {
   const { isLoading, votingEndsAt } = useMaci();

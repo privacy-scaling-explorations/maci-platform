@@ -33,7 +33,10 @@ export const ProjectItem = ({
   const appState = useAppState();
 
   return (
-    <article className="group rounded-xl bg-white shadow-lg hover:shadow-sm" data-testid={`project-${attestation.id}`}>
+    <article
+      className="group rounded-xl bg-white shadow-lg hover:shadow-sm dark:bg-lightBlack"
+      data-testid={`project-${attestation.id}`}
+    >
       <div className="opacity-70 transition-opacity group-hover:opacity-100">
         <ProjectBanner url={metadata.data?.bannerImageUrl} />
 
@@ -41,11 +44,11 @@ export const ProjectItem = ({
       </div>
 
       <div className="p-4 pt-2">
-        <Heading as="h3" className="truncate" size="lg">
+        <Heading as="h3" className="truncate dark:text-white" size="lg">
           <Skeleton isLoading={isLoading}>{attestation.name}</Skeleton>
         </Heading>
 
-        <p className="line-clamp-2 h-10 text-sm text-gray-400 dark:text-gray-300">
+        <p className="line-clamp-2 h-10 text-sm text-gray-400">
           <Skeleton className="w-full" isLoading={isLoading}>
             {metadata.data?.bio}
           </Skeleton>
@@ -89,7 +92,7 @@ export interface IProjectItemAwardedProps {
 }
 
 export const ProjectItemAwarded = ({ amount = 0 }: IProjectItemAwardedProps): JSX.Element => (
-  <div className="absolute right-2 top-[100px] z-10 -mt-2 rounded bg-gray-100 p-1 text-sm dark:bg-gray-900">
+  <div className="absolute right-2 top-[100px] z-10 -mt-2 rounded bg-gray-100 p-1 text-sm">
     <span className="mr-1 font-bold">{formatNumber(amount)}</span>
 
     <span>{config.tokenName}</span>

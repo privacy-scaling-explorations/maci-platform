@@ -52,7 +52,7 @@ export const ConnectButton = (): JSX.Element => {
             {(() => {
               if (!connected) {
                 return (
-                  <Button suppressHydrationWarning variant="primary" onClick={openConnectModal}>
+                  <Button suppressHydrationWarning variant="secondary" onClick={openConnectModal}>
                     {isMobile ? "Connect" : "Connect wallet"}
                   </Button>
                 );

@@ -1,9 +1,10 @@
 import clsx from "clsx";
-import { Menu, X } from "lucide-react";
+import { Menu, X, SunIcon, MoonIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { type ComponentPropsWithRef, useState } from "react";
+import { useTheme } from "next-themes";
+import { type ComponentPropsWithRef, useState, useCallback } from "react";
 
 import { useBallot } from "~/contexts/Ballot";
 import { useAppState } from "~/utils/state";
@@ -30,12 +31,9 @@ interface IMobileMenuProps {
 
 const MobileMenu = ({ isOpen = false, navLinks }: IMobileMenuProps) => (
   <div
-    className={clsx(
-      "fixed left-0 top-16 z-10 h-full w-full bg-white transition-transform duration-150 dark:bg-gray-900",
-      {
-        "translate-x-full": !isOpen,
-      },
-    )}
+    className={clsx("fixed left-0 top-16 z-10 h-full w-full bg-white transition-transform duration-150", {
+      "translate-x-full": !isOpen,
+    })}
   >
     {navLinks.map((link) => (
       <Link key={link.href} className={clsx("block p-4 text-2xl  font-semibold")} {...link} />
@@ -53,9 +51,14 @@ const Header = ({ navLinks }: { navLinks: INavLink[] }) => {
   const [isOpen, setOpen] = useState(false);
   const { ballot } = useBallot();
   const appState = useAppState();
+  const { theme, setTheme } = useTheme();
+
+  const handleChangeTheme = useCallback(() => {
+    setTheme(theme === "light" ? "dark" : "light");
+  }, [theme, setTheme]);
 
   return (
-    <header className="relative z-[100] border-b border-gray-200 bg-white">
+    <header className="relative z-[100] border-b border-gray-200 bg-white dark:border-lighterBlack dark:bg-lightBlack dark:text-white">
       <div className="container mx-auto flex h-[72px] max-w-screen-2xl items-center px-2">
         <div className="mr-4 flex items-center md:mr-16">
           <IconButton
@@ -91,7 +94,14 @@ const Header = ({ navLinks }: { navLinks: INavLink[] }) => {
 
         <div className="flex-1 md:ml-8" />
 
-        <div className="ml-4 flex gap-4 md:ml-8 xl:ml-32">
+        <div className="ml-4 flex items-center gap-4 md:ml-8 xl:ml-32">
+          <IconButton
+            className="text-gray-600"
+            icon={theme === "light" ? SunIcon : MoonIcon}
+            variant="ghost"
+            onClick={handleChangeTheme}
+          />
+
           <ConnectButton />
         </div>
 

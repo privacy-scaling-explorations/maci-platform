@@ -42,7 +42,7 @@ export const ApplicationButtons = ({
   const application = useMemo(() => form.getValues(), [form]);
 
   const checkLinks = (links: Pick<ContributionLink | ImpactMetrix | FundingSource, "description">[]): boolean =>
-    links.reduce((prev, link) => prev && link.description.length > 0, true);
+    links.reduce((prev, link) => prev && link.description !== undefined && link.description.length > 0, true);
 
   const stepComplete = useMemo((): boolean => {
     const {

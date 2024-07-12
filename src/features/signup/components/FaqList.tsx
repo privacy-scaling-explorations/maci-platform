@@ -1,7 +1,7 @@
 import { FAQItem } from "./FaqItem";
 
 export const FAQList = (): JSX.Element => (
-  <div className="mt-28 flex flex-col items-center justify-center">
+  <div className="mt-28 flex flex-col items-center justify-center dark:text-white">
     <h1 className="mb-8">FAQ</h1>
 
     <FAQItem

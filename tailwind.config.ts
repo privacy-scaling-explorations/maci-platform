@@ -1,6 +1,7 @@
 import { type Config } from "tailwindcss";
-
+// eslint-disable-next-line import/no-extraneous-dependencies
 import colors from "tailwindcss/colors";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import theme from "tailwindcss/defaultTheme";
 
 const customColors = {
@@ -59,15 +60,18 @@ const customColors = {
     950: "#1B2B50",
   },
   black: "#0B0B0B",
+  lightBlack: "#111111",
+  lighterBlack: "#222222",
   darkGray: "#5E5E5E",
   lightGray: "#CDCDCD",
   green: "#00FF00",
   red: "#EF4444",
+  darkBlue: "#0D172D",
 };
 
 export default {
   content: ["./src/**/*.tsx"],
-  darkMode: "class",
+  darkMode: "selector",
   theme: {
     extend: {
       colors: {
@@ -84,5 +88,4 @@ export default {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography"), require("@tailwindcss/forms")],
 } satisfies Config;
