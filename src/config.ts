@@ -42,6 +42,19 @@ const easSchemaRegistryContractAddresses = {
   base: "0x4200000000000000000000000000000000000020",
 };
 
+/**
+ * Convert the chain name for the semaphore ethers library
+ * @returns the chain name for the semaphore ethers library
+ */
+export const semaphoreEthersChain = (): string => {
+  switch (process.env.NEXT_PUBLIC_CHAIN_NAME) {
+    case "optimismSepolia":
+      return "optimism-sepolia";
+    default:
+      return process.env.NEXT_PUBLIC_CHAIN_NAME!;
+  }
+};
+
 export const config = {
   logoUrl: "/Logo.svg",
   pageSize: 3 * 4,
@@ -65,6 +78,7 @@ export const config = {
   roundOrganizer: process.env.NEXT_PUBLIC_ROUND_ORGANIZER ?? "PSE",
   pollMode: process.env.NEXT_PUBLIC_POLL_MODE ?? "non-qv",
   roundLogo: process.env.NEXT_PUBLIC_ROUND_LOGO,
+  chainName: process.env.NEXT_PUBLIC_CHAIN_NAME!,
 };
 
 export const theme = {

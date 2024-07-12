@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { EAS } from "@ethereum-attestation-service/eas-sdk";
 import { type TransactionSigner } from "@ethereum-attestation-service/eas-sdk/dist/transaction";
 import { type JsonRpcSigner } from "ethers";

@@ -48,7 +48,7 @@ export async function fetchPoll(): Promise<IGetPollData> {
 
   // cast this to a IGetPollData object so that we can deal with one object only in MACIContext
   return {
-    isStateAqMerged: !!poll?.messageRoot,
+    isMerged: !!poll?.messageRoot,
     id: poll?.pollId ?? 0,
     duration: poll?.duration ?? 0,
     deployTime: poll?.createdAt ?? 0,
