@@ -25,7 +25,7 @@ export const useAppState = (): EAppState => {
     return EAppState.VOTING;
   }
 
-  if (!pollData?.isStateAqMerged || !tallyData) {
+  if (!pollData?.isMerged || !tallyData) {
     return EAppState.TALLYING;
   }
 
