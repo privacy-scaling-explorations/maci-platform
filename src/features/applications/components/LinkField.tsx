@@ -29,9 +29,9 @@ export const LinkField = ({
     }
 
     return null;
-  }, [contributionLink, impactMetrix, fundingSource]);
+  }, [contributionLink, impactMetrix]);
 
-  const title = useMemo((): string | null => {
+  const title = useMemo((): string | undefined => {
     if (contributionLink) {
       return contributionLink.description;
     }
@@ -44,10 +44,10 @@ export const LinkField = ({
       return fundingSource.description;
     }
 
-    return null;
+    return undefined;
   }, [contributionLink, impactMetrix, fundingSource]);
 
-  const content = useMemo((): ReactNode | null => {
+  const content = useMemo((): ReactNode | undefined => {
     if (contributionLink) {
       return contributionLink.url;
     }
@@ -72,7 +72,7 @@ export const LinkField = ({
       );
     }
 
-    return null;
+    return undefined;
   }, [contributionLink, impactMetrix, fundingSource]);
 
   return (

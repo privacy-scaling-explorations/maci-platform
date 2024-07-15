@@ -11,9 +11,10 @@ const InfoCardContainer = createComponent(
     base: "rounded-md p-2 max-lg:w-full lg:w-64",
     variants: {
       state: {
-        [EInfoCardState.PASSED]: "border border-blue-500 bg-blue-50 text-blue-500",
+        [EInfoCardState.PASSED]: "border border-blue-500 bg-blue-50 text-blue-500 dark:bg-darkBlue dark:text-blue-800",
         [EInfoCardState.ONGOING]: "border border-blue-500 bg-blue-500 text-white",
-        [EInfoCardState.UPCOMING]: "border border-gray-200 bg-transparent text-gray-200",
+        [EInfoCardState.UPCOMING]:
+          "border border-gray-200 bg-transparent text-gray-200 dark:border-lighterBlack dark:text-gray-800",
       },
     },
   }),
@@ -40,7 +41,7 @@ export const InfoCard = ({ state, title, start, end }: InfoCardProps): JSX.Eleme
       {state === EInfoCardState.ONGOING && <div className="h-4 w-4 rounded-full bg-green" />}
 
       {state === EInfoCardState.UPCOMING && (
-        <div className="h-4 w-4 rounded-full border-2 border-gray-200 bg-transparent" />
+        <div className="h-4 w-4 rounded-full border-2 border-gray-200 bg-transparent dark:border-gray-800" />
       )}
     </div>
 

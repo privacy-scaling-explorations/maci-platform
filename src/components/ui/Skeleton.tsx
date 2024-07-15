@@ -8,9 +8,7 @@ export const Skeleton = ({
   children,
 }: ComponentProps<"span"> & { isLoading?: boolean }): JSX.Element =>
   isLoading ? (
-    <span
-      className={cn("inline-flex h-full min-w-[20px] animate-pulse rounded bg-gray-200 dark:bg-gray-800", className)}
-    />
+    <span className={cn("inline-flex h-full min-w-[20px] animate-pulse rounded bg-gray-200", className)} />
   ) : (
     <div>{children}</div>
   );

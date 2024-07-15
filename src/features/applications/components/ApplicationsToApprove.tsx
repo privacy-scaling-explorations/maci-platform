@@ -72,7 +72,7 @@ const ApproveButton = ({ isLoading = false }: IApproveButtonProps): JSX.Element 
 };
 
 const ApplicationHeader = ({ applications = [] }: { applications: Attestation[] | undefined }): JSX.Element => (
-  <div className="flex items-center bg-gray-50 py-4">
+  <div className="flex items-center bg-gray-50 py-4 dark:bg-lighterBlack">
     <div className="flex-1 justify-center">
       <SelectAllButton applications={applications} />
     </div>
@@ -102,7 +102,7 @@ export const ApplicationItem = ({
 
   return (
     <Link href={`/projects/${id}`} target="_blank">
-      <div className="flex cursor-pointer items-center gap-2 py-4 hover:bg-blue-50">
+      <div className="flex cursor-pointer items-center gap-2 py-4 hover:bg-blue-50 dark:hover:bg-lighterBlack">
         <label className="flex flex-1 cursor-pointer justify-center p-2">
           <Checkbox disabled={isApproved} value={id} {...form.register(`selected`)} type="checkbox" />
         </label>
@@ -162,7 +162,7 @@ export const ApplicationsToApprove = (): JSX.Element => {
   const applicationsToApprove = applications.data?.filter((application) => !approvedById?.get(application.id));
 
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex w-full justify-center dark:text-white">
       <div className="flex flex-col gap-4 md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
         <h3>Review Applications</h3>
 
@@ -176,7 +176,7 @@ export const ApplicationsToApprove = (): JSX.Element => {
           <span>Newly submitted applications can take 10 minutes to show up.</span>
         </p>
 
-        <div className="mt-6 text-2xl font-extrabold uppercase text-black">{`${applications.data?.length} applications found`}</div>
+        <div className="mt-6 text-2xl font-extrabold uppercase text-black dark:text-white">{`${applications.data?.length} applications found`}</div>
 
         <Form
           defaultValues={{ selected: [] }}

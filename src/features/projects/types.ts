@@ -28,19 +28,19 @@ export enum EProjectState {
 
 export interface ImpactMetrix {
   url: string;
-  description: string;
+  description?: string;
   number: number;
 }
 
 export interface ContributionLink {
   url: string;
   type: EContributionType | string;
-  description: string;
+  description?: string;
 }
 
 export interface FundingSource {
   type: EFundingSourceType | string;
-  description: string;
+  description?: string;
   currency: string;
   amount: number;
 }

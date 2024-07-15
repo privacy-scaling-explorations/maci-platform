@@ -53,7 +53,7 @@ export const ImageUpload = ({
           />
 
           <div
-            className={clsx("h-full rounded-xl bg-gray-200 bg-cover bg-center bg-no-repeat dark:bg-gray-800", {
+            className={clsx("h-full rounded-xl bg-gray-200 bg-cover bg-center bg-no-repeat", {
               "animate-pulse opacity-50": upload.isPending,
             })}
             style={{

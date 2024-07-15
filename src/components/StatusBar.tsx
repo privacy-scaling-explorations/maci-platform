@@ -10,9 +10,12 @@ const StatusBarContainer = createComponent(
     variants: {
       status: {
         default: "text-blue-600 border-blue-600 bg-blue-400",
-        pending: "text-[#4E1D0D] border-[#4E1D0D] bg-[#FFEDD5]",
-        approved: "text-[#14532D] border-[#14532D] bg-[#BBF7D0]",
-        declined: "text-[#F87171] border-[#F87171] bg-[#FEE2E2]",
+        pending:
+          "text-[#4E1D0D] border-[#4E1D0D] bg-[#FFEDD5] dark:text-[#F1B37A] dark:bg-[#4E1D0D] dark:border-[#F1B37A]",
+        approved:
+          "text-[#14532D] border-[#14532D] bg-[#BBF7D0] dark:text-[#4ADE80] dark:border-[#4ADE80] dark:bg-[#031E0C]",
+        declined:
+          "text-[#F87171] border-[#F87171] bg-[#FEE2E2] dark:text-[#F87171] dark:border-[#F87171] dark:bg-[#3D0B0B]",
       },
     },
     defaultVariants: {

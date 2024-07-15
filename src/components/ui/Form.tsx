@@ -50,7 +50,7 @@ export const Checkbox = createComponent(
 export const Label = createComponent(
   "label",
   tv({
-    base: "block tracking-wider dark:text-gray-300 font-semibold",
+    base: "block tracking-wider font-semibold dark:text-white",
     variants: {
       required: {
         true: "after:content-['*'] after:text-blue-400",
@@ -65,12 +65,12 @@ export const ErrorMessage = createComponent("div", tv({ base: "pt-1 text-xs text
 export const Textarea = createComponent("textarea", tv({ base: [...inputBase, "w-full"] }));
 
 export const SearchInput = forwardRef(({ ...props }: ComponentPropsWithRef<typeof Input>, ref) => (
-  <InputWrapper className="">
+  <InputWrapper>
     <InputIcon>
       <Search />
     </InputIcon>
 
-    <Input ref={ref} {...props} className="rounded-full pl-10" />
+    <Input ref={ref} {...props} className="rounded-lg pl-10" />
   </InputWrapper>
 ));
 
@@ -105,7 +105,7 @@ export const FormControl = ({
   return (
     <fieldset className={cn(className)}>
       {label && (
-        <Label className="mb-1" htmlFor={name} required={required}>
+        <Label className="mb-1 dark:text-white" htmlFor={name} required={required}>
           {label}
         </Label>
       )}
@@ -116,7 +116,7 @@ export const FormControl = ({
         ...register(name, { valueAsNumber }),
       })}
 
-      {hint && <div className="pt-1 text-xs text-gray-500 dark:text-gray-400">{hint}</div>}
+      {hint && <div className="pt-1 text-xs text-gray-500">{hint}</div>}
 
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
     </fieldset>
@@ -144,7 +144,7 @@ export const FieldArray = <S extends z.Schema>({
 
   return (
     <div className="mb-8">
-      <p>
+      <p className="dark:text-white">
         {title}
 
         <span className="text-blue-400">*</span>
@@ -152,7 +152,7 @@ export const FieldArray = <S extends z.Schema>({
 
       <p className="mb-2 text-gray-300">{description}</p>
 
-      {error && <div className="border-red-900 dark:text-red-500 border p-2">{String(error)}</div>}
+      {error && <div className="border-red-900 border p-2">{String(error)}</div>}
 
       {fields.map((field, i) => (
         <div key={field.id} className="gap-4 md:flex">
@@ -202,7 +202,7 @@ export const FormSection = ({
 
     <p className="mb-4 leading-loose text-gray-400">{description}</p>
 
-    {children}
+    <div className="flex flex-col gap-4">{children}</div>
   </section>
 );
 

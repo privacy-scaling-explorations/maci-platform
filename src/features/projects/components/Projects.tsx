@@ -77,7 +77,7 @@ export const Projects = (): JSX.Element => {
         />
       )}
 
-      <div className="flex justify-between">
+      <div className="mb-4 flex justify-between">
         <h3>Projects</h3>
 
         <div>

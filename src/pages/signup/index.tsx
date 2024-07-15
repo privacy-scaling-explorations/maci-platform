@@ -23,12 +23,12 @@ const SignupPage = (): JSX.Element => {
     <Layout type="home">
       <EligibilityDialog />
 
-      <div className="flex h-[90vh] w-screen flex-col items-center justify-center gap-4 bg-blue-50">
-        <h1 className="max-w-screen-lg text-center font-mono">{config.eventName.toUpperCase()}</h1>
+      <div className="flex h-[90vh] w-screen flex-col items-center justify-center gap-4 bg-blue-50 dark:bg-black">
+        <h1 className="max-w-screen-lg text-center font-mono dark:text-white">{config.eventName.toUpperCase()}</h1>
 
-        <h2 className="max-w-screen-lg text-center font-mono">{config.roundId.toUpperCase()}</h2>
+        <h2 className="max-w-screen-lg text-center font-mono dark:text-white">{config.roundId.toUpperCase()}</h2>
 
-        <p className="flex max-w-screen-md gap-2 text-center text-xl">
+        <p className="flex max-w-screen-md gap-2 text-center text-xl dark:text-gray-400">
           <span>{config.startsAt && format(config.startsAt, "d MMMM, yyyy")}</span>
 
           <span>-</span>

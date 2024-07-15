@@ -65,7 +65,7 @@ export const ApplicationForm = (): JSX.Element => {
   const { error: createError } = create;
 
   return (
-    <div className="rounded-lg border border-gray-200 p-4">
+    <div className="rounded-lg border border-gray-200 p-4 dark:border-lighterBlack">
       <ApplicationSteps step={step} />
 
       <Form

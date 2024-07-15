@@ -5,7 +5,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { Logo } from "./ui/Logo";
 
 export const Footer = (): JSX.Element => (
-  <footer className="flex items-center justify-between border-t border-gray-300 bg-gray-50 px-12 py-9">
+  <footer className="flex items-center justify-between border-t border-gray-300 bg-gray-50 px-12 py-9 dark:border-lighterBlack dark:bg-black dark:text-white">
     <div className="flex items-center justify-start gap-4">
       <a aria-label="twitter" href="https://x.com/zkMACI" rel="noreferrer" target="_blank">
         <FaXTwitter />
@@ -33,13 +33,13 @@ export const Footer = (): JSX.Element => (
       <a className="flex items-center gap-1" href="https://maci.pse.dev" rel="noreferrer" target="_blank">
         <span>Documentation</span>
 
-        <Image alt="arrow-go-to" height="18" src="/arrow-go-to.svg" width="18" />
+        <Image alt="arrow-go-to" className="dark:invert" height="18" src="/arrow-go-to.svg" width="18" />
       </a>
 
       <a className="flex items-center gap-1" href="https://maci.pse.dev" rel="noreferrer" target="_blank">
         <span>About MACI-RPGF</span>
 
-        <Image alt="arrow-go-to" height="18" src="/arrow-go-to.svg" width="18" />
+        <Image alt="arrow-go-to" className="dark:invert" height="18" src="/arrow-go-to.svg" width="18" />
       </a>
 
       <Logo />
