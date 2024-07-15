@@ -3,7 +3,7 @@ import { SemaphoreEthers } from "@semaphore-protocol/data";
 import { AbiCoder, JsonRpcSigner } from "ethers";
 import { getSemaphoreGatekeeperData } from "maci-cli/sdk";
 
-import { config, semaphoreEthersChain } from "~/config";
+import { config, getRPCURL, semaphoreEthersChain } from "~/config";
 
 /**
  * Encodes the Semaphore Proof to be sent on chain
@@ -33,7 +33,7 @@ export const getSemaphoreProof = async (signer: JsonRpcSigner, identity: Identit
     maciAddress: config.maciAddress!,
   });
 
-  const semaphore = new SemaphoreEthers(semaphoreEthersChain(), {
+  const semaphore = new SemaphoreEthers(getRPCURL() ?? semaphoreEthersChain(), {
     address: semaphoreContractAddress,
   });
 
