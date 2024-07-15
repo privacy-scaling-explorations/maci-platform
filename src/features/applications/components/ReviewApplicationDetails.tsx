@@ -24,6 +24,8 @@ const ValueField = ({ title, body = undefined, required = false }: IValueFieldPr
       <div className="text-light flex flex-wrap gap-2 text-gray-400">
         {body === undefined && emptyPlaceholder}
 
+        {Array.isArray(body) && body.length === 0 && emptyPlaceholder}
+
         {typeof body === "string" && body.length === 0 && emptyPlaceholder}
 
         {((typeof body === "string" && body.length > 0) || typeof body !== "string") && body}
@@ -105,26 +107,14 @@ export const ReviewApplicationDetails = (): JSX.Element => {
         />
 
         <ValueField
-          required
-          body={application.contributionLinks.map((link) => (
+          body={application.contributionLinks?.map((link) => (
             <LinkField key={link.description} contributionLink={link} />
           ))}
           title="Contribution links"
         />
 
         <ValueField
-          required
-          body={application.impactMetrics.map((link) => (
-            <LinkField key={link.description} impactMetrix={link} />
-          ))}
-          title="Impact metrics"
-        />
-
-        <ValueField
-          required
-          body={application.fundingSources.map((link) => (
-            <LinkField key={link.description} fundingSource={link} />
-          ))}
+          body={application.fundingSources?.map((link) => <LinkField key={link.description} fundingSource={link} />)}
           title="Funding sources"
         />
       </div>

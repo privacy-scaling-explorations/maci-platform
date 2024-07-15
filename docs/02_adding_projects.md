@@ -9,7 +9,6 @@
   - **contributionDescription** - describe your contribution
   - **impactDescription** - describe your impact
   - **contributionLinks** - links to contributions
-  - **impactMetrics** - links to your impact
   - **fundingSources** - list your funding sources
 
 This will create an Attestation with the Metadata schema and populate the fields:
