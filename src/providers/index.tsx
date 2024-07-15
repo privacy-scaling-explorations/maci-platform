@@ -63,9 +63,7 @@ function createWagmiConfig() {
     ssr: false,
     chains: activeChains as unknown as readonly [Chain, ...Chain[]],
     transports: {
-      [appConfig.config.network.id]: http(
-        `https://opt-sepolia.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID!}`,
-      ),
+      [appConfig.config.network.id]: http(appConfig.getRPCURL()),
     },
   });
 

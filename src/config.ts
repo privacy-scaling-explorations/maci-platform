@@ -55,6 +55,19 @@ export const semaphoreEthersChain = (): string => {
   }
 };
 
+/**
+ * Get the RPC URL based on the network we are connected to
+ * @returns the alchemy RPC URL
+ */
+export const getRPCURL = (): string | undefined => {
+  switch (process.env.NEXT_PUBLIC_CHAIN_NAME) {
+    case "optimismSepolia":
+      return `https://opt-sepolia.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID!}`;
+    default:
+      return undefined;
+  }
+};
+
 export const config = {
   logoUrl: "/Logo.svg",
   pageSize: 3 * 4,
