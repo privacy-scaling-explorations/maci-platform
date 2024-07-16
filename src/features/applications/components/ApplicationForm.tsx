@@ -82,7 +82,7 @@ export const ApplicationForm = (): JSX.Element => {
           description="Please provide information about your project."
           title="Project Profile"
         >
-          <FormControl required label="Project name" name="name">
+          <FormControl required hint="This is the name of your project" label="Project name" name="name">
             <Input placeholder="Type your project name" />
           </FormControl>
 
@@ -105,7 +105,13 @@ export const ApplicationForm = (): JSX.Element => {
               <Input placeholder="Type your twitter username" />
             </FormControl>
 
-            <FormControl className="flex-1" label="Github" name="github" required={false}>
+            <FormControl
+              className="flex-1"
+              hint="Provide your github of this project"
+              label="Github"
+              name="github"
+              required={false}
+            >
               <Input placeholder="Type your github username" />
             </FormControl>
           </div>

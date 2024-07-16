@@ -25,6 +25,7 @@ import { cn } from "~/utils/classNames";
 
 import { IconButton } from "./Button";
 import { inputBase, Input, InputWrapper, InputIcon } from "./Input";
+import { Tooltip } from "./Tooltip";
 
 import { createComponent } from ".";
 
@@ -104,19 +105,21 @@ export const FormControl = ({
 
   return (
     <fieldset className={cn(className)}>
-      {label && (
-        <Label className="mb-1 dark:text-white" htmlFor={name} required={required}>
-          {label}
-        </Label>
-      )}
+      <div className="flex items-center gap-1">
+        {label && (
+          <Label className="mb-1 dark:text-white" htmlFor={name} required={required}>
+            {label}
+          </Label>
+        )}
+
+        {hint && <Tooltip description={hint} />}
+      </div>
 
       {cloneElement(children as ReactElement, {
         id: name,
         error: Boolean(error),
         ...register(name, { valueAsNumber }),
       })}
-
-      {hint && <div className="pt-1 text-xs text-gray-500">{hint}</div>}
 
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
     </fieldset>
