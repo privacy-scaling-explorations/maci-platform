@@ -98,7 +98,7 @@ export const ApplicationItem = ({
 
   const form = useFormContext();
 
-  const { fundingSources = [], impactMetrics = [], profileImageUrl } = metadata.data ?? {};
+  const { fundingSources = [], profileImageUrl } = metadata.data ?? {};
 
   return (
     <Link href={`/projects/${id}`} target="_blank">
@@ -117,8 +117,6 @@ export const ApplicationItem = ({
 
             <div className="text-sm text-gray-400">
               <div>{fundingSources.length} funding sources</div>
-
-              <div>{impactMetrics.length} impact metrics</div>
             </div>
           </div>
         </div>

@@ -54,22 +54,8 @@ export const ApplicationSchema = z.object({
           ),
       }),
     )
-    .min(1),
-  impactMetrics: z
-    .array(
-      z.object({
-        description: z.string().min(3),
-        url: z
-          .string()
-          .min(1)
-          .transform((url) =>
-            // Automatically prepend "https://" if it's missing
-            /^(http:\/\/|https:\/\/)/i.test(url) ? url : `https://${url}`,
-          ),
-        number: z.number(),
-      }),
-    )
-    .min(1),
+    .default([])
+    .optional(),
   fundingSources: z
     .array(
       z.object({
@@ -79,7 +65,8 @@ export const ApplicationSchema = z.object({
         type: z.nativeEnum(reverseKeys(fundingSourceTypes)),
       }),
     )
-    .default([]),
+    .default([])
+    .optional(),
 });
 
 export type Application = z.infer<typeof ApplicationSchema>;

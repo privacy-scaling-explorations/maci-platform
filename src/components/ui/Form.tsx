@@ -144,11 +144,7 @@ export const FieldArray = <S extends z.Schema>({
 
   return (
     <div className="mb-8">
-      <p className="dark:text-white">
-        {title}
-
-        <span className="text-blue-400">*</span>
-      </p>
+      <p className="dark:text-white">{title}</p>
 
       <p className="mb-2 text-gray-300">{description}</p>
 

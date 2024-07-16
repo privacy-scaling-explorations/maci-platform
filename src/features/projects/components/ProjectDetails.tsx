@@ -67,12 +67,6 @@ const ProjectDetails = ({
 
         <ProjectDescriptionSection
           description={metadata.data?.impactDescription}
-          impacts={metadata.data?.impactMetrics}
-          title="impact"
-        />
-
-        <ProjectDescriptionSection
-          description={metadata.data?.impactDescription}
           fundings={fundingSources}
           title="past grants and funding"
         />

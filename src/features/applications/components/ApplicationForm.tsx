@@ -71,9 +71,6 @@ export const ApplicationForm = (): JSX.Element => {
       <Form
         defaultValues={{
           payoutAddress: address,
-          contributionLinks: [{}],
-          impactMetrics: [{}],
-          fundingSources: [{}],
         }}
         schema={ApplicationSchema}
         onSubmit={(application) => {
@@ -164,27 +161,6 @@ export const ApplicationForm = (): JSX.Element => {
               </div>
             )}
             title="Contribution links"
-          />
-
-          <FieldArray
-            description="What kind of impact have your project made?"
-            name="impactMetrics"
-            renderField={(field, i) => (
-              <div className="mb-4 flex flex-wrap gap-2">
-                <FormControl required className="min-w-96" name={`impactMetrics.${i}.description`}>
-                  <Input placeholder="Type the name of your impact metric" />
-                </FormControl>
-
-                <FormControl required className="min-w-72" name={`impactMetrics.${i}.url`}>
-                  <Input placeholder="https://" />
-                </FormControl>
-
-                <FormControl required valueAsNumber name={`impactMetrics.${i}.number`}>
-                  <Input placeholder="Type a metric number" type="number" />
-                </FormControl>
-              </div>
-            )}
-            title="Impact metrics"
           />
 
           <FieldArray

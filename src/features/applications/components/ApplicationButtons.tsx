@@ -41,7 +41,10 @@ export const ApplicationButtons = ({
 
   const application = useMemo(() => form.getValues(), [form]);
 
-  const checkLinks = (links: Pick<ContributionLink | ImpactMetrix | FundingSource, "description">[]): boolean =>
+  const checkLinks = (
+    links: Pick<ContributionLink | ImpactMetrix | FundingSource, "description">[] | undefined,
+  ): boolean =>
+    links === undefined ||
     links.reduce((prev, link) => prev && link.description !== undefined && link.description.length > 0, true);
 
   const stepComplete = useMemo((): boolean => {
@@ -56,7 +59,6 @@ export const ApplicationButtons = ({
       impactDescription,
       impactCategory,
       contributionLinks,
-      impactMetrics,
       fundingSources,
     } = application;
 
@@ -77,7 +79,6 @@ export const ApplicationButtons = ({
         contributionDescription.length > 0 &&
         impactDescription.length > 0 &&
         checkLinks(contributionLinks) &&
-        checkLinks(impactMetrics) &&
         checkLinks(fundingSources)
       );
     }
