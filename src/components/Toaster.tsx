@@ -11,8 +11,9 @@ export const Toaster = (): JSX.Element => {
       toastOptions={{
         unstyled: true,
         classNames: {
-          toast: "bg-red text-white font-sans w-full flex justify-center p-4 rounded-xl",
-          error: "group-[.toaster]:border-red-950 text-red-500",
+          toast: "font-sans w-full flex justify-center p-4 rounded-xl",
+          success: "bg-[#BBF7D0] text-[#14532D]",
+          error: "bg-[#FEE2E2] text-[#5E1414]",
           title: "font-bold tracking-wider -mt-1",
           description: "text-sm",
         },
