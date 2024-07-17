@@ -26,8 +26,6 @@ export const JoinButton = (): JSX.Element => {
         </Button>
       )}
 
-      {appState === EAppState.APPLICATION && <Button variant="secondary">Project sign up</Button>}
-
       {appState === EAppState.TALLYING && (
         <Button variant="disabled">Voting round is over, the result is tallying.</Button>
       )}
