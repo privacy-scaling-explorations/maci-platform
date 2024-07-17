@@ -58,7 +58,7 @@ export const ProjectItem = ({
           <ImpactCategories tags={metadata.data?.impactCategory} />
         </Skeleton>
 
-        {!isLoading && state && action && appState === EAppState.VOTING && (
+        {!isLoading && state !== undefined && action && appState === EAppState.VOTING && (
           <div className="flex justify-end pt-6">
             <Skeleton>
               {state === EProjectState.DEFAULT && (
