@@ -1,6 +1,6 @@
 import { ClockIcon } from "lucide-react";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { FiAlertCircle } from "react-icons/fi";
 import { z } from "zod";
@@ -17,8 +17,10 @@ import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { useIsAdmin } from "~/hooks/useIsAdmin";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 import { useMetadata } from "~/hooks/useMetadata";
-import { type Attestation } from "~/utils/fetchAttestations";
+import { fetchApprovedApplications } from "~/utils/fetchAttestationsWithoutCache";
 import { formatDate } from "~/utils/time";
+
+import type { Attestation } from "~/utils/types";
 
 import { useApproveApplication } from "../hooks/useApproveApplication";
 import { useApprovedApplications } from "../hooks/useApprovedApplications";
@@ -130,7 +132,9 @@ export const ApplicationItem = ({
         </div>
 
         <div className="flex-[2]">
-          {isApproved ? <Badge variant="success">Approved</Badge> : <Badge variant="pending">Pending</Badge>}
+          {isApproved && <Badge variant="success">Approved</Badge>}
+
+          {!isApproved && <Badge variant="pending">Pending</Badge>}
         </div>
       </div>
     </Link>
@@ -146,18 +150,35 @@ type TApplicationsToApprove = z.infer<typeof ApplicationsToApproveSchema>;
 export const ApplicationsToApprove = (): JSX.Element => {
   const applications = useApplications();
   const approved = useApprovedApplications();
-  const approve = useApproveApplication({});
+  const approve = useApproveApplication();
+  const [refetchedData, setRefetchedData] = useState<Attestation[]>();
 
   const approvedById = useMemo(
     () =>
-      approved.data?.reduce((map, x) => {
+      [...(approved.data ?? []), ...(refetchedData ?? [])].reduce((map, x) => {
         map.set(x.refUID, true);
         return map;
       }, new Map<string, boolean>()),
-    [approved.data],
+    [approved.data, refetchedData],
   );
 
-  const applicationsToApprove = applications.data?.filter((application) => !approvedById?.get(application.id));
+  const applicationsToApprove = applications.data?.filter((application) => !approvedById.get(application.id));
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const ret = await fetchApprovedApplications();
+      setRefetchedData(ret);
+    };
+
+    /// delay refetch data for 5 seconds
+    const timeout = setTimeout(() => {
+      fetchData();
+    }, 5000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [approve.isPending, approve.isSuccess]);
 
   return (
     <div className="flex w-full justify-center dark:text-white">
@@ -207,7 +228,7 @@ export const ApplicationsToApprove = (): JSX.Element => {
             <ApplicationItem
               key={item.id}
               {...item}
-              isApproved={approvedById?.get(item.id)}
+              isApproved={approvedById.get(item.id)}
               isLoading={applications.isLoading}
             />
           ))}

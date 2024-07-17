@@ -5,7 +5,7 @@ import { EAppState } from "~/utils/types";
 
 import type { UseTRPCInfiniteQueryResult, UseTRPCQueryResult } from "@trpc/react-query/shared";
 import type { IGetPollData } from "maci-cli/sdk";
-import type { Attestation } from "~/utils/fetchAttestations";
+import type { Attestation } from "~/utils/types";
 
 export function useResults(
   pollData?: IGetPollData,

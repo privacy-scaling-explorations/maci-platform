@@ -1,12 +1,17 @@
-import { useMemo } from "react";
+import { useMemo, useCallback, useState, useEffect } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 
 import { StatusBar } from "~/components/StatusBar";
+import { Button } from "~/components/ui/Button";
+import { Spinner } from "~/components/ui/Spinner";
 import { useIsAdmin } from "~/hooks/useIsAdmin";
+import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
+import { fetchApprovedApplications } from "~/utils/fetchAttestationsWithoutCache";
 
+import type { Attestation } from "~/utils/types";
+
+import { useApproveApplication } from "../hooks/useApproveApplication";
 import { useApprovedApplications } from "../hooks/useApprovedApplications";
-
-import { AdminButtonsBar } from "./AdminButtonsBar";
 
 interface IReviewBarProps {
   projectId: string;
@@ -14,9 +19,37 @@ interface IReviewBarProps {
 
 export const ReviewBar = ({ projectId }: IReviewBarProps): JSX.Element => {
   const isAdmin = useIsAdmin();
-  const rawReturn = useApprovedApplications([projectId]);
+  const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
 
-  const approved = useMemo(() => rawReturn.data && rawReturn.data.length > 0, [rawReturn]);
+  const rawReturn = useApprovedApplications([projectId]);
+  const [refetchedData, setRefetchedData] = useState<Attestation[]>();
+
+  const approved = useMemo(
+    () => (rawReturn.data && rawReturn.data.length > 0) || (refetchedData && refetchedData.length > 0),
+    [rawReturn.data, refetchedData],
+  );
+
+  const approve = useApproveApplication();
+
+  const onClick = useCallback(() => {
+    approve.mutate([projectId]);
+  }, [approve, projectId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const ret = await fetchApprovedApplications([projectId]);
+      setRefetchedData(ret);
+    };
+
+    /// delay refetch data for 5 seconds
+    const timeout = setTimeout(() => {
+      fetchData();
+    }, 5000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [approve.isPending, approve.isSuccess, projectId]);
 
   return (
     <div className="mb-4 w-full">
@@ -39,7 +72,15 @@ export const ReviewBar = ({ projectId }: IReviewBarProps): JSX.Element => {
         />
       )}
 
-      {isAdmin && !approved && <AdminButtonsBar projectId={projectId} />}
+      {isAdmin && !approved && (
+        <div className="my-3 flex justify-end gap-2">
+          <Button suppressHydrationWarning disabled={!isCorrectNetwork} size="auto" variant="primary" onClick={onClick}>
+            {approve.isPending && <Spinner className="mr-2 h-4 w-4" />}
+
+            {!approve.isPending && !isCorrectNetwork ? `Connect to ${correctNetwork.name}` : "Approve application"}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

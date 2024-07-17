@@ -4,10 +4,11 @@ import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { Skeleton } from "~/components/ui/Skeleton";
 import { config } from "~/config";
-import { type Attestation } from "~/utils/fetchAttestations";
 import { formatNumber } from "~/utils/formatNumber";
 import { useAppState } from "~/utils/state";
 import { EAppState } from "~/utils/types";
+
+import type { Attestation } from "~/utils/types";
 
 import { useProjectMetadata } from "../hooks/useProjects";
 import { EProjectState } from "../types";
