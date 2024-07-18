@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState, useMemo, useCallback } from "react";
@@ -8,6 +9,7 @@ import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
 import { Form } from "~/components/ui/Form";
 import { useBallot } from "~/contexts/Ballot";
+import { useMaci } from "~/contexts/Maci";
 import { AllocationFormWrapper } from "~/features/ballot/components/AllocationList";
 import { BallotSchema } from "~/features/ballot/types";
 import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
@@ -79,8 +81,9 @@ const EmptyBallot = (): JSX.Element => (
 const BallotAllocationForm = (): JSX.Element => {
   const appState = useAppState();
   const { ballot, sumBallot } = useBallot();
+  const { initialVoiceCredits } = useMaci();
 
-  const sum = useMemo(() => formatNumber(sumBallot(ballot.votes)), [ballot, sumBallot]);
+  const sum = useMemo(() => sumBallot(ballot.votes), [ballot, sumBallot]);
 
   return (
     <div className="px-8">
@@ -99,10 +102,10 @@ const BallotAllocationForm = (): JSX.Element => {
           )}
         </div>
 
-        <div className="flex h-16 items-center justify-end gap-2">
+        <div className={clsx("flex h-16 items-center justify-end gap-2", sum > initialVoiceCredits && "text-red")}>
           <h4>Total votes:</h4>
 
-          <p>{sum}</p>
+          <p>{formatNumber(sum)}</p>
         </div>
       </div>
     </div>
@@ -125,7 +128,7 @@ const BallotPage = (): JSX.Element => {
   }, [sumBallot]);
 
   return (
-    <LayoutWithSidebar requireAuth showBallot showSubmitButton sidebar="right">
+    <LayoutWithSidebar requireAuth requireRegistration showBallot showSubmitButton sidebar="right">
       <Form defaultValues={ballot} schema={BallotSchema} values={ballot} onSubmit={handleSubmit}>
         <BallotAllocationForm />
       </Form>
