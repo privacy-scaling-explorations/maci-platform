@@ -26,9 +26,25 @@ export function useCreateApplication(options: {
   const upload = useUploadMetadata();
 
   const mutation = useMutation({
-    mutationFn: async (values: Application) =>
-      Promise.all([
-        upload.mutateAsync(values).then(({ url: metadataPtr }) =>
+    mutationFn: async (values: Application) => {
+      if (!values.bannerImageUrl || !values.profileImageUrl) {
+        throw new Error("No images included.");
+      }
+
+      const [profileImageFile, bannerImageFile] = await Promise.all([
+        fetch(values.profileImageUrl),
+        fetch(values.bannerImageUrl),
+      ]).then(([profileImage, bannerImage]) => Promise.all([profileImage.blob(), bannerImage.blob()]));
+
+      const [profileImageUrl, bannerImageUrl] = await Promise.all([
+        upload.mutateAsync(new File([profileImageFile], "profileImage")),
+        upload.mutateAsync(new File([bannerImageFile], "bannerImage")),
+      ]);
+
+      const metadataValues = { ...values, profileImageUrl: profileImageUrl.url, bannerImageUrl: bannerImageUrl.url };
+
+      return Promise.all([
+        upload.mutateAsync(metadataValues).then(({ url: metadataPtr }) =>
           attestation.mutateAsync({
             schemaUID: eas.schemas.metadata,
             values: {
@@ -40,7 +56,8 @@ export function useCreateApplication(options: {
             },
           }),
         ),
-      ]).then((attestations) => attest.mutateAsync(attestations.map((att) => ({ ...att, data: [att.data] })))),
+      ]).then((attestations) => attest.mutateAsync(attestations.map((att) => ({ ...att, data: [att.data] }))));
+    },
 
     ...options,
   });

@@ -14,7 +14,7 @@ const ConfirmProjectPage = (): JSX.Element => {
   const state = useAppState();
 
   const searchParams = useSearchParams();
-  const txHash = searchParams.get("txHash");
+  const txHash = useMemo(() => searchParams.get("txHash"), [searchParams]);
   const project = useApplicationByTxHash(txHash ?? "");
 
   const attestation = useMemo(() => project.data, [project]);
