@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useMemo } from "react";
 
 import { useBallot } from "~/contexts/Ballot";
@@ -22,7 +23,7 @@ export const VotingUsage = (): JSX.Element => {
       </div>
 
       <div>
-        <p className="text-2xl">
+        <p className={clsx("text-2xl", sum > initialVoiceCredits && "text-red")}>
           <b>{sum}</b>
         </p>
 

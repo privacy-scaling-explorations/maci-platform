@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useMemo, useCallback, useState, type ChangeEvent } from "react";
+import { NumericFormat } from "react-number-format";
 
 import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
@@ -9,7 +10,7 @@ import { useMaci } from "~/contexts/Maci";
 import { EButtonState } from "../types";
 
 export const VotingWidget = ({ projectId }: { projectId: string }): JSX.Element => {
-  const { pollId } = useMaci();
+  const { pollId, initialVoiceCredits } = useMaci();
   const { ballotContains, removeFromBallot, addToBallot } = useBallot();
   const projectBallot = useMemo(() => ballotContains(projectId), [ballotContains, projectId]);
   const projectIncluded = useMemo(() => !!projectBallot, [projectBallot]);
@@ -66,11 +67,14 @@ export const VotingWidget = ({ projectId }: { projectId: string }): JSX.Element 
       )}
 
       <div className="flex items-center justify-center gap-5 rounded-xl border border-gray-200 p-5 dark:border-gray-800">
-        <Input
+        <NumericFormat
+          aria-label="allocation-input"
+          autoComplete="off"
           className="w-auto dark:bg-lightBlack dark:text-white"
-          placeholder="Add votes here"
-          type="number"
-          value={amount}
+          customInput={Input}
+          defaultValue={amount}
+          isAllowed={({ floatValue }) => (floatValue ?? 0) <= initialVoiceCredits}
+          thousandSeparator=","
           onChange={handleInput}
         />
 

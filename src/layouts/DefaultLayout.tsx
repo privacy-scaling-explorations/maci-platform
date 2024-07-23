@@ -25,6 +25,7 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
   const { address } = useAccount();
   const appState = useAppState();
   const { ballot } = useBallot();
+  const { isRegistered } = useMaci();
 
   const navLinks = useMemo(() => {
     const links = [
@@ -39,7 +40,9 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
         href: "/ballot/confirmation",
         children: "My Ballot",
       });
-    } else {
+    }
+
+    if (appState === EAppState.VOTING && !ballot.published && isRegistered) {
       links.push({
         href: "/ballot",
         children: "My Ballot",
@@ -69,7 +72,7 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
     }
 
     return links;
-  }, [ballot, appState, address]);
+  }, [ballot.published, appState, isRegistered, address]);
 
   return (
     <BaseLayout {...props} header={<Header navLinks={navLinks} />}>

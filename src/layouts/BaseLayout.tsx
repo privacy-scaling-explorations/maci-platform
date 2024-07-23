@@ -17,6 +17,7 @@ import { useAccount } from "wagmi";
 import { Footer } from "~/components/Footer";
 import { createComponent } from "~/components/ui";
 import { metadata } from "~/config";
+import { useMaci } from "~/contexts/Maci";
 
 const Context = createContext({ eligibilityCheck: false, showBallot: false });
 
@@ -52,6 +53,7 @@ const Sidebar = ({ side = undefined, ...props }: { side?: "left" | "right" } & P
 export interface LayoutProps {
   title?: string;
   requireAuth?: boolean;
+  requireRegistration?: boolean;
   eligibilityCheck?: boolean;
   showBallot?: boolean;
   type?: string;
@@ -63,6 +65,7 @@ export const BaseLayout = ({
   sidebar = undefined,
   sidebarComponent = null,
   requireAuth = false,
+  requireRegistration = false,
   eligibilityCheck = false,
   showBallot = false,
   type = undefined,
@@ -77,12 +80,13 @@ export const BaseLayout = ({
   const { theme } = useTheme();
   const router = useRouter();
   const { address, isConnecting } = useAccount();
+  const { isRegistered } = useMaci();
 
   const manageDisplay = useCallback(() => {
-    if (requireAuth && !address && !isConnecting) {
+    if ((requireAuth && !address && !isConnecting) || (requireRegistration && !isRegistered)) {
       router.push("/");
     }
-  }, [requireAuth, address, isConnecting, router]);
+  }, [requireAuth, address, isConnecting, requireRegistration, isRegistered, router]);
 
   useEffect(() => {
     manageDisplay();
