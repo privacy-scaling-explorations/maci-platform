@@ -17,7 +17,7 @@ export const Tooltip = ({ description }: ITooltipProps): JSX.Element => {
   }, [setShowBlock]);
 
   return (
-    <div className="relative cursor-pointer text-gray-500 dark:text-white">
+    <div className="relative z-10 cursor-pointer text-gray-500 dark:text-white">
       <CiCircleQuestion onMouseEnter={handleShowBlock} onMouseLeave={handleHideBlock} />
 
       {showBlock && (

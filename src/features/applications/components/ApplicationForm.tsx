@@ -117,11 +117,22 @@ export const ApplicationForm = (): JSX.Element => {
           </div>
 
           <div className="mb-4 gap-4 md:flex">
-            <FormControl required label="Project avatar" name="profileImageUrl">
+            <FormControl
+              required
+              hint="The size should be smaller than 1MB."
+              label="Project avatar"
+              name="profileImageUrl"
+            >
               <ImageUpload className="h-48 w-48 " />
             </FormControl>
 
-            <FormControl required className="flex-1" label="Project background image" name="bannerImageUrl">
+            <FormControl
+              required
+              className="flex-1"
+              hint="The size should be smaller than 1MB."
+              label="Project background image"
+              name="bannerImageUrl"
+            >
               <ImageUpload className="h-48 " />
             </FormControl>
           </div>

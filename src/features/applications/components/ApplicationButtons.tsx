@@ -39,7 +39,35 @@ export const ApplicationButtons = ({
 
   const form = useFormContext<Application>();
 
-  const application = useMemo(() => form.getValues(), [form]);
+  const [
+    name,
+    bio,
+    payoutAddress,
+    websiteUrl,
+    profileImageUrl,
+    bannerImageUrl,
+    contributionDescription,
+    impactDescription,
+    impactCategory,
+    contributionLinks,
+    fundingSources,
+  ] = useMemo(
+    () =>
+      form.watch([
+        "name",
+        "bio",
+        "payoutAddress",
+        "websiteUrl",
+        "profileImageUrl",
+        "bannerImageUrl",
+        "contributionDescription",
+        "impactDescription",
+        "impactCategory",
+        "contributionLinks",
+        "fundingSources",
+      ]),
+    [form],
+  );
 
   const checkLinks = (
     links: Pick<ContributionLink | ImpactMetrix | FundingSource, "description">[] | undefined,
@@ -48,20 +76,6 @@ export const ApplicationButtons = ({
     links.reduce((prev, link) => prev && link.description !== undefined && link.description.length > 0, true);
 
   const stepComplete = useMemo((): boolean => {
-    const {
-      name,
-      bio,
-      payoutAddress,
-      websiteUrl,
-      profileImageUrl,
-      bannerImageUrl,
-      contributionDescription,
-      impactDescription,
-      impactCategory,
-      contributionLinks,
-      fundingSources,
-    } = application;
-
     if (step === EApplicationStep.PROFILE) {
       return (
         bannerImageUrl !== undefined &&
@@ -76,6 +90,7 @@ export const ApplicationButtons = ({
     if (step === EApplicationStep.ADVANCED) {
       return (
         impactCategory !== undefined &&
+        impactCategory.length > 0 &&
         contributionDescription.length > 0 &&
         impactDescription.length > 0 &&
         checkLinks(contributionLinks) &&
@@ -84,15 +99,41 @@ export const ApplicationButtons = ({
     }
 
     return true;
-  }, [step, application]);
+  }, [
+    step,
+    bannerImageUrl,
+    profileImageUrl,
+    bio,
+    name,
+    payoutAddress,
+    websiteUrl,
+    impactCategory,
+    contributionDescription,
+    impactDescription,
+    contributionLinks,
+    fundingSources,
+  ]);
 
-  const handleOnClickNextStep = useCallback(() => {
-    if (stepComplete) {
-      onNextStep();
-    } else {
-      setShowDialog(true);
-    }
-  }, [onNextStep, setShowDialog, stepComplete]);
+  const handleOnClickNextStep = useCallback(
+    (event: UIEvent) => {
+      event.preventDefault();
+
+      if (stepComplete) {
+        onNextStep();
+      } else {
+        setShowDialog(true);
+      }
+    },
+    [onNextStep, setShowDialog, stepComplete],
+  );
+
+  const handleOnClickBackStep = useCallback(
+    (event: UIEvent) => {
+      event.preventDefault();
+      onBackStep();
+    },
+    [onBackStep],
+  );
 
   const handleOnOpenChange = useCallback(() => {
     setShowDialog(false);
@@ -109,7 +150,7 @@ export const ApplicationButtons = ({
       />
 
       {step !== EApplicationStep.PROFILE && (
-        <Button className="text-gray-300 underline" size="auto" variant="ghost" onClick={onBackStep}>
+        <Button className="text-gray-300 underline" size="auto" variant="ghost" onClick={handleOnClickBackStep}>
           Back
         </Button>
       )}

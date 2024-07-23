@@ -6,8 +6,6 @@ import { Controller, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
 import { IconButton } from "~/components/ui/Button";
-import { Spinner } from "~/components/ui/Spinner";
-import { useUploadMetadata } from "~/hooks/useMetadata";
 
 export interface IImageUploadProps extends ComponentProps<"img"> {
   name?: string;
@@ -22,7 +20,6 @@ export const ImageUpload = ({
   const ref = useRef<HTMLInputElement>(null);
   const { control } = useFormContext();
 
-  const upload = useUploadMetadata();
   const select = useMutation({
     mutationFn: async (file: File) => {
       if (file.size >= maxSize) {
@@ -46,16 +43,10 @@ export const ImageUpload = ({
           className={clsx("relative cursor-pointer overflow-hidden", className)}
           onClick={() => ref.current?.click()}
         >
-          <IconButton
-            className="absolute bottom-1 right-1"
-            disabled={upload.isPending}
-            icon={upload.isPending ? Spinner : ImageIcon}
-          />
+          <IconButton className="absolute bottom-1 right-1" icon={ImageIcon} />
 
           <div
-            className={clsx("h-full rounded-xl bg-gray-200 bg-cover bg-center bg-no-repeat", {
-              "animate-pulse opacity-50": upload.isPending,
-            })}
+            className={clsx("h-full rounded-xl bg-gray-200 bg-cover bg-center bg-no-repeat")}
             style={{
               backgroundImage: `url("${select.data ?? value}")`,
             }}
@@ -72,12 +63,8 @@ export const ImageUpload = ({
               const [file] = event.target.files ?? [];
               if (file) {
                 select.mutate(file, {
-                  onSuccess: () => {
-                    upload.mutate(file, {
-                      onSuccess: (data) => {
-                        onChange(data.url);
-                      },
-                    });
+                  onSuccess: (objectUrl) => {
+                    onChange(objectUrl);
                   },
                 });
               }
