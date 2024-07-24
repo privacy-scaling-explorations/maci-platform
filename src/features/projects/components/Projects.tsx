@@ -54,10 +54,10 @@ export const Projects = (): JSX.Element => {
     if (!isRegistered) {
       return EProjectState.UNREGISTERED;
     }
-    if (ballotContains(projectId) && ballot.published) {
+    if (ballotContains(projectId) && ballot.published && !ballot.edited) {
       return EProjectState.SUBMITTED;
     }
-    if (ballotContains(projectId) && !ballot.published) {
+    if (ballotContains(projectId)) {
       return EProjectState.ADDED;
     }
     return EProjectState.DEFAULT;

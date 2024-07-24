@@ -91,6 +91,12 @@ const BallotAllocationForm = (): JSX.Element => {
 
       <p className="my-4 text-gray-400">Once you have reviewed your vote allocation, you can submit your ballot.</p>
 
+      {ballot.published && (
+        <Link className="text-blue-400 hover:underline" href="/ballot/confirmation">
+          Check your submitted ballot
+        </Link>
+      )}
+
       <div className="mb-4 justify-end sm:flex">{ballot.votes.length ? <ClearBallot /> : null}</div>
 
       <div className="border-t border-gray-300">
@@ -116,6 +122,7 @@ const BallotPage = (): JSX.Element => {
   const { address, isConnecting } = useAccount();
   const { ballot, sumBallot } = useBallot();
   const router = useRouter();
+  const appState = useAppState();
 
   useEffect(() => {
     if (!address && !isConnecting) {
@@ -129,9 +136,13 @@ const BallotPage = (): JSX.Element => {
 
   return (
     <LayoutWithSidebar requireAuth requireRegistration showBallot showSubmitButton sidebar="right">
-      <Form defaultValues={ballot} schema={BallotSchema} values={ballot} onSubmit={handleSubmit}>
-        <BallotAllocationForm />
-      </Form>
+      {appState === EAppState.VOTING && (
+        <Form defaultValues={ballot} schema={BallotSchema} values={ballot} onSubmit={handleSubmit}>
+          <BallotAllocationForm />
+        </Form>
+      )}
+
+      {appState !== EAppState.VOTING && <div>You can only vote during the voting period.</div>}
     </LayoutWithSidebar>
   );
 };
