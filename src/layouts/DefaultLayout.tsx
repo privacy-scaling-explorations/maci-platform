@@ -35,17 +35,17 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
       },
     ];
 
-    if (ballot.published) {
+    if (appState === EAppState.VOTING && isRegistered) {
       links.push({
-        href: "/ballot/confirmation",
+        href: "/ballot",
         children: "My Ballot",
       });
     }
 
-    if (appState === EAppState.VOTING && !ballot.published && isRegistered) {
+    if ((appState === EAppState.TALLYING || appState === EAppState.RESULTS) && ballot.published) {
       links.push({
-        href: "/ballot",
-        children: "My Ballot",
+        href: "/ballot/confirmation",
+        children: "Submitted Ballot",
       });
     }
 
@@ -85,6 +85,7 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
   const { isRegistered } = useMaci();
   const { address } = useAccount();
   const { ballot } = useBallot();
+  const appState = useAppState();
 
   const { showInfo, showBallot, showSubmitButton } = props;
 
@@ -95,7 +96,7 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
         <div>
           {showInfo && <Info showVotingInfo size="sm" />}
 
-          {showBallot && address && isRegistered && <BallotOverview />}
+          {appState !== EAppState.APPLICATION && showBallot && address && isRegistered && <BallotOverview />}
 
           {showSubmitButton && ballot.votes.length > 0 && (
             <div className="flex flex-col gap-4">

@@ -8,7 +8,7 @@ import type { Ballot, Vote } from "~/features/ballot/types";
 
 export const BallotContext = createContext<BallotContextType | undefined>(undefined);
 
-const defaultBallot = { votes: [], published: false };
+const defaultBallot = { votes: [], published: false, edited: false };
 
 export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: BallotProviderProps) => {
   const [ballot, setBallot] = useState<Ballot>(defaultBallot);
@@ -38,6 +38,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
     (addedVotes: Vote[], pollId: string) => ({
       ...ballot,
       pollId,
+      edited: true,
       votes: Object.values<Vote>({
         ...toObject("projectId", ballot.votes),
         ...toObject("projectId", addedVotes),
@@ -56,7 +57,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
     (projectId: string) => {
       const votes = ballot.votes.filter((v) => v.projectId !== projectId);
 
-      setBallot({ ...ballot, votes, published: false });
+      setBallot({ ...ballot, votes });
     },
     [ballot, setBallot],
   );
@@ -81,7 +82,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
 
   // set published to true
   const publishBallot = useCallback(() => {
-    setBallot({ ...ballot, published: true });
+    setBallot({ ...ballot, published: true, edited: false });
   }, [ballot, setBallot]);
 
   /// Read existing ballot in localStorage
