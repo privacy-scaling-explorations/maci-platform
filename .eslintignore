@@ -1,14 +1,10 @@
 node_modules
 dist
-.next
 coverage
 build
 typechain-types
 .eslintrc.js
 commitlint.config.js
-subgraph/generated
-public/mockServiceWorker.js
 zkeys
-playwright-report
-test-results
-next.config.js
+packages/interface/playwright/fixtures.ts
+packages/interface/playwright.config.ts
