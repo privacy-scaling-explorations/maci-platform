@@ -4,8 +4,11 @@ import { z } from "zod";
 import { config, eas } from "~/config";
 import { type Filter, FilterSchema, OrderBy, SortOrder } from "~/features/filter/types";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { fetchAttestations, createDataFilter, createSearchFilter, type Attestation } from "~/utils/fetchAttestations";
+import { fetchAttestations } from "~/utils/fetchAttestations";
+import { createDataFilter, createSearchFilter } from "~/utils/fetchAttestationsUtils";
 import { fetchMetadata } from "~/utils/fetchMetadata";
+
+import type { Attestation } from "~/utils/types";
 
 export const projectsRouter = createTRPCRouter({
   count: publicProcedure.query(async () =>

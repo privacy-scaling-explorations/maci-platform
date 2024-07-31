@@ -3,7 +3,8 @@ import { z } from "zod";
 
 import { eas } from "~/config";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { fetchAttestations, createDataFilter } from "~/utils/fetchAttestations";
+import { fetchAttestations } from "~/utils/fetchAttestations";
+import { createDataFilter } from "~/utils/fetchAttestationsUtils";
 
 export const profileRouter = createTRPCRouter({
   get: publicProcedure.input(z.object({ id: z.string() })).query(async ({ input }) =>

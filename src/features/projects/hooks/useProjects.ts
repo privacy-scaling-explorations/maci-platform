@@ -8,7 +8,7 @@ import { api } from "~/utils/api";
 
 import type { UseTRPCInfiniteQueryResult, UseTRPCQueryResult } from "@trpc/react-query/shared";
 import type { Ballot } from "~/features/ballot/types";
-import type { Attestation } from "~/utils/fetchAttestations";
+import type { Attestation } from "~/utils/types";
 
 interface IUseSearchProjectsProps {
   filterOverride?: Partial<Filter>;

@@ -5,7 +5,10 @@ import { Navigation } from "~/components/ui/Navigation";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { ProjectBanner } from "~/features/projects/components/ProjectBanner";
 import { VotingWidget } from "~/features/projects/components/VotingWidget";
-import { type Attestation } from "~/utils/fetchAttestations";
+import { useAppState } from "~/utils/state";
+import { EAppState } from "~/utils/types";
+
+import type { Attestation } from "~/utils/types";
 
 import { useProjectMetadata } from "../hooks/useProjects";
 
@@ -30,6 +33,8 @@ const ProjectDetails = ({
   const { bio, websiteUrl, payoutAddress, github, twitter, fundingSources, profileImageUrl, bannerImageUrl } =
     metadata.data ?? {};
 
+  const appState = useAppState();
+
   return (
     <div className={clsx("relative dark:text-white", disabled && "opacity-30")}>
       <div className="mb-7">
@@ -47,7 +52,7 @@ const ProjectDetails = ({
       <div className="flex items-center justify-between">
         <h3>{attestation?.name}</h3>
 
-        <VotingWidget projectId={projectId} />
+        {appState === EAppState.VOTING && <VotingWidget projectId={projectId} />}
       </div>
 
       <ProjectContacts author={payoutAddress} github={github} twitter={twitter} website={websiteUrl} />

@@ -2,7 +2,8 @@ import { z } from "zod";
 
 import { config, eas } from "~/config";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { createDataFilter, fetchAttestations } from "~/utils/fetchAttestations";
+import { fetchAttestations } from "~/utils/fetchAttestations";
+import { createDataFilter } from "~/utils/fetchAttestationsUtils";
 
 export const FilterSchema = z.object({
   limit: z.number().default(3 * 8),

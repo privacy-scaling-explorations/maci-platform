@@ -22,7 +22,7 @@ import { getSemaphoreProof } from "~/utils/semaphore";
 
 import type { IVoteArgs, MaciContextType, MaciProviderProps } from "./types";
 import type { Signer } from "ethers";
-import type { Attestation } from "~/utils/fetchAttestations";
+import type { Attestation } from "~/utils/types";
 
 export const MaciContext = createContext<MaciContextType | undefined>(undefined);
 

@@ -3,7 +3,7 @@ import { type Address } from "viem";
 import { api } from "~/utils/api";
 
 import type { UseTRPCQueryResult } from "@trpc/react-query/shared";
-import type { Attestation } from "~/utils/fetchAttestations";
+import type { Attestation } from "~/utils/types";
 
 import { useMetadata } from "./useMetadata";
 
