@@ -10,7 +10,6 @@ module.exports = {
   extends: [
     "airbnb",
     "prettier",
-    "next/core-web-vitals",
     "plugin:import/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
@@ -20,26 +19,23 @@ module.exports = {
     "plugin:@typescript-eslint/stylistic",
     "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:import/typescript",
-    "plugin:react/recommended",
-    "plugin:playwright/playwright-test",
   ],
-  plugins: ["json", "prettier", "unused-imports", "import", "@typescript-eslint", "react-hooks"],
+  plugins: ["json", "prettier", "unused-imports", "import", "@typescript-eslint"],
   parser: "@typescript-eslint/parser",
   env: {
-    browser: true,
     node: true,
     jest: true,
     es2022: true,
   },
   settings: {
     react: {
-      version: "18",
+      version: "999.999.999",
     },
     "import/resolver": {
       typescript: {},
       node: {
-        extensions: [".ts", ".js", ".tsx", ".jsx"],
-        moduleDirectory: ["node_modules", "src", "playwright"],
+        extensions: [".ts", ".js"],
+        moduleDirectory: ["node_modules", "ts", "src"],
       },
     },
   },
@@ -63,15 +59,7 @@ module.exports = {
     "import/no-extraneous-dependencies": [
       "error",
       {
-        devDependencies: [
-          "**/*.test.ts",
-          "./src/test-msw.ts",
-          "./src/test-setup.ts",
-          "./src/lib/eas/*.ts",
-          "./playwright/**/*.ts",
-          "./playwright.config.ts",
-          "./vitest.config.ts",
-        ],
+        devDependencies: ["**/*.test.ts"],
       },
     ],
     "no-debugger": isProduction ? "error" : "off",
@@ -113,86 +101,9 @@ module.exports = {
       "error",
       {
         builtinGlobals: true,
-        allow: [
-          "alert",
-          "location",
-          "event",
-          "history",
-          "name",
-          "status",
-          "Option",
-          "Image",
-          "Lock",
-          "test",
-          "expect",
-          "describe",
-          "beforeAll",
-          "afterAll",
-        ],
+        allow: ["location", "event", "history", "name", "status", "Option", "test", "expect"],
       },
     ],
     "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
-
-    "react/jsx-filename-extension": [
-      "error",
-      {
-        extensions: [".tsx", ".jsx", ".js"],
-      },
-    ],
-    "react/no-unknown-property": ["error", { ignore: ["tw", "global", "jsx"] }],
-    "react/jsx-sort-props": [
-      "error",
-      {
-        callbacksLast: true,
-        shorthandFirst: true,
-        ignoreCase: true,
-        reservedFirst: true,
-      },
-    ],
-    "react/sort-prop-types": [
-      "error",
-      {
-        callbacksLast: true,
-      },
-    ],
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-boolean-value": "error",
-    "react/jsx-handler-names": "error",
-    "react/prop-types": "error",
-    "react/jsx-no-bind": "error",
-    "react-hooks/rules-of-hooks": "error",
-    "react/no-array-index-key": "warn",
-    "jsx-a11y/no-static-element-interactions": "warn",
-    "jsx-a11y/click-events-have-key-events": "warn",
-    "jsx-a11y/anchor-is-valid": "warn",
-    "react/jsx-props-no-spreading": "off",
-    "react/forbid-prop-types": "off",
-    "react/state-in-constructor": "off",
-    "react/jsx-fragments": "off",
-    "react/static-property-placement": ["off"],
-    "react/jsx-newline": ["error", { prevent: false }],
-    "jsx-a11y/label-has-associated-control": "off",
-    "jsx-a11y/label-has-for": "off",
-    "react/require-default-props": [
-      "error",
-      {
-        functions: "defaultArguments",
-      },
-    ],
-    "react/no-unused-prop-types": "error",
-    "react/function-component-definition": ["error", { namedComponents: ["arrow-function"] }],
-
-    "playwright/prefer-lowercase-title": "error",
-    "playwright/prefer-to-be": "error",
-    "playwright/prefer-to-have-length": "error",
-    "playwright/prefer-strict-equal": "error",
-    "playwright/max-nested-describe": ["error", { max: 1 }],
-    "playwright/no-restricted-matchers": [
-      "error",
-      {
-        toBeFalsy: "Use `toBe(false)` instead.",
-        not: null,
-      },
-    ],
   },
 };
