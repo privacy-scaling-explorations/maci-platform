@@ -76,7 +76,6 @@ export const config = {
   voteLimit: 50,
   startsAt: parseDate(process.env.NEXT_PUBLIC_START_DATE),
   registrationEndsAt: parseDate(process.env.NEXT_PUBLIC_REGISTRATION_END_DATE),
-  reviewEndsAt: parseDate(process.env.NEXT_PUBLIC_REVIEW_END_DATE),
   resultsAt: parseDate(process.env.NEXT_PUBLIC_RESULTS_DATE),
   skipApprovedVoterCheck: ["true", "1"].includes(process.env.NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK!),
   tokenName: process.env.NEXT_PUBLIC_TOKEN_NAME!,
@@ -91,7 +90,6 @@ export const config = {
   roundOrganizer: process.env.NEXT_PUBLIC_ROUND_ORGANIZER ?? "PSE",
   pollMode: process.env.NEXT_PUBLIC_POLL_MODE ?? "non-qv",
   roundLogo: process.env.NEXT_PUBLIC_ROUND_LOGO,
-  chainName: process.env.NEXT_PUBLIC_CHAIN_NAME!,
 };
 
 export const theme = {

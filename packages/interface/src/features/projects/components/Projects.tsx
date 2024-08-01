@@ -6,6 +6,7 @@ import { FiAlertCircle } from "react-icons/fi";
 import { InfiniteLoading } from "~/components/InfiniteLoading";
 import { SortFilter } from "~/components/SortFilter";
 import { StatusBar } from "~/components/StatusBar";
+import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useResults } from "~/hooks/useResults";
@@ -77,8 +78,22 @@ export const Projects = (): JSX.Element => {
         />
       )}
 
+      {appState === EAppState.TALLYING && (
+        <StatusBar
+          content={
+            <div className="flex items-center gap-2">
+              <FiAlertCircle className="h-4 w-4" />
+              Voting already ended, you cannot vote anymore.
+            </div>
+          }
+          status="default"
+        />
+      )}
+
       <div className="mb-4 flex justify-between">
-        <h3>Projects</h3>
+        <Heading as="h3" size="3xl">
+          Projects
+        </Heading>
 
         <div>
           <SortFilter />

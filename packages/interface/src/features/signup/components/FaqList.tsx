@@ -1,8 +1,10 @@
+import { Heading } from "~/components/ui/Heading";
+
 import { FAQItem } from "./FaqItem";
 
 export const FAQList = (): JSX.Element => (
   <div className="mt-28 flex flex-col items-center justify-center dark:text-white">
-    <h1 className="mb-8">FAQ</h1>
+    <Heading size="6xl">FAQ</Heading>
 
     <FAQItem
       description="(Please enter the main focus and description of this round.)"

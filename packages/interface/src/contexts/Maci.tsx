@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { Identity } from "@semaphore-protocol/core";
 import { isAfter } from "date-fns";
+import { type Signer, BrowserProvider } from "ethers";
 import {
   signup,
   isRegisteredUser,
@@ -21,7 +22,7 @@ import { api } from "~/utils/api";
 import { getSemaphoreProof } from "~/utils/semaphore";
 
 import type { IVoteArgs, MaciContextType, MaciProviderProps } from "./types";
-import type { Signer } from "ethers";
+import type { EIP1193Provider } from "viem";
 import type { Attestation } from "~/utils/types";
 
 export const MaciContext = createContext<MaciContextType | undefined>(undefined);
@@ -324,10 +325,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
 
   /// check the poll data and tally data
   useEffect(() => {
-    if (!signer) {
-      return;
-    }
-
     setIsLoading(true);
 
     // if we have the subgraph url then it means we can get the poll data through there
@@ -352,10 +349,18 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
 
       setIsLoading(false);
     } else {
+      if (!window.ethereum) {
+        return;
+      }
+
+      const provider = new BrowserProvider(window.ethereum as unknown as EIP1193Provider, {
+        chainId: config.network.id,
+        name: config.network.name,
+      });
+
       getPoll({
         maciAddress: config.maciAddress!,
-        signer,
-        provider: signer.provider,
+        provider,
       })
         .then((data) => {
           setPollData(data);

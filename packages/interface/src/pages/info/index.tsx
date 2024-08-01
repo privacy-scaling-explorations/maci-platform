@@ -1,3 +1,4 @@
+import { Heading } from "~/components/ui/Heading";
 import { config } from "~/config";
 import { Layout } from "~/layouts/DefaultLayout";
 import { cn } from "~/utils/classNames";
@@ -9,12 +10,8 @@ const steps = [
     date: config.startsAt,
   },
   {
-    label: "Review & Approval",
-    date: config.registrationEndsAt,
-  },
-  {
     label: "Voting",
-    date: config.reviewEndsAt,
+    date: config.registrationEndsAt,
   },
   {
     label: "Tallying",
@@ -43,7 +40,9 @@ const InfoPage = (): JSX.Element => {
               "opacity-50": currentStepIndex <= i,
             })}
           >
-            <h3 className="font-semibold">{step.label}</h3>
+            <Heading as="h3" size="3xl">
+              {step.label}
+            </Heading>
 
             {step.date instanceof Date && !Number.isNaN(step.date) && <div>{formatDate(step.date)}</div>}
           </div>

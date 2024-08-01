@@ -18,7 +18,9 @@ const ResultsChart = dynamic(async () => import("~/features/results/components/C
 
 const Stat = ({ title, children = null }: PropsWithChildren<{ title: string }>) => (
   <div className="rounded border p-2">
-    <h3 className="font-bold text-gray-500">{title}</h3>
+    <Heading className="text-gray-500" size="3xl">
+      {title}
+    </Heading>
 
     <div className="text-4xl">{children}</div>
   </div>
@@ -51,7 +53,7 @@ const Stats = () => {
   if (!pollData && !isConnected) {
     return (
       <Alert className="mx-auto max-w-sm text-center" variant="info">
-        <h3 className="text-lg font-bold">Connect your wallet to see results</h3>
+        <Heading size="lg">Connect your wallet to see results</Heading>
 
         <div className="mt-4">
           <ConnectButton />
@@ -66,7 +68,7 @@ const Stats = () => {
 
   return (
     <div>
-      <h3 className="text-lg font-bold">Top Projects</h3>
+      <Heading size="lg">Top Projects</Heading>
 
       <div className="mb-8 h-[400px] rounded-xl bg-white text-black">
         <ResultsChart data={chartData} />

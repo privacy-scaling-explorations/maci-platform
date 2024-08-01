@@ -8,6 +8,7 @@ import { useAccount } from "wagmi";
 import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
 import { Form } from "~/components/ui/Form";
+import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { AllocationFormWrapper } from "~/features/ballot/components/AllocationList";
@@ -63,7 +64,9 @@ const ClearBallot = (): JSX.Element | null => {
 const EmptyBallot = (): JSX.Element => (
   <div className="flex flex-1 items-center justify-center">
     <div className=" max-w-[360px] space-y-4">
-      <h3 className="text-center text-lg font-bold">Your vote is empty</h3>
+      <Heading className="text-center" size="lg">
+        Your vote is empty
+      </Heading>
 
       <p className="text-center text-sm text-gray-700">
         Your vote currently doesn&apos;t have any projects added. Browse through the available projects.
@@ -87,7 +90,9 @@ const BallotAllocationForm = (): JSX.Element => {
 
   return (
     <div className="px-8">
-      <h1 className="text-4xl uppercase tracking-tighter">My Ballot</h1>
+      <Heading className="tracking-tighter" size="4xl">
+        My Ballot
+      </Heading>
 
       <p className="my-4 text-gray-400">Once you have reviewed your vote allocation, you can submit your ballot.</p>
 
@@ -142,7 +147,9 @@ const BallotPage = (): JSX.Element => {
         </Form>
       )}
 
-      {appState !== EAppState.VOTING && <div>You can only vote during the voting period.</div>}
+      {appState !== EAppState.VOTING && (
+        <div className="dark:text-white">You can only vote during the voting period.</div>
+      )}
     </LayoutWithSidebar>
   );
 };

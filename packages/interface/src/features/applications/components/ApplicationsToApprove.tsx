@@ -9,6 +9,7 @@ import { EmptyState } from "~/components/EmptyState";
 import { Badge } from "~/components/ui/Badge";
 import { Button } from "~/components/ui/Button";
 import { Checkbox, Form } from "~/components/ui/Form";
+import { Heading } from "~/components/ui/Heading";
 import { Skeleton } from "~/components/ui/Skeleton";
 import { Spinner } from "~/components/ui/Spinner";
 import { useApplications } from "~/features/applications/hooks/useApplications";
@@ -183,7 +184,9 @@ export const ApplicationsToApprove = (): JSX.Element => {
   return (
     <div className="flex w-full justify-center dark:text-white">
       <div className="flex flex-col gap-4 md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
-        <h3>Review Applications</h3>
+        <Heading as="h3" size="3xl">
+          Review Applications
+        </Heading>
 
         <p className="text-gray-400">
           Select the applications you want to approve. You must be a configured admin to approve applications.

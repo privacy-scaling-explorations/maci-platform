@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 
 import { Alert } from "~/components/ui/Alert";
+import { Heading } from "~/components/ui/Heading";
 import { useApplicationByTxHash } from "~/features/applications/hooks/useApplicationByTxHash";
 import { ProjectItem } from "~/features/projects/components/ProjectItem";
 import { Layout } from "~/layouts/DefaultLayout";
@@ -23,7 +24,9 @@ const ConfirmProjectPage = (): JSX.Element => {
     <Layout>
       <div className="flex w-full justify-center">
         <div className="flex flex-col items-center gap-4 md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
-          <h2 className="font-mono uppercase">Your project application has been submitted!</h2>
+          <Heading as="h2" size="4xl">
+            Your project application has been submitted!
+          </Heading>
 
           <p className="text-gray-400">
             Thank you for submitting your project application. Our team is now reviewing it.

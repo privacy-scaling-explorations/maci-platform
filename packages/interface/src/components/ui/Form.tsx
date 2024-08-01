@@ -24,6 +24,7 @@ import { type z } from "zod";
 import { cn } from "~/utils/classNames";
 
 import { IconButton } from "./Button";
+import { Heading } from "./Heading";
 import { inputBase, Input, InputWrapper, InputIcon } from "./Input";
 import { Tooltip } from "./Tooltip";
 
@@ -197,7 +198,7 @@ export const FormSection = ({
   ...props
 }: { title: string; description: string } & ComponentProps<"section">): JSX.Element => (
   <section className="mb-8" {...props}>
-    <h3 className="mb-1 font-sans text-xl font-semibold">{title}</h3>
+    <Heading className="mb-1 font-sans text-xl font-semibold">{title}</Heading>
 
     <p className="mb-4 leading-loose text-gray-400">{description}</p>
 

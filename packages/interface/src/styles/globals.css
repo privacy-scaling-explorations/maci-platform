@@ -55,9 +55,3 @@
     color: #888888;
   }
 }
-
-@media (prefers-color-scheme: "dark") {
-  h3 {
-    color: white;
-  }
-}

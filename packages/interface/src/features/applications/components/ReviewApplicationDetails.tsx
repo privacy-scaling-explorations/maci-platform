@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { useMemo, type ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
 
+import { Heading } from "~/components/ui/Heading";
 import { Tag } from "~/components/ui/Tag";
 
 import type { Application } from "../types";
@@ -42,7 +43,7 @@ export const ReviewApplicationDetails = (): JSX.Element => {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h3 className="mb-1 font-sans text-xl font-semibold">Review & Submit</h3>
+        <Heading className="mb-1 font-sans text-xl font-semibold">Review & Submit</Heading>
 
         <p className="leading-loose text-gray-400">Please review and submit your project application.</p>
       </div>

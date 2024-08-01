@@ -2,7 +2,6 @@ import { type Address } from "viem";
 
 export enum EAppState {
   LOADING = "LOADING",
-  REVIEWING = "REVIEWING",
   APPLICATION = "APPLICATION",
   VOTING = "VOTING",
   TALLYING = "TALLYING",

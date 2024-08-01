@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { Heading } from "~/components/ui/Heading";
 import { config } from "~/config";
 
 export const RoundInfo = (): JSX.Element => (
@@ -9,7 +10,9 @@ export const RoundInfo = (): JSX.Element => (
     <div className="flex items-center gap-2">
       {config.roundLogo && <Image alt="round logo" height="20" src={`/${config.roundLogo}`} width="20" />}
 
-      <h3>{config.roundId}</h3>
+      <Heading as="h3" size="3xl">
+        {config.roundId}
+      </Heading>
     </div>
   </div>
 );

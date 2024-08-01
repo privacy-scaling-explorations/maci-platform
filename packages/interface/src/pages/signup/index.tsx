@@ -7,6 +7,7 @@ import { EligibilityDialog } from "~/components/EligibilityDialog";
 import { Info } from "~/components/Info";
 import { JoinButton } from "~/components/JoinButton";
 import { Button } from "~/components/ui/Button";
+import { Heading } from "~/components/ui/Heading";
 import { config } from "~/config";
 import { useMaci } from "~/contexts/Maci";
 import { FAQList } from "~/features/signup/components/FaqList";
@@ -24,9 +25,13 @@ const SignupPage = (): JSX.Element => {
       <EligibilityDialog />
 
       <div className="flex h-[90vh] w-screen flex-col items-center justify-center gap-4 bg-blue-50 dark:bg-black">
-        <h1 className="max-w-screen-lg text-center font-mono dark:text-white">{config.eventName.toUpperCase()}</h1>
+        <Heading className="max-w-screen-lg text-center" size="6xl">
+          {config.eventName}
+        </Heading>
 
-        <h2 className="max-w-screen-lg text-center font-mono dark:text-white">{config.roundId.toUpperCase()}</h2>
+        <Heading as="h2" className="max-w-screen-lg text-center" size="4xl">
+          {config.roundId.toUpperCase()}
+        </Heading>
 
         <p className="flex max-w-screen-md gap-2 text-center text-xl dark:text-gray-400">
           <span>{config.startsAt && format(config.startsAt, "d MMMM, yyyy")}</span>

@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { type ReactNode } from "react";
 
+import { Heading } from "~/components/ui/Heading";
 import { Navigation } from "~/components/ui/Navigation";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { ProjectBanner } from "~/features/projects/components/ProjectBanner";
@@ -50,7 +51,9 @@ const ProjectDetails = ({
       </div>
 
       <div className="flex items-center justify-between">
-        <h3>{attestation?.name}</h3>
+        <Heading as="h3" size="3xl">
+          {attestation?.name}
+        </Heading>
 
         {appState === EAppState.VOTING && <VotingWidget projectId={projectId} />}
       </div>

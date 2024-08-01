@@ -24,7 +24,7 @@ const Context = createContext({ eligibilityCheck: false, showBallot: false });
 const MainContainer = createComponent(
   "div",
   tv({
-    base: "w-full flex-1 2xl:container md:flex",
+    base: "w-screen flex-1 md:flex",
     variants: {
       type: {
         default: "mt-12 pl-2 pr-6",

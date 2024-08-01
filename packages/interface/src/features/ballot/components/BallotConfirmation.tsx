@@ -5,6 +5,7 @@ import { tv } from "tailwind-variants";
 
 import { createComponent } from "~/components/ui";
 import { Button } from "~/components/ui/Button";
+import { Heading } from "~/components/ui/Heading";
 import { Notice } from "~/components/ui/Notice";
 import { config } from "~/config";
 import { useBallot } from "~/contexts/Ballot";
@@ -34,7 +35,9 @@ export const BallotConfirmation = (): JSX.Element => {
 
   return (
     <section>
-      <h2 className="font-mono uppercase tracking-tighter">Your votes have been successfully submitted 🥳</h2>
+      <Heading as="h2" className="tracking-tighter" size="4xl">
+        Your votes have been successfully submitted 🥳
+      </Heading>
 
       <p className="mb-14 mt-4 text-gray-400">
         {`Thank you for participating in ${config.eventName} ${config.roundId} round.`}

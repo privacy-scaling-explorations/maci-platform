@@ -1,6 +1,7 @@
 import { FiAlertCircle } from "react-icons/fi";
 
 import { Alert } from "~/components/ui/Alert";
+import { Heading } from "~/components/ui/Heading";
 import { ApplicationForm } from "~/features/applications/components/ApplicationForm";
 import { Layout } from "~/layouts/DefaultLayout";
 import { useAppState } from "~/utils/state";
@@ -13,7 +14,9 @@ const NewProjectPage = (): JSX.Element => {
     <Layout>
       <div className="flex w-full justify-center">
         <div className="flex flex-col gap-4 md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
-          <h3>New Application</h3>
+          <Heading as="h3" size="3xl">
+            New Application
+          </Heading>
 
           <p className="text-gray-400">
             <span className="inline-block">
