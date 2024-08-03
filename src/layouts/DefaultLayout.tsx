@@ -24,7 +24,7 @@ export const Layout = ({ children = null, ...props }: Props): JSX.Element => {
   const navLinks = [
     {
       href: "/projects",
-      children: "Projects",
+      children: "Proposals",
     },
     {
       href: "/info",

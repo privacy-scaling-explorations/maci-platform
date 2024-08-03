@@ -146,11 +146,11 @@ export const ApplicationForm = ({ address = "" }: IApplicationFormProps): JSX.El
         }}
       >
         <FormSection
-          description="Configure your profile name and choose your avatar and background for your project."
-          title="Profile"
+          description="Configure your proposal name and choose the icon and background for it."
+          title="Proposal"
         >
           <FormControl required label="Profile name" name="profile.name">
-            <Input placeholder="Your name" />
+            <Input placeholder="Proposal name" />
           </FormControl>
 
           <div className="mb-4 gap-4 md:flex">
@@ -164,28 +164,15 @@ export const ApplicationForm = ({ address = "" }: IApplicationFormProps): JSX.El
           </div>
         </FormSection>
 
-        <FormSection
-          description="Configure your application and the payout address to where tokens will be transferred."
-          title="Application"
-        >
-          <FormControl required label="Name" name="application.name">
-            <Input placeholder="Project name" />
+        <FormControl required label="Description" name="application.bio">
+          <Textarea placeholder="Project description" rows={4} />
+        </FormControl>
+
+        <div className="gap-4 md:flex">
+          <FormControl required className="flex-1" label="Website" name="application.websiteUrl">
+            <Input placeholder="https://" />
           </FormControl>
-
-          <FormControl required label="Description" name="application.bio">
-            <Textarea placeholder="Project description" rows={4} />
-          </FormControl>
-
-          <div className="gap-4 md:flex">
-            <FormControl required className="flex-1" label="Website" name="application.websiteUrl">
-              <Input placeholder="https://" />
-            </FormControl>
-
-            <FormControl required className="flex-1" label="Payout address" name="application.payoutAddress">
-              <Input placeholder="0x..." />
-            </FormControl>
-          </div>
-        </FormSection>
+        </div>
 
         <FormSection description="Describe the contribution and impact of your project." title="Contribution & Impact">
           <FormControl required label="Contribution description" name="application.contributionDescription">

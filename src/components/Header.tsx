@@ -14,7 +14,7 @@ import { IconButton } from "./ui/Button";
 const Logo = () => (
   <div className="h-10">
     {config.logoUrl ? (
-      <Image alt="logo" className="max-h-full" src={config.logoUrl} />
+      <Image alt="logo" className="max-h-full" height={100} src={config.logoUrl} width={100} />
     ) : (
       <div className="flex h-full items-center justify-center rounded-full border-2 border-dashed border-white px-4 text-xs font-medium tracking-wider text-white">
         {metadata.title}
@@ -26,9 +26,9 @@ const Logo = () => (
 const NavLink = ({ isActive, ...props }: { isActive: boolean } & ComponentPropsWithRef<typeof Link>) => (
   <Link
     className={clsx(
-      "flex h-full items-center border-b-[3px] border-transparent p-4 font-semibold text-gray-400 hover:text-white",
+      "flex h-full items-center border-b-[3px] border-transparent p-4 font-semibold text-[#6B6984] hover:text-[#222133]",
       {
-        "!border-white  !text-white": isActive,
+        "!border-[#222133]  !text-[#222133]": isActive,
       },
     )}
     {...props}
@@ -38,7 +38,7 @@ const NavLink = ({ isActive, ...props }: { isActive: boolean } & ComponentPropsW
 const MobileMenu = ({ isOpen = false, navLinks }: { isOpen?: boolean; navLinks: INavLink[] }) => (
   <div
     className={clsx(
-      "fixed left-0 top-16 z-10 h-full w-full bg-white transition-transform duration-150 dark:bg-gray-900",
+      "fixed left-0 top-16 z-10 h-full w-full bg-[white] transition-transform duration-150 dark:bg-gray-900",
       {
         "translate-x-full": !isOpen,
       },
@@ -60,7 +60,7 @@ const Header = ({ navLinks }: { navLinks: INavLink[] }) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
-    <header className="relative z-[100] bg-gray-900 shadow-md dark:shadow-none">
+    <header className="relative z-[100] bg-[#B6CDEC] shadow-md dark:shadow-none">
       <div className="container mx-auto flex h-[72px] max-w-screen-2xl items-center px-2">
         <div className="mr-4 flex items-center md:mr-16">
           <IconButton

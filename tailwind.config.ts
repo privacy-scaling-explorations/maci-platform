@@ -1,5 +1,6 @@
+import forms from "@tailwindcss/forms";
+import typography from "@tailwindcss/typography";
 import { type Config } from "tailwindcss";
-
 import colors from "tailwindcss/colors";
 import theme from "tailwindcss/defaultTheme";
 
@@ -42,12 +43,14 @@ export default {
       colors: {
         ...colors,
         ...customColors,
-        gray: colors.stone,
+        gray: colors.gray,
+        neutral: colors.neutral,
+        slate: colors.slate,
       },
       fontFamily: {
         sans: ["var(--font-inter)", ...theme.fontFamily.sans],
       },
     },
   },
-  plugins: [require("@tailwindcss/typography"), require("@tailwindcss/forms")],
+  plugins: [typography, forms],
 } satisfies Config;

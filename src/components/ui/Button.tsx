@@ -9,9 +9,10 @@ const button = tv({
   variants: {
     variant: {
       primary:
-        "bg-primary-600 hover:bg-primary-700 dark:bg-white dark:hover:bg-primary-500 dark:text-gray-900 text-white dark:disabled:bg-gray-500",
-      ghost: "hover:bg-gray-100 dark:hover:bg-gray-800",
-      default: "bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-700",
+        "bg-[#222133] hover:bg-[#b6cdec] dark:bg-[#222133] dark:hover:bg-[#b6cdec] dark:text-[#b6cdec] dark:hover:text-[#222133] dark:hover:border-[#222133] dark:hover:border-2 dark:disabled:bg-gray-500",
+      ghost:
+        "hover:bg-[#b6cdec] dark:hover:[#b6cdec] hover:text-[#222133] dark:hover:text[#222133] hover:border[#222133] dark:hover:border[#222133]",
+      default: "bg-gray-100 dark:bg-gray-900 hover:bg-[#b6cdec] dark:hover:[#b6cdec]",
       inverted: "bg-white text-black hover:bg-white/90",
       link: "bg-none hover:underline",
       outline: "border-2 hover:bg-white/5",

@@ -29,7 +29,7 @@ import { createComponent } from ".";
 
 const inputBase = [
   "dark:bg-gray-900",
-  "dark:text-gray-300",
+  "dark:text-[#b6cdec]",
   "dark:border-gray-700",
   "rounded",
   "disabled:opacity-30",
@@ -59,7 +59,7 @@ export const InputWrapper = createComponent(
 export const InputAddon = createComponent(
   "div",
   tv({
-    base: "absolute right-0 text-gray-900 dark:text-gray-300 inline-flex items-center justify-center h-full border-gray-300 dark:border-gray-800 border-l px-4 font-semibold",
+    base: "absolute right-0 text-[#b6cdec] dark:text-[#b6cdec] inline-flex items-center justify-center h-full border-gray-300 dark:border-gray-800 border-l px-4 font-semibold",
     variants: {
       disabled: {
         true: "text-gray-500 dark:text-gray-500",
@@ -71,7 +71,7 @@ export const InputAddon = createComponent(
 export const InputIcon = createComponent(
   "div",
   tv({
-    base: "absolute text-gray-600 left-0 inline-flex items-center justify-center h-full px-4",
+    base: "absolute text-[#b6cdec] left-0 inline-flex items-center justify-center h-full px-4",
   }),
 );
 
@@ -97,7 +97,7 @@ export const Checkbox = createComponent(
 export const Label = createComponent(
   "label",
   tv({
-    base: "block tracking-wider dark:text-gray-300 font-semibold",
+    base: "block tracking-wider dark:text-[#B6CDEC] font-semibold",
     variants: { required: { true: "after:content-['*']" } },
   }),
 );
@@ -112,7 +112,7 @@ export const SearchInput = forwardRef(({ ...props }: ComponentPropsWithRef<typeo
       <Search />
     </InputIcon>
 
-    <Input ref={ref} {...props} className="rounded-full pl-10" />
+    <Input ref={ref} {...props} className="rounded-full pl-10 text-[#B6CDEC]" />
   </InputWrapper>
 ));
 
@@ -158,7 +158,7 @@ export const FormControl = ({
         ...register(name, { valueAsNumber }),
       })}
 
-      {hint && <div className="pt-1 text-xs text-gray-500 dark:text-gray-400">{hint}</div>}
+      {hint && <div className="dark:[#b6cdec] pt-1 text-xs text-[#b6cdec]">{hint}</div>}
 
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
     </fieldset>
@@ -224,9 +224,9 @@ export const FormSection = ({
   children,
 }: { title: string; description: string } & ComponentProps<"section">): JSX.Element => (
   <section className="mb-8">
-    <h3 className="mb-1 text-xl font-semibold">{title}</h3>
+    <h3 className="mb-1 text-3xl font-semibold">{title}</h3>
 
-    <p className="mb-4 leading-loose text-gray-600 dark:text-gray-400">{description}</p>
+    <p className="mb-4 leading-loose text-[#222133] dark:text-[#222133]">{description}</p>
 
     {children}
   </section>

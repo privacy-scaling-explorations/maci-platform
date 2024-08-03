@@ -22,10 +22,10 @@ export const SortFilter = (): JSX.Element => {
   );
 
   return (
-    <div className="mb-2 flex flex-1 gap-2">
+    <div className="mb-2 flex flex-1 gap-2 ">
       <SearchInput
         className="w-full rounded-full"
-        placeholder="Search project names..."
+        placeholder="Search proposals names..."
         value={search}
         onChange={onChange}
       />

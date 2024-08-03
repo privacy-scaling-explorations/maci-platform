@@ -22,7 +22,7 @@ import { EAppState } from "~/utils/types";
 import { VotingEndsIn } from "./VotingEndsIn";
 
 const BallotHeader = ({ children, ...props }: PropsWithChildren): JSX.Element => (
-  <h3 className="text-sm font-semibold uppercase tracking-widest text-gray-700 dark:text-gray-300" {...props}>
+  <h3 className="text-sm font-semibold uppercase tracking-widest text-gray-700 dark:text-[#222133]" {...props}>
     {children}
   </h3>
 );
@@ -174,14 +174,14 @@ const BallotOverview = () => {
 
   if (appState !== EAppState.VOTING) {
     return (
-      <div className="flex flex-col items-center gap-2 pt-8 ">
+      <div className="flex flex-col items-start gap-2 pt-8 ">
         <BallotHeader>Voting has not started yet</BallotHeader>
 
         {appState === EAppState.REVIEWING ? (
           <BallotSection title="Applications are being reviewed" />
         ) : (
-          <Button as={Link} className="border-1" href="/applications/new">
-            Create application
+          <Button as={Link} className="border-1 mt-3 w-full text-[#b6cdec]" href="/applications/new">
+            Create proposal
           </Button>
         )}
       </div>

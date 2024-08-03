@@ -92,7 +92,7 @@ export const BaseLayout = ({
         <meta content={metadata.image} name="twitter:image" />
       </Head>
 
-      <div className={clsx(" flex h-full min-h-screen flex-1 flex-col dark:bg-gray-900 dark:text-white", theme)}>
+      <div className={clsx(" flex h-full min-h-screen flex-1 flex-col text-[#222133] dark:bg-[#B6CDEC]", theme)}>
         {header}
 
         <div className="mx-auto w-full flex-1 pt-12 2xl:container md:flex">

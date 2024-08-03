@@ -8,11 +8,8 @@ import { useAppState } from "~/utils/state";
 import { EAppState } from "~/utils/types";
 
 const APPLICATION_TEXT = `
-### New Application
-Fill out this form to create an application for your project. It will
-then be reviewed by our admins. 
-
-Your progress is saved locally so you can return to this page to resume your application.
+Fill out this form to create a proposal for discusion {enter discussion name}.
+Your progress is saved locally so you can return to this page to resume your proposal.
 `;
 
 const NewProjectPage = (): JSX.Element => {
@@ -21,7 +18,9 @@ const NewProjectPage = (): JSX.Element => {
 
   return (
     <Layout>
-      <Markdown className="mb-8">{APPLICATION_TEXT}</Markdown>
+      <h1 className="text-5xl text-[#222133]"> New Proposal</h1>
+
+      <Markdown className="mb-8 text-[#222133]">{APPLICATION_TEXT}</Markdown>
 
       {state !== EAppState.APPLICATION ? (
         <Alert title="Application period has ended" variant="info" />

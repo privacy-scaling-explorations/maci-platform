@@ -1,16 +1,16 @@
 import * as wagmiChains from "wagmi/chains";
 
 export const metadata = {
-  title: "MACI RPGF",
-  description: "Open-source Retro Public Goods Funding platform with MACI for private on chain voting/",
-  url: "https://maci-rpgf.vercel.app",
+  title: "Ripe",
+  description: "Your favorite voting platform.",
+  url: "https://ripe.vercel.app",
   image: "/api/og",
 };
 
 const parseDate = (env?: string) => (env ? new Date(env) : undefined);
 
 export const config = {
-  logoUrl: "",
+  logoUrl: "/Logo_ripe.svg",
   pageSize: 3 * 4,
   // TODO: temp solution until we come up with solid one
   // https://github.com/privacy-scaling-explorations/maci-rpgf/issues/31
