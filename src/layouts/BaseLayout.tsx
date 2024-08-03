@@ -5,7 +5,6 @@ import { useTheme } from "next-themes";
 import { type ReactNode, type PropsWithChildren, createContext, useContext, useEffect, useMemo } from "react";
 import { useAccount } from "wagmi";
 
-import { Footer } from "~/components/Footer";
 import { metadata } from "~/config";
 
 const Context = createContext({ eligibilityCheck: false, showBallot: false });
@@ -109,7 +108,6 @@ export const BaseLayout = ({
           {sidebar === "right" ? wrappedSidebar : null}
         </div>
 
-        <Footer />
       </div>
     </Context.Provider>
   );

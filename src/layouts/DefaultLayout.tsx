@@ -1,6 +1,5 @@
 import { useAccount } from "wagmi";
 
-import Header from "~/components/Header";
 import { config } from "~/config";
 import BallotOverview from "~/features/ballot/components/BallotOverview";
 import { useAppState } from "~/utils/state";
@@ -8,7 +7,7 @@ import { EAppState } from "~/utils/types";
 
 import type { ReactNode, PropsWithChildren } from "react";
 
-import { BaseLayout, type LayoutProps } from "./BaseLayout";
+import { type LayoutProps } from "./BaseLayout";
 
 type Props = PropsWithChildren<
   {
@@ -23,7 +22,15 @@ export const Layout = ({ children = null, ...props }: Props): JSX.Element => {
 
   const navLinks = [
     {
-      href: "/projects",
+      href: "/",
+      children: "Organizations",
+    },
+    {
+      href: "/Discussions",
+      children: "Discussions",
+    },
+    {
+      href: "/Proposals",
       children: "Proposals",
     },
     {
@@ -54,11 +61,7 @@ export const Layout = ({ children = null, ...props }: Props): JSX.Element => {
     );
   }
 
-  return (
-    <BaseLayout {...props} header={<Header navLinks={navLinks} />}>
-      {children}
-    </BaseLayout>
-  );
+  return children;
 };
 
 export const LayoutWithBallot = ({ ...props }: Props): JSX.Element => (
