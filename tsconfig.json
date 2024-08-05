@@ -1,43 +1,15 @@
 {
   "compilerOptions": {
-    /* Base Options: */
+    "target": "ESNext",
+    "module": "Node16",
+    "lib": ["ESNext", "DOM"],
+    "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "es2022",
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "moduleDetection": "force",
-    "isolatedModules": true,
-
-    /* Strictness */
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "checkJs": true,
-
-    /* Bundled projects */
-    "lib": ["dom", "dom.iterable", "ES2022"],
-    "noEmit": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "jsx": "preserve",
-    "plugins": [{ "name": "next" }],
-    "incremental": true,
-
-    /* Path Aliases */
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["./src/*"]
-    }
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node16",
+    "allowJs": true
   },
-  "include": [
-    ".eslintrc.js",
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.cjs",
-    "**/*.js",
-    ".next/types/**/*.ts",
-    "src/pages/api/indexer/webhook._ts"
-  ],
-  "exclude": ["node_modules", "./public/mockServiceWorker.js", "commitlint.config.js", "zkeys"]
+  "exclude": ["node_modules"],
+  "include": ["packages/coordinator/ts", "packages/coordinator/scripts", "./packages/interface/src"]
 }

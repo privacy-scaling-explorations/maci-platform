@@ -1,26 +1,13 @@
-# MACI-RPGF
+# MACI Platform
 
-<div>
-<a href="https://maci-rpgf.vercel.app/">View demo</a>
-<span>|</span>
-<a href="https://discord.com/invite/sF5CT5rzrR">Discord (#🗳️-maci channel)</a>
-<span>|</span>
-<a href="https://www.youtube.com/watch?v=86VBbO1E4Vk">Video Tutorial</a>
-</div>
+MACI Platform is a complete solution for running voting and funding rounds using [MACI](https://maci.pse.dev).
 
-[<img src="./docs/images/screenshot.png"/>](https://easy-retro-pgf.vercel.app)
+It is comprised of two components:
 
-## Documentation
+- Coordinator Service - the complete automation of MACI operations
+- Interface - a web app for managing and voting on MACI polls
 
-MACI-RPGF uses EAS as backbone to run Retroactive Public Goods Funding to reward contributors ([As used by the Optimism Collective](https://community.optimism.io/docs/governance/citizens-house/#how-retro-funding-works)) while adding a privacy layer to reduce bribery and collusion using MACI.
-
-## Video Tutorial
-
-A complete installation tutorial can be seen here:
-
-[![Watch the Video](https://img.youtube.com/vi/86VBbO1E4Vk/0.jpg)](https://www.youtube.com/watch?v=86VBbO1E4Vk)
-
-### MACI-RPGF docs
+### MACI-Platform docs
 
 - [Setup & Deployment](./docs/01_setup.md)
 - [Adding Projects & Approving](./docs/02_adding_projects.md)
@@ -33,55 +20,39 @@ A complete installation tutorial can be seen here:
 
 - [Documentation](https://maci.pse.dev/docs/introduction)
 
-## Supported Networks
-
-All networks EAS is deployed to are supported. If a network is not supported, you can follow the EAS documentation to deploy the contracts to the network.
-
-- https://docs.attest.sh/docs/quick--start/contracts
-
-#### Mainnets
-
-- Ethereum
-- Optimism
-- Base
-- Arbitrum One & Nova
-- Polygon
-- Scroll
-- Celo
-- Linea
-
-#### Testnets
-
-- Sepolia
-- Optimism Sepolia
-- Base Sepolia
-- Polygon Mumbai
-- Scroll Sepolia
-
 ## Development
 
 To run locally follow these instructions:
 
 ```sh
-git clone https://github.com/privacy-scaling-explorations/maci-rpgf
+git clone https://github.com/privacy-scaling-explorations/maci-platform
 
-cp .env.example .env # and update .env variables
+pnpm install && pnpm build
+
+cp packages/interface/.env.example packages/interface/.env # and update .env variables
 
 ```
 
 At the very minimum you need to configure the subgraph url, admin address, maci address and the voting periods. For more details head to [Setup & Deployment](./docs/01_setup.md). Once you have set everything run:
 
 ```sh
-pnpm install
-
-pnpm run dev
+pnpm run dev:interface
 
 open localhost:3000
 ```
 
-### Technical details
+## Documentation
 
-- **EAS** - Projects, profiles, etc are all stored on-chain in Ethereum Attestation Service
-- **Batched requests with tRPC** - Multiple requests are batched into one (for example when the frontend requests the metadata for 24 projects they are batched into 1 request)
-- **Server-side caching of requests to EAS and IPFS** - Immediately returns the data without calling EAS and locally serving ipfs cids.
-- **MACI** - Minimal Anti-Collusion Infrastructure (MACI) is an open-source public good that serves as infrastructure for private on-chain voting, handles the rounds and private voting of the badgeholders.
+MACI-Platform uses EAS as backbone to run Retroactive Public Goods Funding to reward contributors ([As used by the Optimism Collective](https://community.optimism.io/docs/governance/citizens-house/#how-retro-funding-works)) while adding a privacy layer to reduce bribery and collusion using MACI.
+
+## Video Tutorial
+
+A complete installation tutorial can be seen here:
+
+[![Watch the Video](https://img.youtube.com/vi/86VBbO1E4Vk/0.jpg)](https://www.youtube.com/watch?v=86VBbO1E4Vk)
+
+## Credits
+
+The interface started as a fork of [easy-rpgf](https://github.com/gitcoinco/easy-retro-pgf), but now has gone a completely different direction and thus we decided to detach the fork to clarify the new direction of the project, which is not focusing anymore on RPGF only, but other types of voting and funding.
+
+We are very thankful to the developers and all contributors of the [easy-rpgf](https://github.com/gitcoinco/easy-retro-pgf) project, and we hope to continue collaborating and wish to see their project succeed and help more communities/projects get funded.

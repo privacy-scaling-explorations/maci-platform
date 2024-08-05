@@ -6,9 +6,11 @@ build
 typechain-types
 .eslintrc.js
 commitlint.config.js
-subgraph/generated
-public/mockServiceWorker.js
 zkeys
-playwright-report
-test-results
-next.config.js
+subgraph/generated
+packages/interface/playwright/fixtures.ts
+packages/interface/playwright.config.ts
+packages/interface/playwright-report
+packages/interface/test-results
+packages/interface/next.config.js
+packages/interface/public/mockServiceWorker.js
