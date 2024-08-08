@@ -3,7 +3,7 @@ import * as wagmiChains from "wagmi/chains";
 export const metadata = {
   title: "MACI PLATFORM",
   description: "Open-source Retro Public Goods Funding platform with MACI for private on chain voting/",
-  url: "https://maci-rpgf.vercel.app",
+  url: "https://maci-platform.vercel.app",
   image: "/api/og",
 };
 
@@ -79,7 +79,7 @@ export const config = {
   resultsAt: parseDate(process.env.NEXT_PUBLIC_RESULTS_DATE),
   skipApprovedVoterCheck: ["true", "1"].includes(process.env.NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK!),
   tokenName: process.env.NEXT_PUBLIC_TOKEN_NAME!,
-  eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "MACI-RPGF",
+  eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "MACI-PLATFORM",
   roundId: process.env.NEXT_PUBLIC_ROUND_ID!,
   admin: (process.env.NEXT_PUBLIC_ADMIN_ADDRESS ?? "") as `0x${string}`,
   network: wagmiChains[process.env.NEXT_PUBLIC_CHAIN_NAME as keyof typeof wagmiChains],

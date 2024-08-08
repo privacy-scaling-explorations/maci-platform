@@ -51,7 +51,7 @@ A complete installation tutorial can be seen here:
 
 [![Watch the Video](https://img.youtube.com/vi/86VBbO1E4Vk/0.jpg)](https://www.youtube.com/watch?v=86VBbO1E4Vk)
 
-## Credits
+## Credits
 
 The interface started as a fork of [easy-rpgf](https://github.com/gitcoinco/easy-retro-pgf), but now has gone a completely different direction and thus we decided to detach the fork to clarify the new direction of the project, which is not focusing anymore on RPGF only, but other types of voting and funding.
 

@@ -1,7 +1,7 @@
 # MACI-PLATFORM
 
 <div>
-<a href="https://maci-rpgf.vercel.app/">View demo</a>
+<a href="https://maci-platform.vercel.app/">View demo</a>
 <span>|</span>
 <a href="https://discord.com/invite/sF5CT5rzrR">Discord (#🗳️-maci channel)</a>
 <span>|</span>
