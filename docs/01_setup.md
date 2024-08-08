@@ -1,6 +1,6 @@
 # Setup
 
-Follow these instructions to deploy your own instance of MACI-RPGF.
+Follow these instructions to deploy your own instance of MACI-PLATFORM.
 
 ## Video Tutorial
 
@@ -10,7 +10,7 @@ A complete installation tutorial can be seen here:
 
 ## 1. Fork Repo
 
-[Fork MACI-RPGF](https://github.com/privacy-scaling-explorations/maci-rpgf/tree/main)
+[Fork MACI-PLATFORM](https://github.com/privacy-scaling-explorations/maci-platform/tree/main)
 
 1. Click to view the `.env.example` file in your newly created repo
 2. Copy its contents and paste into a text editor

@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.no-scrollbar ::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: 0;
+}
+
+@layer base {
+  @font-face {
+    font-family: "Share Tech Mono";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(/fonts/Share_Tech_Mono.woff2) format("woff2");
+  }
+
+  @font-face {
+    font-family: "DM Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(/fonts/DM_Sans.woff2) format("woff2");
+  }
+
+  html {
+    font-family: "Share Tech Mono", "DM Sans";
+  }
+
+  h1 {
+    font-size: 60px;
+    font-family: "Share Tech Mono";
+  }
+
+  h2 {
+    font-size: 40px;
+  }
+
+  h3 {
+    font-family: "Share Tech Mono";
+    font-size: 32px;
+    color: black;
+    text-transform: uppercase;
+  }
+
+  h4 {
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #888888;
+  }
+}
