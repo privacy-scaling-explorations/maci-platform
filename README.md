@@ -27,9 +27,11 @@ To run locally follow these instructions:
 ```sh
 git clone https://github.com/privacy-scaling-explorations/maci-platform
 
-pnpm install && pnpm build
+pnpm install
 
 cp packages/interface/.env.example packages/interface/.env # and update .env variables
+
+pnpm build
 
 ```
 
