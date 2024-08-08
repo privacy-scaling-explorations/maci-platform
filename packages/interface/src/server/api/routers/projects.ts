@@ -80,6 +80,7 @@ export const projectsRouter = createTRPCRouter({
       orderBy: [createOrderBy(input.orderBy, input.sortOrder)],
       where: {
         attester: { equals: config.admin },
+        AND: filters,
       },
     });
   }),
