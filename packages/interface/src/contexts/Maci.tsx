@@ -76,7 +76,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       setGatekeeperTrait(gatekeeperType);
     };
 
-    fetchGatekeeperType();
+    fetchGatekeeperType().catch(console.error);
   }, [signer]);
 
   // only fetch the attestations if the gatekeeper trait is EAS
