@@ -90,6 +90,7 @@ export const config = {
   roundOrganizer: process.env.NEXT_PUBLIC_ROUND_ORGANIZER ?? "PSE",
   pollMode: process.env.NEXT_PUBLIC_POLL_MODE ?? "non-qv",
   roundLogo: process.env.NEXT_PUBLIC_ROUND_LOGO,
+  semaphoreSubgraphUrl: process.env.NEXT_PUBLIC_SEMAPHORE_SUBGRAPH,
 };
 
 export const theme = {
