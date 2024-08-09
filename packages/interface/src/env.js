@@ -69,6 +69,8 @@ module.exports = createEnv({
 
     NEXT_PUBLIC_POLL_MODE: z.enum(["qv", "non-qv"]).default("non-qv"),
     NEXT_PUBLIC_ROUND_LOGO: z.string().optional(),
+
+    NEXT_PUBLIC_SEMAPHORE_SUBGRAPH: z.string().url().optional(),
   },
 
   /**
@@ -108,6 +110,8 @@ module.exports = createEnv({
 
     NEXT_PUBLIC_POLL_MODE: process.env.NEXT_PUBLIC_POLL_MODE,
     NEXT_PUBLIC_ROUND_LOGO: process.env.NEXT_PUBLIC_ROUND_LOGO,
+
+    NEXT_PUBLIC_SEMAPHORE_SUBGRAPH: process.env.NEXT_PUBLIC_SEMAPHORE_SUBGRAPH,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

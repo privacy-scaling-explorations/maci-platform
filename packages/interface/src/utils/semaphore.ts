@@ -1,5 +1,5 @@
 import { Group, Identity, generateProof, type SemaphoreProof } from "@semaphore-protocol/core";
-import { SemaphoreEthers } from "@semaphore-protocol/data";
+import { SemaphoreEthers, SemaphoreSubgraph } from "@semaphore-protocol/data";
 import { AbiCoder, JsonRpcSigner } from "ethers";
 import { getSemaphoreGatekeeperData } from "maci-cli/sdk";
 
@@ -33,9 +33,11 @@ export const getSemaphoreProof = async (signer: JsonRpcSigner, identity: Identit
     maciAddress: config.maciAddress!,
   });
 
-  const semaphore = new SemaphoreEthers(getRPCURL() ?? semaphoreEthersChain(), {
-    address: semaphoreContractAddress,
-  });
+  const semaphore = config.semaphoreSubgraphUrl
+    ? new SemaphoreSubgraph(config.semaphoreSubgraphUrl)
+    : new SemaphoreEthers(getRPCURL() ?? semaphoreEthersChain(), {
+        address: semaphoreContractAddress,
+      });
 
   const groupResponse = await semaphore.getGroupMembers(groupId);
 
