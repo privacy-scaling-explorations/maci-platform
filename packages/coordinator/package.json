@@ -36,6 +36,7 @@
     "@nestjs/websockets": "^10.3.10",
     "@nomicfoundation/hardhat-ethers": "^3.0.6",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.0.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
@@ -48,11 +49,13 @@
     "maci-domainobjs": "^2.0.0",
     "maci-subgraph": "^2.1.0",
     "mustache": "^4.2.0",
+    "permissionless": "^0.1.44",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "socket.io": "^4.7.5",
     "tar": "^7.4.1",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "viem": "^2.7.15"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.4.2",
