@@ -59,8 +59,6 @@ module.exports = createEnv({
     NEXT_PUBLIC_WALLETCONNECT_ID: z.string().optional(),
     NEXT_PUBLIC_ALCHEMY_ID: z.string().optional(),
 
-    NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK: z.string(),
-
     NEXT_PUBLIC_MACI_ADDRESS: z.string().startsWith("0x"),
     NEXT_PUBLIC_MACI_START_BLOCK: z.string().optional(),
     NEXT_PUBLIC_MACI_SUBGRAPH_URL: z.string().url().optional(),
@@ -93,7 +91,6 @@ module.exports = createEnv({
 
     NEXT_PUBLIC_WALLETCONNECT_ID: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
     NEXT_PUBLIC_ALCHEMY_ID: process.env.NEXT_PUBLIC_ALCHEMY_ID,
-    NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK: process.env.NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK,
 
     NEXT_PUBLIC_ADMIN_ADDRESS: process.env.NEXT_PUBLIC_ADMIN_ADDRESS,
     NEXT_PUBLIC_APPROVAL_SCHEMA: process.env.NEXT_PUBLIC_APPROVAL_SCHEMA,

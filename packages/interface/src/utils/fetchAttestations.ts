@@ -27,10 +27,6 @@ export async function fetchAttestations(schema: string[], filter?: AttestationsF
 }
 
 export async function fetchApprovedVoter(address: string): Promise<boolean | number> {
-  if (config.skipApprovedVoterCheck) {
-    return true;
-  }
-
   return fetchAttestations([eas.schemas.approval], {
     where: {
       recipient: { equals: address },
@@ -40,10 +36,6 @@ export async function fetchApprovedVoter(address: string): Promise<boolean | num
 }
 
 export async function fetchApprovedVoterAttestations(address: string): Promise<boolean | Attestation[]> {
-  if (config.skipApprovedVoterCheck) {
-    return true;
-  }
-
   return fetchAttestations([eas.schemas.approval], {
     where: {
       recipient: { equals: address },

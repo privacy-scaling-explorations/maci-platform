@@ -52,7 +52,6 @@ module.exports = {
       {
         devDependencies: [
           "**/*.test.ts",
-          "./src/test-msw.ts",
           "./src/test-setup.ts",
           "./src/lib/eas/*.ts",
           "./playwright/**/*.ts",
