@@ -1,0 +1,8 @@
+docs
+.env
+deploy-config.json
+deployed-contracts.json
+cache
+artifacts
+typechain-types
+

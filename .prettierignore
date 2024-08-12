@@ -1,5 +1,8 @@
 build/
 dist/
+artifacts/
+cache/
+typechain-types/
 .next/
 node_modules/
 coverage/

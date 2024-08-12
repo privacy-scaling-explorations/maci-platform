@@ -12,8 +12,10 @@
     "download-zkeys:prod": "lerna run download-zkeys:prod --scope=maci-coordinator",
     "prettier": "prettier -c .",
     "prettier:fix": "prettier -w .",
-    "lint": "eslint './**/**/*.ts' './**/**/*.tsx'",
-    "lint:fix": "pnpm run lint --fix",
+    "lint:ts": "eslint './**/**/*.ts' './**/**/*.tsx'",
+    "lint:ts:fix": "pnpm run lint:ts --fix",
+    "lint:sol": "solhint './packages/contracts/contracts/**/*.sol'",
+    "lint:sol:fix": "pnpm run lint:sol --fix --noPrompt",
     "types": "lerna run types",
     "docs": "lerna run docs",
     "prepare": "is-ci || husky",
@@ -48,6 +50,7 @@
     "lerna": "^8.1.7",
     "lint-staged": "^15.2.7",
     "prettier": "^3.3.3",
+    "solhint": "^5.0.3",
     "typescript": "^5.5.4"
   },
   "config": {

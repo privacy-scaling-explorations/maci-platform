@@ -1,4 +1,4 @@
-name: Checks
+name: Contracts
 
 on:
   push:
@@ -21,12 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check:
-    strategy:
-      fail-fast: false
-      matrix:
-        command: ["prettier", "types", "lint:ts", "lint:sol"]
-
+  build:
     runs-on: ubuntu-22.04
 
     steps:
@@ -43,7 +38,12 @@ jobs:
 
       - name: Install
         run: |
-          pnpm install
+          pnpm install --frozen-lockfile --prefer-offline
 
-      - name: ${{ matrix.command }}
-        run: pnpm run ${{ matrix.command }}
+      - name: Build
+        run: |
+          pnpm run build
+
+      - name: Test
+        run: pnpm run test
+        working-directory: packages/contracts
