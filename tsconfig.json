@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "Node16",
-    "lib": ["ESNext", "DOM"],
-    "strict": true,
+    "target": "ES2020",
+    "module": "commonjs",
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node16",
-    "allowJs": true
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   },
   "exclude": ["node_modules"],
   "include": ["packages/coordinator/ts", "packages/coordinator/scripts", "./packages/interface/src"]
