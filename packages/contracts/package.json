@@ -1,0 +1,60 @@
+{
+  "name": "maci-platform-contracts",
+  "version": "0.1.0",
+  "description": "Solidity Smart Contracts for MACI Platform",
+  "main": "build/ts/index.js",
+  "exports": {
+    ".": {
+      "types": "./build/ts/index.d.ts",
+      "default": "./build/ts/index.js"
+    },
+    "./typechain-types": {
+      "types": "./build/typechain-types/index.d.ts",
+      "default": "./build/typechain-types/index.js"
+    }
+  },
+  "bin": {
+    "maci-platform-contracts": "./build/ts/index.js"
+  },
+  "files": [
+    "build",
+    "contracts",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "watch": "tsc --watch",
+    "hardhat": "hardhat node",
+    "compileSol": "TS_NODE_TRANSPILE_ONLY=1 ts-node ./scripts/compileSol.ts",
+    "prebuild": "pnpm run compileSol",
+    "build": "tsc -p tsconfig.build.json",
+    "postbuild": "cp -r ./artifacts ./build",
+    "types": "tsc -p tsconfig.json --noEmit",
+    "docs": "hardhat docgen",
+    "test": "hardhat test --network hardhat"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.6",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.0.2",
+    "ethers": "^6.13.2",
+    "hardhat": "^2.22.8",
+    "lowdb": "^1.0.0",
+    "maci-contracts": "^2.1.0",
+    "solidity-docgen": "^0.6.0-beta.36"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.11",
+    "@types/lowdb": "^1.0.15",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^22.1.0",
+    "@types/snarkjs": "^0.7.8",
+    "@types/uuid": "^10.0.0",
+    "chai": "^4.3.10",
+    "dotenv": "^16.4.5",
+    "hardhat-artifactor": "^0.2.0",
+    "hardhat-contract-sizer": "^2.10.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.5.4"
+  }
+}
