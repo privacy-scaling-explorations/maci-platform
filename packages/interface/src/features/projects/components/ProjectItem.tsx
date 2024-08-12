@@ -49,11 +49,11 @@ export const ProjectItem = ({
           <Skeleton isLoading={isLoading}>{attestation.name}</Skeleton>
         </Heading>
 
-        <p className="line-clamp-2 h-10 text-sm text-gray-400">
+        <div className="line-clamp-2 h-10 text-sm text-gray-400">
           <Skeleton className="w-full" isLoading={isLoading}>
             {metadata.data?.bio}
           </Skeleton>
-        </p>
+        </div>
 
         <Skeleton className="w-[100px]" isLoading={isLoading}>
           <ImpactCategories tags={metadata.data?.impactCategory} />
