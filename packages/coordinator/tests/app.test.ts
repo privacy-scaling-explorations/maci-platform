@@ -16,8 +16,7 @@ import {
   mergeMessages,
   mergeSignups,
 } from "maci-cli";
-import { Proof, TallyData } from "maci-contracts";
-import { Poll__factory as PollFactory } from "maci-contracts/typechain-types";
+import { Proof, TallyData, Poll__factory as PollFactory } from "maci-contracts";
 import { Keypair } from "maci-domainobjs";
 import { io, Socket } from "socket.io-client";
 import request from "supertest";
