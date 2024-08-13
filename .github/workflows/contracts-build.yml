@@ -39,6 +39,10 @@ jobs:
         run: |
           pnpm install --frozen-lockfile --prefer-offline
 
+      - name: Copy .env.example to .env
+        run: |
+          cp packages/interface/.env.example packages/interface/.env
+
       - name: Build
         run: |
           pnpm run build
