@@ -77,7 +77,6 @@ export const config = {
   startsAt: parseDate(process.env.NEXT_PUBLIC_START_DATE),
   registrationEndsAt: parseDate(process.env.NEXT_PUBLIC_REGISTRATION_END_DATE),
   resultsAt: parseDate(process.env.NEXT_PUBLIC_RESULTS_DATE),
-  skipApprovedVoterCheck: ["true", "1"].includes(process.env.NEXT_PUBLIC_SKIP_APPROVED_VOTER_CHECK!),
   tokenName: process.env.NEXT_PUBLIC_TOKEN_NAME!,
   eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "MACI-PLATFORM",
   roundId: process.env.NEXT_PUBLIC_ROUND_ID!,

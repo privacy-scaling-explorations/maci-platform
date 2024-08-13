@@ -40,5 +40,5 @@
     ".next/types/**/*.ts",
     "./src/pages/api/indexer/webhook._ts"
   ],
-  "exclude": ["node_modules", "public/mockServiceWorker.js", "commitlint.config.js", "playwright", "e2e"]
+  "exclude": ["node_modules", "commitlint.config.js", "playwright", "e2e"]
 }
