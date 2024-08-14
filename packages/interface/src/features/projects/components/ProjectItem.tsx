@@ -5,8 +5,8 @@ import { Heading } from "~/components/ui/Heading";
 import { Skeleton } from "~/components/ui/Skeleton";
 import { config } from "~/config";
 import { formatNumber } from "~/utils/formatNumber";
-import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { useRoundState } from "~/utils/state";
+import { ERoundState } from "~/utils/types";
 
 import type { Attestation } from "~/utils/types";
 
@@ -18,6 +18,7 @@ import { ProjectAvatar } from "./ProjectAvatar";
 import { ProjectBanner } from "./ProjectBanner";
 
 export interface IProjectItemProps {
+  roundId: string;
   attestation: Attestation;
   isLoading: boolean;
   state?: EProjectState;
@@ -25,13 +26,14 @@ export interface IProjectItemProps {
 }
 
 export const ProjectItem = ({
+  roundId,
   attestation,
   isLoading,
   state = undefined,
   action = undefined,
 }: IProjectItemProps): JSX.Element => {
   const metadata = useProjectMetadata(attestation.metadataPtr);
-  const appState = useAppState();
+  const roundState = useRoundState(roundId);
 
   return (
     <article
@@ -59,7 +61,7 @@ export const ProjectItem = ({
           <ImpactCategories tags={metadata.data?.impactCategory} />
         </Skeleton>
 
-        {!isLoading && state !== undefined && action && appState === EAppState.VOTING && (
+        {!isLoading && state !== undefined && action && roundState === ERoundState.VOTING && (
           <div className="flex justify-end pt-6">
             <Skeleton>
               {state === EProjectState.DEFAULT && (
@@ -71,7 +73,7 @@ export const ProjectItem = ({
               {state === EProjectState.ADDED && (
                 <Button size="sm" variant="primary" onClick={action}>
                   Added
-                  <Image alt="check-white" height="18" src="check-white.svg" width="18" />
+                  <Image alt="check-white" height="18" src="/check-white.svg" width="18" />
                 </Button>
               )}
 

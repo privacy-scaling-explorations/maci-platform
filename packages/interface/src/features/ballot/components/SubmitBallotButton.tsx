@@ -8,12 +8,16 @@ import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useProjectIdMapping } from "~/features/projects/hooks/useProjects";
 
-export const SubmitBallotButton = (): JSX.Element => {
+interface ISubmitBallotButtonProps {
+  roundId: string;
+}
+
+export const SubmitBallotButton = ({ roundId }: ISubmitBallotButtonProps): JSX.Element => {
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
   const { onVote, isLoading, initialVoiceCredits } = useMaci();
   const { ballot, publishBallot, sumBallot } = useBallot();
-  const projectIndices = useProjectIdMapping(ballot);
+  const projectIndices = useProjectIdMapping(ballot, roundId);
 
   const ableToSubmit = useMemo(
     () => sumBallot(ballot.votes) <= initialVoiceCredits,

@@ -14,14 +14,15 @@ import { useApproveApplication } from "../hooks/useApproveApplication";
 import { useApprovedApplications } from "../hooks/useApprovedApplications";
 
 interface IReviewBarProps {
+  roundId: string;
   projectId: string;
 }
 
-export const ReviewBar = ({ projectId }: IReviewBarProps): JSX.Element => {
+export const ReviewBar = ({ roundId, projectId }: IReviewBarProps): JSX.Element => {
   const isAdmin = useIsAdmin();
   const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
 
-  const rawReturn = useApprovedApplications([projectId]);
+  const rawReturn = useApprovedApplications(roundId, [projectId]);
   const [refetchedData, setRefetchedData] = useState<Attestation[]>();
 
   const approved = useMemo(
@@ -29,7 +30,7 @@ export const ReviewBar = ({ projectId }: IReviewBarProps): JSX.Element => {
     [rawReturn.data, refetchedData],
   );
 
-  const approve = useApproveApplication();
+  const approve = useApproveApplication({ roundId });
 
   const onClick = useCallback(() => {
     approve.mutate([projectId]);
@@ -37,7 +38,7 @@ export const ReviewBar = ({ projectId }: IReviewBarProps): JSX.Element => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const ret = await fetchApprovedApplications([projectId]);
+      const ret = await fetchApprovedApplications(roundId, [projectId]);
       setRefetchedData(ret);
     };
 

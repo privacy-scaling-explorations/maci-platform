@@ -263,7 +263,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     () =>
       pollData && pollData.duration !== 0
         ? new Date(Number(pollData.deployTime) * 1000 + Number(pollData.duration) * 1000)
-        : config.resultsAt,
+        : undefined,
     [pollData?.deployTime, pollData?.duration],
   );
 
