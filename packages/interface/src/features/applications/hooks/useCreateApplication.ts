@@ -1,6 +1,6 @@
 import { type UseMutationResult, useMutation } from "@tanstack/react-query";
 
-import { config, eas } from "~/config";
+import { eas } from "~/config";
 import { type TransactionError } from "~/features/voters/hooks/useApproveVoters";
 import { useAttest, useCreateAttestation } from "~/hooks/useEAS";
 import { useUploadMetadata } from "~/hooks/useMetadata";
@@ -20,6 +20,7 @@ export type TUseCreateApplicationReturn = Omit<
 export function useCreateApplication(options: {
   onSuccess: (data: Transaction<string[]>) => void;
   onError: (err: TransactionError) => void;
+  roundId: string;
 }): TUseCreateApplicationReturn {
   const attestation = useCreateAttestation();
   const attest = useAttest();
@@ -52,7 +53,7 @@ export function useCreateApplication(options: {
               metadataType: 0, // "http"
               metadataPtr,
               type: "application",
-              round: config.roundId,
+              round: options.roundId,
             },
           }),
         ),

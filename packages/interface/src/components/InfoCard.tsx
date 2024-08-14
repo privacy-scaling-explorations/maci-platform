@@ -1,8 +1,8 @@
-import { format } from "date-fns";
 import Image from "next/image";
 import { tv } from "tailwind-variants";
 
 import { createComponent } from "~/components/ui";
+import { formatPeriod } from "~/utils/time";
 import { EInfoCardState } from "~/utils/types";
 
 const InfoCardContainer = createComponent(
@@ -45,20 +45,6 @@ export const InfoCard = ({ state, title, start, end }: InfoCardProps): JSX.Eleme
       )}
     </div>
 
-    <p>{formatDateString({ start, end })}</p>
+    <p>{formatPeriod({ start, end })}</p>
   </InfoCardContainer>
 );
-
-function formatDateString({ start, end }: { start: Date; end: Date }): string {
-  const fullFormat = "d MMM yyyy";
-
-  if (start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear()) {
-    return `${start.getDate()} - ${format(end, fullFormat)}`;
-  }
-
-  if (start.getFullYear() === end.getFullYear()) {
-    return `${format(start, "d MMM")} - ${format(end, fullFormat)}`;
-  }
-
-  return `${format(start, fullFormat)} - ${format(end, fullFormat)}`;
-}

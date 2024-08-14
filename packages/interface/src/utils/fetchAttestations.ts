@@ -1,4 +1,4 @@
-import { config, eas } from "~/config";
+import { eas } from "~/config";
 
 import { createCachedFetch } from "./fetch";
 import { parseAttestation, createDataFilter } from "./fetchAttestationsUtils";
@@ -6,9 +6,8 @@ import { type AttestationWithMetadata, type AttestationsFilter, type Attestation
 
 const cachedFetch = createCachedFetch({ ttl: 1000 * 60 * 10 });
 
+/// TODO: add roundId as one of the filter
 export async function fetchAttestations(schema: string[], filter?: AttestationsFilter): Promise<Attestation[]> {
-  const startsAt = config.startsAt && Math.floor(+config.startsAt / 1000);
-
   return cachedFetch<{ attestations: AttestationWithMetadata[] }>(eas.url, {
     method: "POST",
     body: JSON.stringify({
@@ -18,7 +17,6 @@ export async function fetchAttestations(schema: string[], filter?: AttestationsF
         where: {
           schemaId: { in: schema },
           revoked: { equals: false },
-          time: { gte: startsAt },
           ...filter?.where,
         },
       },
