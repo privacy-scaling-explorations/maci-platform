@@ -5,4 +5,5 @@ deployed-contracts.json
 cache
 artifacts
 typechain-types
+coverage.json
 

@@ -44,5 +44,9 @@ jobs:
         run: |
           pnpm install
 
+      - name: Build
+        run: |
+          pnpm build
+
       - name: ${{ matrix.command }}
         run: pnpm run ${{ matrix.command }}
