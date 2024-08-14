@@ -1,11 +1,12 @@
 import { type Address } from "viem";
 
-export enum EAppState {
+export enum ERoundState {
   LOADING = "LOADING",
   APPLICATION = "APPLICATION",
   VOTING = "VOTING",
   TALLYING = "TALLYING",
   RESULTS = "RESULTS",
+  DEFAULT = "DEFAULT",
 }
 
 export enum EInfoCardState {

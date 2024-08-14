@@ -2,6 +2,7 @@ import { type TallyData, type IGetPollData } from "maci-cli/sdk";
 import { type ReactNode } from "react";
 
 import type { Ballot, Vote } from "~/features/ballot/types";
+import type { Round } from "~/features/rounds/types";
 
 export interface IVoteArgs {
   voteOptionIndex: bigint;
@@ -44,5 +45,14 @@ export interface BallotContextType {
 }
 
 export interface BallotProviderProps {
+  children: ReactNode;
+}
+
+export interface RoundContextType {
+  rounds: Round[];
+  getRound: (roundId: string) => Round | undefined;
+}
+
+export interface RoundProviderProps {
   children: ReactNode;
 }
