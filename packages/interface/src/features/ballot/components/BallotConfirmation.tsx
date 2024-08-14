@@ -9,10 +9,11 @@ import { Heading } from "~/components/ui/Heading";
 import { Notice } from "~/components/ui/Notice";
 import { config } from "~/config";
 import { useBallot } from "~/contexts/Ballot";
+import { useRound } from "~/contexts/Round";
 import { useProjectCount } from "~/features/projects/hooks/useProjects";
 import { formatNumber } from "~/utils/formatNumber";
-import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { useRoundState } from "~/utils/state";
+import { ERoundState } from "~/utils/types";
 
 import { ProjectAvatarWithName } from "./ProjectAvatarWithName";
 
@@ -25,11 +26,17 @@ const Card = createComponent(
   }),
 );
 
-export const BallotConfirmation = (): JSX.Element => {
+interface IBallotConfirmationProps {
+  roundId: string;
+}
+
+export const BallotConfirmation = ({ roundId }: IBallotConfirmationProps): JSX.Element => {
   const { ballot, sumBallot } = useBallot();
   const allocations = ballot.votes;
-  const { data: projectCount } = useProjectCount();
-  const appState = useAppState();
+  const { data: projectCount } = useProjectCount(roundId);
+  const roundState = useRoundState(roundId);
+  const { getRound } = useRound();
+  const round = getRound(roundId);
 
   const sum = useMemo(() => formatNumber(sumBallot(ballot.votes)), [ballot, sumBallot]);
 
@@ -40,14 +47,14 @@ export const BallotConfirmation = (): JSX.Element => {
       </Heading>
 
       <p className="mb-14 mt-4 text-gray-400">
-        {`Thank you for participating in ${config.eventName} ${config.roundId} round.`}
+        {`Thank you for participating in ${config.eventName} ${roundId} round.`}
       </p>
 
       <div className="mb-7 rounded-lg border border-gray-200 p-5">
         <b className="font-mono text-2xl uppercase">Summary of your ballot</b>
 
         <p className="my-8 text-gray-400">
-          <span>{`Round you voted in: ${config.roundId}`} </span>
+          <span>{`Round you voted in: ${roundId}`} </span>
 
           <br />
 
@@ -70,12 +77,14 @@ export const BallotConfirmation = (): JSX.Element => {
       </div>
 
       <Notice
-        content={config.resultsAt ? format(config.resultsAt, "d MMM yyyy hh:mm") : "The date would be announced soon."}
+        content={
+          round?.votingEndsAt ? format(round.votingEndsAt, "d MMM yyyy hh:mm") : "The date would be announced soon."
+        }
         title="Results will be available after tallying."
         variant="block"
       />
 
-      {appState === EAppState.VOTING && (
+      {roundState === ERoundState.VOTING && (
         <Card>
           <div className="flex-3 flex flex-col gap-4">
             <b className="font-mono text-2xl uppercase">Changed your mind?</b>
