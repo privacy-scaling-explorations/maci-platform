@@ -12,7 +12,7 @@ import { EChainId, ESupportedChains, getEtherscanApiKeys, getNetworkRpcUrls } fr
 
 dotenv.config();
 
-const DEFAULT_BLOCK_GAS_LIMIT = 30_000_000;
+const DEFAULT_BLOCK_GAS_LIMIT = process.env.BLOCK_GAS_LIMIT ? Number(process.env.BLOCK_GAS_LIMIT) : 30_000_000;
 const DEFAULT_GAS_MUL = 2;
 const TEST_MNEMONIC = "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat";
 const NETWORKS_RPC_URL = getNetworkRpcUrls();

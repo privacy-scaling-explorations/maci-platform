@@ -47,7 +47,7 @@
     "@types/chai": "^4.3.11",
     "@types/lowdb": "^1.0.15",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^22.1.0",
+    "@types/node": "^22.2.0",
     "@types/snarkjs": "^0.7.8",
     "@types/uuid": "^10.0.0",
     "chai": "^4.3.10",

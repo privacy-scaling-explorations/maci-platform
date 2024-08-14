@@ -6,11 +6,23 @@ pragma solidity ^0.8.20;
 interface IRecipientRegistry {
   /// @notice A struct representing a recipient
   struct Recipient {
+    // recipient id (optional)
+    bytes32 id;
     // recipient metadata url
     bytes32 metadataUrl;
     // recipient address
     address recipient;
   }
+
+  /// @notice Events
+  event RecipientAdded(uint256 indexed index, bytes32 id, bytes32 indexed metadataUrl, address indexed recipient);
+  event RecipientRemoved(uint256 indexed index, bytes32 id, address indexed recipient);
+  event RecipientChanged(uint256 indexed index, bytes32 id, bytes32 indexed metadataUrl, address indexed newAddress);
+
+  /// @notice Custom errors
+  error MaxRecipientsReached();
+  error InvalidIndex();
+  error InvalidInput();
 
   /// @notice Get a registry metadata url
   /// @return The metadata url in bytes32 format
@@ -27,7 +39,7 @@ interface IRecipientRegistry {
 
   /// @notice Change a recipient
   /// @param index The index of the recipient
-  function changeRecipient(uint256 index, Recipient calldata recipient) external view;
+  function changeRecipient(uint256 index, Recipient calldata recipient) external;
 
   /// @notice Get a recipient
   /// @param index The index of the recipient
@@ -38,11 +50,7 @@ interface IRecipientRegistry {
   /// @return The max number of recipients
   function maxRecipients() external view returns (uint256);
 
-  /// @notice Set the max number of recipients
-  /// @return The max number of recipients
-  function setMaxRecipients(uint256 maxRecipients) external returns (uint256);
-
   /// @notice Get the number of recipients
   /// @return The number of recipients
-  function getRecipientCount() external view returns (uint256);
+  function recipientCount() external view returns (uint256);
 }
