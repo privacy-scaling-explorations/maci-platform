@@ -1,4 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
+import low from "lowdb";
+import FileSync from "lowdb/adapters/FileSync";
 
 import fs from "fs";
 import path from "path";
@@ -6,6 +8,12 @@ import path from "path";
 import type { IGetPrivateKeyData, IGetPublicKeyData, IGetZkeyFilePathsData } from "./types";
 
 import { ErrorCodes } from "../common";
+
+/**
+ * Internal storage structure type.
+ * named: keys can be queried by name
+ */
+type TStorage = Record<string, `0x${string}`>;
 
 /**
  * FileService is responsible for working with local files like:
@@ -20,10 +28,45 @@ export class FileService {
   private readonly logger: Logger;
 
   /**
+   * Json file database instance
+   */
+  private db: low.LowdbSync<TStorage>;
+
+  /**
    * Initialize service
    */
   constructor() {
     this.logger = new Logger(FileService.name);
+    this.db = low(new FileSync<TStorage>(path.resolve(__dirname, "..", "..", "./sessions-keys.json")));
+  }
+
+  /**
+   * Store session key
+   *
+   * @param sessionKey - session key
+   * @param address - key address
+   */
+  storeSessionKey(sessionKey: `0x${string}`, address: string) {
+    this.db.set(address, sessionKey).write();
+  }
+
+  /**
+   * Delete session key
+   *
+   * @param address - key address
+   */
+  deleteSessionKey(address: string) {
+    this.db.unset(address).write();
+  }
+
+  /**
+   * Get session key
+   *
+   * @param address - key name
+   * @returns session key
+   */
+  getSessionKey(address: string): `0x${string}` {
+    return this.db.get(address).value() as `0x${string}`;
   }
 
   /**

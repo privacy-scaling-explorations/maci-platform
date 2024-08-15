@@ -90,6 +90,11 @@ export const config = {
   pollMode: process.env.NEXT_PUBLIC_POLL_MODE ?? "non-qv",
   roundLogo: process.env.NEXT_PUBLIC_ROUND_LOGO,
   semaphoreSubgraphUrl: process.env.NEXT_PUBLIC_SEMAPHORE_SUBGRAPH,
+  bundlerUrl: process.env.NEXT_PUBLIC_BUNDLER_URL ?? "",
+  // if not set we want it as undefined so a new smart account is deployed
+  smartAccountAddress: process.env.NEXT_PUBLIC_SMART_ACCOUNT_ADDRESS
+    ? (process.env.NEXT_PUBLIC_SMART_ACCOUNT_ADDRESS as `0x${string}`)
+    : undefined,
 };
 
 export const theme = {
