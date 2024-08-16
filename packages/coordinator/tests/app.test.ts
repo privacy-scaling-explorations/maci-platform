@@ -16,7 +16,7 @@ import {
   mergeMessages,
   mergeSignups,
 } from "maci-cli";
-import { Proof, TallyData, Poll__factory as PollFactory } from "maci-contracts";
+import { type Proof, type TallyData, Poll__factory as PollFactory } from "maci-contracts";
 import { Keypair } from "maci-domainobjs";
 import { io, Socket } from "socket.io-client";
 import request from "supertest";
@@ -30,8 +30,8 @@ import { AppModule } from "../ts/app.module";
 import { ErrorCodes, ESupportedNetworks } from "../ts/common";
 import { CryptoService } from "../ts/crypto/crypto.service";
 import { FileModule } from "../ts/file/file.module";
-import { EProofGenerationEvents, IGenerateArgs } from "../ts/proof/types";
-import { ESubgraphEvents, IDeploySubgraphArgs } from "../ts/subgraph/types";
+import { EProofGenerationEvents, type IGenerateArgs } from "../ts/proof/types";
+import { ESubgraphEvents, type IDeploySubgraphArgs } from "../ts/subgraph/types";
 
 const STATE_TREE_DEPTH = 10;
 const INT_STATE_TREE_DEPTH = 1;

@@ -7,7 +7,7 @@ import { AccountSignatureGuard } from "../auth/AccountSignatureGuard.service";
 
 import { DeploySubgraphDto } from "./dto";
 import { SubgraphService } from "./subgraph.service";
-import { ESubgraphEvents, IProgressArgs } from "./types";
+import { ESubgraphEvents, type IProgressArgs } from "./types";
 
 /**
  * SubgraphGateway is responsible for websockets integration between client and SubgraphService.
