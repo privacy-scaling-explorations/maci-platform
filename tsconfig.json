@@ -6,7 +6,8 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "allowJs": true
   },
   "exclude": ["node_modules"],
   "include": ["packages/coordinator/ts", "packages/coordinator/scripts", "./packages/interface/src"]

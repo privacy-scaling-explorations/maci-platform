@@ -1,6 +1,6 @@
 import {
   Logger,
-  CanActivate,
+  type CanActivate,
   Injectable,
   SetMetadata,
   type ExecutionContext,
