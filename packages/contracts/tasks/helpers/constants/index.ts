@@ -1,3 +1,20 @@
+import { EDeploySteps as EMaciDeploySteps } from "maci-contracts";
+
+/**
+ * Deploy steps for maci-platform related constacts
+ */
+export enum EPlatformDeployStep {
+  Registry = "full:deploy-registry",
+}
+
+/**
+ * Deploy steps for maci and maci-platform
+ */
+export const EDeploySteps = {
+  ...EMaciDeploySteps,
+  ...EPlatformDeployStep,
+};
+
 /**
  * Supported networks for deployment and task running
  */
