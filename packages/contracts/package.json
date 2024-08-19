@@ -32,22 +32,26 @@
     "types": "tsc -p tsconfig.json --noEmit",
     "docs": "hardhat docgen",
     "coverage": "BLOCK_GAS_LIMIT=1599511627775 hardhat coverage",
-    "test": "hardhat test --network hardhat"
+    "test": "hardhat test --network hardhat",
+    "deploy": "hardhat deploy-full",
+    "deploy:localhost": "pnpm run deploy"
   },
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.6",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@openzeppelin/contracts": "^5.0.2",
+    "circomlibjs": "^0.1.7",
     "ethers": "^6.13.2",
     "hardhat": "^2.22.8",
     "lowdb": "^1.0.0",
-    "maci-contracts": "0.0.0-ci.b8d42a3",
-    "maci-core": "^2.0.0",
-    "maci-domainobjs": "^2.0.0",
+    "maci-contracts": "^2.2.1",
+    "maci-core": "^2.2.0",
+    "maci-domainobjs": "^2.2.0",
     "solidity-docgen": "^0.6.0-beta.36"
   },
   "devDependencies": {
     "@types/chai": "^4.3.11",
+    "@types/circomlibjs": "^0.1.6",
     "@types/lowdb": "^1.0.15",
     "@types/mocha": "^10.0.7",
     "@types/node": "^22.2.0",
