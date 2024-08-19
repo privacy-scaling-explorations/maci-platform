@@ -1,17 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import "@nomicfoundation/hardhat-toolbox";
-import * as dotenv from "dotenv";
-import { HardhatUserConfig } from "hardhat/types";
+require("@nomicfoundation/hardhat-toolbox");
+const dotenv = require("dotenv");
 
-import * as path from "path";
+const path = require("path");
 
 dotenv.config();
 
 const parentDir = __dirname.includes("build") ? ".." : "";
 const TEST_MNEMONIC = "test test test test test test test test test test test junk";
 
-const config: HardhatUserConfig = {
-  defaultNetwork: "localhost",
+module.exports = {
+  defaultNetwork: "hardhat",
   networks: {
     localhost: {
       url: process.env.COORDINATOR_RPC_URL || "",
@@ -32,5 +31,3 @@ const config: HardhatUserConfig = {
     artifacts: path.resolve(__dirname, parentDir, "./node_modules/maci-contracts/build/artifacts"),
   },
 };
-
-export default config;

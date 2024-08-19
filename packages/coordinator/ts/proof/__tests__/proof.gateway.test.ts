@@ -1,9 +1,9 @@
 import { Test } from "@nestjs/testing";
-import { IGenerateProofsOptions } from "maci-contracts";
 import { Server } from "socket.io";
 
 import type { IGenerateArgs, IGenerateData } from "../types";
 import type { TallyData } from "maci-cli";
+import type { IGenerateProofsOptions } from "maci-contracts";
 
 import { ProofGateway } from "../proof.gateway";
 import { ProofGeneratorService } from "../proof.service";

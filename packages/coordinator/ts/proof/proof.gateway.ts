@@ -1,7 +1,7 @@
 import { Logger, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer, WsException } from "@nestjs/websockets";
-import { IGenerateProofsBatchData, type Proof, type TallyData } from "maci-contracts";
 
+import type { IGenerateProofsBatchData, Proof, TallyData } from "maci-contracts";
 import type { Server } from "socket.io";
 
 import { AccountSignatureGuard } from "../auth/AccountSignatureGuard.service";

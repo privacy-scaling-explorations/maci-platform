@@ -3,6 +3,13 @@ import dotenv from "dotenv";
 import { generateKeyPairSync } from "crypto";
 import fs from "fs";
 import path from "path";
+import url from "url";
+
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/no-shadow */
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
+/* eslint-enable no-underscore-dangle */
+/* eslint-enable @typescript-eslint/no-shadow */
 
 dotenv.config({ path: [path.resolve(__dirname, "../.env"), path.resolve(__dirname, "../.env.example")] });
 
