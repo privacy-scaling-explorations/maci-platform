@@ -44,7 +44,7 @@ module.exports = createEnv({
     NEXT_PUBLIC_WALLETCONNECT_ID: z.string().optional(),
     NEXT_PUBLIC_ALCHEMY_ID: z.string().optional(),
 
-    NEXT_PUBLIC_MACI_ADDRESS: z.string().startsWith("0x"),
+    NEXT_PUBLIC_MACI_ADDRESS: z.string().startsWith("0x").optional(),
     NEXT_PUBLIC_MACI_START_BLOCK: z.string().optional(),
     NEXT_PUBLIC_MACI_SUBGRAPH_URL: z.string().url().optional(),
 

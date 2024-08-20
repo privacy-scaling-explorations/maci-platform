@@ -258,12 +258,13 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     [setZupassProof],
   );
 
+  /// TODO: the votingEndsAt should be got from the registry contract, the new Date() fallback is just a temporarily time
   // memo to calculate the voting end date
   const votingEndsAt = useMemo(
     () =>
       pollData && pollData.duration !== 0
         ? new Date(Number(pollData.deployTime) * 1000 + Number(pollData.duration) * 1000)
-        : config.resultsAt,
+        : new Date(),
     [pollData?.deployTime, pollData?.duration],
   );
 
@@ -453,7 +454,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
           return data;
         })
         .then(async (data) => {
-          if (!data.isMerged || (votingEndsAt && isAfter(votingEndsAt, new Date()))) {
+          if (!data.isMerged || isAfter(votingEndsAt, new Date())) {
             return undefined;
           }
 

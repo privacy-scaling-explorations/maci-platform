@@ -54,7 +54,9 @@ export const RoundItem = ({ round }: IRoundItemProps): JSX.Element => {
       <div className="rounded-md border-gray-50 bg-white px-5 py-6 drop-shadow-md">
         <TimeBar end={new Date(round.votingEndsAt)} start={new Date(round.startsAt)} />
 
-        <Heading size="md">{round.roundId}</Heading>
+        <Heading className="dark:text-black" size="md">
+          {round.roundId}
+        </Heading>
 
         <p className="my-4 text-gray-400">{round.description}</p>
 

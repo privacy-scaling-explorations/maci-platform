@@ -66,6 +66,14 @@ export const ErrorMessage = createComponent("div", tv({ base: "pt-1 text-xs text
 
 export const Textarea = createComponent("textarea", tv({ base: [...inputBase, "w-full"] }));
 
+export const DateInput = forwardRef(({ ...props }: ComponentPropsWithRef<typeof Input>, ref) => (
+  <InputWrapper>
+    <Input ref={ref} {...props} type="date" />
+  </InputWrapper>
+));
+
+DateInput.displayName = "DateInput";
+
 export const SearchInput = forwardRef(({ ...props }: ComponentPropsWithRef<typeof Input>, ref) => (
   <InputWrapper>
     <InputIcon>

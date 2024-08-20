@@ -7,6 +7,8 @@ import { Layout } from "~/layouts/DefaultLayout";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
+import type { GetServerSideProps } from "next";
+
 interface INewProjectPageProps {
   roundId: string;
 }
@@ -50,3 +52,8 @@ const NewProjectPage = ({ roundId }: INewProjectPageProps): JSX.Element => {
 };
 
 export default NewProjectPage;
+
+export const getServerSideProps: GetServerSideProps = async ({ query: { roundId } }) =>
+  Promise.resolve({
+    props: { roundId },
+  });

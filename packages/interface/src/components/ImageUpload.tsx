@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { ImageIcon } from "lucide-react";
-import { type ComponentProps, useRef } from "react";
+import { type ComponentProps, useRef, useCallback } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -33,17 +33,18 @@ export const ImageUpload = ({
     },
   });
 
+  const onClick = useCallback(() => {
+    ref.current?.click();
+  }, []);
+
   return (
     <Controller
       control={control}
       name={name}
       render={({ field: { value, onChange, ...field } }) => (
         // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
-        <div
-          className={clsx("relative cursor-pointer overflow-hidden", className)}
-          onClick={() => ref.current?.click()}
-        >
-          <IconButton className="absolute bottom-1 right-1" icon={ImageIcon} />
+        <div className={clsx("relative cursor-pointer overflow-hidden", className)} onClick={onClick}>
+          <IconButton className="absolute bottom-1 right-1" icon={ImageIcon} type="button" />
 
           <div
             className={clsx("h-full rounded-xl bg-gray-200 bg-cover bg-center bg-no-repeat")}
@@ -58,7 +59,6 @@ export const ImageUpload = ({
             accept="image/png, image/jpeg"
             className="hidden"
             type="file"
-            // value={value?.[name]}
             onChange={(event) => {
               const [file] = event.target.files ?? [];
               if (file) {
