@@ -220,7 +220,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       setIsLoading(true);
 
       try {
-        const { stateIndex: index } = await signup({
+        const { stateIndex: index, voiceCredits } = await signup({
           maciPubKey,
           maciAddress: config.maciAddress!,
           sgDataArg: sgData,
@@ -230,6 +230,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         if (index) {
           setIsRegistered(true);
           setStateIndex(index);
+          setInitialVoiceCredits(voiceCredits);
         }
       } catch (e) {
         onError();
@@ -238,7 +239,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         setIsLoading(false);
       }
     },
-    [maciPubKey, signer, setIsRegistered, setStateIndex, setIsLoading, sgData],
+    [maciPubKey, signer, setIsRegistered, setStateIndex, setInitialVoiceCredits, setIsLoading, sgData],
   );
 
   // function to be used to vote on a poll
