@@ -35,6 +35,8 @@
     "clsx": "^2.1.0",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.1",
+    "effector": "^23.2.2",
+    "effector-react": "^23.2.1",
     "ethers": "^6.13.1",
     "graphql-request": "^6.1.0",
     "lowdb": "^1.0.0",
