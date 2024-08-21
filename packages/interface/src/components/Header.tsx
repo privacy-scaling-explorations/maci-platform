@@ -4,11 +4,11 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
-import { type ComponentPropsWithRef, useState, useCallback } from "react";
+import { type ComponentPropsWithRef, useState, useCallback, useMemo } from "react";
 
 import { useBallot } from "~/contexts/Ballot";
-import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { useRoundState } from "~/utils/state";
+import { ERoundState } from "~/utils/types";
 
 import { ConnectButton } from "./ConnectButton";
 import { IconButton } from "./ui/Button";
@@ -52,18 +52,22 @@ interface INavLink {
 
 interface IHeaderProps {
   navLinks: INavLink[];
+  roundId?: string;
 }
 
-const Header = ({ navLinks }: IHeaderProps) => {
+const Header = ({ navLinks, roundId = "" }: IHeaderProps) => {
   const { asPath } = useRouter();
   const [isOpen, setOpen] = useState(false);
   const { ballot } = useBallot();
-  const appState = useAppState();
+  const roundState = useRoundState(roundId);
   const { theme, setTheme } = useTheme();
 
   const handleChangeTheme = useCallback(() => {
     setTheme(theme === "light" ? "dark" : "light");
   }, [theme, setTheme]);
+
+  // the URI of round index page looks like: /rounds/:roundId, without anything else, which is the reason why the length is 3
+  const isRoundIndexPage = useMemo(() => asPath.includes("rounds") && asPath.split("/").length === 3, [asPath]);
 
   return (
     <header className="dark:border-lighterBlack dark:bg-lightBlack relative z-[100] border-b border-gray-200 bg-white dark:text-white">
@@ -85,12 +89,14 @@ const Header = ({ navLinks }: IHeaderProps) => {
 
         <div className="hidden h-full items-center gap-4 overflow-x-auto uppercase md:flex">
           {navLinks.map((link) => {
-            const pageName = `/${link.href.split("/")[1]}`;
+            const isActive =
+              asPath.includes(link.children.toLowerCase()) || (link.children === "Projects" && isRoundIndexPage);
+
             return (
-              <NavLink key={link.href} href={link.href} isActive={asPath.startsWith(pageName)}>
+              <NavLink key={link.href} href={link.href} isActive={isActive}>
                 {link.children}
 
-                {appState === EAppState.VOTING && pageName === "/ballot" && ballot.votes.length > 0 && (
+                {roundState === ERoundState.VOTING && link.href.includes("/ballot") && ballot.votes.length > 0 && (
                   <div className="ml-2 h-5 w-5 rounded-full border-2 border-blue-400 bg-blue-50 text-center text-sm leading-4 text-blue-400">
                     {ballot.votes.length}
                   </div>

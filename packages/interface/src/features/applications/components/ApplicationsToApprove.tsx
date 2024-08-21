@@ -20,10 +20,14 @@ import { ApplicationHeader } from "./ApplicationHeader";
 import { ApplicationItem } from "./ApplicationItem";
 import { ApproveButton } from "./ApproveButton";
 
-export const ApplicationsToApprove = (): JSX.Element => {
-  const applications = useApplications();
-  const approved = useApprovedApplications();
-  const approve = useApproveApplication();
+interface IApplicationsToApproveProps {
+  roundId: string;
+}
+
+export const ApplicationsToApprove = ({ roundId }: IApplicationsToApproveProps): JSX.Element => {
+  const applications = useApplications(roundId);
+  const approved = useApprovedApplications(roundId);
+  const approve = useApproveApplication({ roundId });
   const [refetchedData, setRefetchedData] = useState<Attestation[]>();
 
   const approvedById = useMemo(
@@ -39,7 +43,7 @@ export const ApplicationsToApprove = (): JSX.Element => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const ret = await fetchApprovedApplications();
+      const ret = await fetchApprovedApplications(roundId);
       setRefetchedData(ret);
     };
 

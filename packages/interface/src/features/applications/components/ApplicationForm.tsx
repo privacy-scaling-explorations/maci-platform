@@ -18,7 +18,11 @@ import { ApplicationSteps } from "./ApplicationSteps";
 import { ImpactTags } from "./ImpactTags";
 import { ReviewApplicationDetails } from "./ReviewApplicationDetails";
 
-export const ApplicationForm = (): JSX.Element => {
+interface IApplicationFormProps {
+  roundId: string;
+}
+
+export const ApplicationForm = ({ roundId }: IApplicationFormProps): JSX.Element => {
   const clearDraft = useLocalStorage("application-draft")[2];
 
   const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
@@ -60,6 +64,7 @@ export const ApplicationForm = (): JSX.Element => {
       toast.error("Application create error", {
         description: err.reason ?? err.data?.message,
       }),
+    roundId,
   });
 
   const { error: createError } = create;

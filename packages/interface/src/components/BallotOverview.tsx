@@ -2,23 +2,27 @@ import Link from "next/link";
 
 import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
-import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { useRoundState } from "~/utils/state";
+import { ERoundState } from "~/utils/types";
 
 import { AddedProjects } from "./AddedProjects";
 import { VotingUsage } from "./VotingUsage";
 
-export const BallotOverview = (): JSX.Element => {
+interface IBallotOverviewProps {
+  roundId: string;
+}
+
+export const BallotOverview = ({ roundId }: IBallotOverviewProps): JSX.Element => {
   const { ballot } = useBallot();
 
-  const appState = useAppState();
+  const roundState = useRoundState(roundId);
 
   return (
     <Link
       href={
-        ballot.published && (appState === EAppState.TALLYING || appState === EAppState.RESULTS)
-          ? "/ballot/confirmation"
-          : "/ballot"
+        ballot.published && (roundState === ERoundState.TALLYING || roundState === ERoundState.RESULTS)
+          ? `/rounds/${roundId}/ballot/confirmation`
+          : `/rounds/${roundId}/ballot`
       }
     >
       <div className="dark:bg-lightBlack my-8 flex-col items-center gap-2 rounded-lg bg-white p-5 uppercase shadow-lg dark:text-white">
@@ -26,7 +30,7 @@ export const BallotOverview = (): JSX.Element => {
           My Ballot
         </Heading>
 
-        <AddedProjects />
+        <AddedProjects roundId={roundId} />
 
         <VotingUsage />
       </div>

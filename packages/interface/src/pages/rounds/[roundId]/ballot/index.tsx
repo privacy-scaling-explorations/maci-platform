@@ -15,10 +15,16 @@ import { AllocationFormWrapper } from "~/features/ballot/components/AllocationFo
 import { BallotSchema } from "~/features/ballot/types";
 import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
 import { formatNumber } from "~/utils/formatNumber";
-import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { useRoundState } from "~/utils/state";
+import { ERoundState } from "~/utils/types";
 
-const ClearBallot = (): JSX.Element | null => {
+import type { GetServerSideProps } from "next";
+
+interface IClearBallotProps {
+  roundId: string;
+}
+
+const ClearBallot = ({ roundId }: IClearBallotProps): JSX.Element | null => {
   const form = useFormContext();
   const [isOpen, setOpen] = useState(false);
   const { deleteBallot } = useBallot();
@@ -27,7 +33,7 @@ const ClearBallot = (): JSX.Element | null => {
     setOpen(true);
   }, [setOpen]);
 
-  if ([EAppState.TALLYING, EAppState.RESULTS].includes(useAppState())) {
+  if ([ERoundState.TALLYING, ERoundState.RESULTS].includes(useRoundState(roundId))) {
     return null;
   }
 
@@ -81,8 +87,12 @@ const EmptyBallot = (): JSX.Element => (
   </div>
 );
 
-const BallotAllocationForm = (): JSX.Element => {
-  const appState = useAppState();
+interface IBallotAllocationFormProps {
+  roundId: string;
+}
+
+const BallotAllocationForm = ({ roundId }: IBallotAllocationFormProps): JSX.Element => {
+  const roundState = useRoundState(roundId);
   const { ballot, sumBallot } = useBallot();
   const { initialVoiceCredits } = useMaci();
 
@@ -102,12 +112,12 @@ const BallotAllocationForm = (): JSX.Element => {
         </Link>
       )}
 
-      <div className="mb-4 justify-end sm:flex">{ballot.votes.length ? <ClearBallot /> : null}</div>
+      <div className="mb-4 justify-end sm:flex">{ballot.votes.length ? <ClearBallot roundId={roundId} /> : null}</div>
 
       <div className="border-t border-gray-300">
         <div className="p-8">
           {ballot.votes.length ? (
-            <AllocationFormWrapper projectIsLink disabled={appState === EAppState.RESULTS} />
+            <AllocationFormWrapper projectIsLink disabled={roundState === ERoundState.RESULTS} />
           ) : (
             <EmptyBallot />
           )}
@@ -123,11 +133,15 @@ const BallotAllocationForm = (): JSX.Element => {
   );
 };
 
-const BallotPage = (): JSX.Element => {
+interface IBallotPageProps {
+  roundId: string;
+}
+
+const BallotPage = ({ roundId }: IBallotPageProps): JSX.Element => {
   const { address, isConnecting } = useAccount();
   const { ballot, sumBallot } = useBallot();
   const router = useRouter();
-  const appState = useAppState();
+  const roundState = useRoundState(roundId);
 
   useEffect(() => {
     if (!address && !isConnecting) {
@@ -140,14 +154,14 @@ const BallotPage = (): JSX.Element => {
   }, [sumBallot]);
 
   return (
-    <LayoutWithSidebar requireAuth requireRegistration showBallot showSubmitButton sidebar="right">
-      {appState === EAppState.VOTING && (
+    <LayoutWithSidebar requireAuth requireRegistration showBallot showSubmitButton roundId={roundId} sidebar="right">
+      {roundState === ERoundState.VOTING && (
         <Form defaultValues={ballot} schema={BallotSchema} values={ballot} onSubmit={handleSubmit}>
-          <BallotAllocationForm />
+          <BallotAllocationForm roundId={roundId} />
         </Form>
       )}
 
-      {appState !== EAppState.VOTING && (
+      {roundState !== ERoundState.VOTING && (
         <div className="dark:text-white">You can only vote during the voting period.</div>
       )}
     </LayoutWithSidebar>
@@ -155,3 +169,8 @@ const BallotPage = (): JSX.Element => {
 };
 
 export default BallotPage;
+
+export const getServerSideProps: GetServerSideProps = async ({ query: { roundId } }) =>
+  Promise.resolve({
+    props: { roundId },
+  });
