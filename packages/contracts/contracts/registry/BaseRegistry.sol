@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+
+import { ICommon } from "../interfaces/ICommon.sol";
 import { IRecipientRegistry } from "../interfaces/IRecipientRegistry.sol";
 
 /// @title BaseRegistry
 /// @notice Base contract for a registry
-abstract contract BaseRegistry is IRecipientRegistry {
+abstract contract BaseRegistry is Ownable, IRecipientRegistry, ICommon {
   /// @notice The storage of recipients
   mapping(uint256 => Recipient) internal recipients;
 
@@ -19,11 +22,12 @@ abstract contract BaseRegistry is IRecipientRegistry {
   bytes32 public immutable metadataUrl;
 
   /// @notice Create a new instance of the registry contract
-  /// @param _maxRecipients The maximum number of recipients that can be registered
-  /// @param _metadataUrl The metadata url
-  constructor(uint256 _maxRecipients, bytes32 _metadataUrl) payable {
-    maxRecipients = _maxRecipients;
-    metadataUrl = _metadataUrl;
+  /// @param max The maximum number of recipients that can be registered
+  /// @param url The metadata url
+  /// @param ownerAddress The owner address
+  constructor(uint256 max, bytes32 url, address ownerAddress) payable Ownable(ownerAddress) {
+    maxRecipients = max;
+    metadataUrl = url;
   }
 
   /// @inheritdoc IRecipientRegistry
@@ -32,7 +36,7 @@ abstract contract BaseRegistry is IRecipientRegistry {
   }
 
   /// @inheritdoc IRecipientRegistry
-  function addRecipient(Recipient calldata recipient) public virtual override returns (uint256) {
+  function addRecipient(Recipient calldata recipient) public virtual override onlyOwner returns (uint256) {
     uint256 index = recipientCount;
 
     if (index >= maxRecipients) {
@@ -52,7 +56,7 @@ abstract contract BaseRegistry is IRecipientRegistry {
   }
 
   /// @inheritdoc IRecipientRegistry
-  function removeRecipient(uint256 index) public virtual override {
+  function removeRecipient(uint256 index) public virtual override onlyOwner {
     if (index >= recipientCount) {
       revert InvalidIndex();
     }
@@ -66,7 +70,7 @@ abstract contract BaseRegistry is IRecipientRegistry {
   }
 
   /// @inheritdoc IRecipientRegistry
-  function changeRecipient(uint256 index, Recipient calldata recipient) public virtual override {
+  function changeRecipient(uint256 index, Recipient calldata recipient) public virtual override onlyOwner {
     if (index >= recipientCount) {
       revert InvalidIndex();
     }

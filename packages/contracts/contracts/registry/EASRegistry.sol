@@ -1,25 +1,31 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
-
 import { IEAS } from "../interfaces/IEAS.sol";
 import { BaseRegistry } from "./BaseRegistry.sol";
 
-contract EASRegistry is Ownable, BaseRegistry, IEAS {
+/// @title EASRegistry
+/// @notice EAS registry contract
+contract EASRegistry is BaseRegistry, IEAS {
   /// @notice The EAS contract
   IEAS public immutable eas;
 
   /// @notice Create a new instance of the registry contract
-  /// @param _maxRecipients The maximum number of projects that can be registered
-  /// @param _metadataUrl The metadata url
-  /// @param _eas The EAS address
+  /// @param max The maximum number of projects that can be registered
+  /// @param url The metadata url
+  /// @param easAddress The EAS address
+  /// @param ownerAddress The owner address
   constructor(
-    uint256 _maxRecipients,
-    bytes32 _metadataUrl,
-    address _eas
-  ) payable Ownable(msg.sender) BaseRegistry(_maxRecipients, _metadataUrl) {
-    eas = IEAS(_eas);
+    uint256 max,
+    bytes32 url,
+    address easAddress,
+    address ownerAddress
+  ) payable BaseRegistry(max, url, ownerAddress) {
+    if (easAddress == address(0)) {
+      revert InvalidAddress();
+    }
+
+    eas = IEAS(easAddress);
   }
 
   /// @notice Add multiple recipients to the registry
@@ -34,23 +40,6 @@ contract EASRegistry is Ownable, BaseRegistry, IEAS {
         i++;
       }
     }
-  }
-
-  /// @inheritdoc BaseRegistry
-  function addRecipient(Recipient calldata recipient) public override onlyOwner returns (uint256) {
-    return super.addRecipient(recipient);
-  }
-
-  /// @notice Edit the address of a project
-  /// @param index The index of the project to edit
-  /// @param recipient The new recipient
-  function changeRecipient(uint256 index, Recipient calldata recipient) public override onlyOwner {
-    super.changeRecipient(index, recipient);
-  }
-
-  /// @inheritdoc BaseRegistry
-  function removeRecipient(uint256 index) public override onlyOwner {
-    super.removeRecipient(index);
   }
 
   /// @inheritdoc IEAS
