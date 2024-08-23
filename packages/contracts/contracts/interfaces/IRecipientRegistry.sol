@@ -21,8 +21,6 @@ interface IRecipientRegistry {
 
   /// @notice Custom errors
   error MaxRecipientsReached();
-  error InvalidIndex();
-  error InvalidInput();
 
   /// @notice Get a registry metadata url
   /// @return The metadata url in bytes32 format

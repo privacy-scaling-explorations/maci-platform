@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { encodeBytes32String, Signer, ZeroAddress } from "ethers";
 import { getSigners, deployContract } from "maci-contracts";
 
-import { EASRegistry, MockEAS } from "../typechain-types";
+import { EASRegistry, MockEAS, ICommon__factory as ICommonFactory } from "../typechain-types";
 
 describe("EASRegistry", () => {
   let registry: EASRegistry;
@@ -26,7 +26,19 @@ describe("EASRegistry", () => {
 
     mockEAS = await deployContract("MockEAS", owner, true, ownerAddress, schema, userAddress);
 
-    registry = await deployContract("EASRegistry", owner, true, maxRecipients, metadataUrl, await mockEAS.getAddress());
+    await expect(
+      deployContract("EASRegistry", owner, true, maxRecipients, metadataUrl, ZeroAddress, ownerAddress),
+    ).to.be.revertedWithCustomError({ interface: ICommonFactory.createInterface() }, "InvalidAddress");
+
+    registry = await deployContract(
+      "EASRegistry",
+      owner,
+      true,
+      maxRecipients,
+      metadataUrl,
+      await mockEAS.getAddress(),
+      ownerAddress,
+    );
   });
 
   it("should allow the owner to add a recipient", async () => {
