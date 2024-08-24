@@ -10,4 +10,7 @@ export enum ErrorCodes {
   ENCRYPTION = "5",
   FILE_NOT_FOUND = "6",
   SUBGRAPH_DEPLOY = "7",
+  SESSION_KEY_NOT_FOUND = "8",
+  PIMLICO_API_KEY_NOT_SET = "9",
+  INVALID_APPROVAL = "10",
 }

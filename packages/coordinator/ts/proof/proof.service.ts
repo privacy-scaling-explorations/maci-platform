@@ -44,7 +44,6 @@ export class ProofGeneratorService {
   ) {
     this.deployment = Deployment.getInstance(hre);
     this.deployment.setHre(hre);
-    this.fileService = fileService;
     this.logger = new Logger(ProofGeneratorService.name);
   }
 

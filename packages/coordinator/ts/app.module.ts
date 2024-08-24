@@ -4,6 +4,7 @@ import { ThrottlerModule } from "@nestjs/throttler";
 import { CryptoModule } from "./crypto/crypto.module";
 import { FileModule } from "./file/file.module";
 import { ProofModule } from "./proof/proof.module";
+import { SessionKeysModule } from "./sessionKeys/sessionKeys.module";
 import { SubgraphModule } from "./subgraph/subgraph.module";
 
 @Module({
@@ -18,6 +19,7 @@ import { SubgraphModule } from "./subgraph/subgraph.module";
     CryptoModule,
     SubgraphModule,
     ProofModule,
+    SessionKeysModule,
   ],
 })
 export class AppModule {}

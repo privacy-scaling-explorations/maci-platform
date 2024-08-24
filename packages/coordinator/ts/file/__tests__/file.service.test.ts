@@ -12,6 +12,34 @@ describe("FileService", () => {
     jest.clearAllMocks();
   });
 
+  test("should save session key properly", () => {
+    const service = new FileService();
+
+    const sessionKeyAddress = "0x123";
+    const sessionKey = "0x456";
+
+    service.storeSessionKey(sessionKey, sessionKeyAddress);
+
+    const storedSessionKey = service.getSessionKey(sessionKeyAddress);
+
+    expect(storedSessionKey).toEqual(sessionKey);
+  });
+
+  test("should delete session key properly", () => {
+    const service = new FileService();
+
+    const sessionKeyAddress = "0x123";
+    const sessionKey = "0x456";
+
+    service.storeSessionKey(sessionKey, sessionKeyAddress);
+
+    service.deleteSessionKey(sessionKeyAddress);
+
+    const deletedSessionKey = service.getSessionKey(sessionKeyAddress);
+
+    expect(deletedSessionKey).toBeUndefined();
+  });
+
   test("should return public key properly", async () => {
     const service = new FileService();
 
