@@ -81,6 +81,7 @@ describe("SessionKeysService", () => {
         approval,
         ESupportedNetworks.OPTIMISM_SEPOLIA,
       );
+
       expect(mockGenerateClientFromSessionKey).toHaveBeenCalledWith(
         sessionKeyAddress.sessionKeyAddress,
         approval,

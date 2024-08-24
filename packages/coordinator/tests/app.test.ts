@@ -34,8 +34,9 @@ import { ESubgraphEvents, type IDeploySubgraphArgs } from "../ts/subgraph/types"
 
 const STATE_TREE_DEPTH = 10;
 const INT_STATE_TREE_DEPTH = 1;
+const MSG_TREE_DEPTH = 2;
 const VOTE_OPTION_TREE_DEPTH = 2;
-const MSG_BATCH_SIZE = 20;
+const MSG_BATCH_DEPTH = 1;
 
 describe("e2e", () => {
   const coordinatorKeypair = new Keypair();
@@ -62,20 +63,19 @@ describe("e2e", () => {
     const vkRegistry = await deployVkRegistryContract({ signer });
     await setVerifyingKeys({
       quiet: true,
-      vkRegistry,
       stateTreeDepth: STATE_TREE_DEPTH,
       intStateTreeDepth: INT_STATE_TREE_DEPTH,
+      messageTreeDepth: MSG_TREE_DEPTH,
       voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,
-      messageBatchSize: MSG_BATCH_SIZE,
+      messageBatchDepth: MSG_BATCH_DEPTH,
       processMessagesZkeyPathNonQv: path.resolve(
         __dirname,
-        "../zkeys/ProcessMessagesNonQv_10-20-2_test/ProcessMessagesNonQv_10-20-2_test.0.zkey",
+        "../zkeys/ProcessMessagesNonQv_10-2-1-2_test/ProcessMessagesNonQv_10-2-1-2_test.0.zkey",
       ),
       tallyVotesZkeyPathNonQv: path.resolve(
         __dirname,
         "../zkeys/TallyVotesNonQv_10-1-2_test/TallyVotesNonQv_10-1-2_test.0.zkey",
       ),
-      pollJoiningZkeyPath: path.resolve(__dirname, "../zkeys/PollJoining_10_test/PollJoining_10_test.0.zkey"),
       useQuadraticVoting: false,
       signer,
     });
@@ -85,7 +85,8 @@ describe("e2e", () => {
     pollContracts = await deployPoll({
       pollDuration: 30,
       intStateTreeDepth: INT_STATE_TREE_DEPTH,
-      messageBatchSize: MSG_BATCH_SIZE,
+      messageTreeSubDepth: MSG_BATCH_DEPTH,
+      messageTreeDepth: MSG_TREE_DEPTH,
       voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,
       coordinatorPubkey: coordinatorKeypair.pubKey.serialize(),
       useQuadraticVoting: false,

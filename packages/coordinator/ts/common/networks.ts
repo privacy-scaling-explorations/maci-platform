@@ -19,6 +19,8 @@ import {
   sepolia,
 } from "viem/chains";
 
+import { ErrorCodes } from "./errors";
+
 export enum ESupportedNetworks {
   ETHEREUM = "mainnet",
   OPTIMISM = "optimism",
@@ -83,6 +85,6 @@ export const viemChain = (network: ESupportedNetworks): Chain => {
     case ESupportedNetworks.LOCALHOST:
       return localhost;
     default:
-      throw new Error(`Unsupported network: ${network}`);
+      throw new Error(ErrorCodes.UNSUPPORTED_NETWORK.toString());
   }
 };

@@ -17,5 +17,10 @@ test-results/
 packages/subgraph/templates/subgraph.template.yaml
 packages/subgraph/subgraph.yaml
 packages/subgraph/generated/
+<<<<<<< HEAD
 packages/interface/metamask/
 packages/subgraph/abi/
+=======
+packages/contracts/deploy-config.json 
+packages/contracts/deployed-contracts.json 
+>>>>>>> 0c7dc30 (feat: add deployer service)

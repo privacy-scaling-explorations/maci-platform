@@ -10,6 +10,7 @@ import {
   type IGenerateProofsOptions,
   Poll__factory as PollFactory,
   MACI__factory as MACIFactory,
+  AccQueue,
 } from "maci-contracts";
 import { Keypair, PrivKey, PubKey } from "maci-domainobjs";
 import { Hex } from "viem";
@@ -88,14 +89,28 @@ export class ProofGeneratorService {
         name: EContracts.Poll,
         address: pollContracts.poll,
       });
-      const [coordinatorPublicKey, isStateAqMerged] = await Promise.all([
-        pollContract.coordinatorPubKey(),
-        pollContract.stateMerged(),
-      ]);
+      const [{ messageAq: messageAqAddress }, coordinatorPublicKey, isStateAqMerged, messageTreeDepth] =
+        await Promise.all([
+          pollContract.extContracts(),
+          pollContract.coordinatorPubKey(),
+          pollContract.stateMerged(),
+          pollContract.treeDepths().then((depths) => Number(depths[2])),
+        ]);
+      const messageAq = await this.deployment.getContract<AccQueue>({
+        name: EContracts.AccQueue,
+        address: messageAqAddress,
+      });
 
       if (!isStateAqMerged) {
         this.logger.error(`Error: ${ErrorCodes.NOT_MERGED_STATE_TREE}, state tree is not merged`);
         throw new Error(ErrorCodes.NOT_MERGED_STATE_TREE.toString());
+      }
+
+      const mainRoot = await messageAq.getMainRoot(messageTreeDepth.toString());
+
+      if (mainRoot.toString() === "0") {
+        this.logger.error(`Error: ${ErrorCodes.NOT_MERGED_MESSAGE_TREE.toString()}, message tree is not merged`);
+        throw new Error(ErrorCodes.NOT_MERGED_MESSAGE_TREE.toString());
       }
 
       const { privateKey } = await this.fileService.getPrivateKey();
@@ -118,6 +133,7 @@ export class ProofGeneratorService {
       const maciState = await ProofGenerator.prepareState({
         maciContract,
         pollContract,
+        messageAq,
         maciPrivateKey,
         coordinatorKeypair,
         pollId: poll,
@@ -205,7 +221,7 @@ export class ProofGeneratorService {
         account: kernelClient.account,
         address: pollAddress,
         abi: PollFactory.abi,
-        functionName: "mergeState",
+        functionName: "mergeMaciState",
       });
 
       const txHash = await kernelClient.writeContract(request);
