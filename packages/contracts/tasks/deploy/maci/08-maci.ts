@@ -1,7 +1,6 @@
 import {
   ContractStorage,
   Deployment,
-  EContracts,
   genEmptyBallotRoots,
   type IDeployParams,
   type GitcoinPassportGatekeeper,
@@ -12,7 +11,7 @@ import {
 } from "maci-contracts";
 
 import { MACI } from "../../../typechain-types";
-import { EDeploySteps } from "../../helpers/constants";
+import { EDeploySteps, EContracts } from "../../helpers/constants";
 
 const deployment = Deployment.getInstance();
 const storage = ContractStorage.getInstance();
@@ -53,7 +52,7 @@ deployment.deployTask(EDeploySteps.Maci, "Deploy MACI contract").then((task) =>
       hre.network.name,
     );
     const gatekeeper =
-      deployment.getDeployConfigField<EContracts | null>(EContracts.MACI, "gatekeeper") ||
+      deployment.getDeployConfigField<keyof typeof EContracts | null>(EContracts.MACI, "gatekeeper") ||
       EContracts.FreeForAllGatekeeper;
     const gatekeeperContractAddress = storage.mustGetAddress(gatekeeper, hre.network.name);
     const pollFactoryContractAddress = storage.mustGetAddress(EContracts.PollFactory, hre.network.name);

@@ -1,10 +1,10 @@
-import { EDeploySteps as EMaciDeploySteps } from "maci-contracts";
+import { EDeploySteps as EMaciDeploySteps, EContracts as EMaciContracts } from "maci-contracts";
 
 /**
  * Deploy steps for maci-platform related constacts
  */
 export enum EPlatformDeployStep {
-  Registry = "full:deploy-registry",
+  RegistryManager = "full:deploy-registry-manager",
 }
 
 /**
@@ -13,6 +13,22 @@ export enum EPlatformDeployStep {
 export const EDeploySteps = {
   ...EMaciDeploySteps,
   ...EPlatformDeployStep,
+};
+
+/**
+ * Contracts for maci-platform related constacts
+ */
+export enum EPlatformContracts {
+  RegistryManager = "RegistryManager",
+  EASRegistryManager = "EASRegistryManager",
+}
+
+/**
+ * Contracts for maci and maci-platform
+ */
+export const EContracts = {
+  ...EMaciContracts,
+  ...EPlatformContracts,
 };
 
 /**
