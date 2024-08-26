@@ -32,7 +32,11 @@
     },
     "MACI": {
       "stateTreeDepth": 10,
-      "gatekeeper": "EASGatekeeper"
+      "gatekeeper": "EASGatekeeper",
+      "registryManager": "EASRegistryManager"
+    },
+    "EASRegistryManager": {
+      "easAddress": "0xC2679fBD37d54388Ce493F1DB75320D236e1815e"
     },
     "VkRegistry": {
       "stateTreeDepth": 10,
@@ -93,7 +97,11 @@
     },
     "MACI": {
       "stateTreeDepth": 10,
-      "gatekeeper": "ZupassGatekeeper"
+      "gatekeeper": "ZupassGatekeeper",
+      "registryManager": "EASRegistryManager"
+    },
+    "EASRegistryManager": {
+      "easAddress": "0xaEF4103A04090071165F78D45D83A0C0782c2B2a"
     },
     "VkRegistry": {
       "stateTreeDepth": 10,
@@ -155,7 +163,11 @@
     },
     "MACI": {
       "stateTreeDepth": 6,
-      "gatekeeper": "EASGatekeeper"
+      "gatekeeper": "EASGatekeeper",
+      "registryManager": "EASRegistryManager"
+    },
+    "EASRegistryManager": {
+      "easAddress": "0x4200000000000000000000000000000000000021"
     },
     "VkRegistry": {
       "stateTreeDepth": 6,
@@ -217,7 +229,11 @@
     },
     "MACI": {
       "stateTreeDepth": 10,
-      "gatekeeper": "FreeForAllGatekeeper"
+      "gatekeeper": "FreeForAllGatekeeper",
+      "registryManager": "EASRegistryManager"
+    },
+    "EASRegistryManager": {
+      "easAddress": "0xC2679fBD37d54388Ce493F1DB75320D236e1815e"
     },
     "VkRegistry": {
       "stateTreeDepth": 10,
@@ -279,7 +295,11 @@
     },
     "MACI": {
       "stateTreeDepth": 10,
-      "gatekeeper": "FreeForAllGatekeeper"
+      "gatekeeper": "FreeForAllGatekeeper",
+      "registryManager": "EASRegistryManager"
+    },
+    "EASRegistryManager": {
+      "easAddress": "0xC2679fBD37d54388Ce493F1DB75320D236e1815e"
     },
     "VkRegistry": {
       "stateTreeDepth": 10,
@@ -341,7 +361,11 @@
     },
     "MACI": {
       "stateTreeDepth": 10,
-      "gatekeeper": "FreeForAllGatekeeper"
+      "gatekeeper": "FreeForAllGatekeeper",
+      "registryManager": "EASRegistryManager"
+    },
+    "EASRegistryManager": {
+      "easAddress": "0x4200000000000000000000000000000000000021"
     },
     "VkRegistry": {
       "stateTreeDepth": 10,
@@ -408,7 +432,11 @@
     },
     "MACI": {
       "stateTreeDepth": 14,
-      "gatekeeper": "FreeForAllGatekeeper"
+      "gatekeeper": "FreeForAllGatekeeper",
+      "registryManager": "EASRegistryManager"
+    },
+    "EASRegistryManager": {
+      "easAddress": "0x4200000000000000000000000000000000000021"
     },
     "VkRegistry": {
       "stateTreeDepth": 10,

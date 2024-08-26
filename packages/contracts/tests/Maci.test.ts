@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { Signer } from "ethers";
-import { Verifier, VkRegistry, EMode, getSigners } from "maci-contracts";
+import { Signer, ZeroAddress } from "ethers";
+import { Verifier, VkRegistry, EMode, getSigners, deployContract } from "maci-contracts";
 import { MaciState } from "maci-core";
 import { Keypair, Message, PubKey } from "maci-domainobjs";
 
@@ -95,6 +95,31 @@ describe("Poll", () => {
         "OwnableUnauthorizedAccount",
       );
       await expect(pollContract.init()).to.be.revertedWithCustomError(pollContract, "PollAlreadyInit");
+    });
+
+    it("should not be possible to set zero address as registry manager", async () => {
+      await expect(maciContract.setRegistryManager(ZeroAddress)).to.be.revertedWithCustomError(
+        maciContract,
+        "InvalidAddress",
+      );
+    });
+
+    it("should not be possible to set registry manager by non-owner", async () => {
+      const registryManager = await deployContract("RegistryManager", owner, true);
+
+      await expect(
+        maciContract.connect(user).setRegistryManager(await registryManager.getAddress()),
+      ).to.be.revertedWithCustomError(maciContract, "OwnableUnauthorizedAccount");
+    });
+
+    it("should set registry manager properly", async () => {
+      const registryManager = await deployContract("RegistryManager", owner, true);
+      const registryManagerContractAddress = await registryManager.getAddress();
+
+      const tx = await maciContract.setRegistryManager(registryManagerContractAddress);
+      await tx.wait();
+
+      expect(await maciContract.registryManager()).to.equal(registryManagerContractAddress);
     });
   });
 });

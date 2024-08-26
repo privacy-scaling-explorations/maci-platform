@@ -1,6 +1,6 @@
-import { ContractStorage, Deployment, EContracts, type IDeployParams } from "maci-contracts";
+import { ContractStorage, Deployment, type IDeployParams } from "maci-contracts";
 
-import { EDeploySteps } from "../../helpers/constants";
+import { EDeploySteps, EContracts } from "../../helpers/constants";
 
 const deployment = Deployment.getInstance();
 const storage = ContractStorage.getInstance();

@@ -9,11 +9,16 @@ import { ITallyFactory } from "maci-contracts/contracts/interfaces/ITallyFactory
 import { InitialVoiceCreditProxy } from "maci-contracts/contracts/initialVoiceCreditProxy/InitialVoiceCreditProxy.sol";
 import { SignUpGatekeeper } from "maci-contracts/contracts/gatekeepers/SignUpGatekeeper.sol";
 
+import { ICommon } from "../interfaces/ICommon.sol";
 import { IPoll } from "../interfaces/IPoll.sol";
+import { IRegistryManager } from "../interfaces/IRegistryManager.sol";
 
 /// @title MACI - Minimum Anti-Collusion Infrastructure
 /// @notice A contract which allows users to sign up, and deploy new polls
-contract MACI is Ownable, BaseMACI {
+contract MACI is Ownable, BaseMACI, ICommon {
+  /// @notice Registry manager
+  IRegistryManager public registryManager;
+
   /// @notice Create a new instance of the MACI contract.
   /// @param pollFactory The PollFactory contract
   /// @param messageProcessorFactory The MessageProcessorFactory contract
@@ -52,5 +57,14 @@ contract MACI is Ownable, BaseMACI {
 
     poll.init();
     poll.transferOwnership(msg.sender);
+  }
+
+  /// @notice Set RegistryManager for MACI
+  function setRegistryManager(address registryManagerAddress) public onlyOwner {
+    if (registryManagerAddress == address(0)) {
+      revert InvalidAddress();
+    }
+
+    registryManager = IRegistryManager(registryManagerAddress);
   }
 }
