@@ -27,7 +27,7 @@ export const SubmitBallotButton = (): JSX.Element => {
   const handleSubmitBallot = useCallback(async () => {
     const votes = ballot.votes.map(({ amount, projectId }) => {
       const index = projectIndices[projectId];
-      if (!index) {
+      if (index === undefined || index === -1) {
         throw new Error("There are some problems due to project index mapping.");
       }
 
