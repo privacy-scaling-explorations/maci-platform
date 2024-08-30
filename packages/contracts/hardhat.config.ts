@@ -5,6 +5,7 @@ import "hardhat-artifactor";
 import "hardhat-contract-sizer";
 import "maci-contracts/tasks/deploy";
 import "maci-contracts/tasks/runner/deployFull";
+import "maci-contracts/tasks/runner/deployPoll";
 import "maci-contracts/tasks/runner/verifyFull";
 import "solidity-docgen";
 
@@ -13,6 +14,7 @@ import type { HardhatUserConfig } from "hardhat/config";
 // Don't forget to import new tasks here
 import "./tasks/deploy";
 import { EChainId, ESupportedChains, getEtherscanApiKeys, getNetworkRpcUrls } from "./tasks/helpers/constants";
+import "./tasks/runner/initPoll";
 
 dotenv.config();
 

@@ -10,4 +10,8 @@ import { IOwnable } from "./IOwnable.sol";
 interface IPoll is IPollBase, IOwnable {
   /// @notice The initialization function.
   function init() external;
+
+  /// @notice Set the poll registry.
+  /// @param registryAddress The registry address
+  function setRegistry(address registryAddress) external;
 }
