@@ -57,7 +57,7 @@ export const SubmitBallotButton = (): JSX.Element => {
         button="primary"
         buttonAction={handleSubmitBallot}
         buttonName="submit"
-        description="This is not a final submission. Once you submit your ballot, you can change it during the voting period."
+        description="This is not the final submission. Once you submit your ballot, you can change it during the voting period."
         isLoading={isLoading}
         isOpen={ableToSubmit && isOpen}
         size="sm"

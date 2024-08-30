@@ -20,7 +20,9 @@ export const VotingInfo = (): JSX.Element => {
 
       {isLoading && <p>Loading...</p>}
 
-      {!isLoading && (
+      {!isLoading && timeLeft[3] < 0 && <p>Voting has ended</p>}
+
+      {!isLoading && timeLeft[3] > 0 && (
         <div className="flex gap-2">
           <TimeSlot num={timeLeft[0]} unit="Days" />
 

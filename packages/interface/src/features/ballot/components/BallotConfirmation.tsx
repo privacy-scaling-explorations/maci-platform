@@ -78,7 +78,7 @@ export const BallotConfirmation = (): JSX.Element => {
       {appState === EAppState.VOTING && (
         <Card>
           <div className="flex-3 flex flex-col gap-4">
-            <b className="font-mono text-2xl uppercase">Wanna change your mind?</b>
+            <b className="font-mono text-2xl uppercase">Changed your mind?</b>
 
             <p className="text-gray-400">Your can edit your ballot and resubmit it anytime during the voting period.</p>
           </div>
@@ -96,7 +96,7 @@ export const BallotConfirmation = (): JSX.Element => {
           <b className="font-mono text-2xl uppercase">{`Help us improve our next round of ${config.eventName}`}</b>
 
           <p className="text-gray-400">
-            {`Your anonymized feedback will be influential to help us iterate on
+            {`Your feedback will be influential to help us iterate on
             ${config.eventName} process.`}
           </p>
         </div>
