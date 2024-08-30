@@ -29,6 +29,7 @@ export const AllocationInput = ({
         {...props}
         render={({ field }) => (
           <NumericFormat
+            allowNegative={false}
             aria-label="allocation-input"
             customInput={Input}
             error={props.error}
@@ -38,7 +39,7 @@ export const AllocationInput = ({
             defaultValue={props.defaultValue as string}
             disabled={props.disabled}
             isAllowed={({ floatValue }) =>
-              votingMaxProject !== undefined ? (floatValue ?? 0) <= votingMaxProject : true
+              votingMaxProject !== undefined ? (floatValue ?? 0) <= votingMaxProject : (floatValue ?? 0) >= 0
             }
             thousandSeparator=","
             onBlur={onBlur}
