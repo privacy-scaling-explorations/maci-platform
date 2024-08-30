@@ -1,4 +1,4 @@
-import { type ReactNode, type PropsWithChildren, useMemo } from "react";
+import { useMemo } from "react";
 import { useAccount } from "wagmi";
 
 import { BallotOverview } from "~/components/BallotOverview";
@@ -9,70 +9,82 @@ import { config } from "~/config";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { SubmitBallotButton } from "~/features/ballot/components/SubmitBallotButton";
-import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { useRoundState } from "~/utils/state";
+import { ERoundState } from "~/utils/types";
 
-import { BaseLayout, type LayoutProps } from "./BaseLayout";
+import type { ILayoutProps } from "./types";
 
-interface ILayoutProps extends PropsWithChildren<LayoutProps> {
-  sidebar?: "left" | "right";
-  sidebarComponent?: ReactNode;
-  showInfo?: boolean;
-  showSubmitButton?: boolean;
-}
+import { BaseLayout } from "./BaseLayout";
 
 export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element => {
   const { address } = useAccount();
-  const appState = useAppState();
+  const roundState = useRoundState(props.roundId ?? "");
   const { ballot } = useBallot();
   const { isRegistered } = useMaci();
 
   const navLinks = useMemo(() => {
-    const links = [
-      {
-        href: "/projects",
-        children: "Projects",
-      },
-    ];
+    const links = [];
 
-    if (appState === EAppState.VOTING && isRegistered) {
+    if (roundState !== ERoundState.DEFAULT) {
       links.push({
-        href: "/ballot",
+        href: `/rounds/${props.roundId}`,
+        children: "Projects",
+      });
+    }
+
+    if (roundState === ERoundState.VOTING && isRegistered) {
+      links.push({
+        href: `/rounds/${props.roundId}/ballot`,
         children: "My Ballot",
       });
     }
 
-    if ((appState === EAppState.TALLYING || appState === EAppState.RESULTS) && ballot.published) {
+    if (
+      (roundState === ERoundState.TALLYING || roundState === ERoundState.RESULTS) &&
+      ballot.published &&
+      isRegistered
+    ) {
       links.push({
-        href: "/ballot/confirmation",
+        href: `/rounds/${props.roundId}/ballot/confirmation`,
         children: "Submitted Ballot",
       });
     }
 
-    if (appState === EAppState.RESULTS) {
+    if (roundState === ERoundState.RESULTS) {
       links.push({
-        href: "/stats",
+        href: `/rounds/${props.roundId}/stats`,
         children: "Stats",
       });
+    }
+
+    if (config.admin === address! && props.roundId) {
+      links.push(
+        ...[
+          {
+            href: `/rounds/${props.roundId}/applications`,
+            children: "Applications",
+          },
+        ],
+      );
     }
 
     if (config.admin === address!) {
       links.push(
         ...[
           {
-            href: "/applications",
-            children: "Applications",
-          },
-          {
             href: "/voters",
             children: "Voters",
+          },
+          {
+            href: "/coordinator",
+            children: "Coordinator",
           },
         ],
       );
     }
 
     return links;
-  }, [ballot.published, appState, isRegistered, address]);
+  }, [ballot.published, roundState, isRegistered, address]);
 
   return (
     <BaseLayout {...props} header={<Header navLinks={navLinks} />}>
@@ -85,7 +97,7 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
   const { isRegistered } = useMaci();
   const { address } = useAccount();
   const { ballot } = useBallot();
-  const appState = useAppState();
+  const roundState = useRoundState(props.roundId ?? "");
 
   const { showInfo, showBallot, showSubmitButton } = props;
 
@@ -94,13 +106,15 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
       sidebar="left"
       sidebarComponent={
         <div>
-          {showInfo && <Info showVotingInfo size="sm" />}
+          {showInfo && props.roundId && <Info showVotingInfo roundId={props.roundId} size="sm" />}
 
-          {appState !== EAppState.APPLICATION && showBallot && address && isRegistered && <BallotOverview />}
+          {roundState !== ERoundState.APPLICATION && props.roundId && showBallot && address && isRegistered && (
+            <BallotOverview roundId={props.roundId} />
+          )}
 
           {showSubmitButton && ballot.votes.length > 0 && (
             <div className="flex flex-col gap-4">
-              <SubmitBallotButton />
+              <SubmitBallotButton roundId={props.roundId ?? ""} />
 
               <Notice
                 italic

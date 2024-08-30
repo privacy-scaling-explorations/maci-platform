@@ -8,6 +8,7 @@ import { Toaster } from "~/components/Toaster";
 import * as appConfig from "~/config";
 import { BallotProvider } from "~/contexts/Ballot";
 import { MaciProvider } from "~/contexts/Maci";
+import { RoundProvider } from "~/contexts/Round";
 
 const theme = lightTheme();
 
@@ -37,11 +38,13 @@ export const Providers = ({ children }: PropsWithChildren): JSX.Element => {
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider theme={customTheme}>
-            <MaciProvider>
-              <BallotProvider>{children}</BallotProvider>
+            <RoundProvider>
+              <MaciProvider>
+                <BallotProvider>{children}</BallotProvider>
 
-              <Toaster />
-            </MaciProvider>
+                <Toaster />
+              </MaciProvider>
+            </RoundProvider>
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>

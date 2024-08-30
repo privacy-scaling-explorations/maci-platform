@@ -10,21 +10,24 @@ import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useResults } from "~/hooks/useResults";
-import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { useRoundState } from "~/utils/state";
+import { ERoundState } from "~/utils/types";
 
-import { useSearchProjects } from "../hooks/useProjects";
-import { EProjectState } from "../types";
+import { ProjectItem, ProjectItemAwarded } from "../../projects/components/ProjectItem";
+import { useSearchProjects } from "../../projects/hooks/useProjects";
+import { EProjectState } from "../../projects/types";
 
-import { ProjectItem, ProjectItemAwarded } from "./ProjectItem";
+export interface IProjectsProps {
+  roundId?: string;
+}
 
-export const Projects = (): JSX.Element => {
-  const appState = useAppState();
-  const projects = useSearchProjects({ needApproval: appState !== EAppState.APPLICATION });
+export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
+  const appState = useRoundState(roundId);
+  const projects = useSearchProjects({ roundId, needApproval: appState !== ERoundState.APPLICATION });
 
   const { pollData, pollId, isRegistered } = useMaci();
   const { addToBallot, removeFromBallot, ballotContains, ballot } = useBallot();
-  const results = useResults(pollData);
+  const results = useResults(roundId, pollData);
 
   const handleAction = useCallback(
     (projectId: string) => (e: Event) => {
@@ -66,7 +69,7 @@ export const Projects = (): JSX.Element => {
 
   return (
     <div>
-      {appState === EAppState.APPLICATION && (
+      {appState === ERoundState.APPLICATION && (
         <StatusBar
           content={
             <div className="flex items-center gap-2">
@@ -78,7 +81,7 @@ export const Projects = (): JSX.Element => {
         />
       )}
 
-      {appState === EAppState.TALLYING && (
+      {(appState === ERoundState.TALLYING || appState === ERoundState.RESULTS) && (
         <StatusBar
           content={
             <div className="flex items-center gap-2">
@@ -106,9 +109,9 @@ export const Projects = (): JSX.Element => {
           <Link
             key={item.id}
             className={clsx("relative", { "animate-pulse": isLoading })}
-            href={`/projects/${item.id}`}
+            href={`/rounds/${roundId}/${item.id}`}
           >
-            {!results.isLoading && appState === EAppState.RESULTS ? (
+            {!results.isLoading && appState === ERoundState.RESULTS ? (
               <ProjectItemAwarded amount={results.data?.projects[item.id]?.votes} />
             ) : null}
 
@@ -116,6 +119,7 @@ export const Projects = (): JSX.Element => {
               action={handleAction(item.id)}
               attestation={item}
               isLoading={isLoading}
+              roundId={roundId}
               state={defineState(item.id)}
             />
           </Link>

@@ -11,11 +11,11 @@ import { fetchMetadata } from "~/utils/fetchMetadata";
 import type { Attestation } from "~/utils/types";
 
 export const projectsRouter = createTRPCRouter({
-  count: publicProcedure.query(async () =>
+  count: publicProcedure.input(z.object({ roundId: z.string() })).query(async ({ input }) =>
     fetchAttestations([eas.schemas.approval], {
       where: {
         attester: { equals: config.admin },
-        AND: [createDataFilter("type", "bytes32", "application"), createDataFilter("round", "bytes32", config.roundId)],
+        AND: [createDataFilter("type", "bytes32", "application"), createDataFilter("round", "bytes32", input.roundId)],
       },
     }).then((attestations = []) =>
       // Handle multiple approvals of an application - group by refUID
@@ -46,7 +46,7 @@ export const projectsRouter = createTRPCRouter({
   search: publicProcedure.input(FilterSchema).query(async ({ input }) => {
     const filters = [
       createDataFilter("type", "bytes32", "application"),
-      createDataFilter("round", "bytes32", config.roundId),
+      createDataFilter("round", "bytes32", input.roundId),
     ];
 
     if (input.search) {
@@ -107,10 +107,10 @@ export const projectsRouter = createTRPCRouter({
       .then((projects) => projects.reduce((acc, x) => ({ ...acc, [x.projectId]: x.payoutAddress }), {})),
   ),
 
-  allApproved: publicProcedure.query(async () => {
+  allApproved: publicProcedure.input(z.object({ roundId: z.string() })).query(async ({ input }) => {
     const filters = [
       createDataFilter("type", "bytes32", "application"),
-      createDataFilter("round", "bytes32", config.roundId),
+      createDataFilter("round", "bytes32", input.roundId),
     ];
 
     return fetchAttestations([eas.schemas.approval], {
@@ -132,11 +132,8 @@ export const projectsRouter = createTRPCRouter({
   }),
 });
 
-export async function getAllApprovedProjects(): Promise<Attestation[]> {
-  const filters = [
-    createDataFilter("type", "bytes32", "application"),
-    createDataFilter("round", "bytes32", config.roundId),
-  ];
+export async function getAllApprovedProjects({ roundId }: { roundId: string }): Promise<Attestation[]> {
+  const filters = [createDataFilter("type", "bytes32", "application"), createDataFilter("round", "bytes32", roundId)];
 
   return fetchAttestations([eas.schemas.approval], {
     where: {
