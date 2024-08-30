@@ -12,7 +12,7 @@ import {
   type VkRegistry,
 } from "maci-contracts";
 
-import type { ContractFactory, Signer } from "ethers";
+import type { ContractFactory, Signer, JsonRpcProvider } from "ethers";
 
 import { type MACI } from "../typechain-types";
 
@@ -124,4 +124,18 @@ export const deployTestContracts = async ({
     maciContract: maciContract as MACI,
     vkRegistryContract,
   };
+};
+
+/**
+ * Utility to travel in time when using a local blockchain
+ * @param seconds - the number of seconds to travel in time
+ * @param quiet - whether to log the output
+ */
+export const timeTravel = async (seconds: number, signer: Signer): Promise<void> => {
+  // send the instructions to the provider
+  await (signer.provider as JsonRpcProvider).send("evm_increaseTime", [Number(seconds)]);
+  await (signer.provider as JsonRpcProvider).send("evm_mine", []);
+
+  // eslint-disable-next-line no-console
+  console.log(`Fast-forwarded ${seconds} seconds`);
 };

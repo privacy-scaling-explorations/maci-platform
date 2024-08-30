@@ -19,8 +19,8 @@ export const EDeploySteps = {
  * Contracts for maci-platform related constacts
  */
 export enum EPlatformContracts {
-  RegistryManager = "RegistryManager",
   EASRegistryManager = "EASRegistryManager",
+  EASRegistry = "EASRegistry",
 }
 
 /**
@@ -29,6 +29,23 @@ export enum EPlatformContracts {
 export const EContracts = {
   ...EMaciContracts,
   ...EPlatformContracts,
+};
+
+/**
+ * Supported registry manager types
+ */
+export type TRegistryManager = EPlatformContracts.EASRegistryManager;
+
+/**
+ * Supported registry types
+ */
+export type TRegistry = EPlatformContracts.EASRegistry;
+
+/**
+ * Registry types by registry manager
+ */
+export const REGISTRY_TYPES: Record<TRegistryManager, TRegistry> = {
+  [EPlatformContracts.EASRegistryManager]: EPlatformContracts.EASRegistry,
 };
 
 /**

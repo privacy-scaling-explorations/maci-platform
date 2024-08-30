@@ -51,10 +51,11 @@ contract MACI is Ownable, BaseMACI, ICommon {
 
   /// @notice Initialize the poll by given poll id and transfer poll ownership to the caller.
   /// @param pollId The poll id
-  function initPoll(uint256 pollId) public onlyOwner {
+  function initPoll(uint256 pollId, address registryAddress) public onlyOwner {
     PollContracts memory pollAddresses = polls[pollId];
     IPoll poll = IPoll(pollAddresses.poll);
 
+    poll.setRegistry(registryAddress);
     poll.init();
     poll.transferOwnership(msg.sender);
   }

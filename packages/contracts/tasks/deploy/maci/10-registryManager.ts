@@ -17,7 +17,7 @@ deployment.deployTask(EDeploySteps.RegistryManager, "Deploy registry manager").t
 
     const registryManagerType =
       deployment.getDeployConfigField<keyof typeof EContracts | null>(EContracts.MACI, "registryManager") ||
-      EContracts.RegistryManager;
+      EContracts.EASRegistryManager;
 
     const registryManagerContractAddress = storage.getAddress(registryManagerType, hre.network.name);
 

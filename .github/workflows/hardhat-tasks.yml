@@ -58,6 +58,8 @@ jobs:
         run: |
           cp ./deploy-config-example.json ./deploy-config.json
           pnpm deploy:localhost
+          pnpm deploy-poll:localhost
+          pnpm initPoll:localhost --poll 0
         working-directory: packages/contracts
 
       - name: Stop Hardhat

@@ -34,7 +34,11 @@
     "coverage": "BLOCK_GAS_LIMIT=1599511627775 hardhat coverage",
     "test": "hardhat test --network hardhat",
     "deploy": "hardhat deploy-full",
-    "deploy:localhost": "pnpm run deploy"
+    "initPoll": "hardhat initPoll",
+    "deploy-poll": "hardhat deploy-poll",
+    "deploy:localhost": "pnpm run deploy",
+    "deploy-poll:localhost": "pnpm run deploy-poll",
+    "initPoll:localhost": "pnpm run initPoll"
   },
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.6",
@@ -44,7 +48,7 @@
     "ethers": "^6.13.2",
     "hardhat": "^2.22.8",
     "lowdb": "^1.0.0",
-    "maci-contracts": "0.0.0-ci.17a38c9",
+    "maci-contracts": "0.0.0-ci.a97f395",
     "maci-core": "^2.2.0",
     "maci-domainobjs": "^2.2.0",
     "solidity-docgen": "^0.6.0-beta.36"

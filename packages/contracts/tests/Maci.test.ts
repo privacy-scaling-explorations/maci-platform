@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Signer, ZeroAddress } from "ethers";
+import { encodeBytes32String, Signer, ZeroAddress } from "ethers";
 import { Verifier, VkRegistry, EMode, getSigners, deployContract } from "maci-contracts";
 import { MaciState } from "maci-core";
 import { Keypair, Message, PubKey } from "maci-domainobjs";
@@ -16,7 +16,7 @@ import {
 } from "./constants";
 import { deployTestContracts } from "./utils";
 
-describe("Poll", () => {
+describe("Maci", () => {
   let maciContract: MACI;
   let pollId: bigint;
   let pollContract: PollContract;
@@ -28,6 +28,8 @@ describe("Poll", () => {
   const coordinator = new Keypair();
 
   const maciState = new MaciState(STATE_TREE_DEPTH);
+  const maxRecipients = 5;
+  const metadataUrl = encodeBytes32String("url");
 
   describe("deployment", () => {
     before(async () => {
@@ -80,21 +82,43 @@ describe("Poll", () => {
     });
 
     it("should fail if unauthorized user tries to init the poll", async () => {
-      await expect(maciContract.initPoll(pollId)).not.to.be.revertedWithCustomError(pollContract, "PollAlreadyInit");
-      await expect(maciContract.connect(user).initPoll(pollId)).to.be.revertedWithCustomError(
+      await expect(maciContract.initPoll(pollId, await user.getAddress())).not.to.be.revertedWithCustomError(
+        pollContract,
+        "PollAlreadyInit",
+      );
+      await expect(maciContract.connect(user).initPoll(pollId, await user.getAddress())).to.be.revertedWithCustomError(
         pollContract,
         "OwnableUnauthorizedAccount",
       );
-      await expect(pollContract.init()).to.be.revertedWithCustomError(pollContract, "PollAlreadyInit");
+    });
+
+    it("should fail if try to set zero address as registry", async () => {
+      await expect(maciContract.initPoll(pollId, ZeroAddress)).not.to.be.revertedWithCustomError(
+        pollContract,
+        "InvalidAddress",
+      );
     });
 
     it("should not be possible to init the Poll contract twice", async () => {
-      await expect(maciContract.initPoll(pollId)).not.to.be.revertedWithCustomError(pollContract, "PollAlreadyInit");
-      await expect(maciContract.initPoll(pollId)).to.be.revertedWithCustomError(
+      const registry = await deployContract(
+        "MockRegistry",
+        owner,
+        true,
+        maxRecipients,
+        metadataUrl,
+        await owner.getAddress(),
+      );
+
+      const registryAddress = await registry.getAddress();
+
+      await expect(maciContract.initPoll(pollId, registryAddress)).not.to.be.revertedWithCustomError(
+        pollContract,
+        "PollAlreadyInit",
+      );
+      await expect(maciContract.initPoll(pollId, registryAddress)).to.be.revertedWithCustomError(
         pollContract,
         "OwnableUnauthorizedAccount",
       );
-      await expect(pollContract.init()).to.be.revertedWithCustomError(pollContract, "PollAlreadyInit");
     });
 
     it("should not be possible to set zero address as registry manager", async () => {
