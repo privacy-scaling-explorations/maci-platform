@@ -1,4 +1,4 @@
-import { type TallyData, type IGetPollData } from "maci-cli/sdk";
+import { type TallyData, type IGetPollData, type GatekeeperTrait } from "maci-cli/sdk";
 import { type ReactNode } from "react";
 
 import type { Ballot, Vote } from "~/features/ballot/types";
@@ -20,6 +20,7 @@ export interface MaciContextType {
   pollData?: IGetPollData;
   tallyData?: TallyData;
   maciPubKey?: string;
+  gatekeeperTrait?: GatekeeperTrait;
   onSignup: (onError: () => void) => Promise<void>;
   onVote: (
     args: IVoteArgs[],

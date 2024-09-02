@@ -1,3 +1,4 @@
+import { GatekeeperTrait } from "maci-cli/sdk";
 import { type ReactNode, type PropsWithChildren, useMemo } from "react";
 import { useAccount } from "wagmi";
 
@@ -25,7 +26,7 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
   const { address } = useAccount();
   const appState = useAppState();
   const { ballot } = useBallot();
-  const { isRegistered } = useMaci();
+  const { isRegistered, gatekeeperTrait } = useMaci();
 
   const navLinks = useMemo(() => {
     const links = [
@@ -63,6 +64,13 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
             href: "/applications",
             children: "Applications",
           },
+        ],
+      );
+    }
+
+    if (config.admin === address! && gatekeeperTrait === GatekeeperTrait.EAS) {
+      links.push(
+        ...[
           {
             href: "/voters",
             children: "Voters",
