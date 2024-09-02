@@ -30,6 +30,7 @@ export const AllocationInput = ({
         render={({ field }) => (
           <NumericFormat
             allowNegative={false}
+            decimalScale={0}
             aria-label="allocation-input"
             customInput={Input}
             error={props.error}
