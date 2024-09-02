@@ -74,7 +74,7 @@ export const ApplicationButtons = ({
   ): boolean =>
     links === undefined || links.every((link) => link.description !== undefined && link.description.length > 0);
 
-  const stepComplete = useMemo((): boolean => {
+  const checkStepComplete = (): boolean => {
     if (step === EApplicationStep.PROFILE) {
       return (
         bannerImageUrl !== undefined &&
@@ -98,32 +98,19 @@ export const ApplicationButtons = ({
     }
 
     return true;
-  }, [
-    step,
-    bannerImageUrl,
-    profileImageUrl,
-    bio,
-    name,
-    payoutAddress,
-    websiteUrl,
-    impactCategory,
-    contributionDescription,
-    impactDescription,
-    contributionLinks,
-    fundingSources,
-  ]);
+  };
 
   const handleOnClickNextStep = useCallback(
     (event: UIEvent) => {
       event.preventDefault();
 
-      if (stepComplete) {
+      if (checkStepComplete()) {
         onNextStep();
       } else {
         setShowDialog(true);
       }
     },
-    [onNextStep, setShowDialog, stepComplete],
+    [onNextStep, setShowDialog, checkStepComplete],
   );
 
   const handleOnClickBackStep = useCallback(
