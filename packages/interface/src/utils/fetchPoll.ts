@@ -14,6 +14,7 @@ interface Poll {
   messageRoot: string;
   numSignups: string;
   id: string;
+  mode: string;
 }
 
 export interface GraphQLResponse {
@@ -32,6 +33,7 @@ const PollQuery = `
       messageRoot
       numSignups
       id
+      mode
     }
   }
 `;
@@ -54,5 +56,6 @@ export async function fetchPoll(): Promise<IGetPollData> {
     deployTime: poll?.createdAt ?? 0,
     numSignups: poll?.numSignups ?? 0,
     address: poll?.id ?? "",
+    mode: poll?.mode ?? "",
   };
 }

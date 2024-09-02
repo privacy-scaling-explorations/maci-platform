@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
 import { useAccount } from "wagmi";
 
-import { config } from "~/config";
-
 import type { BallotContextType, BallotProviderProps } from "./types";
 import type { Ballot, Vote } from "~/features/ballot/types";
+
+import { useMaci } from "./Maci";
 
 export const BallotContext = createContext<BallotContextType | undefined>(undefined);
 
@@ -15,6 +15,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const { isDisconnected } = useAccount();
+  const { pollData } = useMaci();
 
   // when summing the ballot we take the individual vote and square it
   // if the mode is quadratic voting, otherwise we just add the amount
@@ -22,7 +23,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
     (votes?: Vote[]) =>
       (votes ?? []).reduce((sum, x) => {
         const amount = !Number.isNaN(Number(x.amount)) ? Number(x.amount) : 0;
-        return sum + (config.pollMode === "qv" ? amount ** 2 : amount);
+        return sum + (pollData && pollData.mode.toString() === "0" ? amount ** 2 : amount);
       }, 0),
     [],
   );
