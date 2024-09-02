@@ -73,6 +73,7 @@ export const VotingWidget = ({ projectId }: IVotingWidgetProps): JSX.Element => 
       <div className="flex items-center justify-center gap-5 rounded-xl border border-gray-200 p-5 dark:border-gray-800">
         <NumericFormat
           allowNegative={false}
+          decimalScale={0}
           aria-label="allocation-input"
           autoComplete="off"
           className="dark:bg-lightBlack w-auto dark:text-white"
