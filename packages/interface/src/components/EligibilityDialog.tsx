@@ -14,7 +14,7 @@ export const EligibilityDialog = (): JSX.Element | null => {
   const { disconnect } = useDisconnect();
 
   const [openDialog, setOpenDialog] = useState<boolean>(!!address);
-  const { onSignup, isEligibleToVote, isRegistered } = useMaci();
+  const { onSignup, isEligibleToVote, isRegistered, initialVoiceCredits, votingEndsAt } = useMaci();
   const router = useRouter();
 
   const appState = useAppState();
@@ -73,14 +73,14 @@ export const EligibilityDialog = (): JSX.Element | null => {
         buttonName="See all projects"
         description={
           <div className="flex flex-col gap-4">
-            <p>You have X voice credits to vote with.</p>
+            <p>You have {initialVoiceCredits} voice credits to vote with.</p>
 
             <p>
               Get started by adding projects to your ballot, then adding the amount of votes you want to allocate to
               each one.
             </p>
 
-            <p>Please submit your ballot by X date!</p>
+            <p>Please submit your ballot by {votingEndsAt.toString()}!</p>
           </div>
         }
         isOpen={openDialog}
