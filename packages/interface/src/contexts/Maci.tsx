@@ -427,6 +427,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       maciPubKey,
       onSignup,
       onVote,
+      gatekeeperTrait,
     }),
     [
       isLoading,
@@ -441,6 +442,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       maciPubKey,
       onSignup,
       onVote,
+      gatekeeperTrait,
     ],
   );
 
