@@ -23,7 +23,7 @@ There's no description in detail for signing up reverted by the contract. The fo
 
 If you found it displays "Voting is over", but you actually just started a poll:
 
-- Make sure that you are deploying using **MACI v1.2.4**.
+- Make sure that you are deploying using **MACI v2**.
 
 ## Fail to process message and tally result
 
