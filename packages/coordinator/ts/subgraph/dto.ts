@@ -2,9 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsEnum, IsEthereumAddress, IsInt, IsString, Matches, MaxLength, Min, MinLength } from "class-validator";
 
-import { ESupportedNetworks } from "../common";
-
-export const transformToString = ({ value }: { value: string }): string => value.toLowerCase();
+import { ESupportedNetworks, transformToString } from "../common";
 
 /**
  * Data transfer object for deploying subgraph

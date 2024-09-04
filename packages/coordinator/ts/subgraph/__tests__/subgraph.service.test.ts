@@ -5,8 +5,7 @@ import fs from "fs";
 
 import type { IDeploySubgraphArgs } from "../types";
 
-import { ErrorCodes, ESupportedNetworks } from "../../common";
-import { transformToString } from "../dto";
+import { ErrorCodes, ESupportedNetworks, transformToString } from "../../common";
 import { SubgraphService } from "../subgraph.service";
 
 dotenv.config();

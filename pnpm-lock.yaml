@@ -194,16 +194,16 @@ importers:
         version: 5.0.0(hke34ef7km4fdyz52h5gry5opq)
       '@zerodev/ecdsa-validator':
         specifier: ^5.3.1
-        version: 5.3.1(@zerodev/sdk@5.3.9(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+        version: 5.3.1(@zerodev/sdk@5.3.9(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       '@zerodev/permissions':
         specifier: ^5.4.3
-        version: 5.4.3(@zerodev/sdk@5.3.9(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(@zerodev/webauthn-key@5.3.1(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+        version: 5.4.3(@zerodev/sdk@5.3.9(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(@zerodev/webauthn-key@5.3.1(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       '@zerodev/sdk':
         specifier: ^5.3.8
-        version: 5.3.9(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+        version: 5.3.9(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       '@zerodev/session-key':
         specifier: ^5.4.2
-        version: 5.4.2(@zerodev/sdk@5.3.9(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+        version: 5.4.2(@zerodev/sdk@5.3.9(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -244,8 +244,8 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
       permissionless:
-        specifier: ^0.1.44
-        version: 0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+        specifier: '>=0.1.18 <=0.1.29'
+        version: 0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       reflect-metadata:
         specifier: ^0.2.0
         version: 0.2.2
@@ -262,7 +262,7 @@ importers:
         specifier: ^10.9.1
         version: 10.9.2(@types/node@20.14.14)(typescript@5.5.4)
       viem:
-        specifier: ^2.7.15
+        specifier: ^2.16.3
         version: 2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)
     devDependencies:
       '@nestjs/cli':
@@ -10671,10 +10671,10 @@ packages:
   performance-now@2.1.0:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
 
-  permissionless@0.1.44:
-    resolution: {integrity: sha512-NQBATmG4Fp3Zqy1IjjBihfp2huV6sTzUUzZzuSQ7xBnRNABOyIm8d+q76gy2B0LnFfu47RA/aW+fNfZjnbzl4Q==}
+  permissionless@0.1.29:
+    resolution: {integrity: sha512-jKkgl3G2b4hv5DvX2U8v0OI3JfX+nEzj9a6zsrcXuJaLZdS14td4tExnlmBY93nUN6lRC6NfPZjdLbi8Dkzz7w==}
     peerDependencies:
-      viem: '>=2.14.1 <2.18.0'
+      viem: ^2.9.17
 
   picocolors@1.0.1:
     resolution: {integrity: sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==}
@@ -19581,32 +19581,32 @@ snapshots:
       js-yaml: 3.14.1
       tslib: 2.6.3
 
-  '@zerodev/ecdsa-validator@5.3.1(@zerodev/sdk@5.3.9(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
+  '@zerodev/ecdsa-validator@5.3.1(@zerodev/sdk@5.3.9(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
     dependencies:
-      '@zerodev/sdk': 5.3.9(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
-      permissionless: 0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+      '@zerodev/sdk': 5.3.9(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+      permissionless: 0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       viem: 2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)
 
-  '@zerodev/permissions@5.4.3(@zerodev/sdk@5.3.9(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(@zerodev/webauthn-key@5.3.1(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
+  '@zerodev/permissions@5.4.3(@zerodev/sdk@5.3.9(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(@zerodev/webauthn-key@5.3.1(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
     dependencies:
       '@simplewebauthn/browser': 9.0.1
-      '@zerodev/sdk': 5.3.9(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+      '@zerodev/sdk': 5.3.9(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       '@zerodev/webauthn-key': 5.3.1(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       merkletreejs: 0.3.11
-      permissionless: 0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+      permissionless: 0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       viem: 2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)
 
-  '@zerodev/sdk@5.3.9(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
+  '@zerodev/sdk@5.3.9(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
     dependencies:
-      permissionless: 0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+      permissionless: 0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       semver: 7.6.3
       viem: 2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)
 
-  '@zerodev/session-key@5.4.2(@zerodev/sdk@5.3.9(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
+  '@zerodev/session-key@5.4.2(@zerodev/sdk@5.3.9(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
     dependencies:
-      '@zerodev/sdk': 5.3.9(permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+      '@zerodev/sdk': 5.3.9(permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       merkletreejs: 0.3.11
-      permissionless: 0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
+      permissionless: 0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       viem: 2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)
 
   '@zerodev/webauthn-key@5.3.1(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))':
@@ -27990,7 +27990,7 @@ snapshots:
 
   performance-now@2.1.0: {}
 
-  permissionless@0.1.44(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)):
+  permissionless@0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)):
     dependencies:
       viem: 2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)
 

@@ -101,3 +101,41 @@ export class GenerateProofDto {
   @IsOptional()
   blocksPerBatch?: number;
 }
+
+/**
+ * Data transfer object for merge trees
+ */
+export class MergeTreesDto {
+  /**
+   * Poll id
+   */
+  @ApiProperty({
+    description: "Poll id",
+    minimum: 0,
+    type: Number,
+  })
+  @IsInt()
+  @Min(0)
+  poll!: number;
+
+  @ApiProperty({
+    description: "MACI contract address",
+    type: String,
+  })
+  @IsEthereumAddress()
+  maciContractAddress!: string;
+
+  @ApiProperty({
+    description: "Session key address",
+    type: String,
+  })
+  @IsEthereumAddress()
+  sessionKeyAddress!: string;
+
+  @ApiProperty({
+    description: "Approval",
+    type: String,
+  })
+  @IsString()
+  approval!: string;
+}

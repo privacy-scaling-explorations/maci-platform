@@ -19,8 +19,9 @@
     "run:node": "node --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));'",
     "start": "pnpm run run:node ./ts/main.ts",
     "start:prod": "pnpm run run:node build/ts/main.js",
-    "test": "jest --forceExit",
+    "test": "jest --testPathIgnorePatterns=e2e.aa.test.ts --forceExit",
     "test:coverage": "jest --coverage --forceExit",
+    "test:e2e": "jest --forceExit ./tests/e2e.aa.test.ts",
     "types": "tsc -p tsconfig.json --noEmit",
     "generate-keypair": "pnpm run run:node ./scripts/generateKeypair.ts",
     "download-zkeys:test": "pnpm run run:node ./scripts/downloadZKeys.ts test ./zkeys",
@@ -54,13 +55,13 @@
     "maci-domainobjs": "^2.0.0",
     "maci-subgraph": "^2.3.0",
     "mustache": "^4.2.0",
-    "permissionless": "^0.1.44",
+    "permissionless": ">=0.1.18 <=0.1.29",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "socket.io": "^4.7.5",
     "tar": "^7.4.1",
     "ts-node": "^10.9.1",
-    "viem": "^2.7.15"
+    "viem": "^2.16.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.4.2",

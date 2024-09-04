@@ -9,6 +9,7 @@ import {
   holesky,
   linea,
   lineaSepolia,
+  localhost,
   mainnet,
   optimism,
   optimismSepolia,
@@ -36,6 +37,7 @@ export enum ESupportedNetworks {
   BASE = "base",
   SCROLL_SEPOLIA = "scroll-sepolia",
   SCROLL = "scroll",
+  LOCALHOST = "localhost",
 }
 
 /**
@@ -78,6 +80,8 @@ export const viemChain = (network: ESupportedNetworks): Chain => {
       return optimism;
     case ESupportedNetworks.OPTIMISM_SEPOLIA:
       return optimismSepolia;
+    case ESupportedNetworks.LOCALHOST:
+      return localhost;
     default:
       throw new Error(`Unsupported network: ${network}`);
   }
