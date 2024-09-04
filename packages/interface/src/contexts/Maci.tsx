@@ -109,6 +109,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     switch (gatekeeperTrait) {
       case GatekeeperTrait.Semaphore:
         if (!signer) {
+          setIsLoading(false);
           return;
         }
         getSemaphoreProof(signer, semaphoreIdentity!)
@@ -126,6 +127,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         break;
       case GatekeeperTrait.Hats:
         if (!signer) {
+          setIsLoading(false);
           return;
         }
         getHatsSingleGatekeeperData({
@@ -377,6 +379,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       setIsLoading(false);
     } else {
       if (!window.ethereum) {
+        setIsLoading(false);
         return;
       }
 
