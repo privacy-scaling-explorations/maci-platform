@@ -13,7 +13,6 @@ export const JoinButton = (): JSX.Element => {
 
   const onError = useCallback(() => toast.error("Signup error"), []);
   const handleSignup = useCallback(() => onSignup(onError), [onSignup, onError]);
-
   return (
     <div>
       {appState === EAppState.VOTING && !isEligibleToVote && (

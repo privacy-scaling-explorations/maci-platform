@@ -32,7 +32,7 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
     const links = [
       {
         href: "/projects",
-        children: "Projects",
+        children: "Beaches",
       },
     ];
 

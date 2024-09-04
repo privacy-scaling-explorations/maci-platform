@@ -104,7 +104,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   // for Semaphore it will be a proof being part of the group
   useEffect(() => {
     setIsLoading(true);
-
     // add custom logic for other gatekeepers here
     switch (gatekeeperTrait) {
       case GatekeeperTrait.Semaphore:
@@ -145,6 +144,9 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         });
         setIsLoading(false);
         break;
+      case GatekeeperTrait.FreeForAll:
+        setIsLoading(false);
+        break;
       default:
         break;
     }
@@ -157,7 +159,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   // for instance with semaphore
   const isEligibleToVote = useMemo(
     () => gatekeeperTrait && (gatekeeperTrait === GatekeeperTrait.FreeForAll || Boolean(sgData)) && Boolean(address),
-    [sgData, address],
+    [sgData, address, gatekeeperTrait],
   );
 
   // on load get the key pair from local storage and set the signature message
@@ -192,7 +194,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     if (!address) {
       return;
     }
-
     const signature = await signMessageAsync({ message: signatureMessage });
     const newSemaphoreIdentity = new Identity(signature);
     const userKeyPair = genKeyPair({ seed: BigInt(signature) });

@@ -3,11 +3,8 @@ import { useMemo, type ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { Heading } from "~/components/ui/Heading";
-import { Tag } from "~/components/ui/Tag";
 
 import type { Application } from "../types";
-
-import { LinkField } from "./LinkField";
 
 interface IValueFieldProps {
   title: string;
@@ -45,24 +42,20 @@ export const ReviewApplicationDetails = (): JSX.Element => {
       <div>
         <Heading className="mb-1 font-sans text-xl font-semibold">Review & Submit</Heading>
 
-        <p className="leading-loose text-gray-400">Please review and submit your project application.</p>
+        <p className="leading-loose text-gray-400">Please review and submit your beach application.</p>
       </div>
 
       <div className="flex flex-col gap-6 dark:text-white">
-        <b className="text-lg">Project Profile</b>
+        <b className="text-lg">Beach Profile</b>
 
-        <ValueField required body={application.name} title="Project name" />
+        <ValueField required body={application.name} title="Beach name" />
 
-        <ValueField required body={application.bio} title="Project description" />
+        <ValueField required body={application.bio} title="Beach description" />
 
         <div className="grid grid-flow-row grid-cols-2 gap-4">
           <ValueField required body={application.websiteUrl} title="Website" />
 
-          <ValueField required body={application.payoutAddress} title="Payout address" />
-
           <ValueField body={application.twitter} title="X(Twitter)" />
-
-          <ValueField body={application.github} title="Github" />
         </div>
 
         <div className="flex gap-6">
@@ -91,33 +84,9 @@ export const ReviewApplicationDetails = (): JSX.Element => {
       </div>
 
       <div className="flex flex-col gap-6 dark:text-white">
-        <b className="text-lg">Contribution & Impact</b>
+        <b className="text-lg">Activities</b>
 
-        <ValueField required body={application.contributionDescription} title="Contribution description" />
-
-        <ValueField required body={application.impactDescription} title="Impact description" />
-
-        <ValueField
-          required
-          body={application.impactCategory?.map((tag) => (
-            <Tag key={tag} selected size="sm">
-              {tag}
-            </Tag>
-          ))}
-          title="Impact categories"
-        />
-
-        <ValueField
-          body={application.contributionLinks?.map((link) => (
-            <LinkField key={link.description} contributionLink={link} />
-          ))}
-          title="Contribution links"
-        />
-
-        <ValueField
-          body={application.fundingSources?.map((link) => <LinkField key={link.description} fundingSource={link} />)}
-          title="Funding sources"
-        />
+        <ValueField required body={application.activitiesDescription} title="Activities description" />
       </div>
     </div>
   );
