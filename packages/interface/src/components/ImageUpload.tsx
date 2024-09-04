@@ -14,7 +14,7 @@ export interface IImageUploadProps extends ComponentProps<"img"> {
 
 export const ImageUpload = ({
   name = "",
-  maxSize = 1024 * 1024, // 1 MB
+  maxSize = 2048 * 2048, // 2 MB
   className,
 }: IImageUploadProps): JSX.Element => {
   const ref = useRef<HTMLInputElement>(null);

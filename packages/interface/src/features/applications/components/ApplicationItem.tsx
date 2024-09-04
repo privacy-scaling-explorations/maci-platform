@@ -30,7 +30,7 @@ export const ApplicationItem = ({
 
   const form = useFormContext();
 
-  const { fundingSources = [], profileImageUrl } = metadata.data ?? {};
+  const { activitiesDescription, profileImageUrl } = metadata.data ?? {};
 
   return (
     <Link href={`/projects/${id}`} target="_blank">
@@ -48,7 +48,7 @@ export const ApplicationItem = ({
             </Skeleton>
 
             <div className="text-sm text-gray-400">
-              <div>{fundingSources.length} funding sources</div>
+              <div>{activitiesDescription} </div>
             </div>
           </div>
         </div>

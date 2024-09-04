@@ -13,9 +13,6 @@ import type { Attestation } from "~/utils/types";
 
 import { useProjectMetadata } from "../hooks/useProjects";
 
-import { ProjectContacts } from "./ProjectContacts";
-import { ProjectDescriptionSection } from "./ProjectDescriptionSection";
-
 export interface IProjectDetailsProps {
   action?: ReactNode;
   projectId?: string;
@@ -31,8 +28,7 @@ const ProjectDetails = ({
 }: IProjectDetailsProps): JSX.Element => {
   const metadata = useProjectMetadata(attestation?.metadataPtr);
 
-  const { bio, websiteUrl, payoutAddress, github, twitter, fundingSources, profileImageUrl, bannerImageUrl } =
-    metadata.data ?? {};
+  const { bio, activitiesDescription, profileImageUrl, bannerImageUrl } = metadata.data ?? {};
 
   const appState = useAppState();
 
@@ -42,7 +38,7 @@ const ProjectDetails = ({
         <Navigation projectName={attestation?.name ?? "project name"} />
       </div>
 
-      <div className="overflow-hidden rounded-3xl">
+      <div className=" rounded-3xl">
         <ProjectBanner size="lg" url={bannerImageUrl} />
       </div>
 
@@ -58,26 +54,24 @@ const ProjectDetails = ({
         {appState === EAppState.VOTING && <VotingWidget projectId={projectId} />}
       </div>
 
-      <ProjectContacts author={payoutAddress} github={github} twitter={twitter} website={websiteUrl} />
-
       <p className="text-gray-400">{bio}</p>
 
-      <div className="my-8 flex flex-col gap-8">
+      <div className="my-4 flex flex-col gap-2">
         <p className="text-xl uppercase">
-          <b>Impact statements</b>
+          <b>Activities</b>
         </p>
 
-        <ProjectDescriptionSection
-          contributions={metadata.data?.contributionLinks}
-          description={metadata.data?.contributionDescription}
-          title="contributions"
-        />
+        <p className="text-gray-400">{activitiesDescription}</p>
 
-        <ProjectDescriptionSection
-          description={metadata.data?.impactDescription}
-          fundings={fundingSources}
-          title="past grants and funding"
-        />
+        <p className="text-xl uppercase">
+          <b>Pictures</b>
+        </p>
+
+        <div className="mb-8 flex items-end gap-4">
+          <ProjectAvatar className="rounded-lg" size="xl" url={profileImageUrl} />
+
+          <ProjectAvatar className="rounded-lg" size="xl" url={bannerImageUrl} />
+        </div>
 
         {action}
       </div>

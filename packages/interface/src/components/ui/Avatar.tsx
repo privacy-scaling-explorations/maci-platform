@@ -14,6 +14,7 @@ export const Avatar = createComponent(
         sm: "w-12 h-12 rounded-md",
         md: "w-16 h-16 rounded-md",
         lg: "w-40 h-40 rounded-3xl",
+        xl: "w-80 h-80 rounded-4xl",
       },
       rounded: {
         full: "rounded-full",
