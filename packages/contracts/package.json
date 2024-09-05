@@ -48,7 +48,7 @@
     "ethers": "^6.13.2",
     "hardhat": "^2.22.8",
     "lowdb": "^1.0.0",
-    "maci-contracts": "0.0.0-ci.a97f395",
+    "maci-contracts": "^2.3.0",
     "maci-core": "^2.2.0",
     "maci-domainobjs": "^2.2.0",
     "solidity-docgen": "^0.6.0-beta.36"
