@@ -10,7 +10,7 @@ export const profileRouter = createTRPCRouter({
   get: publicProcedure.input(z.object({ id: z.string() })).query(async ({ input }) =>
     fetchAttestations([eas.schemas.metadata], {
       where: {
-        recipient: { in: [input.id] },
+        id: { in: [input.id] },
         ...createDataFilter("type", "bytes32", "profile"),
       },
     }).then(([attestation]) => {
