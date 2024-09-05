@@ -44,14 +44,14 @@ const ClearBallot = (): JSX.Element | null => {
         type="button"
         onClick={handleOpenDialog}
       >
-        Remove all projects
+        Remove all beaches
       </button>
 
       <Dialog
         button="primary"
         buttonAction={handleClearBallot}
         buttonName="Yes, Clear my ballot"
-        description="This will empty your ballot and remove all the projects you have added."
+        description="This will empty your ballot and remove all the beaches you have added."
         isOpen={isOpen}
         size="sm"
         title="Are you sure?"
@@ -69,12 +69,12 @@ const EmptyBallot = (): JSX.Element => (
       </Heading>
 
       <p className="text-center text-sm text-gray-700">
-        Your vote currently doesn&apos;t have any projects added. Browse through the available projects.
+        Your vote currently doesn&apos;t have any beaches added. Browse through the available beaches.
       </p>
 
       <div className="flex items-center justify-center gap-3">
         <Button as={Link} href="/projects" size="auto" variant="primary">
-          View projects
+          View beaches
         </Button>
       </div>
     </div>
@@ -87,7 +87,6 @@ const BallotAllocationForm = (): JSX.Element => {
   const { initialVoiceCredits } = useMaci();
 
   const sum = useMemo(() => sumBallot(ballot.votes), [ballot, sumBallot]);
-
   return (
     <div className="px-8">
       <Heading className="tracking-tighter" size="4xl">
