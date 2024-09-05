@@ -30,7 +30,6 @@ export const BallotConfirmation = (): JSX.Element => {
   const allocations = ballot.votes;
   const { data: projectCount } = useProjectCount();
   const appState = useAppState();
-
   const sum = useMemo(() => formatNumber(sumBallot(ballot.votes)), [ballot, sumBallot]);
 
   return (

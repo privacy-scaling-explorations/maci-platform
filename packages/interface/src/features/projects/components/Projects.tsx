@@ -71,7 +71,7 @@ export const Projects = (): JSX.Element => {
           content={
             <div className="flex items-center gap-2">
               <FiAlertCircle className="h-4 w-4" />
-              Voting is enabled until Registration period ends.
+              Voting is disabled until the Registration period ends.
             </div>
           }
           status="default"
@@ -83,7 +83,7 @@ export const Projects = (): JSX.Element => {
           content={
             <div className="flex items-center gap-2">
               <FiAlertCircle className="h-4 w-4" />
-              Voting already ended, you cannot vote anymore.
+              The voting period has ended.
             </div>
           }
           status="default"

@@ -25,7 +25,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
         const amount = !Number.isNaN(Number(x.amount)) ? Number(x.amount) : 0;
         return sum + (pollData && pollData.mode.toString() === "0" ? amount ** 2 : amount);
       }, 0),
-    [],
+    [pollData],
   );
 
   const ballotContains = useCallback((id: string) => ballot.votes.find((v) => v.projectId === id), [ballot]);
