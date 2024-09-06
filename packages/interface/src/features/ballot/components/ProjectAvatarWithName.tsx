@@ -23,7 +23,7 @@ export const ProjectAvatarWithName = ({
 
   return (
     <Component className="flex flex-1 items-center gap-4" href={`/projects/${id}`} tabIndex={-1}>
-      <ProjectAvatar profileId={projects?.[0]?.recipient} rounded="full" size="sm" />
+      <ProjectAvatar rounded="full" size="sm" url={metadata.data?.bannerImageUrl} />
 
       <div>
         <div className="font-bold uppercase">{projects?.[0]?.name}</div>

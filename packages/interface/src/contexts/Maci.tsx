@@ -147,6 +147,9 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         });
         setIsLoading(false);
         break;
+      case GatekeeperTrait.FreeForAll:
+        setIsLoading(false);
+        break;
       default:
         break;
     }
@@ -159,7 +162,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   // for instance with semaphore
   const isEligibleToVote = useMemo(
     () => gatekeeperTrait && (gatekeeperTrait === GatekeeperTrait.FreeForAll || Boolean(sgData)) && Boolean(address),
-    [sgData, address],
+    [sgData, address, gatekeeperTrait],
   );
 
   // on load get the key pair from local storage and set the signature message
