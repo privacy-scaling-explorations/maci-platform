@@ -14,6 +14,7 @@ env:
   COORDINATOR_ZKEY_PATH: "./zkeys/"
   COORDINATOR_RAPIDSNARK_EXE: "~/rapidsnark/build/prover"
   PIMLICO_API_KEY: "pim_"
+  RPC_API_KEY: "rpc_"
   SUBGRAPH_FOLDER: "./node_modules/maci-subgraph"
   SUBGRAPH_NAME: ${{ vars.SUBGRAPH_NAME }}
   SUBGRAPH_PROVIDER_URL: ${{ vars.SUBGRAPH_PROVIDER_URL }}

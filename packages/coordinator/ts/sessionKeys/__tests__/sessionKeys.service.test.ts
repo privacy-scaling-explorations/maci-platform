@@ -1,12 +1,7 @@
 import dotenv from "dotenv";
-import { ZeroAddress } from "ethers";
 import { zeroAddress } from "viem";
-import { optimismSepolia } from "viem/chains";
 
-import { KeyLike } from "crypto";
-
-import { ErrorCodes } from "../../common";
-import { CryptoService } from "../../crypto/crypto.service";
+import { ErrorCodes, ESupportedNetworks } from "../../common";
 import { FileService } from "../../file/file.service";
 import { SessionKeysService } from "../sessionKeys.service";
 
@@ -15,21 +10,18 @@ import { mockSessionKeyApproval } from "./utils";
 dotenv.config();
 
 describe("SessionKeysService", () => {
-  const cryptoService = new CryptoService();
   const fileService = new FileService();
   let sessionKeysService: SessionKeysService;
-  let publicKey: KeyLike;
 
-  beforeAll(async () => {
-    publicKey = (await fileService.getPublicKey()).publicKey;
-    sessionKeysService = new SessionKeysService(cryptoService, fileService);
+  beforeAll(() => {
+    sessionKeysService = new SessionKeysService(fileService);
   });
 
   describe("generateSessionKey", () => {
     test("should generate and store a session key", () => {
       const sessionKeyAddress = sessionKeysService.generateSessionKey();
       expect(sessionKeyAddress).toBeDefined();
-      expect(sessionKeyAddress).not.toEqual(ZeroAddress);
+      expect(sessionKeyAddress).not.toEqual(zeroAddress);
 
       const sessionKey = fileService.getSessionKey(sessionKeyAddress.sessionKeyAddress);
       expect(sessionKey).toBeDefined();
@@ -40,7 +32,7 @@ describe("SessionKeysService", () => {
     test("should delete a session key", () => {
       const sessionKeyAddress = sessionKeysService.generateSessionKey();
       expect(sessionKeyAddress).toBeDefined();
-      expect(sessionKeyAddress).not.toEqual(ZeroAddress);
+      expect(sessionKeyAddress).not.toEqual(zeroAddress);
 
       const sessionKey = fileService.getSessionKey(sessionKeyAddress.sessionKeyAddress);
       expect(sessionKey).toBeDefined();
@@ -54,22 +46,19 @@ describe("SessionKeysService", () => {
   describe("generateClientFromSessionKey", () => {
     test("should fail to generate a client with an invalid approval", async () => {
       const sessionKeyAddress = sessionKeysService.generateSessionKey();
-      const approval = await mockSessionKeyApproval(sessionKeyAddress.sessionKeyAddress);
-      const encryptedApproval = cryptoService.encrypt(publicKey, approval);
       await expect(
         sessionKeysService.generateClientFromSessionKey(
           sessionKeyAddress.sessionKeyAddress,
-          encryptedApproval,
-          optimismSepolia,
+          "0xinvalid",
+          ESupportedNetworks.OPTIMISM_SEPOLIA,
         ),
       ).rejects.toThrow(ErrorCodes.INVALID_APPROVAL);
     });
 
     test("should throw when given a non existent session key address", async () => {
       const approval = await mockSessionKeyApproval(zeroAddress);
-      const encryptedApproval = cryptoService.encrypt(publicKey, approval);
       await expect(
-        sessionKeysService.generateClientFromSessionKey(zeroAddress, encryptedApproval, optimismSepolia),
+        sessionKeysService.generateClientFromSessionKey(zeroAddress, approval, ESupportedNetworks.OPTIMISM_SEPOLIA),
       ).rejects.toThrow(ErrorCodes.SESSION_KEY_NOT_FOUND);
     });
 
@@ -86,17 +75,16 @@ describe("SessionKeysService", () => {
 
       const sessionKeyAddress = sessionKeysService.generateSessionKey();
       const approval = await mockSessionKeyApproval(sessionKeyAddress.sessionKeyAddress);
-      const encryptedApproval = cryptoService.encrypt(publicKey, approval);
 
       const client = await sessionKeysService.generateClientFromSessionKey(
         sessionKeyAddress.sessionKeyAddress,
-        encryptedApproval,
-        optimismSepolia,
+        approval,
+        ESupportedNetworks.OPTIMISM_SEPOLIA,
       );
       expect(mockGenerateClientFromSessionKey).toHaveBeenCalledWith(
         sessionKeyAddress.sessionKeyAddress,
-        encryptedApproval,
-        optimismSepolia,
+        approval,
+        ESupportedNetworks.OPTIMISM_SEPOLIA,
       );
       expect(client).toEqual({ mockedClient: true });
     });

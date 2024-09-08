@@ -1,3 +1,23 @@
+import {
+  arbitrum,
+  arbitrumSepolia,
+  base,
+  baseSepolia,
+  bsc,
+  type Chain,
+  gnosis,
+  holesky,
+  linea,
+  lineaSepolia,
+  mainnet,
+  optimism,
+  optimismSepolia,
+  polygon,
+  scroll,
+  scrollSepolia,
+  sepolia,
+} from "viem/chains";
+
 export enum ESupportedNetworks {
   ETHEREUM = "mainnet",
   OPTIMISM = "optimism",
@@ -5,60 +25,60 @@ export enum ESupportedNetworks {
   BSC = "bsc",
   BSC_CHAPEL = "chapel",
   GNOSIS_CHAIN = "gnosis",
-  FUSE = "fuse",
   POLYGON = "matic",
-  FANTOM_OPERA = "fantom",
-  ZKSYNC_ERA_TESTNET = "zksync-era-testnet",
-  BOBA = "boba",
-  MOONBEAM = "moonbeam",
-  MOONRIVER = "moonriver",
-  MOONBASE_ALPHA = "mbase",
-  FANTOM_TESTNET = "fantom-testnet",
   ARBITRUM_ONE = "arbitrum-one",
-  CELO = "celo",
-  AVALANCHE_FUJI = "fuji",
-  AVALANCHE = "avalanche",
-  CELO_ALFAJORES = "celo-alfajores",
   HOLESKY = "holesky",
-  AURORA = "aurora",
-  AURORA_TESTNET = "aurora-testnet",
-  HARMONY = "harmony",
   LINEA_SEPOLIA = "linea-sepolia",
-  GNOSIS_CHIADO = "gnosis-chiado",
-  MODE_SEPOLIA = "mode-sepolia",
-  MODE = "mode-mainnet",
   BASE_SEPOLIA = "base-sepolia",
-  ZKSYNC_ERA_SEPOLIA = "zksync-era-sepolia",
-  POLYGON_ZKEVM = "polygon-zkevm",
-  ZKSYNC_ERA = "zksync-era",
   ETHEREUM_SEPOLIA = "sepolia",
   ARBITRUM_SEPOLIA = "arbitrum-sepolia",
   LINEA = "linea",
   BASE = "base",
   SCROLL_SEPOLIA = "scroll-sepolia",
   SCROLL = "scroll",
-  BLAST_MAINNET = "blast-mainnet",
-  ASTAR_ZKEVM_MAINNET = "astar-zkevm-mainnet",
-  SEI_TESTNET = "sei-testnet",
-  BLAST_TESTNET = "blast-testnet",
-  ETHERLINK_TESTNET = "etherlink-testnet",
-  XLAYER_SEPOLIA = "xlayer-sepolia",
-  XLAYER_MAINNET = "xlayer-mainnet",
-  POLYGON_AMOY = "polygon-amoy",
-  ZKYOTO_TESTNET = "zkyoto-testnet",
-  POLYGON_ZKEVM_CARDONA = "polygon-zkevm-cardona",
-  SEI_MAINNET = "sei-mainnet",
-  ROOTSTOCK_MAINNET = "rootstock",
-  IOTEX_MAINNET = "iotex",
-  NEAR_MAINNET = "near-mainnet",
-  NEAR_TESTNET = "near-testnet",
-  COSMOS = "cosmoshub-4",
-  COSMOS_HUB = "theta-testnet-001",
-  OSMOSIS = "osmosis-1",
-  OSMO_TESTNET = "osmo-test-4",
-  ARWEAVE = "arweave-mainnet",
-  BITCOIN = "btc",
-  SOLANA = "solana-mainnet-beta",
-  INJECTIVE_MAINNET = "injective-mainnet",
-  INJECTIVE_TESTNET = "injective-testnet",
 }
+
+/**
+ * Get the Viem chain for a given network
+ *
+ * @param network - the network to get the chain for
+ * @returns the Viem chain
+ */
+export const viemChain = (network: ESupportedNetworks): Chain => {
+  switch (network) {
+    case ESupportedNetworks.ETHEREUM:
+      return mainnet;
+    case ESupportedNetworks.ETHEREUM_SEPOLIA:
+      return sepolia;
+    case ESupportedNetworks.ARBITRUM_ONE:
+      return arbitrum;
+    case ESupportedNetworks.ARBITRUM_SEPOLIA:
+      return arbitrumSepolia;
+    case ESupportedNetworks.BASE_SEPOLIA:
+      return baseSepolia;
+    case ESupportedNetworks.LINEA_SEPOLIA:
+      return lineaSepolia;
+    case ESupportedNetworks.SCROLL_SEPOLIA:
+      return scrollSepolia;
+    case ESupportedNetworks.SCROLL:
+      return scroll;
+    case ESupportedNetworks.BASE:
+      return base;
+    case ESupportedNetworks.HOLESKY:
+      return holesky;
+    case ESupportedNetworks.LINEA:
+      return linea;
+    case ESupportedNetworks.BSC:
+      return bsc;
+    case ESupportedNetworks.GNOSIS_CHAIN:
+      return gnosis;
+    case ESupportedNetworks.POLYGON:
+      return polygon;
+    case ESupportedNetworks.OPTIMISM:
+      return optimism;
+    case ESupportedNetworks.OPTIMISM_SEPOLIA:
+      return optimismSepolia;
+    default:
+      throw new Error(`Unsupported network: ${network}`);
+  }
+};

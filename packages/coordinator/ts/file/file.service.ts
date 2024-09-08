@@ -38,7 +38,7 @@ export class FileService {
    */
   constructor() {
     this.logger = new Logger(FileService.name);
-    this.db = low(new FileSync<TStorage>(path.resolve(__dirname, "..", "..", "./session-keys.json")));
+    this.db = low(new FileSync<TStorage>(path.resolve(process.cwd(), "./session-keys.json")));
   }
 
   /**
