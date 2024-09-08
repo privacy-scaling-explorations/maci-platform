@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { type ReactNode } from "react";
 
 import { Heading } from "~/components/ui/Heading";
@@ -20,14 +19,12 @@ export interface IProjectDetailsProps {
   action?: ReactNode;
   projectId?: string;
   attestation?: Attestation;
-  disabled?: boolean;
 }
 
 const ProjectDetails = ({
   projectId = "",
   attestation = undefined,
   action = undefined,
-  disabled = false,
 }: IProjectDetailsProps): JSX.Element => {
   const metadata = useProjectMetadata(attestation?.metadataPtr);
 
@@ -37,7 +34,7 @@ const ProjectDetails = ({
   const appState = useAppState();
 
   return (
-    <div className={clsx("relative dark:text-white", disabled && "opacity-30")}>
+    <div className="relative dark:text-white">
       <div className="mb-7">
         <Navigation projectName={attestation?.name ?? "project name"} />
       </div>
