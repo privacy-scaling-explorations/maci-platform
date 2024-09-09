@@ -41,7 +41,7 @@
     "initPoll:localhost": "pnpm run initPoll"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-ethers": "^3.0.6",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@openzeppelin/contracts": "^5.0.2",
     "circomlibjs": "^0.1.7",
