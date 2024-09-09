@@ -73,9 +73,9 @@ describe("EASRegistryManager", () => {
       .withArgs(
         addRequest.registry,
         addRequest.requestType,
-        addRequest.recipient.recipient,
-        addRequest.index,
         addRequest.recipient.id,
+        addRequest.index,
+        addRequest.recipient.recipient,
         addRequest.recipient.metadataUrl,
       );
 
@@ -96,9 +96,9 @@ describe("EASRegistryManager", () => {
       .withArgs(
         changeRequest.registry,
         changeRequest.requestType,
-        changeRequest.recipient.recipient,
-        changeRequest.index,
         changeRequest.recipient.id,
+        changeRequest.index,
+        changeRequest.recipient.recipient,
         changeRequest.recipient.metadataUrl,
       );
 
@@ -107,9 +107,9 @@ describe("EASRegistryManager", () => {
       .withArgs(
         changeRequest.registry,
         changeRequest.requestType,
-        changeRequest.recipient.recipient,
-        changeRequest.index,
         changeRequest.recipient.id,
+        changeRequest.index,
+        changeRequest.recipient.recipient,
         changeRequest.recipient.metadataUrl,
       );
 

@@ -15,9 +15,9 @@ interface IRecipientRegistry {
   }
 
   /// @notice Events
-  event RecipientAdded(uint256 indexed index, bytes32 id, bytes32 indexed metadataUrl, address indexed recipient);
-  event RecipientRemoved(uint256 indexed index, bytes32 id, address indexed recipient);
-  event RecipientChanged(uint256 indexed index, bytes32 id, bytes32 indexed metadataUrl, address indexed newAddress);
+  event RecipientAdded(uint256 indexed index, bytes32 id, bytes32 indexed metadataUrl, address indexed payout);
+  event RecipientRemoved(uint256 indexed index, bytes32 id, address indexed payout);
+  event RecipientChanged(uint256 indexed index, bytes32 id, bytes32 indexed metadataUrl, address indexed newPayout);
 
   /// @notice Custom errors
   error MaxRecipientsReached();

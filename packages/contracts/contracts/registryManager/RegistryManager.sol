@@ -66,9 +66,9 @@ contract RegistryManager is Ownable, IRegistryManager, ICommon {
     emit RequestSent(
       request.registry,
       request.requestType,
-      request.recipient.recipient,
-      request.index,
       request.recipient.id,
+      request.index,
+      request.recipient.recipient,
       request.recipient.metadataUrl
     );
   }
@@ -83,9 +83,9 @@ contract RegistryManager is Ownable, IRegistryManager, ICommon {
     emit RequestApproved(
       request.registry,
       request.requestType,
-      request.recipient.recipient,
-      request.index,
       request.recipient.id,
+      request.index,
+      request.recipient.recipient,
       request.recipient.metadataUrl
     );
 
@@ -106,9 +106,9 @@ contract RegistryManager is Ownable, IRegistryManager, ICommon {
     emit RequestRejected(
       request.registry,
       request.requestType,
-      request.recipient.recipient,
-      request.index,
       request.recipient.id,
+      request.index,
+      request.recipient.recipient,
       request.recipient.metadataUrl
     );
   }

@@ -1,0 +1,113 @@
+specVersion: 1.2.0
+description: Subgraph Indexer for MACI contract
+repository: https://github.com/privacy-scaling-explorations/maci-platform
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: MACI
+    network: {{ network }}
+    source:
+      abi: MACI
+      address: "{{ maciContractAddress }}"
+      startBlock: {{ maciContractStartBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - MACI
+        - Poll
+      abis:
+        - name: MACI
+          file: ./node_modules/maci-platform-contracts/build/artifacts/contracts/maci/MACI.sol/MACI.json
+        - name: Poll
+          file: ./node_modules/maci-platform-contracts/build/artifacts/contracts/maci/Poll.sol/Poll.json
+      eventHandlers:
+        - event: DeployPoll(uint256,indexed uint256,indexed uint256,uint8)
+          handler: handleDeployPoll
+        - event: SignUp(uint256,indexed uint256,indexed uint256,uint256,uint256)
+          handler: handleSignUp
+      file: ./src/maci.ts
+  - kind: ethereum
+    name: RegistryManager
+    network: {{ network }}
+    source:
+      abi: RegistryManager
+      address: "{{ registryManagerContractAddress }}"
+      startBlock: {{ registryManagerContractStartBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - RegistryManager
+        - BaseRegistry
+      abis:
+        - name: RegistryManager
+          file: ./node_modules/maci-platform-contracts/build/artifacts/contracts/registryManager/RegistryManager.sol/RegistryManager.json
+        - name: BaseRegistry
+          file: ./node_modules/maci-platform-contracts/build/artifacts/contracts/registry/BaseRegistry.sol/BaseRegistry.json
+      eventHandlers:
+        - event: RequestSent(indexed address,indexed uint8,indexed bytes32,uint256,address,bytes32)
+          handler: handleRequestSent
+        - event: RequestApproved(indexed address,indexed uint8,indexed bytes32,uint256,address,bytes32)
+          handler: handleRequestApproved
+        - event: RequestRejected(indexed address,indexed uint8,indexed bytes32,uint256,address,bytes32)
+          handler: handleRequestRejected
+      file: ./src/registryManager.ts
+templates:
+  - kind: ethereum
+    name: Poll
+    network: {{ network }}
+    source:
+      abi: Poll
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - Poll
+      abis:
+        - name: Poll
+          file: ./node_modules/maci-platform-contracts/build/artifacts/contracts/maci/Poll.sol/Poll.json
+      eventHandlers:
+        - event: MergeMaciState(indexed uint256,indexed uint256)
+          handler: handleMergeMaciState
+        - event: MergeMessageAq(indexed uint256)
+          handler: handleMergeMessageAq
+        - event: MergeMessageAqSubRoots(indexed uint256)
+          handler: handleMergeMessageAqSubRoots
+        - event: PublishMessage((uint256[10]),(uint256,uint256))
+          handler: handlePublishMessage
+        - event: SetRegistry(indexed address)
+          handler: handleSetRegistry
+      callHandlers:
+        - function: init()
+          handler: handleInitPoll
+      file: ./src/poll.ts
+
+  - kind: ethereum
+    name: Registry
+    network: {{ network }}
+    source:
+      abi: Registry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - Registry
+      abis:
+        - name: Registry
+          file: ./node_modules/maci-platform-contracts/build/artifacts/contracts/registry/BaseRegistry.sol/BaseRegistry.json
+      eventHandlers:
+        - event: RecipientAdded(indexed uint256,bytes32,indexed bytes32,indexed address)
+          handler: handleAddRecipient
+        - event: RecipientChanged(indexed uint256,bytes32,indexed bytes32,indexed address)
+          handler: handleChangeRecipient
+        - event: RecipientRemoved(indexed uint256,bytes32,indexed address)
+          handler: handleRemoveRecipient
+      file: ./src/registry.ts

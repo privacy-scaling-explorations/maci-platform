@@ -3,8 +3,8 @@ pragma solidity ^0.8.20;
 
 import { PollFactory as BasePollFactory } from "maci-contracts/contracts/PollFactory.sol";
 import { IMACI } from "maci-contracts/contracts/interfaces/IMACI.sol";
-import { AccQueue } from "maci-contracts/contracts/trees/AccQueue.sol";
 import { AccQueueQuinaryMaci } from "maci-contracts/contracts/trees/AccQueueQuinaryMaci.sol";
+
 import { Poll } from "./Poll.sol";
 
 /// @title PollFactory
@@ -20,7 +20,7 @@ contract PollFactory is BasePollFactory {
     uint256 emptyBallotRoot
   ) public virtual override returns (address pollAddr) {
     /// @notice deploy a new AccQueue contract to store messages
-    AccQueue messageAq = new AccQueueQuinaryMaci(treeDepths.messageTreeSubDepth);
+    AccQueueQuinaryMaci messageAq = new AccQueueQuinaryMaci(treeDepths.messageTreeSubDepth);
 
     /// @notice the smart contracts that a Poll would interact with
     ExtContracts memory extContracts = ExtContracts({ maci: IMACI(maci), messageAq: messageAq });

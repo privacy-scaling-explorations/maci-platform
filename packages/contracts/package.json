@@ -35,10 +35,15 @@
     "test": "hardhat test --network hardhat",
     "deploy": "hardhat deploy-full",
     "initPoll": "hardhat initPoll",
+    "verify": "hardhat verify-full",
     "deploy-poll": "hardhat deploy-poll",
     "deploy:localhost": "pnpm run deploy",
     "deploy-poll:localhost": "pnpm run deploy-poll",
-    "initPoll:localhost": "pnpm run initPoll"
+    "initPoll:localhost": "pnpm run initPoll",
+    "deploy:optimism-sepolia": "pnpm run deploy --network optimism_sepolia",
+    "deploy-poll:optimism-sepolia": "pnpm run deploy-poll --network optimism_sepolia",
+    "initPoll:optimism-sepolia": "pnpm run initPoll --network optimism_sepolia",
+    "verify:optimism-sepolia": "pnpm run verify --network optimism_sepolia"
   },
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
