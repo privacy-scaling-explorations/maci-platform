@@ -82,18 +82,21 @@ describe("Maci", () => {
     });
 
     it("should fail if unauthorized user tries to init the poll", async () => {
-      await expect(maciContract.initPoll(pollId, await user.getAddress())).not.to.be.revertedWithCustomError(
-        pollContract,
-        "PollAlreadyInit",
-      );
-      await expect(maciContract.connect(user).initPoll(pollId, await user.getAddress())).to.be.revertedWithCustomError(
+      await expect(maciContract.initPoll(pollId)).not.to.be.revertedWithCustomError(pollContract, "PollAlreadyInit");
+      await expect(maciContract.connect(user).initPoll(pollId)).to.be.revertedWithCustomError(
         pollContract,
         "OwnableUnauthorizedAccount",
       );
     });
 
+    it("should fail if unauthorized user tries to set the poll registry", async () => {
+      await expect(
+        maciContract.connect(user).setPollRegistry(pollId, await user.getAddress()),
+      ).to.be.revertedWithCustomError(maciContract, "OwnableUnauthorizedAccount");
+    });
+
     it("should fail if try to set zero address as registry", async () => {
-      await expect(maciContract.initPoll(pollId, ZeroAddress)).not.to.be.revertedWithCustomError(
+      await expect(maciContract.setPollRegistry(pollId, ZeroAddress)).to.be.revertedWithCustomError(
         pollContract,
         "InvalidAddress",
       );
@@ -111,11 +114,12 @@ describe("Maci", () => {
 
       const registryAddress = await registry.getAddress();
 
-      await expect(maciContract.initPoll(pollId, registryAddress)).not.to.be.revertedWithCustomError(
-        pollContract,
-        "PollAlreadyInit",
-      );
-      await expect(maciContract.initPoll(pollId, registryAddress)).to.be.revertedWithCustomError(
+      const receipt = await maciContract.setPollRegistry(pollId, registryAddress).then((tx) => tx.wait());
+
+      expect(receipt?.status).to.equal(1);
+
+      await expect(maciContract.initPoll(pollId)).not.to.be.revertedWithCustomError(pollContract, "PollAlreadyInit");
+      await expect(maciContract.initPoll(pollId)).to.be.revertedWithCustomError(
         pollContract,
         "OwnableUnauthorizedAccount",
       );

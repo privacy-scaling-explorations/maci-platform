@@ -104,6 +104,10 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
     });
     const extContracts = await pollContract.extContracts();
 
+    await maciContract
+      .setPollRegistry(pollId, await pollRegistry.getAddress())
+      .then((transaction) => transaction.wait());
+
     const messageProcessorContract = await deployment.getContract({
       name: EContracts.MessageProcessor,
       address: messageProcessorContractAddress,

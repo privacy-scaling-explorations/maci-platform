@@ -38,25 +38,25 @@ interface IRegistryManager {
   event RequestSent(
     address indexed registry,
     RequestType indexed requestType,
-    address indexed recipient,
+    bytes32 indexed recipient,
     uint256 index,
-    bytes32 id,
+    address payout,
     bytes32 metadataUrl
   );
   event RequestApproved(
     address indexed registry,
     RequestType indexed requestType,
-    address indexed recipient,
+    bytes32 indexed recipient,
     uint256 index,
-    bytes32 id,
+    address payout,
     bytes32 metadataUrl
   );
   event RequestRejected(
     address indexed registry,
     RequestType indexed requestType,
-    address indexed recipient,
+    bytes32 indexed recipient,
     uint256 index,
-    bytes32 id,
+    address payout,
     bytes32 metadataUrl
   );
 
