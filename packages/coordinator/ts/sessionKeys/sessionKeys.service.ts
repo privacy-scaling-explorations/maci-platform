@@ -5,12 +5,14 @@ import { createKernelAccountClient, KernelAccountClient, KernelSmartAccount } fr
 import { KERNEL_V3_1 } from "@zerodev/sdk/constants";
 import { ENTRYPOINT_ADDRESS_V07 } from "permissionless";
 import { ENTRYPOINT_ADDRESS_V07_TYPE } from "permissionless/types";
-import { type Chain, createPublicClient, type Hex, http, type HttpTransport, type Transport } from "viem";
+import { http } from "viem";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 
-import { ErrorCodes } from "../common";
-import { genPimlicoRPCUrl } from "../common/accountAbstraction";
-import { CryptoService } from "../crypto/crypto.service";
+import type { Chain, Hex, HttpTransport, Transport } from "viem";
+
+import { ErrorCodes, ESupportedNetworks } from "../common";
+import { genPimlicoRPCUrl, getPublicClient } from "../common/accountAbstraction";
+import { viemChain } from "../common/networks";
 import { FileService } from "../file/file.service";
 
 import { IGenerateSessionKeyReturn } from "./types";
@@ -28,13 +30,9 @@ export class SessionKeysService {
   /**
    * Create a new instance of SessionKeysService
    *
-   * @param cryptoService - crypto service
    * @param fileService - file service
    */
-  constructor(
-    private readonly cryptoService: CryptoService,
-    private readonly fileService: FileService,
-  ) {
+  constructor(private readonly fileService: FileService) {
     this.logger = new Logger(SessionKeysService.name);
   }
 
@@ -64,26 +62,22 @@ export class SessionKeysService {
    * Generate a KernelClient from a session key and an approval
    *
    * @param sessionKeyAddress - the address of the session key
-   * @param encryptedApproval - the encrypted approval string
+   * @param approval - the approval string
    * @param chain - the chain to use
-   * @returns
+   * @returns a KernelAccountClient
    */
   async generateClientFromSessionKey(
     sessionKeyAddress: Hex,
-    encryptedApproval: string,
-    chain: Chain,
+    approval: string,
+    chain: ESupportedNetworks,
   ): Promise<
     KernelAccountClient<
       ENTRYPOINT_ADDRESS_V07_TYPE,
       Transport,
-      undefined,
-      KernelSmartAccount<ENTRYPOINT_ADDRESS_V07_TYPE, HttpTransport, undefined>
+      Chain,
+      KernelSmartAccount<ENTRYPOINT_ADDRESS_V07_TYPE, HttpTransport, Chain>
     >
   > {
-    // the approval will have been encrypted so we need to decrypt it
-    const { privateKey } = await this.fileService.getPrivateKey();
-    const approval = this.cryptoService.decrypt(privateKey, encryptedApproval);
-
     // retrieve the session key from the file service
     const sessionKey = this.fileService.getSessionKey(sessionKeyAddress);
 
@@ -93,10 +87,8 @@ export class SessionKeysService {
     }
 
     // get the bundler url and create a public client
-    const bundlerUrl = genPimlicoRPCUrl(chain.name);
-    const publicClient = createPublicClient({
-      transport: http(bundlerUrl),
-    });
+    const bundlerUrl = genPimlicoRPCUrl(chain);
+    const publicClient = getPublicClient(chain);
 
     // Using a stored private key
     const sessionKeySigner = toECDSASigner({
@@ -117,9 +109,10 @@ export class SessionKeysService {
         bundlerTransport: http(bundlerUrl),
         entryPoint: ENTRYPOINT_ADDRESS_V07,
         account: sessionKeyAccount,
+        chain: viemChain(chain),
       });
     } catch (error) {
-      this.logger.error("Error deserializing permission account", error);
+      this.logger.error(`Error: ${ErrorCodes.INVALID_APPROVAL}`, error);
       throw new Error(ErrorCodes.INVALID_APPROVAL);
     }
   }

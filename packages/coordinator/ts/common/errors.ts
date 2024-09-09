@@ -13,4 +13,6 @@ export enum ErrorCodes {
   SESSION_KEY_NOT_FOUND = "8",
   PIMLICO_API_KEY_NOT_SET = "9",
   INVALID_APPROVAL = "10",
+  UNSUPPORTED_NETWORK = "11",
+  RPC_API_KEY_NOT_SET = "12",
 }

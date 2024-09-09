@@ -1,14 +1,15 @@
 import { Module } from "@nestjs/common";
 
-import { CryptoModule } from "../crypto/crypto.module";
+import { CryptoService } from "../crypto/crypto.service";
 import { FileModule } from "../file/file.module";
 
 import { SessionKeysController } from "./sessionKeys.controller";
 import { SessionKeysService } from "./sessionKeys.service";
 
 @Module({
-  imports: [FileModule, CryptoModule],
+  imports: [FileModule],
   controllers: [SessionKeysController],
-  providers: [SessionKeysService],
+  providers: [SessionKeysService, CryptoService],
+  exports: [SessionKeysService],
 })
 export class SessionKeysModule {}
