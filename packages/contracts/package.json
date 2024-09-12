@@ -25,6 +25,7 @@
   "scripts": {
     "watch": "tsc --watch",
     "hardhat": "hardhat node",
+    "generateUml": "TS_NODE_TRANSPILE_ONLY=1 ts-node ./scripts/generateUml.ts",
     "compileSol": "TS_NODE_TRANSPILE_ONLY=1 ts-node ./scripts/compileSol.ts",
     "prebuild": "pnpm run compileSol",
     "build": "tsc -p tsconfig.build.json",
@@ -70,6 +71,7 @@
     "dotenv": "^16.4.5",
     "hardhat-artifactor": "^0.2.0",
     "hardhat-contract-sizer": "^2.10.0",
+    "sol2uml": "^2.5.20",
     "ts-node": "^10.9.1",
     "typescript": "^5.5.4"
   }
