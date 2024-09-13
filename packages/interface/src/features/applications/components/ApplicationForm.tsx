@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useAccount } from "wagmi";
 
 import { ImageUpload } from "~/components/ImageUpload";
-import { Form, FormControl, FormSection, Textarea } from "~/components/ui/Form";
+import { Form, FormControl, FormSection } from "~/components/ui/Form";
 import { Input } from "~/components/ui/Input";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
@@ -27,8 +27,8 @@ export const ApplicationForm = (): JSX.Element => {
   const router = useRouter();
 
   /**
-   * There are 3 steps for creating an application.
-   * The first step is to set the beach introduction (profile);
+   * There are 2 steps for creating an application.
+   * The first step is to set the meme introduction (profile);
    * the second step is to set the contributions, impacts, and funding sources (advanced);
    * the last step is to review the input values, allow editing by going back to previous steps (review).
    */
@@ -36,16 +36,12 @@ export const ApplicationForm = (): JSX.Element => {
 
   const handleNextStep = useCallback(() => {
     if (step === EApplicationStep.PROFILE) {
-      setStep(EApplicationStep.ADVANCED);
-    } else if (step === EApplicationStep.ADVANCED) {
       setStep(EApplicationStep.REVIEW);
     }
   }, [step, setStep]);
 
   const handleBackStep = useCallback(() => {
     if (step === EApplicationStep.REVIEW) {
-      setStep(EApplicationStep.ADVANCED);
-    } else if (step === EApplicationStep.ADVANCED) {
       setStep(EApplicationStep.PROFILE);
     }
   }, [step, setStep]);
@@ -75,57 +71,23 @@ export const ApplicationForm = (): JSX.Element => {
       >
         <FormSection
           className={step === EApplicationStep.PROFILE ? "block" : "hidden"}
-          description="Please provide information about your beach."
-          title="Beach Profile"
+          description="Please provide information about your meme."
+          title="Meme Profile"
         >
-          <FormControl required hint="This is the name of your beach" label="beach name" name="name">
-            <Input placeholder="Type your beach name" />
+          <FormControl required hint="This is the name of your meme" label="Meme name" name="name">
+            <Input placeholder="Type your meme name" />
           </FormControl>
-
-          <FormControl required label="Description" name="bio">
-            <Textarea placeholder="Type beach description" rows={4} />
-          </FormControl>
-
-          <div className="gap-4 md:flex">
-            <FormControl className="flex-1" label="Website" name="websiteUrl" required={false}>
-              <Input placeholder="https://" />
-            </FormControl>
-
-            <FormControl className="flex-1" label="X(Twitter)" name="twitter" required={false}>
-              <Input placeholder="Type your twitter username" />
-            </FormControl>
-          </div>
 
           <div className="mb-4 gap-4 md:flex">
             <FormControl
               required
               hint="The size should be smaller than 1MB."
-              label="beach avatar"
+              label="Meme Picture"
               name="profileImageUrl"
             >
               <ImageUpload className="h-48 w-48 " />
             </FormControl>
-
-            <FormControl
-              required
-              className="flex-1"
-              hint="The size should be smaller than 1MB."
-              label="beach background image"
-              name="bannerImageUrl"
-            >
-              <ImageUpload className="h-48 " />
-            </FormControl>
           </div>
-        </FormSection>
-
-        <FormSection
-          className={step === EApplicationStep.ADVANCED ? "block" : "hidden"}
-          description="Describe the activities of your beach."
-          title="Activities"
-        >
-          <FormControl required label="Activities description" name="activitiesDescription">
-            <Textarea placeholder="What can you do in your beach?" rows={4} />
-          </FormControl>
         </FormSection>
 
         {step === EApplicationStep.REVIEW && <ReviewApplicationDetails />}

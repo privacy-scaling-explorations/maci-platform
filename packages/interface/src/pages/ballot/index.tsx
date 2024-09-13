@@ -44,14 +44,14 @@ const ClearBallot = (): JSX.Element | null => {
         type="button"
         onClick={handleOpenDialog}
       >
-        Remove all beaches
+        Remove all memes
       </button>
 
       <Dialog
         button="primary"
         buttonAction={handleClearBallot}
         buttonName="Yes, Clear my ballot"
-        description="This will empty your ballot and remove all the beaches you have added."
+        description="This will empty your ballot and remove all the memes you have added."
         isOpen={isOpen}
         size="sm"
         title="Are you sure?"
@@ -69,12 +69,12 @@ const EmptyBallot = (): JSX.Element => (
       </Heading>
 
       <p className="text-center text-sm text-gray-700">
-        Your vote currently doesn&apos;t have any beaches added. Browse through the available beaches.
+        Your vote currently doesn&apos;t have any memes added. Browse through the available memes.
       </p>
 
       <div className="flex items-center justify-center gap-3">
         <Button as={Link} href="/projects" size="auto" variant="primary">
-          View beaches
+          View Memes
         </Button>
       </div>
     </div>

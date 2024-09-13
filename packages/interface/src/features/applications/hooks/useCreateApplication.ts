@@ -27,21 +27,19 @@ export function useCreateApplication(options: {
 
   const mutation = useMutation({
     mutationFn: async (values: Application) => {
-      if (!values.bannerImageUrl || !values.profileImageUrl) {
+      if (!values.profileImageUrl) {
         throw new Error("No images included.");
       }
 
-      const [profileImageFile, bannerImageFile] = await Promise.all([
-        fetch(values.profileImageUrl),
-        fetch(values.bannerImageUrl),
-      ]).then(([profileImage, bannerImage]) => Promise.all([profileImage.blob(), bannerImage.blob()]));
+      const [profileImageFile] = await Promise.all([fetch(values.profileImageUrl)]).then(([profileImage]) =>
+        Promise.all([profileImage.blob()]),
+      );
 
-      const [profileImageUrl, bannerImageUrl] = await Promise.all([
-        upload.mutateAsync(new File([profileImageFile], "profileImage")),
-        upload.mutateAsync(new File([bannerImageFile], "bannerImage")),
+      const [profileImageUrl] = await Promise.all([
+        upload.mutateAsync(new File([profileImageFile], "profileImageUrl")),
       ]);
 
-      const metadataValues = { ...values, profileImageUrl: profileImageUrl.url, bannerImageUrl: bannerImageUrl.url };
+      const metadataValues = { ...values, profileImageUrl: profileImageUrl.url };
 
       return Promise.all([
         upload.mutateAsync(metadataValues).then(({ url: metadataPtr }) =>

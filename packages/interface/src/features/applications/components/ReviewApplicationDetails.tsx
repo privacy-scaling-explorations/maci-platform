@@ -42,51 +42,26 @@ export const ReviewApplicationDetails = (): JSX.Element => {
       <div>
         <Heading className="mb-1 font-sans text-xl font-semibold">Review & Submit</Heading>
 
-        <p className="leading-loose text-gray-400">Please review and submit your beach application.</p>
+        <p className="leading-loose text-gray-400">Please review and submit your meme.</p>
       </div>
 
       <div className="flex flex-col gap-6 dark:text-white">
-        <b className="text-lg">Beach Profile</b>
+        <b className="text-lg">Meme</b>
 
-        <ValueField required body={application.name} title="Beach name" />
-
-        <ValueField required body={application.bio} title="Beach description" />
-
-        <div className="grid grid-flow-row grid-cols-2 gap-4">
-          <ValueField required body={application.websiteUrl} title="Website" />
-
-          <ValueField body={application.twitter} title="X(Twitter)" />
-        </div>
+        <ValueField required body={application.name} title="Name" />
 
         <div className="flex gap-6">
           <div>
-            <p>Project avatar</p>
+            <p>Image</p>
 
             <div
-              className="h-48 w-48 rounded-full bg-gray-200 bg-cover bg-center bg-no-repeat"
+              className="h-48 w-48 bg-gray-200 bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: `url("${application.profileImageUrl}")`,
               }}
             />
           </div>
-
-          <div className="flex-1">
-            <p>Project cover image</p>
-
-            <div
-              className="h-48 rounded-xl bg-gray-200 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: `url("${application.bannerImageUrl}")`,
-              }}
-            />
-          </div>
         </div>
-      </div>
-
-      <div className="flex flex-col gap-6 dark:text-white">
-        <b className="text-lg">Activities</b>
-
-        <ValueField required body={application.activitiesDescription} title="Activities description" />
       </div>
     </div>
   );

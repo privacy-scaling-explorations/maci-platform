@@ -13,10 +13,6 @@ import type { Attestation } from "~/utils/types";
 import { useProjectMetadata } from "../hooks/useProjects";
 import { EProjectState } from "../types";
 
-import { ImpactCategories } from "./ImpactCategories";
-import { ProjectAvatar } from "./ProjectAvatar";
-import { ProjectBanner } from "./ProjectBanner";
-
 export interface IProjectItemProps {
   attestation: Attestation;
   isLoading: boolean;
@@ -39,25 +35,14 @@ export const ProjectItem = ({
       data-testid={`project-${attestation.id}`}
     >
       <div className="opacity-70 transition-opacity group-hover:opacity-100">
-        <ProjectBanner url={metadata.data?.bannerImageUrl} />
-
-        <ProjectAvatar className="-mt-8 ml-4" rounded="full" url={metadata.data?.profileImageUrl} />
+        {/* <ProjectAvatar className="ml-4 mt-8" size="xl" url={metadata.data?.profileImageUrl} /> */}
+        <img alt="profile" src={metadata.data?.profileImageUrl} />
       </div>
 
       <div className="p-4 pt-2">
         <Heading as="h3" className="truncate dark:text-white" size="lg">
           <Skeleton isLoading={isLoading}>{attestation.name}</Skeleton>
         </Heading>
-
-        <div className="line-clamp-2 h-10 text-sm text-gray-400">
-          <Skeleton className="w-full" isLoading={isLoading}>
-            {metadata.data?.bio}
-          </Skeleton>
-        </div>
-
-        <Skeleton className="w-[100px]" isLoading={isLoading}>
-          <ImpactCategories tags={metadata.data?.impactCategory} />
-        </Skeleton>
 
         {!isLoading && state !== undefined && action && appState === EAppState.VOTING && (
           <div className="flex justify-end pt-6">

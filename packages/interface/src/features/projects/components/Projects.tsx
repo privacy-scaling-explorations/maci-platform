@@ -92,7 +92,7 @@ export const Projects = (): JSX.Element => {
 
       <div className="mb-4 flex justify-between">
         <Heading as="h3" size="3xl">
-          Beaches
+          Memes
         </Heading>
 
         <div>

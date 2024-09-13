@@ -51,7 +51,7 @@ const SignupPage = (): JSX.Element => {
 
         {isConnected && isRegistered && appState === EAppState.VOTING && (
           <Button size="auto" variant="primary">
-            <Link href="/projects">View beaches</Link>
+            <Link href="/projects">View Memes</Link>
           </Button>
         )}
 

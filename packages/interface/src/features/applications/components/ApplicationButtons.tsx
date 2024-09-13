@@ -11,7 +11,6 @@ import type { Application } from "../types";
 
 export enum EApplicationStep {
   PROFILE,
-  ADVANCED,
   REVIEW,
 }
 
@@ -38,19 +37,12 @@ export const ApplicationButtons = ({
 
   const form = useFormContext<Application>();
 
-  const [name, bio, profileImageUrl, bannerImageUrl, activitiesDescription] = useMemo(
-    () => form.watch(["name", "bio", "websiteUrl", "profileImageUrl", "bannerImageUrl", "activitiesDescription"]),
-    [form],
-  );
+  const [name, profileImageUrl] = useMemo(() => form.watch(["name", "profileImageUrl"]), [form]);
 
   const checkStepComplete = (): boolean => {
     if (step === EApplicationStep.PROFILE) {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      return bannerImageUrl !== undefined && profileImageUrl !== undefined && bio.length > 0 && name.length > 0;
-    }
-
-    if (step === EApplicationStep.ADVANCED) {
-      return (activitiesDescription ?? "").length > 0;
+      return profileImageUrl !== undefined && name.length > 0;
     }
 
     return true;
