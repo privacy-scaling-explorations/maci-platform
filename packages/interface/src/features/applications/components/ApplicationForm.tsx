@@ -17,6 +17,7 @@ import { ApplicationButtons, EApplicationStep } from "./ApplicationButtons";
 import { ApplicationSteps } from "./ApplicationSteps";
 import { ImpactTags } from "./ImpactTags";
 import { ReviewApplicationDetails } from "./ReviewApplicationDetails";
+import { TransactionReceipt } from "viem";
 
 export const ApplicationForm = (): JSX.Element => {
   const clearDraft = useLocalStorage("application-draft")[2];
@@ -52,13 +53,13 @@ export const ApplicationForm = (): JSX.Element => {
   }, [step, setStep]);
 
   const create = useCreateApplication({
-    onSuccess: (data: Transaction<string[]>) => {
+    onSuccess: (data: TransactionReceipt) => {
       clearDraft();
-      router.push(`/applications/confirmation?txHash=${data.tx.hash}`);
+      router.push(`/applications/confirmation?txHash=${data.transactionHash}`);
     },
-    onError: (err: { reason?: string; data?: { message: string } }) =>
+    onError: (err: { message?: string;  }) =>
       toast.error("Application create error", {
-        description: err.reason ?? err.data?.message,
+        description: err.message,
       }),
   });
 

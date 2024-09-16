@@ -53,19 +53,25 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
       EContracts.EASRegistryManager;
     const registryManagerAddress = storage.getAddress(registryManagerType, hre.network.name);
     const maxRecipients = deployment.getDeployConfigField<number, keyof typeof EContracts>(
-      EContracts.EASRegistryManager,
+      registryManagerType,
       "maxRecipients",
     );
     const metadataUrl = deployment.getDeployConfigField<string, keyof typeof EContracts>(
-      EContracts.EASRegistryManager,
+      registryManagerType,
       "metadataUrl",
     );
-    const easAddress = deployment.getDeployConfigField<string, keyof typeof EContracts>(
-      EContracts.EASRegistryManager,
-      "easAddress",
-    );
 
-    const registryArgs = [maxRecipients, metadataUrl, easAddress, registryManagerAddress];
+    let registryArgs = [];
+    if (registryManagerType === EContracts.EASRegistryManager) {
+      const easAddress = deployment.getDeployConfigField<string, keyof typeof EContracts>(
+        registryManagerType,
+        "easAddress",
+      );
+      registryArgs = [maxRecipients, metadataUrl, easAddress, registryManagerAddress];
+    } else {
+      registryArgs = [maxRecipients, metadataUrl, registryManagerAddress];
+    }
+
     const pollRegistry = await deployment.deployContract(
       { name: REGISTRY_TYPES[registryManagerType] },
       ...registryArgs,

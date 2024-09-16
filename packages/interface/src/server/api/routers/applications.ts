@@ -2,13 +2,9 @@ import { z } from "zod";
 
 import { config, eas } from "~/config";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { fetchPendingApplications } from "~/utils/fetchApplications";
 import { fetchAttestations } from "~/utils/fetchAttestations";
 import { createDataFilter } from "~/utils/fetchAttestationsUtils";
-
-export const FilterSchema = z.object({
-  limit: z.number().default(3 * 8),
-  cursor: z.number().default(0),
-});
 
 export const applicationsRouter = createTRPCRouter({
   approvals: publicProcedure.input(z.object({ ids: z.array(z.string()).optional() })).query(async ({ input }) =>
@@ -20,12 +16,7 @@ export const applicationsRouter = createTRPCRouter({
       },
     }),
   ),
-  list: publicProcedure.input(FilterSchema).query(async () =>
-    fetchAttestations([eas.schemas.metadata], {
-      orderBy: [{ time: "desc" }],
-      where: {
-        AND: [createDataFilter("type", "bytes32", "application"), createDataFilter("round", "bytes32", config.roundId)],
-      },
-    }),
+  list: publicProcedure.input(z.object({ registryAddress: z.string() })).query(async ({ input }) =>
+    fetchPendingApplications(input.registryAddress),
   ),
 });

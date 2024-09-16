@@ -20,8 +20,12 @@ import { ApplicationHeader } from "./ApplicationHeader";
 import { ApplicationItem } from "./ApplicationItem";
 import { ApproveButton } from "./ApproveButton";
 
-export const ApplicationsToApprove = (): JSX.Element => {
-  const applications = useApplications();
+export const ApplicationsToApprove = ({
+  registryAddress,
+}: {
+  registryAddress: string;
+}): JSX.Element => {
+  const applications = useApplications(registryAddress);
   const approved = useApprovedApplications();
   const approve = useApproveApplication();
   const [refetchedData, setRefetchedData] = useState<Attestation[]>();

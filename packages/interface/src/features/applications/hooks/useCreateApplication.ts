@@ -1,15 +1,16 @@
 import { type UseMutationResult, useMutation } from "@tanstack/react-query";
+import { Hex, TransactionReceipt } from "viem";
 
-import { config, eas } from "~/config";
+import { useMaci } from "~/contexts/Maci";
 import { type TransactionError } from "~/features/voters/hooks/useApproveVoters";
-import { useAttest, useCreateAttestation } from "~/hooks/useEAS";
 import { useUploadMetadata } from "~/hooks/useMetadata";
+import { useSubmitApplication } from "~/hooks/useRegistry";
 
 import type { Application } from "../types";
-import type { Transaction } from "@ethereum-attestation-service/eas-sdk";
+import { useEthersSigner } from "~/hooks/useEthersSigner";
 
 export type TUseCreateApplicationReturn = Omit<
-  UseMutationResult<Transaction<string[]>, Error | TransactionError, Application>,
+  UseMutationResult<TransactionReceipt, Error | TransactionError, Application>,
   "error"
 > & {
   error: Error | TransactionError | null;
@@ -17,18 +18,33 @@ export type TUseCreateApplicationReturn = Omit<
   isUploading: boolean;
 };
 
+/**
+ * Hook to create an application.
+ * @param options - The options to pass to the hook.
+ * @returns The mutation result.
+ */
 export function useCreateApplication(options: {
-  onSuccess: (data: Transaction<string[]>) => void;
-  onError: (err: TransactionError) => void;
+  onSuccess: (data: TransactionReceipt) => void;
+  onError: (err: Error) => void;
 }): TUseCreateApplicationReturn {
-  const attestation = useCreateAttestation();
-  const attest = useAttest();
+  const submitApplication = useSubmitApplication();
   const upload = useUploadMetadata();
+  const { pollData } = useMaci();
+
+  const signer = useEthersSigner();
 
   const mutation = useMutation({
     mutationFn: async (values: Application) => {
+      if (!signer) {
+        throw new Error("No signer found.");
+      }
+
       if (!values.bannerImageUrl || !values.profileImageUrl) {
         throw new Error("No images included.");
+      }
+
+      if (!pollData?.registry) {
+        throw new Error("No registry found.");
       }
 
       const [profileImageFile, bannerImageFile] = await Promise.all([
@@ -41,22 +57,24 @@ export function useCreateApplication(options: {
         upload.mutateAsync(new File([bannerImageFile], "bannerImage")),
       ]);
 
-      const metadataValues = { ...values, profileImageUrl: profileImageUrl.url, bannerImageUrl: bannerImageUrl.url };
+      const metadataValues = { ...values, profileImageUrl: profileImageUrl.url, bannerImageUrl: bannerImageUrl.url, submittedAt: Date.now().valueOf() };
 
-      return Promise.all([
-        upload.mutateAsync(metadataValues).then(({ url: metadataPtr }) =>
-          attestation.mutateAsync({
-            schemaUID: eas.schemas.metadata,
-            values: {
-              name: values.name,
-              metadataType: 0, // "http"
-              metadataPtr,
-              type: "application",
-              round: config.roundId,
-            },
-          }),
-        ),
-      ]).then((attestations) => attest.mutateAsync(attestations.map((att) => ({ ...att, data: [att.data] }))));
+      const uploadRes = await upload.mutateAsync(metadataValues);
+
+      const recipient = (values.payoutAddress ?? (await signer.getAddress())) as Hex;
+
+      // now we submit the approval request
+      const res = await submitApplication.mutateAsync({
+        metadataUrl: uploadRes.url,
+        recipient,
+        registryAddress: pollData.registry,
+      });
+
+      if (res.status !== "success") {
+        throw new Error("Failed to submit application");
+      }
+
+      return res;
     },
 
     ...options,
@@ -64,8 +82,8 @@ export function useCreateApplication(options: {
 
   return {
     ...mutation,
-    error: attest.error ?? upload.error ?? mutation.error,
-    isAttesting: attest.isPending,
+    error: submitApplication.error ?? upload.error ?? mutation.error,
+    isAttesting: submitApplication.isPending,
     isUploading: upload.isPending,
   };
 }

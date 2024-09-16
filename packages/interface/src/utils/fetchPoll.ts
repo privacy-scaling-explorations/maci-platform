@@ -1,10 +1,11 @@
 import { IGetPollData } from "maci-cli/sdk";
+import { Hex, zeroAddress } from "viem";
 
 import { config } from "~/config";
 
 import { createCachedFetch } from "./fetch";
 
-const cachedFetch = createCachedFetch({ ttl: 1000 * 60 * 10 });
+const cachedFetch = createCachedFetch({ ttl: 10 });
 
 interface Poll {
   pollId: string;
@@ -15,6 +16,9 @@ interface Poll {
   numSignups: string;
   id: string;
   mode: string;
+  registry: {
+    id: string;
+  };
 }
 
 export interface GraphQLResponse {
@@ -34,11 +38,18 @@ const PollQuery = `
       numSignups
       id
       mode
+      registry {
+        id
+      }
     }
   }
 `;
 
-export async function fetchPoll(): Promise<IGetPollData> {
+export interface IPollData extends IGetPollData {
+  registry: Hex;
+}
+
+export async function fetchPoll(): Promise<IPollData> {
   const poll = (
     await cachedFetch<{ polls: Poll[] }>(config.maciSubgraphUrl, {
       method: "POST",
@@ -57,5 +68,6 @@ export async function fetchPoll(): Promise<IGetPollData> {
     numSignups: poll?.numSignups ?? 0,
     address: poll?.id ?? "",
     mode: poll?.mode ?? "",
+    registry: poll?.registry ? (poll.registry.id as Hex) : zeroAddress,
   };
 }

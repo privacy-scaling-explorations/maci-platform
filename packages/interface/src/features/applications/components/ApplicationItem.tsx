@@ -20,9 +20,9 @@ export interface IApplicationItemProps extends Attestation {
 export const ApplicationItem = ({
   id,
   recipient,
-  name,
+  // name,
   metadataPtr,
-  time,
+  // time,
   isApproved = false,
   isLoading = false,
 }: IApplicationItemProps): JSX.Element => {
@@ -30,6 +30,7 @@ export const ApplicationItem = ({
 
   const form = useFormContext();
 
+  console.log("metadata", metadata.data);
   const { fundingSources = [], profileImageUrl } = metadata.data ?? {};
 
   return (
@@ -44,7 +45,7 @@ export const ApplicationItem = ({
 
           <div className="flex flex-col">
             <Skeleton className="mb-1 min-h-5 min-w-24" isLoading={isLoading}>
-              <span className="uppercase">{name}</span>
+              <span className="uppercase">{metadata.data?.name}</span>
             </Skeleton>
 
             <div className="text-sm text-gray-400">
@@ -57,7 +58,7 @@ export const ApplicationItem = ({
           <ClockIcon className="size-3" />
 
           <Skeleton className="mb-1 min-h-5 min-w-24" isLoading={isLoading}>
-            {formatDate(time * 1000)}
+            {metadata.data?.submittedAt ? formatDate(metadata.data?.submittedAt! * 1000) : "N/A"}
           </Skeleton>
         </div>
 
