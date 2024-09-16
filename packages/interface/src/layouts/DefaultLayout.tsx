@@ -2,7 +2,6 @@ import { GatekeeperTrait } from "maci-cli/sdk";
 import { type ReactNode, type PropsWithChildren, useMemo } from "react";
 import { useAccount } from "wagmi";
 
-import { BallotOverview } from "~/components/BallotOverview";
 import Header from "~/components/Header";
 import { Info } from "~/components/Info";
 import { Notice } from "~/components/ui/Notice";
@@ -102,9 +101,12 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
       sidebar="left"
       sidebarComponent={
         <div>
-          {showInfo && <Info showVotingInfo size="sm" />}
-
-          {appState !== EAppState.APPLICATION && showBallot && address && isRegistered && <BallotOverview />}
+          <Info
+            showAppState={showInfo}
+            showBallot={appState !== EAppState.APPLICATION && !!(showBallot && address && isRegistered)}
+            showRoundInfo={showInfo}
+            size="sm"
+          />
 
           {showSubmitButton && ballot.votes.length > 0 && (
             <div className="flex flex-col gap-4">

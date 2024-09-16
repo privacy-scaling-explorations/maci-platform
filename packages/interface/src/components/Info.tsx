@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { tv } from "tailwind-variants";
 
 import { createComponent } from "~/components/ui";
@@ -6,6 +7,7 @@ import { useMaci } from "~/contexts/Maci";
 import { useAppState } from "~/utils/state";
 import { EInfoCardState, EAppState } from "~/utils/types";
 
+import { BallotOverview } from "./BallotOverview";
 import { InfoCard } from "./InfoCard";
 import { RoundInfo } from "./RoundInfo";
 import { VotingInfo } from "./VotingInfo";
@@ -25,12 +27,20 @@ const InfoContainer = createComponent(
 
 interface InfoProps {
   size: string;
-  showVotingInfo?: boolean;
+  showRoundInfo?: boolean;
+  showAppState?: boolean;
+  showBallot?: boolean;
 }
 
-export const Info = ({ size, showVotingInfo = false }: InfoProps): JSX.Element => {
+export const Info = ({
+  size,
+  showRoundInfo = false,
+  showAppState = false,
+  showBallot = false,
+}: InfoProps): JSX.Element => {
   const { votingEndsAt } = useMaci();
   const appState = useAppState();
+  const { asPath } = useRouter();
 
   const steps = [
     {
@@ -62,27 +72,26 @@ export const Info = ({ size, showVotingInfo = false }: InfoProps): JSX.Element =
   return (
     <div className="w-full">
       <InfoContainer size={size}>
-        {showVotingInfo && (
-          <div className="w-full">
-            <RoundInfo />
+        {showRoundInfo && <RoundInfo />}
 
-            {appState === EAppState.VOTING && <VotingInfo />}
-          </div>
-        )}
+        {showBallot && <BallotOverview title={asPath.includes("ballot") ? "Summary" : undefined} />}
 
-        {steps.map(
-          (step) =>
-            step.start &&
-            step.end && (
-              <InfoCard
-                key={step.label}
-                end={step.end}
-                start={step.start}
-                state={defineState({ state: step.state, appState })}
-                title={step.label}
-              />
-            ),
-        )}
+        {showRoundInfo && appState === EAppState.VOTING && <VotingInfo />}
+
+        {showAppState &&
+          steps.map(
+            (step) =>
+              step.start &&
+              step.end && (
+                <InfoCard
+                  key={step.label}
+                  end={step.end}
+                  start={step.start}
+                  state={defineState({ state: step.state, appState })}
+                  title={step.label}
+                />
+              ),
+          )}
       </InfoContainer>
     </div>
   );

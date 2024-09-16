@@ -15,7 +15,7 @@ export const VotingInfo = (): JSX.Element => {
   }, 1000);
 
   return (
-    <div className="py-4">
+    <div className="w-full py-4">
       <h4 className="mb-2">Voting Ends In</h4>
 
       {isLoading && <p>Loading...</p>}
