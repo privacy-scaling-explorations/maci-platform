@@ -35,7 +35,7 @@ const ConfirmProjectPage = (): JSX.Element => {
           <p className="flex gap-1 text-blue-400">
             <FiAlertCircle className="h-4 w-4" />
 
-            <i className="text-sm">Applications can be edited and approved until the Registration period ends.</i>
+            <i className="text-sm">Applications can be edited and approved until the Application period ends.</i>
           </p>
 
           {state !== EAppState.APPLICATION && <Alert title="Application period has ended" variant="info" />}

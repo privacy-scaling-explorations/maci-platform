@@ -15,17 +15,13 @@ export const VotingUsage = (): JSX.Element => {
       <h4>Voting Power</h4>
 
       <div>
-        <p className="text-2xl">
-          <b>{initialVoiceCredits}</b>
-        </p>
+        <div className="bold flex gap-2 text-2xl">
+          <span className={clsx(sum > initialVoiceCredits && "text-red")}>{sum}</span>
 
-        <p className="text-xs text-gray-400">Votes Left</p>
-      </div>
+          <span className="text-gray-300">of</span>
 
-      <div>
-        <p className={clsx("text-2xl", sum > initialVoiceCredits && "text-red")}>
-          <b>{sum}</b>
-        </p>
+          <span className="text-gray-300">{initialVoiceCredits}</span>
+        </div>
 
         <p className="text-xs text-gray-400">Votes Used</p>
       </div>

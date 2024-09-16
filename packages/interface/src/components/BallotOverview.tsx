@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
@@ -10,6 +11,7 @@ import { VotingUsage } from "./VotingUsage";
 
 export const BallotOverview = (): JSX.Element => {
   const { ballot } = useBallot();
+  const { asPath } = useRouter();
 
   const appState = useAppState();
 
@@ -23,7 +25,7 @@ export const BallotOverview = (): JSX.Element => {
     >
       <div className="dark:bg-lightBlack my-8 flex-col items-center gap-2 rounded-lg bg-white p-5 uppercase shadow-lg dark:text-white">
         <Heading as="h3" size="3xl">
-          My Ballot
+          {asPath.includes("ballot") ? "Summary" : "My Ballot"}
         </Heading>
 
         <AddedProjects />

@@ -71,7 +71,7 @@ export const Projects = (): JSX.Element => {
           content={
             <div className="flex items-center gap-2">
               <FiAlertCircle className="h-4 w-4" />
-              Voting is disabled until the Registration period ends.
+              Voting is disabled until the Application period ends.
             </div>
           }
           status="default"

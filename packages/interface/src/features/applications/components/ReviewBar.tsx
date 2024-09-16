@@ -65,7 +65,7 @@ export const ReviewBar = ({ projectId }: IReviewBarProps): JSX.Element => {
 
               <span>This project is under review by our team.</span>
 
-              <i>Applications can be edited and approved until Registration period ends.</i>
+              <i>Applications can be edited and approved until the Application period ends.</i>
             </div>
           }
           status="default"
