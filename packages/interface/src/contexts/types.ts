@@ -1,5 +1,7 @@
-import { type TallyData, type IGetPollData, type GatekeeperTrait } from "maci-cli/sdk";
+import { type TallyData, type GatekeeperTrait } from "maci-cli/sdk";
 import { type ReactNode } from "react";
+
+import { IPollData } from "~/utils/fetchPoll";
 
 import type { Ballot, Vote } from "~/features/ballot/types";
 
@@ -17,7 +19,7 @@ export interface MaciContextType {
   isRegistered?: boolean;
   pollId?: string;
   error?: string;
-  pollData?: IGetPollData;
+  pollData?: IPollData;
   tallyData?: TallyData;
   maciPubKey?: string;
   gatekeeperTrait?: GatekeeperTrait;

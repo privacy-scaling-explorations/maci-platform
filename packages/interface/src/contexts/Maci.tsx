@@ -1,14 +1,11 @@
 /* eslint-disable no-console */
 import { Identity } from "@semaphore-protocol/core";
-import { isAfter } from "date-fns";
-import { type Signer, BrowserProvider } from "ethers";
+import { type Signer } from "ethers";
 import {
   signup,
   isRegisteredUser,
   publishBatch,
   type TallyData,
-  type IGetPollData,
-  getPoll,
   genKeyPair,
   GatekeeperTrait,
   getGatekeeperTrait,
@@ -20,11 +17,11 @@ import { useAccount, useSignMessage } from "wagmi";
 import { config } from "~/config";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { api } from "~/utils/api";
+import { IPollData } from "~/utils/fetchPoll";
 import { getHatsClient } from "~/utils/hatsProtocol";
 import { getSemaphoreProof } from "~/utils/semaphore";
 
 import type { IVoteArgs, MaciContextType, MaciProviderProps } from "./types";
-import type { EIP1193Provider } from "viem";
 import type { Attestation } from "~/utils/types";
 
 export const MaciContext = createContext<MaciContextType | undefined>(undefined);
@@ -43,7 +40,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   const [initialVoiceCredits, setInitialVoiceCredits] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-  const [pollData, setPollData] = useState<IGetPollData>();
+  const [pollData, setPollData] = useState<IPollData>();
   const [tallyData, setTallyData] = useState<TallyData>();
 
   const [semaphoreIdentity, setSemaphoreIdentity] = useState<Identity | undefined>();
@@ -383,41 +380,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       }
 
       setIsLoading(false);
-    } else {
-      if (!window.ethereum) {
-        setIsLoading(false);
-        return;
-      }
-
-      const provider = new BrowserProvider(window.ethereum as unknown as EIP1193Provider, {
-        chainId: config.network.id,
-        name: config.network.name,
-      });
-
-      getPoll({
-        maciAddress: config.maciAddress!,
-        provider,
-      })
-        .then((data) => {
-          setPollData(data);
-          return data;
-        })
-        .then(async (data) => {
-          if (!data.isMerged || (votingEndsAt && isAfter(votingEndsAt, new Date()))) {
-            return undefined;
-          }
-
-          return fetch(`${config.tallyUrl}/tally-${data.id}.json`)
-            .then((res) => res.json() as Promise<TallyData>)
-            .then((res) => {
-              setTallyData(res);
-            })
-            .catch(() => undefined);
-        })
-        .catch(console.error)
-        .finally(() => {
-          setIsLoading(false);
-        });
     }
   }, [signer, votingEndsAt, setIsLoading, setTallyData, setPollData, poll.data]);
 

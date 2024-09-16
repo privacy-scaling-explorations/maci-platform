@@ -41,6 +41,7 @@
     "lucide-react": "^0.316.0",
     "maci-cli": "^2.3.0",
     "maci-domainobjs": "^2.2.0",
+    "maci-platform-contracts": "workspace:*",
     "next": "^14.1.0",
     "next-auth": "^4.24.5",
     "next-themes": "^0.2.1",
