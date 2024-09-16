@@ -18,6 +18,7 @@ const easScanUrl = {
   linea: "https://linea.easscan.org/graphql",
   sepolia: "https://sepolia.easscan.org/graphql",
   base: "https://base.easscan.org/graphql",
+  baseSeppolia: "https://base-sepolia.easscan.org/graphql",
 };
 
 // EAS contract addresses for each chain
@@ -29,6 +30,7 @@ const easContractAddresses = {
   linea: "0xaEF4103A04090071165F78D45D83A0C0782c2B2a",
   sepolia: "0xC2679fBD37d54388Ce493F1DB75320D236e1815e",
   base: "0x4200000000000000000000000000000000000021",
+  baseSepolia: "0x4200000000000000000000000000000000000021",
 };
 
 // EAS Schema Registry contract addresses for each chain
@@ -40,6 +42,7 @@ const easSchemaRegistryContractAddresses = {
   linea: "0x55D26f9ae0203EF95494AE4C170eD35f4Cf77797",
   sepolia: "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0",
   base: "0x4200000000000000000000000000000000000020",
+  baseSepolia: "0x4200000000000000000000000000000000000020",
 };
 
 /**
