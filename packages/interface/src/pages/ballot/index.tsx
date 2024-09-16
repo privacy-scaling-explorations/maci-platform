@@ -65,11 +65,11 @@ const EmptyBallot = (): JSX.Element => (
   <div className="flex flex-1 items-center justify-center">
     <div className=" max-w-[360px] space-y-4">
       <Heading className="text-center" size="lg">
-        Your vote is empty
+        Your ballot is empty
       </Heading>
 
       <p className="text-center text-sm text-gray-700">
-        Your vote currently doesn&apos;t have any projects added. Browse through the available projects.
+        There are currently no projects added. Browse through the available projects.
       </p>
 
       <div className="flex items-center justify-center gap-3">

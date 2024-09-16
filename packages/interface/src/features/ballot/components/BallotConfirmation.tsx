@@ -36,7 +36,7 @@ export const BallotConfirmation = (): JSX.Element => {
   return (
     <section>
       <Heading as="h2" className="tracking-tighter" size="4xl">
-        Your votes have been successfully submitted 🥳
+        Your ballot has been successfully submitted 🥳
       </Heading>
 
       <p className="mb-14 mt-4 text-gray-400">
@@ -44,7 +44,7 @@ export const BallotConfirmation = (): JSX.Element => {
       </p>
 
       <div className="mb-7 rounded-lg border border-gray-200 p-5">
-        <b className="font-mono text-2xl uppercase">Summary of your voting</b>
+        <b className="font-mono text-2xl uppercase">Summary of your ballot</b>
 
         <p className="my-8 text-gray-400">
           <span>{`Round you voted in: ${config.roundId}`} </span>

@@ -403,7 +403,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
           return data;
         })
         .then(async (data) => {
-          if (!data.isMerged || isAfter(votingEndsAt!, new Date())) {
+          if (!data.isMerged || (votingEndsAt && isAfter(votingEndsAt, new Date()))) {
             return undefined;
           }
 
