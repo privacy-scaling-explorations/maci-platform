@@ -30,7 +30,7 @@
     "@trpc/client": "11.0.0-next-beta.294",
     "@trpc/next": "11.0.0-next-beta.294",
     "@trpc/react-query": "11.0.0-next-beta.294",
-    "@trpc/server": "11.0.0-next-beta.294",
+    "@trpc/server": "11.0.0-rc.502",
     "@vercel/blob": "^0.19.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.6.0",
