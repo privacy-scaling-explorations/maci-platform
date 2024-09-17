@@ -20,7 +20,7 @@ describe("Registry", () => {
       Bytes.fromUTF8("id"),
       BigInt.fromI32(0),
       DEFAULT_PAYOUT_ADDRESS,
-      Bytes.fromUTF8("url"),
+      "url",
     );
 
     handleAddRecipient(event);
@@ -32,7 +32,7 @@ describe("Registry", () => {
     assert.fieldEquals("Recipient", recipient.id.toHex(), "index", event.params.index.toString());
     assert.fieldEquals("Recipient", recipient.id.toHex(), "deleted", "false");
     assert.fieldEquals("Recipient", recipient.id.toHex(), "initialized", "true");
-    assert.fieldEquals("Recipient", recipient.id.toHex(), "metadataUrl", event.params.metadataUrl.toHex());
+    assert.fieldEquals("Recipient", recipient.id.toHex(), "metadataUrl", event.params.metadataUrl);
     assert.fieldEquals("Recipient", recipient.id.toHex(), "payout", event.params.payout.toHex());
     assert.fieldEquals("Recipient", recipient.id.toHex(), "registry", DEFAULT_REGISTRY_ADDRESS.toHex());
   });
@@ -44,7 +44,7 @@ describe("Registry", () => {
         Bytes.fromUTF8("id"),
         BigInt.fromI32(0),
         DEFAULT_PAYOUT_ADDRESS,
-        Bytes.fromUTF8("url"),
+        "url",
       ),
     );
 
@@ -53,7 +53,7 @@ describe("Registry", () => {
       Bytes.fromUTF8("id"),
       BigInt.fromI32(0),
       DEFAULT_REGISTRY_ADDRESS,
-      Bytes.fromUTF8("url"),
+      "url",
     );
 
     handleChangeRecipient(event);
@@ -65,7 +65,7 @@ describe("Registry", () => {
     assert.fieldEquals("Recipient", recipient.id.toHex(), "index", event.params.index.toString());
     assert.fieldEquals("Recipient", recipient.id.toHex(), "deleted", "false");
     assert.fieldEquals("Recipient", recipient.id.toHex(), "initialized", "true");
-    assert.fieldEquals("Recipient", recipient.id.toHex(), "metadataUrl", event.params.metadataUrl.toHex());
+    assert.fieldEquals("Recipient", recipient.id.toHex(), "metadataUrl", event.params.metadataUrl);
     assert.fieldEquals("Recipient", recipient.id.toHex(), "payout", event.params.newPayout.toHex());
     assert.fieldEquals("Recipient", recipient.id.toHex(), "registry", DEFAULT_REGISTRY_ADDRESS.toHex());
   });
@@ -77,7 +77,7 @@ describe("Registry", () => {
         Bytes.fromUTF8("id"),
         BigInt.fromI32(0),
         DEFAULT_PAYOUT_ADDRESS,
-        Bytes.fromUTF8("url"),
+        "url",
       ),
     );
 

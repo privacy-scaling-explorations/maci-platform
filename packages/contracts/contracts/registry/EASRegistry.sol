@@ -17,7 +17,7 @@ contract EASRegistry is BaseRegistry, IEAS {
   /// @param ownerAddress The owner address
   constructor(
     uint256 max,
-    bytes32 url,
+    string memory url,
     address easAddress,
     address ownerAddress
   ) payable BaseRegistry(max, url, ownerAddress) {
@@ -29,12 +29,12 @@ contract EASRegistry is BaseRegistry, IEAS {
   }
 
   /// @notice Add multiple recipients to the registry
-  /// @param recipients The recipients
-  function addRecipients(Recipient[] calldata recipients) external onlyOwner {
-    uint256 length = recipients.length;
+  /// @param _recipients The recipients
+  function addRecipients(Recipient[] calldata _recipients) external onlyOwner {
+    uint256 length = _recipients.length;
 
     for (uint256 i = 0; i < length; ) {
-      addRecipient(recipients[i]);
+      addRecipient(_recipients[i]);
 
       unchecked {
         i++;

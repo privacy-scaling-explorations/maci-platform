@@ -10,5 +10,5 @@ contract MockRegistry is BaseRegistry {
   /// @param max The maximum number of projects that can be registered
   /// @param url The metadata url
   /// @param ownerAddress The owner address
-  constructor(uint256 max, bytes32 url, address ownerAddress) payable BaseRegistry(max, url, ownerAddress) {}
+  constructor(uint256 max, string memory url, address ownerAddress) payable BaseRegistry(max, url, ownerAddress) {}
 }

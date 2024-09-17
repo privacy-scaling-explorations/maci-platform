@@ -41,7 +41,7 @@ interface IRegistryManager {
     bytes32 indexed recipient,
     uint256 index,
     address payout,
-    bytes32 metadataUrl
+    string metadataUrl
   );
   event RequestApproved(
     address indexed registry,
@@ -49,7 +49,7 @@ interface IRegistryManager {
     bytes32 indexed recipient,
     uint256 index,
     address payout,
-    bytes32 metadataUrl
+    string metadataUrl
   );
   event RequestRejected(
     address indexed registry,
@@ -57,7 +57,7 @@ interface IRegistryManager {
     bytes32 indexed recipient,
     uint256 index,
     address payout,
-    bytes32 metadataUrl
+    string metadataUrl
   );
 
   /// @notice Custom errors

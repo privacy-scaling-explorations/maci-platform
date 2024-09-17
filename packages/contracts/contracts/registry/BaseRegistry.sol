@@ -19,19 +19,19 @@ abstract contract BaseRegistry is Ownable, IRecipientRegistry, ICommon {
   uint256 public recipientCount;
 
   /// @notice The registry metadata url
-  bytes32 public immutable metadataUrl;
+  string internal metadataUrl;
 
   /// @notice Create a new instance of the registry contract
   /// @param max The maximum number of recipients that can be registered
   /// @param url The metadata url
   /// @param ownerAddress The owner address
-  constructor(uint256 max, bytes32 url, address ownerAddress) payable Ownable(ownerAddress) {
+  constructor(uint256 max, string memory url, address ownerAddress) payable Ownable(ownerAddress) {
     maxRecipients = max;
     metadataUrl = url;
   }
 
   /// @inheritdoc IRecipientRegistry
-  function getRegistryMetadataUrl() public view virtual override returns (bytes32) {
+  function getRegistryMetadataUrl() public view virtual override returns (string memory) {
     return metadataUrl;
   }
 

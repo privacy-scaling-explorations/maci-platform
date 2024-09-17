@@ -34,7 +34,7 @@ describe("RegistryManager", () => {
         Bytes.fromUTF8("id"),
         BigInt.fromI32(0),
         DEFAULT_PAYOUT_ADDRESS,
-        Bytes.fromUTF8("metadataUrl"),
+        "metadataUrl",
       );
 
       handleRequestSent(sentEvent);
@@ -57,7 +57,7 @@ describe("RegistryManager", () => {
         Bytes.fromUTF8("id"),
         BigInt.fromI32(0),
         DEFAULT_PAYOUT_ADDRESS,
-        Bytes.fromUTF8("metadataUrl"),
+        "metadataUrl",
       );
 
       handleRequestApproved(approveEvent);
@@ -81,7 +81,7 @@ describe("RegistryManager", () => {
         Bytes.fromUTF8("id"),
         BigInt.fromI32(0),
         DEFAULT_PAYOUT_ADDRESS,
-        Bytes.fromUTF8("metadataUrl"),
+        "metadataUrl",
       );
 
       handleRequestSent(sentEvent);
@@ -104,7 +104,7 @@ describe("RegistryManager", () => {
         Bytes.fromUTF8("id"),
         BigInt.fromI32(0),
         DEFAULT_PAYOUT_ADDRESS,
-        Bytes.fromUTF8("metadataUrl"),
+        "metadataUrl",
       );
 
       handleRequestRejected(rejectEvent);

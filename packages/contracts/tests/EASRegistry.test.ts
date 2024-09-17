@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { encodeBytes32String, Signer, ZeroAddress } from "ethers";
+import { Signer, ZeroAddress } from "ethers";
 import { getSigners, deployContract } from "maci-contracts";
 
 import { EASRegistry, MockEAS, ICommon__factory as ICommonFactory } from "../typechain-types";
@@ -18,7 +18,7 @@ describe("EASRegistry", () => {
   const schema = "0xfdcfdad2dbe7489e0ce56b260348b7f14e8365a8a325aef9834818c00d46b31b";
   const attestation = "0x0000000000000000000000000000000000000000000000000000000000000000";
   const newAttestation = "0x0000000000000000000000000000000000000000000000000000000000000001";
-  const metadataUrl = encodeBytes32String("url");
+  const metadataUrl = "url";
 
   before(async () => {
     [owner, user] = await getSigners();

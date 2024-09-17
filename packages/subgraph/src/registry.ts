@@ -24,7 +24,7 @@ export function handleChangeRecipient(event: RecipientChanged): void {
     return;
   }
 
-  recipient.metadataUrl = event.params.metadataUrl;
+  recipient.metadataUrl = event.params.metadataUrl.toString();
   recipient.index = event.params.index;
   recipient.initialized = true;
   recipient.deleted = false;
