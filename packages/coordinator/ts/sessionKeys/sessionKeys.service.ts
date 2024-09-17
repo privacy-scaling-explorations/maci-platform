@@ -11,7 +11,7 @@ import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import type { Chain, Hex, HttpTransport, Transport } from "viem";
 
 import { ErrorCodes, ESupportedNetworks } from "../common";
-import { genPimlicoRPCUrl, getPublicClient } from "../common/accountAbstraction";
+import { getPublicClient } from "../common/accountAbstraction";
 import { viemChain } from "../common/networks";
 import { FileService } from "../file/file.service";
 
@@ -86,8 +86,7 @@ export class SessionKeysService {
       throw new Error(ErrorCodes.SESSION_KEY_NOT_FOUND);
     }
 
-    // get the bundler url and create a public client
-    const bundlerUrl = genPimlicoRPCUrl(chain);
+    // create a public client
     const publicClient = getPublicClient(chain);
 
     // Using a stored private key
@@ -106,7 +105,7 @@ export class SessionKeysService {
       );
 
       return createKernelAccountClient({
-        bundlerTransport: http(bundlerUrl),
+        bundlerTransport: http(process.env.ZERODEV_BUNDLER_RPC),
         entryPoint: ENTRYPOINT_ADDRESS_V07,
         account: sessionKeyAccount,
         chain: viemChain(chain),

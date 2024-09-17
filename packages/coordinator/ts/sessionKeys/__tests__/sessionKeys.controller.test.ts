@@ -3,6 +3,7 @@ import { zeroAddress } from "viem";
 
 import type { IGenerateSessionKeyReturn } from "../types";
 
+import { ESupportedNetworks } from "../../common";
 import { SessionKeysController } from "../sessionKeys.controller";
 import { SessionKeysService } from "../sessionKeys.service";
 
@@ -50,6 +51,7 @@ describe("SessionKeysController", () => {
     test("should delete a session key", () => {
       sessionKeysController.deactivateSessionKey({
         sessionKeyAddress: zeroAddress,
+        chain: ESupportedNetworks.OPTIMISM_SEPOLIA,
       });
       expect(mockSessionKeysService.deactivateSessionKey).toHaveBeenCalledWith(zeroAddress);
     });

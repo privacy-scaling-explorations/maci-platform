@@ -113,3 +113,7 @@ jobs:
       - name: Test
         run: pnpm run test
         working-directory: packages/coordinator
+
+      - name: Stop Hardhat
+        if: always()
+        run: kill $(lsof -t -i:8545)

@@ -1,0 +1,72 @@
+name: Nightly
+
+on:
+  schedule:
+    - cron: 0 0 * * *
+
+env:
+  ZERODEV_BUNDLER_RPC: ${{ secrets.ZERODEV_BUNDLER_RPC }}
+  TEST_PRIVATE_KEY: ${{ secrets.TEST_PRIVATE_KEY }}
+  RPC_API_KEY: ${{ secrets.RPC_API_KEY }}
+  PIMLICO_API_KEY: ${{ secrets.PIMLICO_API_KEY }}
+
+jobs:
+  e2e-coordinator:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes \
+            build-essential \
+            libgmp-dev \
+            libsodium-dev \
+            nasm \
+            nlohmann-json3-dev
+
+      - name: Install
+        run: |
+          pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Build
+        run: |
+          pnpm run build
+
+      - name: Download rapidsnark (1c137)
+        run: |
+          mkdir -p ~/rapidsnark/build
+          wget -qO ~/rapidsnark/build/prover https://maci-devops-zkeys.s3.ap-northeast-2.amazonaws.com/rapidsnark-linux-amd64-1c137
+          chmod +x ~/rapidsnark/build/prover
+
+      - name: Download circom Binary v2.1.6
+        run: |
+          wget -qO ${{ github.workspace }}/circom https://github.com/iden3/circom/releases/download/v2.1.6/circom-linux-amd64
+          chmod +x ${{ github.workspace }}/circom
+          sudo mv ${{ github.workspace }}/circom /bin/circom
+
+      - name: Download zkeys
+        run: |
+          pnpm download-zkeys:test
+
+      - name: Generate keypair
+        run: |
+          pnpm generate-keypair
+        working-directory: packages/coordinator
+
+      - name: E2E tests
+        run: |
+          pnpm run test:e2e

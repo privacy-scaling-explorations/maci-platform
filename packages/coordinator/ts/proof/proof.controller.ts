@@ -2,13 +2,13 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Logger, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
 
-import type { IGenerateData } from "./types";
+import type { IGenerateData, IMergeArgs } from "./types";
 import type { IGetPublicKeyData } from "../file/types";
 
 import { AccountSignatureGuard, Public } from "../auth/AccountSignatureGuard.service";
 import { FileService } from "../file/file.service";
 
-import { GenerateProofDto } from "./dto";
+import { GenerateProofDto, MergeTreesDto } from "./dto";
 import { ProofGeneratorService } from "./proof.service";
 
 @ApiTags("v1/proof")
@@ -45,6 +45,24 @@ export class ProofController {
   @Post("generate")
   async generate(@Body() args: GenerateProofDto): Promise<IGenerateData> {
     return this.proofGeneratorService.generate(args).catch((error: Error) => {
+      this.logger.error(`Error:`, error);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    });
+  }
+
+  /**
+   * Merge trees api method
+   *
+   * @param args - merge args
+   * @returns whether the trees were successfully merged
+   */
+  @ApiBody({ type: MergeTreesDto })
+  @ApiResponse({ status: HttpStatus.CREATED, description: "The proofs have been successfully merged" })
+  @ApiResponse({ status: HttpStatus.FORBIDDEN, description: "Forbidden" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "BadRequest" })
+  @Post("merge")
+  async merge(@Body() args: IMergeArgs): Promise<boolean> {
+    return this.proofGeneratorService.merge(args).catch((error: Error) => {
       this.logger.error(`Error:`, error);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     });
