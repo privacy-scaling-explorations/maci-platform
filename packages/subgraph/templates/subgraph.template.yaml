@@ -51,11 +51,11 @@ dataSources:
         - name: BaseRegistry
           file: ./node_modules/maci-platform-contracts/build/artifacts/contracts/registry/BaseRegistry.sol/BaseRegistry.json
       eventHandlers:
-        - event: RequestSent(indexed address,indexed uint8,indexed bytes32,uint256,address,bytes32)
+        - event: RequestSent(indexed address,indexed uint8,indexed bytes32,uint256,address,string)
           handler: handleRequestSent
-        - event: RequestApproved(indexed address,indexed uint8,indexed bytes32,uint256,address,bytes32)
+        - event: RequestApproved(indexed address,indexed uint8,indexed bytes32,uint256,address,string)
           handler: handleRequestApproved
-        - event: RequestRejected(indexed address,indexed uint8,indexed bytes32,uint256,address,bytes32)
+        - event: RequestRejected(indexed address,indexed uint8,indexed bytes32,uint256,address,string)
           handler: handleRequestRejected
       file: ./src/registryManager.ts
 templates:
@@ -104,9 +104,9 @@ templates:
         - name: Registry
           file: ./node_modules/maci-platform-contracts/build/artifacts/contracts/registry/BaseRegistry.sol/BaseRegistry.json
       eventHandlers:
-        - event: RecipientAdded(indexed uint256,bytes32,indexed bytes32,indexed address)
+        - event: RecipientAdded(indexed uint256,bytes32,string,indexed address)
           handler: handleAddRecipient
-        - event: RecipientChanged(indexed uint256,bytes32,indexed bytes32,indexed address)
+        - event: RecipientChanged(indexed uint256,bytes32,string,indexed address)
           handler: handleChangeRecipient
         - event: RecipientRemoved(indexed uint256,bytes32,indexed address)
           handler: handleRemoveRecipient

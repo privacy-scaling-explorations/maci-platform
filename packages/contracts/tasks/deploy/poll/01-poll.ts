@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { encodeBytes32String } from "ethers";
 import { ContractStorage, Deployment, EMode } from "maci-contracts";
 import { PubKey } from "maci-domainobjs";
 
@@ -66,7 +65,7 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
       "easAddress",
     );
 
-    const registryArgs = [maxRecipients, encodeBytes32String(metadataUrl), easAddress, registryManagerAddress];
+    const registryArgs = [maxRecipients, metadataUrl, easAddress, registryManagerAddress];
     const pollRegistry = await deployment.deployContract(
       { name: REGISTRY_TYPES[registryManagerType] },
       ...registryArgs,

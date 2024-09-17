@@ -9,13 +9,13 @@ export function createRecipientAddEvent(
   recipient: Bytes,
   index: GraphBN,
   payout: Address,
-  metadataUrl: Bytes,
+  metadataUrl: string,
 ): RecipientAdded {
   const event = newMockEvent();
 
   event.parameters.push(new ethereum.EventParam("index", ethereum.Value.fromUnsignedBigInt(index)));
   event.parameters.push(new ethereum.EventParam("id", ethereum.Value.fromBytes(recipient)));
-  event.parameters.push(new ethereum.EventParam("metadataUrl", ethereum.Value.fromBytes(metadataUrl)));
+  event.parameters.push(new ethereum.EventParam("metadataUrl", ethereum.Value.fromString(metadataUrl)));
   event.parameters.push(new ethereum.EventParam("payout", ethereum.Value.fromAddress(payout)));
 
   event.address = address;
@@ -28,13 +28,13 @@ export function createRecipientChangeEvent(
   recipient: Bytes,
   index: GraphBN,
   newPayout: Address,
-  metadataUrl: Bytes,
+  metadataUrl: string,
 ): RecipientChanged {
   const event = newMockEvent();
 
   event.parameters.push(new ethereum.EventParam("index", ethereum.Value.fromUnsignedBigInt(index)));
   event.parameters.push(new ethereum.EventParam("id", ethereum.Value.fromBytes(recipient)));
-  event.parameters.push(new ethereum.EventParam("metadataUrl", ethereum.Value.fromBytes(metadataUrl)));
+  event.parameters.push(new ethereum.EventParam("metadataUrl", ethereum.Value.fromString(metadataUrl)));
   event.parameters.push(new ethereum.EventParam("newPayout", ethereum.Value.fromAddress(newPayout)));
 
   event.address = address;

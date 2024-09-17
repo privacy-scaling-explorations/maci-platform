@@ -9,22 +9,22 @@ interface IRecipientRegistry {
     // recipient id (optional)
     bytes32 id;
     // recipient metadata url
-    bytes32 metadataUrl;
+    string metadataUrl;
     // recipient address
     address recipient;
   }
 
   /// @notice Events
-  event RecipientAdded(uint256 indexed index, bytes32 id, bytes32 indexed metadataUrl, address indexed payout);
+  event RecipientAdded(uint256 indexed index, bytes32 id, string metadataUrl, address indexed payout);
   event RecipientRemoved(uint256 indexed index, bytes32 id, address indexed payout);
-  event RecipientChanged(uint256 indexed index, bytes32 id, bytes32 indexed metadataUrl, address indexed newPayout);
+  event RecipientChanged(uint256 indexed index, bytes32 id, string metadataUrl, address indexed newPayout);
 
   /// @notice Custom errors
   error MaxRecipientsReached();
 
   /// @notice Get a registry metadata url
-  /// @return The metadata url in bytes32 format
-  function getRegistryMetadataUrl() external view returns (bytes32);
+  /// @return The metadata url in a string format
+  function getRegistryMetadataUrl() external view returns (string memory);
 
   /// @notice Add a recipient
   /// @param recipient The recipient data

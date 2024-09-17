@@ -78,7 +78,7 @@ export const createOrLoadRegistry = (id: Address): Registry => {
 
 export const createOrLoadRecipient = (
   id: Bytes,
-  metadataUrl: Bytes,
+  metadataUrl: string,
   index: GraphBN,
   payout: Address,
   registry: Address,

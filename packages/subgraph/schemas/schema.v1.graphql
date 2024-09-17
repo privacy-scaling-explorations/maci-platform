@@ -57,7 +57,7 @@ type RegistryManager @entity {
 
 type Recipient @entity {
   id: Bytes!
-  metadataUrl: Bytes!
+  metadataUrl: String!
   payout: Bytes!
   index: BigInt!
   deleted: Boolean!
