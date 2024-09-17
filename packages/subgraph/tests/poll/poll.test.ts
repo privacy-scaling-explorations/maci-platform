@@ -21,7 +21,7 @@ import {
   createMergeMessageAqSubRootsEvent,
   createPublishMessageEvent,
   createSetRegistryEvent,
-  createInitPollCall,
+  createInitPollEvent,
 } from "./utils";
 
 export {
@@ -49,13 +49,13 @@ describe("Poll", () => {
   });
 
   test("should handle merge maci state properly", () => {
-    const call = createInitPollCall(DEFAULT_POLL_ADDRESS);
+    const event = createInitPollEvent(DEFAULT_POLL_ADDRESS);
 
-    handleInitPoll(call);
+    handleInitPoll(event);
 
-    const poll = Poll.load(call.to)!;
+    const poll = Poll.load(event.address)!;
 
-    assert.fieldEquals("Poll", poll.id.toHex(), "initTime", call.block.timestamp.toString());
+    assert.fieldEquals("Poll", poll.id.toHex(), "initTime", event.block.timestamp.toString());
   });
 
   test("should handle poll initialization properly", () => {

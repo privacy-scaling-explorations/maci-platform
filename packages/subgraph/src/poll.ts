@@ -2,10 +2,10 @@
 
 import { Poll, Vote, MACI } from "../generated/schema";
 import {
-  InitCall,
   MergeMaciState as MergeMaciStateEvent,
   MergeMessageAq as MergeMessageAqEvent,
   MergeMessageAqSubRoots as MergeMessageAqSubRootsEvent,
+  PollInit as PollInitEvent,
   PublishMessage as PublishMessageEvent,
   SetRegistry as SetRegistryEvent,
 } from "../generated/templates/Poll/Poll";
@@ -84,13 +84,13 @@ export function handleSetRegistry(event: SetRegistryEvent): void {
   poll.save();
 }
 
-export function handleInitPoll(call: InitCall): void {
-  const poll = Poll.load(call.to);
+export function handleInitPoll(event: PollInitEvent): void {
+  const poll = Poll.load(event.address);
 
   if (!poll) {
     return;
   }
 
-  poll.initTime = call.block.timestamp;
+  poll.initTime = event.block.timestamp;
   poll.save();
 }
