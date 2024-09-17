@@ -58,7 +58,7 @@ const SignupPage = (): JSX.Element => {
         {isConnected && !isRegistered && <JoinButton />}
 
         <div className="my-8">
-          <Info size="default" />
+          <Info showAppState size="default" />
         </div>
       </div>
 

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
@@ -9,29 +8,34 @@ import { EAppState } from "~/utils/types";
 import { AddedProjects } from "./AddedProjects";
 import { VotingUsage } from "./VotingUsage";
 
-export const BallotOverview = (): JSX.Element => {
+interface IBallotOverviewProps {
+  title?: string;
+}
+
+export const BallotOverview = ({ title = undefined }: IBallotOverviewProps): JSX.Element => {
   const { ballot } = useBallot();
-  const { asPath } = useRouter();
 
   const appState = useAppState();
 
   return (
-    <Link
-      href={
-        ballot.published && (appState === EAppState.TALLYING || appState === EAppState.RESULTS)
-          ? "/ballot/confirmation"
-          : "/ballot"
-      }
-    >
-      <div className="dark:bg-lightBlack my-8 flex-col items-center gap-2 rounded-lg bg-white p-5 uppercase shadow-lg dark:text-white">
-        <Heading as="h3" size="3xl">
-          {asPath.includes("ballot") ? "Summary" : "My Ballot"}
-        </Heading>
+    <div className="w-full">
+      <Link
+        href={
+          ballot.published && (appState === EAppState.TALLYING || appState === EAppState.RESULTS)
+            ? "/ballot/confirmation"
+            : "/ballot"
+        }
+      >
+        {title && (
+          <Heading as="h3" size="3xl">
+            {title}
+          </Heading>
+        )}
 
         <AddedProjects />
 
         <VotingUsage />
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
