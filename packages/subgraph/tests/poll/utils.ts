@@ -1,21 +1,21 @@
 import { Address, BigInt as GraphBN, ethereum } from "@graphprotocol/graph-ts";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { newMockEvent, newMockCall } from "matchstick-as";
+import { newMockEvent } from "matchstick-as";
 
 import {
-  InitCall,
   MergeMaciState,
   MergeMessageAq,
   MergeMessageAqSubRoots,
   PublishMessage,
   SetRegistry,
+  PollInit,
 } from "../../generated/templates/Poll/Poll";
 
-export function createInitPollCall(address: Address): InitCall {
-  const call = changetype<InitCall>(newMockCall());
-  call.to = address;
+export function createInitPollEvent(address: Address): PollInit {
+  const event = changetype<PollInit>(newMockEvent());
+  event.address = address;
 
-  return call;
+  return event;
 }
 
 export function createMergeMaciStateEvent(address: Address, stateRoot: GraphBN, numSignups: GraphBN): MergeMaciState {

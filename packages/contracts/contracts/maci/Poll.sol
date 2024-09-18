@@ -20,6 +20,7 @@ contract Poll is Ownable, BasePoll, ICommon {
 
   /// @notice events
   event SetRegistry(address indexed registry);
+  event PollInit();
 
   /// @notice custom errors
   error RegistryAlreadyInitialized();
@@ -113,6 +114,8 @@ contract Poll is Ownable, BasePoll, ICommon {
   function init() public override onlyOwner isRegistryInitialized {
     initTime = block.timestamp;
     super.init();
+
+    emit PollInit();
   }
 
   /// @inheritdoc BasePoll

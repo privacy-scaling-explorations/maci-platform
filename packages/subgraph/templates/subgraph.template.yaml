@@ -84,8 +84,7 @@ templates:
           handler: handlePublishMessage
         - event: SetRegistry(indexed address)
           handler: handleSetRegistry
-      callHandlers:
-        - function: init()
+        - event: PollInit()
           handler: handleInitPoll
       file: ./src/poll.ts
 
