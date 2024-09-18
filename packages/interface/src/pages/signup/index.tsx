@@ -30,7 +30,7 @@ const SignupPage = (): JSX.Element => {
         </Heading>
 
         <Heading as="h2" className="max-w-screen-lg text-center" size="4xl">
-          By MUQA
+          By The Meme Association
         </Heading>
 
         <p className="flex max-w-screen-md gap-2 text-center text-xl dark:text-gray-400">

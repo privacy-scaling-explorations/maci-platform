@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
+import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
+import { StandardMerkleTreeData } from "@openzeppelin/merkle-tree/dist/standard";
 import { Identity } from "@semaphore-protocol/core";
 import { isAfter } from "date-fns";
-import { type Signer, BrowserProvider } from "ethers";
+import { type Signer, BrowserProvider, AbiCoder } from "ethers";
 import {
   signup,
   isRegisteredUser,
@@ -45,6 +47,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   const [error, setError] = useState<string>();
   const [pollData, setPollData] = useState<IGetPollData>();
   const [tallyData, setTallyData] = useState<TallyData>();
+  const [treeData, setTreeData] = useState< StandardMerkleTreeData<string[]>>();
 
   const [semaphoreIdentity, setSemaphoreIdentity] = useState<Identity | undefined>();
   const [maciPrivKey, setMaciPrivKey] = useState<string | undefined>();
@@ -104,6 +107,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   // for Semaphore it will be a proof being part of the group
   useEffect(() => {
     setIsLoading(true);
+
     // add custom logic for other gatekeepers here
     switch (gatekeeperTrait) {
       case GatekeeperTrait.Semaphore:
@@ -147,6 +151,29 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         setIsLoading(false);
         break;
       case GatekeeperTrait.FreeForAll:
+        setIsLoading(false);
+        break;
+      case GatekeeperTrait.MerkleProof:
+        if (!signer) {
+          setIsLoading(false);
+          return;
+
+        }
+        if (!treeData) {
+          setIsLoading(false);
+          return;
+        }
+
+        try {
+          const merkleTree = StandardMerkleTree.load(treeData);
+          console.log(merkleTree);
+          const proof = merkleTree.getProof([signer.address]);
+          const encodedProof = AbiCoder.defaultAbiCoder().encode(["bytes32[]"], [proof]);
+          setSgData(encodedProof);
+        } catch (e) {
+            console.error(e);
+          setSgData(undefined);
+        }
         setIsLoading(false);
         break;
       default:
@@ -196,6 +223,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     if (!address) {
       return;
     }
+
     const signature = await signMessageAsync({ message: signatureMessage });
     const newSemaphoreIdentity = new Identity(signature);
     const userKeyPair = genKeyPair({ seed: BigInt(signature) });
@@ -224,7 +252,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       }
 
       setIsLoading(true);
-
+      console.log("sgData", sgData);
       try {
         const { stateIndex: index, voiceCredits } = await signup({
           maciPubKey,
@@ -401,7 +429,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
           return data;
         })
         .then(async (data) => {
-          if (!data.isMerged || isAfter(votingEndsAt!, new Date())) {
+          if (!data.isMerged || (votingEndsAt && isAfter(votingEndsAt, new Date()))) {
             return undefined;
           }
 
@@ -419,6 +447,23 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     }
   }, [signer, votingEndsAt, setIsLoading, setTallyData, setPollData, poll.data]);
 
+  /// check the tree data
+  useEffect(() => {
+    setIsLoading(true);
+
+    // if we have the tree url then it means we can get the tree data through there
+    if (config.treeUrl) {
+      fetch(config.treeUrl)
+        .then((res) => res.json())
+        .then((res:StandardMerkleTreeData<string[]>) => {
+          setTreeData(res);
+        })
+        .catch(() => undefined);
+
+      setIsLoading(false);
+    }
+  }, [setIsLoading]);
+
   const value = useMemo(
     () => ({
       isLoading,
@@ -435,6 +480,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       onSignup,
       onVote,
       gatekeeperTrait,
+      treeData,
     }),
     [
       isLoading,
@@ -450,6 +496,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       onSignup,
       onVote,
       gatekeeperTrait,
+      treeData,
     ],
   );
 
