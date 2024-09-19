@@ -3,7 +3,7 @@ import { ContractStorage, Deployment, EMode } from "maci-contracts";
 import { PubKey } from "maci-domainobjs";
 
 import { type Poll, type MACI } from "../../../typechain-types";
-import { EContracts, EDeploySteps, REGISTRY_TYPES, TRegistryManager } from "../../helpers/constants";
+import { EContracts, EDeploySteps, REGISTRY_TYPES, TRegistryManager, TRegistry } from "../../helpers/constants";
 
 const deployment = Deployment.getInstance();
 const storage = ContractStorage.getInstance();
@@ -52,20 +52,21 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
       deployment.getDeployConfigField<TRegistryManager | null>(EContracts.MACI, "registryManager") ||
       EContracts.EASRegistryManager;
     const registryManagerAddress = storage.getAddress(registryManagerType, hre.network.name);
+
+    const registryType =
+      deployment.getDeployConfigField<TRegistry | null>(EContracts.MACI, "registry") || EContracts.EASRegistry;
+
     const maxRecipients = deployment.getDeployConfigField<number, keyof typeof EContracts>(
-      EContracts.EASRegistryManager,
+      registryType,
       "maxRecipients",
     );
-    const metadataUrl = deployment.getDeployConfigField<string, keyof typeof EContracts>(
-      EContracts.EASRegistryManager,
-      "metadataUrl",
-    );
-    const easAddress = deployment.getDeployConfigField<string, keyof typeof EContracts>(
-      EContracts.EASRegistryManager,
-      "easAddress",
-    );
+    const metadataUrl = deployment.getDeployConfigField<string, keyof typeof EContracts>(registryType, "metadataUrl");
+    const easAddress = deployment.getDeployConfigField<string, keyof typeof EContracts>(registryType, "easAddress");
 
-    const registryArgs = [maxRecipients, metadataUrl, easAddress, registryManagerAddress];
+    const registryArgs =
+      registryType === EContracts.EASRegistry
+        ? [maxRecipients, metadataUrl, easAddress, registryManagerAddress]
+        : [maxRecipients, metadataUrl, registryManagerAddress];
     const pollRegistry = await deployment.deployContract(
       { name: REGISTRY_TYPES[registryManagerType] },
       ...registryArgs,
