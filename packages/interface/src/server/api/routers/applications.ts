@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { config, eas } from "~/config";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { fetchPendingApplications } from "~/utils/fetchApplications";
 import { fetchAttestations } from "~/utils/fetchAttestations";
 import { createDataFilter } from "~/utils/fetchAttestationsUtils";
 
@@ -21,11 +22,6 @@ export const applicationsRouter = createTRPCRouter({
     }),
   ),
   list: publicProcedure.input(FilterSchema).query(async () =>
-    fetchAttestations([eas.schemas.metadata], {
-      orderBy: [{ time: "desc" }],
-      where: {
-        AND: [createDataFilter("type", "bytes32", "application"), createDataFilter("round", "bytes32", config.roundId)],
-      },
-    }),
+    fetchPendingApplications("0xe6b59a22820a01f13913c11957990482ef7606fe"),
   ),
 });

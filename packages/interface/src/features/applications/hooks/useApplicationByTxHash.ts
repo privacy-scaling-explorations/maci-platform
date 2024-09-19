@@ -6,3 +6,7 @@ import type { Attestation } from "~/utils/types";
 export function useApplicationByTxHash(transactionId: string): UseTRPCQueryResult<Attestation, unknown> {
   return api.projects.getByTransactionId.useQuery({ transactionId });
 }
+
+// export function useApplicationByIndex(index: number): UseTRPCQueryResult<Attestation, unknown> {
+//   return api.projects.getByIndex.useQuery({ index });
+// }

@@ -168,3 +168,23 @@ export interface IRequest {
    */
   recipient: IRecipient;
 }
+
+/**
+ * The application data 
+ */
+export interface IApplication {
+  /**
+   * The application id
+   */
+  id: string;
+
+  /**
+   * The application metadata pointer
+   */
+  metadataPtr: string;
+
+  /**
+   * The recipient address
+   */
+  recipient: string;
+}

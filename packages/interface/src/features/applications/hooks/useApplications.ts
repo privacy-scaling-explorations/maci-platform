@@ -6,3 +6,7 @@ import type { Attestation } from "~/utils/types";
 export function useApplications(): UseTRPCQueryResult<Attestation[], unknown> {
   return api.applications.list.useQuery({});
 }
+
+export function usePendingApplications(): UseTRPCQueryResult<Attestation[], unknown> {
+  return api.applications.list.useQuery({});
+}

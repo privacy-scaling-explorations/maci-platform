@@ -21,6 +21,7 @@ import { ApplicationItem } from "./ApplicationItem";
 import { ApproveButton } from "./ApproveButton";
 
 export const ApplicationsToApprove = (): JSX.Element => {
+  // const app = use
   const applications = useApplications();
   const approved = useApprovedApplications();
   const approve = useApproveApplication();
@@ -61,7 +62,7 @@ export const ApplicationsToApprove = (): JSX.Element => {
         </Heading>
 
         <p className="text-gray-400">
-          Select the applications you want to approve. You must be a configured admin to approve applications.
+          Select the applications you want to approve. You must be an admin to be able to approve applications.
         </p>
 
         <p className="flex items-center gap-2 text-blue-400">
