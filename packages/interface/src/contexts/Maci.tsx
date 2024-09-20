@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
+import { type ZKEdDSAEventTicketPCD } from "@pcd/zk-eddsa-event-ticket-pcd/ZKEdDSAEventTicketPCD";
 import { Identity } from "@semaphore-protocol/core";
 import { isAfter } from "date-fns";
-import { type Signer, BrowserProvider } from "ethers";
+import { type Signer, BrowserProvider, AbiCoder } from "ethers";
 import {
   signup,
   isRegisteredUser,
@@ -21,9 +22,11 @@ import { config } from "~/config";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { api } from "~/utils/api";
 import { getHatsClient } from "~/utils/hatsProtocol";
+import { generateWitness } from "~/utils/pcd";
 import { getSemaphoreProof } from "~/utils/semaphore";
 
 import type { IVoteArgs, MaciContextType, MaciProviderProps } from "./types";
+import type { PCD } from "@pcd/pcd-types";
 import type { EIP1193Provider } from "viem";
 import type { Attestation } from "~/utils/types";
 
@@ -47,6 +50,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   const [tallyData, setTallyData] = useState<TallyData>();
 
   const [semaphoreIdentity, setSemaphoreIdentity] = useState<Identity | undefined>();
+  const [zupassProof, setZupassProof] = useState<PCD>();
   const [maciPrivKey, setMaciPrivKey] = useState<string | undefined>();
   const [maciPubKey, setMaciPubKey] = useState<string | undefined>();
 
@@ -147,13 +151,29 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         });
         setIsLoading(false);
         break;
+      case GatekeeperTrait.Zupass:
+        if (!signer) {
+          setIsLoading(false);
+          return;
+        }
+        if (zupassProof) {
+          const proof = generateWitness(zupassProof as ZKEdDSAEventTicketPCD);
+          const encodedProof = AbiCoder.defaultAbiCoder().encode(
+            ["uint256[2]", "uint256[2][2]", "uint256[2]", "uint256[38]"],
+            // eslint-disable-next-line no-underscore-dangle
+            [proof._pA, proof._pB, proof._pC, proof._pubSignals],
+          );
+          setSgData(encodedProof);
+        }
+        setIsLoading(false);
+        break;
       case GatekeeperTrait.FreeForAll:
         setIsLoading(false);
         break;
       default:
         break;
     }
-  }, [gatekeeperTrait, attestationId, semaphoreIdentity, signer]);
+  }, [gatekeeperTrait, attestationId, semaphoreIdentity, signer, zupassProof]);
 
   // a user is eligible to vote if they pass certain conditions
   // with gatekeepers like EAS it is possible to determine whether you are allowed
@@ -208,6 +228,13 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     setMaciPubKey(userKeyPair.publicKey);
     setSemaphoreIdentity(newSemaphoreIdentity);
   }, [address, signatureMessage, signMessageAsync, setMaciPrivKey, setMaciPubKey, setSemaphoreIdentity]);
+
+  const storeZupassProof = useCallback(
+    (proof: PCD) => {
+      setZupassProof(proof);
+    },
+    [setZupassProof],
+  );
 
   // memo to calculate the voting end date
   const votingEndsAt = useMemo(
@@ -301,6 +328,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       localStorage.removeItem("maciPrivKey");
       localStorage.removeItem("maciPubKey");
       localStorage.removeItem("semaphoreIdentity");
+      localStorage.removeItem("zupassProof");
     }
   }, [isDisconnected]);
 
@@ -437,6 +465,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       onSignup,
       onVote,
       gatekeeperTrait,
+      storeZupassProof,
     }),
     [
       isLoading,
@@ -452,6 +481,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       onSignup,
       onVote,
       gatekeeperTrait,
+      storeZupassProof,
     ],
   );
 

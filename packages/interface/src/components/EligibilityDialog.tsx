@@ -1,20 +1,38 @@
+/* eslint-disable no-console */
+import { decStringToBigIntToUuid } from "@pcd/util";
+import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd";
+import { zuAuthPopup } from "@pcd/zuauth";
+import { GatekeeperTrait, getZupassGatekeeperData } from "maci-cli/sdk";
 import { useRouter } from "next/router";
 import { useState, useCallback, useEffect } from "react";
 import { toast } from "sonner";
 import { useAccount, useDisconnect } from "wagmi";
 
+import { zupass, config } from "~/config";
 import { useMaci } from "~/contexts/Maci";
+import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { EAppState, jsonPCD } from "~/utils/types";
+
+import type { EdDSAPublicKey } from "@pcd/eddsa-pcd";
 
 import { Dialog } from "./ui/Dialog";
 
 export const EligibilityDialog = (): JSX.Element | null => {
+  const signer = useEthersSigner();
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
 
   const [openDialog, setOpenDialog] = useState<boolean>(!!address);
-  const { onSignup, isEligibleToVote, isRegistered, initialVoiceCredits, votingEndsAt } = useMaci();
+  const {
+    onSignup,
+    isEligibleToVote,
+    isRegistered,
+    initialVoiceCredits,
+    votingEndsAt,
+    gatekeeperTrait,
+    storeZupassProof,
+  } = useMaci();
   const router = useRouter();
 
   const appState = useAppState();
@@ -25,6 +43,37 @@ export const EligibilityDialog = (): JSX.Element | null => {
     await onSignup(onError);
     setOpenDialog(false);
   }, [onSignup, onError, setOpenDialog]);
+
+  const handleZupassVerify = useCallback(async () => {
+    if (address !== undefined && signer) {
+      const zupassGatekeeperData = await getZupassGatekeeperData({ maciAddress: config.maciAddress!, signer });
+      const eventId = decStringToBigIntToUuid(zupassGatekeeperData.eventId);
+      const result = await zuAuthPopup({
+        fieldsToReveal: {
+          revealTicketId: true,
+          revealEventId: true,
+        },
+        watermark: address,
+        config: [
+          {
+            pcdType: zupass.pcdType,
+            publicKey: zupass.publicKey as EdDSAPublicKey,
+            eventId,
+            eventName: zupass.eventName,
+          },
+        ],
+      });
+      if (result.type === "pcd") {
+        try {
+          const parsedPCD = (JSON.parse(result.pcdStr) as jsonPCD).pcd;
+          const pcd = await ZKEdDSAEventTicketPCDPackage.deserialize(parsedPCD);
+          await storeZupassProof(pcd);
+        } catch (e) {
+          console.error("zupass error:", e);
+        }
+      }
+    }
+  }, [signer, setOpenDialog, address, storeZupassProof]);
 
   useEffect(() => {
     setOpenDialog(!!address);
@@ -115,6 +164,21 @@ export const EligibilityDialog = (): JSX.Element | null => {
         isOpen={openDialog}
         size="sm"
         title="Account verified!"
+        onOpenChange={handleCloseDialog}
+      />
+    );
+  }
+
+  if (appState === EAppState.VOTING && !isEligibleToVote && gatekeeperTrait === GatekeeperTrait.Zupass) {
+    return (
+      <Dialog
+        button="secondary"
+        buttonAction={handleZupassVerify}
+        buttonName="Generate Proof"
+        description="To participate in this round, you need to generate a Proof with Zupass and then signup."
+        isOpen={openDialog}
+        size="sm"
+        title="Signup with Zupass"
         onOpenChange={handleCloseDialog}
       />
     );

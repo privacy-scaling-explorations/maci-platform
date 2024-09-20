@@ -1,6 +1,7 @@
 import { type TallyData, type IGetPollData, type GatekeeperTrait } from "maci-cli/sdk";
 import { type ReactNode } from "react";
 
+import type { PCD } from "@pcd/pcd-types";
 import type { Ballot, Vote } from "~/features/ballot/types";
 
 export interface IVoteArgs {
@@ -21,6 +22,7 @@ export interface MaciContextType {
   tallyData?: TallyData;
   maciPubKey?: string;
   gatekeeperTrait?: GatekeeperTrait;
+  storeZupassProof: (args: PCD) => Promise<void>;
   onSignup: (onError: () => void) => Promise<void>;
   onVote: (
     args: IVoteArgs[],
