@@ -31,14 +31,23 @@
       "groupId": 0
     },
     "MACI": {
-      "stateTreeDepth": 10,
-      "gatekeeper": "EASGatekeeper",
-      "registryManager": "EASRegistryManager"
+      "stateTreeDepth": 14,
+      "gatekeeper": "FreeForAllGatekeeper",
+      "registryManager": "RegistryManager",
+      "registry": "SimpleRegistry"
     },
+    "RegistryManager": {},
     "EASRegistryManager": {
+      "easAddress": "0x4200000000000000000000000000000000000021"
+    },
+    "SimpleRegistry": {
+      "maxRecipients": 25,
+      "metadataUrl": "url"
+    },
+    "EASRegistry": {
       "maxRecipients": 25,
       "metadataUrl": "url",
-      "easAddress": "0xC2679fBD37d54388Ce493F1DB75320D236e1815e"
+      "easAddress": "0x4200000000000000000000000000000000000021"
     },
     "VkRegistry": {
       "stateTreeDepth": 10,
@@ -98,14 +107,23 @@
       "groupId": 0
     },
     "MACI": {
-      "stateTreeDepth": 10,
-      "gatekeeper": "ZupassGatekeeper",
-      "registryManager": "EASRegistryManager"
+      "stateTreeDepth": 14,
+      "gatekeeper": "FreeForAllGatekeeper",
+      "registryManager": "RegistryManager",
+      "registry": "SimpleRegistry"
     },
+    "RegistryManager": {},
     "EASRegistryManager": {
+      "easAddress": "0x4200000000000000000000000000000000000021"
+    },
+    "SimpleRegistry": {
+      "maxRecipients": 25,
+      "metadataUrl": "url"
+    },
+    "EASRegistry": {
       "maxRecipients": 25,
       "metadataUrl": "url",
-      "easAddress": "0xaEF4103A04090071165F78D45D83A0C0782c2B2a"
+      "easAddress": "0x4200000000000000000000000000000000000021"
     },
     "VkRegistry": {
       "stateTreeDepth": 10,
@@ -166,11 +184,20 @@
       "groupId": 0
     },
     "MACI": {
-      "stateTreeDepth": 6,
-      "gatekeeper": "EASGatekeeper",
-      "registryManager": "EASRegistryManager"
+      "stateTreeDepth": 14,
+      "gatekeeper": "FreeForAllGatekeeper",
+      "registryManager": "RegistryManager",
+      "registry": "SimpleRegistry"
     },
+    "RegistryManager": {},
     "EASRegistryManager": {
+      "easAddress": "0x4200000000000000000000000000000000000021"
+    },
+    "SimpleRegistry": {
+      "maxRecipients": 25,
+      "metadataUrl": "url"
+    },
+    "EASRegistry": {
       "maxRecipients": 25,
       "metadataUrl": "url",
       "easAddress": "0x4200000000000000000000000000000000000021"
@@ -234,14 +261,23 @@
       "groupId": 0
     },
     "MACI": {
-      "stateTreeDepth": 10,
+      "stateTreeDepth": 14,
       "gatekeeper": "FreeForAllGatekeeper",
-      "registryManager": "EASRegistryManager"
+      "registryManager": "RegistryManager",
+      "registry": "SimpleRegistry"
     },
+    "RegistryManager": {},
     "EASRegistryManager": {
+      "easAddress": "0x4200000000000000000000000000000000000021"
+    },
+    "SimpleRegistry": {
+      "maxRecipients": 25,
+      "metadataUrl": "url"
+    },
+    "EASRegistry": {
       "maxRecipients": 25,
       "metadataUrl": "url",
-      "easAddress": "0xC2679fBD37d54388Ce493F1DB75320D236e1815e"
+      "easAddress": "0x4200000000000000000000000000000000000021"
     },
     "VkRegistry": {
       "stateTreeDepth": 10,
@@ -302,14 +338,23 @@
       "groupId": 0
     },
     "MACI": {
-      "stateTreeDepth": 10,
+      "stateTreeDepth": 14,
       "gatekeeper": "FreeForAllGatekeeper",
-      "registryManager": "EASRegistryManager"
+      "registryManager": "RegistryManager",
+      "registry": "SimpleRegistry"
     },
+    "RegistryManager": {},
     "EASRegistryManager": {
+      "easAddress": "0x4200000000000000000000000000000000000021"
+    },
+    "SimpleRegistry": {
+      "maxRecipients": 25,
+      "metadataUrl": "url"
+    },
+    "EASRegistry": {
       "maxRecipients": 25,
       "metadataUrl": "url",
-      "easAddress": "0xC2679fBD37d54388Ce493F1DB75320D236e1815e"
+      "easAddress": "0x4200000000000000000000000000000000000021"
     },
     "VkRegistry": {
       "stateTreeDepth": 10,
@@ -370,11 +415,20 @@
       "groupId": 0
     },
     "MACI": {
-      "stateTreeDepth": 10,
+      "stateTreeDepth": 14,
       "gatekeeper": "FreeForAllGatekeeper",
-      "registryManager": "EASRegistryManager"
+      "registryManager": "RegistryManager",
+      "registry": "SimpleRegistry"
     },
+    "RegistryManager": {},
     "EASRegistryManager": {
+      "easAddress": "0x4200000000000000000000000000000000000021"
+    },
+    "SimpleRegistry": {
+      "maxRecipients": 25,
+      "metadataUrl": "url"
+    },
+    "EASRegistry": {
       "maxRecipients": 25,
       "metadataUrl": "url",
       "easAddress": "0x4200000000000000000000000000000000000021"
@@ -445,9 +499,18 @@
     "MACI": {
       "stateTreeDepth": 14,
       "gatekeeper": "FreeForAllGatekeeper",
-      "registryManager": "EASRegistryManager"
+      "registryManager": "RegistryManager",
+      "registry": "SimpleRegistry"
     },
+    "RegistryManager": {},
     "EASRegistryManager": {
+      "easAddress": "0x4200000000000000000000000000000000000021"
+    },
+    "SimpleRegistry": {
+      "maxRecipients": 25,
+      "metadataUrl": "url"
+    },
+    "EASRegistry": {
       "maxRecipients": 25,
       "metadataUrl": "url",
       "easAddress": "0x4200000000000000000000000000000000000021"

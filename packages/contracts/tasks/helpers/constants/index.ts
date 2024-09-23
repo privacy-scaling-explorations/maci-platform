@@ -20,7 +20,9 @@ export const EDeploySteps = {
  */
 export enum EPlatformContracts {
   EASRegistryManager = "EASRegistryManager",
+  RegistryManager = "RegistryManager",
   EASRegistry = "EASRegistry",
+  SimpleRegistry = "SimpleRegistry",
 }
 
 /**
@@ -34,18 +36,19 @@ export const EContracts = {
 /**
  * Supported registry manager types
  */
-export type TRegistryManager = EPlatformContracts.EASRegistryManager;
+export type TRegistryManager = EPlatformContracts.EASRegistryManager | EPlatformContracts.RegistryManager;
 
 /**
  * Supported registry types
  */
-export type TRegistry = EPlatformContracts.EASRegistry;
+export type TRegistry = EPlatformContracts.EASRegistry | EPlatformContracts.SimpleRegistry;
 
 /**
  * Registry types by registry manager
  */
 export const REGISTRY_TYPES: Record<TRegistryManager, TRegistry> = {
   [EPlatformContracts.EASRegistryManager]: EPlatformContracts.EASRegistry,
+  [EPlatformContracts.RegistryManager]: EPlatformContracts.SimpleRegistry,
 };
 
 /**
