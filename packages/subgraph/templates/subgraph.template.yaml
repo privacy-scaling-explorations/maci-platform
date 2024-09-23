@@ -73,6 +73,8 @@ templates:
       abis:
         - name: Poll
           file: ./node_modules/maci-platform-contracts/build/artifacts/contracts/maci/Poll.sol/Poll.json
+        - name: Registry
+          file: ./node_modules/maci-platform-contracts/build/artifacts/contracts/registry/BaseRegistry.sol/BaseRegistry.json
       eventHandlers:
         - event: MergeMaciState(indexed uint256,indexed uint256)
           handler: handleMergeMaciState
