@@ -134,10 +134,10 @@ At the very minimum you need to configure a **subgraph**, **admin address**, **M
 
 ### Subgraph
 
-Got to the **MACI** repo and head to the subgraph folder.
+Go to the subgraph folder.
 
 ```bash
-cd apps/subgraph
+cd packages/subgraph
 ```
 
 1. Change the network name inside the `network.json` file in the `config` folder, using one of the CLI names supported for subgraph network [https://thegraph.com/docs/en/developing/supported-networks/](https://thegraph.com/docs/en/developing/supported-networks/).
