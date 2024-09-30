@@ -68,6 +68,7 @@ module.exports = createEnv({
     NEXT_PUBLIC_ROUND_LOGO: z.string().optional(),
 
     NEXT_PUBLIC_SEMAPHORE_SUBGRAPH: z.string().url().optional(),
+    NEXT_PUBLIC_TREE_URL: z.string().url().optional(),
   },
 
   /**
@@ -107,6 +108,7 @@ module.exports = createEnv({
     NEXT_PUBLIC_ROUND_LOGO: process.env.NEXT_PUBLIC_ROUND_LOGO,
 
     NEXT_PUBLIC_SEMAPHORE_SUBGRAPH: process.env.NEXT_PUBLIC_SEMAPHORE_SUBGRAPH,
+    NEXT_PUBLIC_TREE_URL: process.env.NEXT_PUBLIC_TREE_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -92,6 +92,7 @@ export const config = {
   roundOrganizer: process.env.NEXT_PUBLIC_ROUND_ORGANIZER ?? "PSE",
   roundLogo: process.env.NEXT_PUBLIC_ROUND_LOGO,
   semaphoreSubgraphUrl: process.env.NEXT_PUBLIC_SEMAPHORE_SUBGRAPH,
+  treeUrl: process.env.NEXT_PUBLIC_TREE_URL,
 };
 
 export const theme = {
