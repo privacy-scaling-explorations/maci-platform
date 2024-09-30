@@ -31,6 +31,10 @@ export type Attestation = Omit<AttestationWithMetadata, "decodedDataJson"> & {
   metadataPtr: string;
 };
 
+export interface jsonPCD {
+  pcd: string;
+}
+
 export interface MatchFilter {
   equals?: string;
   in?: string[];

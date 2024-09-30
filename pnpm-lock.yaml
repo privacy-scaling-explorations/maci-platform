@@ -322,6 +322,21 @@ importers:
       '@nivo/line':
         specifier: ^0.84.0
         version: 0.84.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@pcd/eddsa-pcd':
+        specifier: ^0.6.5
+        version: 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/pcd-types':
+        specifier: ^0.11.4
+        version: 0.11.4
+      '@pcd/util':
+        specifier: ^0.5.4
+        version: 0.5.4
+      '@pcd/zk-eddsa-event-ticket-pcd':
+        specifier: ^0.6.6
+        version: 0.6.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/zuauth':
+        specifier: ^1.4.5
+        version: 1.4.5(bufferutil@4.0.8)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(utf-8-validate@5.0.10)
       '@radix-ui/react-dialog':
         specifier: ^1.0.5
         version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -373,6 +388,9 @@ importers:
       graphql-request:
         specifier: ^6.1.0
         version: 6.1.0(encoding@0.1.13)(graphql@16.9.0)
+      js-sha256:
+        specifier: ^0.11.0
+        version: 0.11.0
       lowdb:
         specifier: ^1.0.0
         version: 1.0.0
@@ -2893,6 +2911,71 @@ packages:
     resolution: {integrity: sha512-HNjmfLQEVRZmHRET336f20H/8kOozUGwk7yajvsonjNxbj2wBTK1WsQuHkD5yYh9RxFGL2EyDHryOihOwUoKDA==}
     engines: {node: '>= 10.0.0'}
 
+  '@pcd/circom_runtime@0.1.28':
+    resolution: {integrity: sha512-TRWFEZoFngWW6xvEGdiem9llmK47ZhPXN+gfVETpVZw29tVYVkDMEBrPiUycK6vvHp0IINZkceK426GrO28nfg==}
+    hasBin: true
+
+  '@pcd/eddsa-frog-pcd@0.3.5':
+    resolution: {integrity: sha512-wBlELi/Iwz3bEWhWma47EL3m88efIqq4+/k6zteWF+sRoGUMlxHAmxVUXeWhoKjxRQRQZzSiwVILyCwe95xazA==}
+
+  '@pcd/eddsa-pcd@0.6.5':
+    resolution: {integrity: sha512-13UnweevhvRvFBko3iBX/ma5kQVon65FQzTkgpJF5TJoH/GNRG50lbTl70sq3jLtdWJyYlrFiZPLINMV9mMJLA==}
+
+  '@pcd/eddsa-ticket-pcd@0.6.5':
+    resolution: {integrity: sha512-aoT6MZwk2R7m38VWLDEsfWU+rOiI4On61t0tvr7EE5Y0oCFQJ2q0OaKahy7xKHqssGGFr/+1j1k8BJKdJkrpiQ==}
+
+  '@pcd/email-pcd@0.6.5':
+    resolution: {integrity: sha512-D+2WBdWdMSK4YLredpc0FtxpWcUdxvueGqsvvwpjFek2vgd4S6LKSHHlnYIe4pPqRikAwPtCu8sLhKAzAPK56Q==}
+
+  '@pcd/emitter@0.5.4':
+    resolution: {integrity: sha512-bxfJcSzcCI0kGmxaiVT/vtEo2YDmQsg0JEn3zvPeSCYBckvvT3D9ozaISPhp/5+P5jTeSruTNw0YTP4DwQkxxA==}
+
+  '@pcd/passport-crypto@0.11.4':
+    resolution: {integrity: sha512-7nPrBldG4713CSA63NFAR6Ti8BBMwn26IuoHkiTyExFmFy5a0PCMssd3eg1amLMqG5o3KIMgxOfXSf9DJYB04g==}
+
+  '@pcd/passport-interface@0.11.9':
+    resolution: {integrity: sha512-J3EDUojQU1RHTL3cklI/+aap13KKDNo8InCTVpqjRIs6NJVjv98I4lGvs3yWIVYnDlgv0oV1XMfO+k6KOrvNNQ==}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+
+  '@pcd/pcd-collection@0.11.6':
+    resolution: {integrity: sha512-wp/biqV6q1cBuyOnNJXKS2f3CtKB0l5kEvi4B7Aqjrpv54PFBepOVepejLzG9AKt25NmfMpGfUPAsMOHmSkMxQ==}
+
+  '@pcd/pcd-types@0.11.4':
+    resolution: {integrity: sha512-IxPzs5dFc9O7mtcusbEMNln3lWtoyMkxPLbcJTbmlR+HGURNxDR5ZumXlXTOv8LL1OwkY1TaU1EkrhXVnVWdNA==}
+
+  '@pcd/pod-pcd@0.1.7':
+    resolution: {integrity: sha512-bzRPrhCRp7L1oAO6GmP5S58snxGOtU7aEsfcl7zLm1iz4I6pKcYTMVVaFXKGFuSZbur18IEkaOHMAzT3mZJ4IA==}
+
+  '@pcd/pod@0.1.7':
+    resolution: {integrity: sha512-y8wPXLw36VPsTBYR05TkURyb5v1S40kQmDwL26sEDxX90ZwAv6vTIjRpC4pmxk5gIFGtxTgxMembfrH2vZDOkA==}
+
+  '@pcd/semaphore-group-pcd@0.11.6':
+    resolution: {integrity: sha512-bpjyLuFpvlmpSXQYjj5+pSTvJzpJFygd9vWbll+0SE+0wPRx8Pxo8yFH2klYoUeekZtYwTWfwhyDTPZzD/jsmg==}
+
+  '@pcd/semaphore-identity-pcd@0.11.6':
+    resolution: {integrity: sha512-lhzC6YZhPXyf7QxHrwbSjo27E7mGWrjnFuEyhheyURNfMw2TzENVNBXoqnvRKnD9TLQxVv+/3SEMXknKRlZqvg==}
+
+  '@pcd/semaphore-signature-pcd@0.11.6':
+    resolution: {integrity: sha512-mhXf4PIeXvVjA9M3eUfDOMWEKeK4Z8lmHCGKrRyNR9iLuW+TCWOaViOBVdB0yFOUptltkh4kcS/XV+wZpAuUPw==}
+
+  '@pcd/snarkjs@0.7.7':
+    resolution: {integrity: sha512-rgopRGA29cyvNFAkxwtEpo8sOQPFTsckl2kR74CKvlVgKHveZVArmA0vnSrb3jiyrCVQ98lAroTUQB6dpnuYKQ==}
+    hasBin: true
+
+  '@pcd/util@0.5.4':
+    resolution: {integrity: sha512-BkG3PxujAOE3K9odBJqMUzhvK97tzJwVrMTbqSqhGqHnKLVQNuzhURkbdjoNfVRSp8BwaxP516ocjyY1KrxpuA==}
+
+  '@pcd/zk-eddsa-event-ticket-pcd@0.6.6':
+    resolution: {integrity: sha512-Gm6LBGZjuL8ZzTkhP/M6Z/vB4X2kZwmz8lvpqYeg11TWuiiEwnF6BEYcOSF5dEwgzhVKCFe5K/RIlK0kEnSL0w==}
+
+  '@pcd/zuauth@1.4.5':
+    resolution: {integrity: sha512-KgT69HOyD86KD5UR0z885BM73f/4bkmeHU61gfnI8mdkYhVPg1rUtZ5Yppo90avl3S8yO/W3WNvP+jXJCPlzqQ==}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+
   '@peculiar/asn1-schema@2.3.13':
     resolution: {integrity: sha512-3Xq3a01WkHRZL8X04Zsfg//mGaA21xlL4tlVn4v2xGT0JStiztATRkMwa5b+f/HXmY2smsiLXYK46Gwgzvfg3g==}
 
@@ -3494,11 +3577,23 @@ packages:
   '@semaphore-protocol/data@4.0.3':
     resolution: {integrity: sha512-2hnibRj6DpfX59AqODQF2b/86zeuAjlM1mXqBc/jhV5UnvCr3BIYCqdIQ+ndDXbmDAszuRmQOWZDnpYv1RA/Gw==}
 
+  '@semaphore-protocol/group@3.15.2':
+    resolution: {integrity: sha512-amDjSRattdViYUOZs40+4quKm+C1/F1fvyOvng9QGW2kkc138vombltyL4ix0mGSSPuqy/7ToH6wrfGivIfJFw==}
+
   '@semaphore-protocol/group@4.0.3':
     resolution: {integrity: sha512-ElxMN4vio301EJ6VjnfEpagG8KQn/Ck7BuBwpwHS7neDYcJkKYfRHCOd8OR/mg4dNVenflHkgIO8WTgCz+2n5A==}
 
+  '@semaphore-protocol/identity@3.15.2':
+    resolution: {integrity: sha512-MJ1MO5QL+oX+OFK2rHAPjQ6+kKgGxCsVJLNdn1soRawxbrxH9A6tV9AsVHV0DN4saegQ4qaOOy1XO1PAN6PiQA==}
+
   '@semaphore-protocol/identity@4.0.3':
     resolution: {integrity: sha512-IfGpE00gWnuM0c41g3rY1uU0he8X8JOrerqXjGzrsW0sXRe/jkxL/jln6zufVTGleN/mGdP9CkqXh7Ca7QjAiw==}
+
+  '@semaphore-protocol/proof@3.15.2':
+    resolution: {integrity: sha512-b0PuqYk9au/qRUmmRtAWE6MmkC/LY/vIt1dAUIKB0IzIPnzJ4QwXTNAWJoP3LXduhzaFJmNvLOj4ViB9GDh8+w==}
+    peerDependencies:
+      '@semaphore-protocol/group': 3.15.2
+      '@semaphore-protocol/identity': 3.15.2
 
   '@semaphore-protocol/proof@4.0.3':
     resolution: {integrity: sha512-egqXei3IEPNKHUxd3/9AbI/1z1nrp1DA5DtzdHI36m1RP0GOE/k4gpwaSGQQqqbUuuGYYnrZZj7bmhphfAy43A==}
@@ -3991,6 +4086,9 @@ packages:
 
   '@types/js-cookie@2.2.7':
     resolution: {integrity: sha512-aLkWa0C0vO5b4Sr798E26QgOkss68Un0bLjs7u9qxzPT5CG+8DuNTffWES58YzJs3hrVAOs1wonycqEBqNJubA==}
+
+  '@types/json-bigint@1.0.4':
+    resolution: {integrity: sha512-ydHooXLbOmxBbubnA7Eh+RpBzuaIiQjh8WGJYQB50JFGFrdxW7JzVlyEV7fAXw0T2sqJ1ysTneJbiyNLqZRAag==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -4553,11 +4651,29 @@ packages:
   '@zk-kit/baby-jubjub@1.0.1':
     resolution: {integrity: sha512-ADQd4nI71uZLd9mMLHm5u97QS9zwUBOIxK8776Og1gHHrIdsku8q8X1Xi54QAsbidvRBC5FDIQnP7QMUWJK/hQ==}
 
+  '@zk-kit/baby-jubjub@1.0.3':
+    resolution: {integrity: sha512-Wl+QfV6XGOMk1yU2JTqHXeKWfJVXp83is0+dtqfj9wx4wsAPpb+qzYvwAxW5PBx5/Nu71Bh7jp/5vM+6QgHSwA==}
+
   '@zk-kit/circuits@0.4.0':
     resolution: {integrity: sha512-Di7mokhwBS3qxVeCfHxGeNIpDg1kTnr1JXmsWiQMZLkRTn3Hugh6Tl07J394rWD0pIWRwPQsinaMVL2sB4F8yQ==}
 
   '@zk-kit/eddsa-poseidon@1.0.2':
     resolution: {integrity: sha512-3ON/6LFHjSqrK+ndIYPJoevzXUkqNGrpVHgfZbYX6x1CoCHHxQG83HH7EBhdWRQsMjcIiw5GVL8h6Xa6irNOYw==}
+
+  '@zk-kit/eddsa-poseidon@1.0.3':
+    resolution: {integrity: sha512-VyTu5jXHDqno3MBDWhoIwGz0vO/HB1X/2wqwope4JRvS4V8S9sYTwH3paf7ynImrJV7L/zK61RHxpGKbNemYRQ==}
+
+  '@zk-kit/groth16@0.3.0':
+    resolution: {integrity: sha512-rvTrzMcpxFy0lkiIveI5HHovVbyBQ+eDuh/RGAb0SHkzIxJ8kiPjSXvRXUmEdq278ZdhHvrCZSz5J53oIBuoFw==}
+
+  '@zk-kit/incremental-merkle-tree@0.4.3':
+    resolution: {integrity: sha512-2qHfrJXtPx8/UmF0wFAUr4VqCLr3J/P859fk/e3fwKLUnf3baeIUAO6inY4wrh0NGy4bzpKUWYjDph0yTbPz6A==}
+
+  '@zk-kit/incremental-merkle-tree@1.1.0':
+    resolution: {integrity: sha512-WnNR/GQse3lX8zOHMU8zwhgX8u3qPoul8w4GjJ0WDHq+VGJimo7EGheRZ/ILeBQabnlzAerdv3vBqYBehBeoKA==}
+
+  '@zk-kit/lean-imt@2.0.1':
+    resolution: {integrity: sha512-yc0rh9BCY6VvvKrZUNejfucuWscy1iRb9JrppuJktsiA9HcEukB3oX9CB7N/CUmCtqzmdwybet6N2aglGL/SUQ==}
 
   '@zk-kit/lean-imt@2.1.0':
     resolution: {integrity: sha512-RbG6QmTrurken7HzrJQouKiXKyGTpcoD+czQ1jvExRIA83k9w+SEsRdB7anPE8WoMKWAandDe09BzDCk6AirSw==}
@@ -4570,6 +4686,9 @@ packages:
 
   '@zk-kit/utils@1.2.0':
     resolution: {integrity: sha512-Ut9zfnlBVpopZG/s600Ds/FPSWXiPhO4q8949kmXTzwDXytjnvFbDZIFdWqE/lA7/NZjvykiTnnVwmanMxv2+w==}
+
+  '@zk-kit/utils@1.2.1':
+    resolution: {integrity: sha512-H2nTsyWdicVOyvqC5AjgU7tsTgmR6PDrruFJNmlmdhKp7RxEia/E1B1swMZjaasYa2QMp4Zc6oB7cWchty7B2Q==}
 
   '@zkochan/js-yaml@0.0.7':
     resolution: {integrity: sha512-nrUSn7hzt7J6JWgWGz78ZYI8wj+gdIJdk0Ynjpp8l+trkn58Uqsf6RYrYkEK+3X18EX+TNdtJI0WxAtc+L84SQ==}
@@ -5523,6 +5642,10 @@ packages:
 
   circom_runtime@0.1.21:
     resolution: {integrity: sha512-qTkud630B/GK8y76hnOaaS1aNuF6prfV0dTrkeRsiJKnlP1ryQbP2FWLgDOPqn6aKyaPlam+Z+DTbBhkEzh8dA==}
+    hasBin: true
+
+  circom_runtime@0.1.24:
+    resolution: {integrity: sha512-H7/7I2J/cBmRnZm9docOCGhfxzS61BEm4TMCWcrZGsWNBQhePNfQq88Oj2XpUfzmBTCd8pRvRb3Mvazt3TMrJw==}
     hasBin: true
 
   circom_runtime@0.1.25:
@@ -6588,6 +6711,10 @@ packages:
   email-addresses@3.1.0:
     resolution: {integrity: sha512-k0/r7GrWVL32kZlGwfPNgB2Y/mMXVTq/decgLczm/j34whdaspNrZO8CnXPf1laaHxI6ptUlsnAxN+UAPw+fzg==}
 
+  email-validator@2.0.4:
+    resolution: {integrity: sha512-gYCwo7kh5S3IDyZPLZf6hSS0MnZT8QmJFqYvbqlDZSbwdZlY6QZWxJ4i/6UhITOJ4XzyI647Bm2MXKCLqnJ4nQ==}
+    engines: {node: '>4.0'}
+
   emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
     engines: {node: '>=12'}
@@ -7267,6 +7394,9 @@ packages:
 
   ffjavascript@0.2.56:
     resolution: {integrity: sha512-em6G5Lrj7ucIqj4TYEgyoHs/j99Urwwqa4+YxEVY2hggnpRimVj+noX5pZQTxI1pvtiekZI4rG65JBf0xraXrg==}
+
+  ffjavascript@0.2.60:
+    resolution: {integrity: sha512-T/9bnEL5xAZRDbQoEMf+pM9nrhK+C3JyZNmqiWub26EQorW7Jt+jR54gpqDhceA4Nj0YctPQwYnl8xa52/A26A==}
 
   ffjavascript@0.2.63:
     resolution: {integrity: sha512-dBgdsfGks58b66JnUZeZpGxdMIDQ4QsD3VYlRJyFVrKQHb2kJy4R2gufx5oetrTxXPT+aEjg0dOvOLg1N0on4A==}
@@ -8943,8 +9073,17 @@ packages:
     resolution: {integrity: sha512-Gu1wtWzXBzGeye/j9BuyplGHscwqKRZodp/0M1vyBc19RJpblSwKGu099KwwaTx9cRIV+Qupk8xUMfEiGfFqSA==}
     hasBin: true
 
+  js-sha256@0.10.1:
+    resolution: {integrity: sha512-5obBtsz9301ULlsgggLg542s/jqtddfOpV5KJc4hajc9JV8GeY2gZHSVpYBn4nWqAUTJ9v+xwtbJ1mIBgIH5Vw==}
+
+  js-sha256@0.11.0:
+    resolution: {integrity: sha512-6xNlKayMZvds9h1Y1VWc0fQHQ82BxTXizWPEtEeGvmOUYpBRy4gbWroHLpzowe6xiQhHpelCQiE7HEdznyBL9Q==}
+
   js-sha3@0.8.0:
     resolution: {integrity: sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q==}
+
+  js-sha512@0.8.0:
+    resolution: {integrity: sha512-PWsmefG6Jkodqt+ePTvBZCSMFgN7Clckjd0O7su3I0+BW2QWUTJNzjktHsztGLhncP2h8mcF9V9Y2Ha59pAViQ==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -8992,6 +9131,9 @@ packages:
     resolution: {integrity: sha512-OYu7XEzjkCQ3C5Ps3QIZsQfNpqoJyZZA99wd9aWd05NCtC5pWOkShK2mkL6HXQR6/Cy2lbNdPlZBpuQHXE63gA==}
     engines: {node: '>=4'}
     hasBin: true
+
+  json-bigint@1.0.0:
+    resolution: {integrity: sha512-SiPv/8VpZuWbvLSMtTDU8hEfrZWg/mH/nV/b4o0CYbSxu1UIQPLdwKOCIyLQX+VIPO5vrLX3i8qtqFyhdPSUSQ==}
 
   json-buffer@3.0.0:
     resolution: {integrity: sha512-CuUqjv0FUZIdXkHPI8MezCnFCdaTAacej1TZYulLoAg1h/PhwkdXFN4V/gzY4g+fMBCOV2xF+rp7t2XD2ns/NQ==}
@@ -9158,6 +9300,12 @@ packages:
 
   libphonenumber-js@1.11.5:
     resolution: {integrity: sha512-TwHR5BZxGRODtAfz03szucAkjT5OArXr+94SMtAM2pYXIlQNVMrxvb6uSCbnaJJV6QXEyICk7+l6QPgn72WHhg==}
+
+  libsodium-sumo@0.7.15:
+    resolution: {integrity: sha512-5tPmqPmq8T8Nikpm1Nqj0hBHvsLFCXvdhBFV7SGOitQPZAA6jso8XoL0r4L7vmfKXr486fiQInvErHtEvizFMw==}
+
+  libsodium-wrappers-sumo@0.7.15:
+    resolution: {integrity: sha512-aSWY8wKDZh5TC7rMvEdTHoyppVq/1dTSAeAR7H6pzd6QRT3vQWcT5pGwCotLcpPEOLXX6VvqihSPkpEhYAjANA==}
 
   lighthouse-logger@1.4.2:
     resolution: {integrity: sha512-gPWxznF6TKmUHrOQjlVo2UbaL2EJ71mb2CCeRs/2qBpi4L/g4LUVc9+3lKQ6DTUZwJswfM7ainGrLO1+fOqa2g==}
@@ -10773,6 +10921,12 @@ packages:
   poseidon-lite@0.2.0:
     resolution: {integrity: sha512-vivDZnGmz8W4G/GzVA72PXkfYStjilu83rjjUfpL4PueKcC8nfX6hCPh2XhoC5FBgC6y0TA3YuUeUo5YCcNoig==}
 
+  poseidon-lite@0.2.1:
+    resolution: {integrity: sha512-xIr+G6HeYfOhCuswdqcFpSX47SPhm0EpisWJ6h7fHlWwaVIvH3dLnejpatrtw6Xc6HaLrpq05y7VRfvDmDGIog==}
+
+  poseidon-lite@0.3.0:
+    resolution: {integrity: sha512-ilJj4MIve4uBEG7SrtPqUUNkvpJ/pLVbndxa0WvebcQqeIhe+h72JR4g0EvwchUzm9sOQDlOjiDNmRAgxNZl4A==}
+
   possible-typed-array-names@1.0.0:
     resolution: {integrity: sha512-d7Uw+eZoloe0EHDIYoe+bQ5WXnGMOpmiZFTuMWCwpjzzkL2nTjcKiAk4hh8TjnGye2TwWOk3UXucZ+3rbmBa8Q==}
     engines: {node: '>= 0.4'}
@@ -11646,6 +11800,9 @@ packages:
   secp256k1@5.0.0:
     resolution: {integrity: sha512-TKWX8xvoGHrxVdqbYeZM9w+izTF4b9z3NhSaDkdn81btvuh+ivbIMGT/zQvDtTFWhRlThpoz6LEYTr7n8A5GcA==}
     engines: {node: '>=14.0.0'}
+
+  secure-random@1.1.2:
+    resolution: {integrity: sha512-H2bdSKERKdBV1SwoqYm6C0y+9EA94v6SUBOWO8kDndc4NoUih7Dv6Tsgma7zO1lv27wIvjlD0ZpMQk7um5dheQ==}
 
   seek-bzip@1.0.6:
     resolution: {integrity: sha512-e1QtP3YL5tWww8uKaOCQ18UxIT2laNBXHjV/S2WYCiK4udiv8lkG89KRIoCjUagnAmCBurjF4zEVX2ByBbnCjQ==}
@@ -12880,6 +13037,9 @@ packages:
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
+
+  url-join@4.0.1:
+    resolution: {integrity: sha512-jk1+QP6ZJqyOiuEI9AEWQfju/nB2Pw466kbA0LEZljHwKeMgd9WrAEgEGxjPDD2+TNbbb37rTyhEfrCXfuKXnA==}
 
   url-parse-lax@3.0.0:
     resolution: {integrity: sha512-NjFKA0DidqPa5ciFcSrXnAltTtzz84ogy+NebPvfEgAck0+TNg4UJ4IN+fB7zRZfbgUf0syOo9MDxFkDSMuFaQ==}
@@ -17209,6 +17369,234 @@ snapshots:
       '@parcel/watcher-win32-ia32': 2.4.1
       '@parcel/watcher-win32-x64': 2.4.1
 
+  '@pcd/circom_runtime@0.1.28':
+    dependencies:
+      ffjavascript: 0.3.0
+
+  '@pcd/eddsa-frog-pcd@0.3.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@pcd/eddsa-pcd': 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/pcd-types': 0.11.4
+      '@pcd/util': 0.5.4
+      chai: 4.5.0
+      json-bigint: 1.0.0
+      lodash: 4.17.21
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@pcd/eddsa-pcd@0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@pcd/pcd-types': 0.11.4
+      '@pcd/util': 0.5.4
+      circomlibjs: 0.1.7(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@pcd/eddsa-ticket-pcd@0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@pcd/eddsa-pcd': 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/pcd-types': 0.11.4
+      '@pcd/util': 0.5.4
+      chai: 4.5.0
+      json-bigint: 1.0.0
+      lodash: 4.17.21
+      url-join: 4.0.1
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@pcd/email-pcd@0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@pcd/eddsa-pcd': 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/pcd-types': 0.11.4
+      '@pcd/util': 0.5.4
+      chai: 4.5.0
+      json-bigint: 1.0.0
+      lodash: 4.17.21
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@pcd/emitter@0.5.4':
+    dependencies:
+      chai: 4.5.0
+
+  '@pcd/passport-crypto@0.11.4':
+    dependencies:
+      buffer: 6.0.3
+      libsodium-wrappers-sumo: 0.7.15
+
+  '@pcd/passport-interface@0.11.9(bufferutil@4.0.8)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@pcd/eddsa-frog-pcd': 0.3.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/eddsa-pcd': 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/eddsa-ticket-pcd': 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/email-pcd': 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/emitter': 0.5.4
+      '@pcd/passport-crypto': 0.11.4
+      '@pcd/pcd-collection': 0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/pcd-types': 0.11.4
+      '@pcd/pod': 0.1.7
+      '@pcd/pod-pcd': 0.1.7
+      '@pcd/semaphore-group-pcd': 0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/semaphore-identity-pcd': 0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/semaphore-signature-pcd': 0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/util': 0.5.4
+      '@semaphore-protocol/identity': 3.15.2
+      fast-json-stable-stringify: 2.1.0
+      js-sha256: 0.10.1
+      lodash: 4.17.21
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      url-join: 4.0.1
+      uuid: 9.0.1
+      zod: 3.22.4
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@pcd/pcd-collection@0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@pcd/emitter': 0.5.4
+      '@pcd/passport-crypto': 0.11.4
+      '@pcd/pcd-types': 0.11.4
+      '@pcd/semaphore-identity-pcd': 0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      chai: 4.5.0
+      fast-json-stable-stringify: 2.1.0
+      lodash: 4.17.21
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@pcd/pcd-types@0.11.4': {}
+
+  '@pcd/pod-pcd@0.1.7':
+    dependencies:
+      '@pcd/pcd-types': 0.11.4
+      '@pcd/pod': 0.1.7
+      '@pcd/util': 0.5.4
+      json-bigint: 1.0.0
+      uuid: 9.0.1
+
+  '@pcd/pod@0.1.7':
+    dependencies:
+      '@pcd/util': 0.5.4
+      '@zk-kit/baby-jubjub': 1.0.1
+      '@zk-kit/eddsa-poseidon': 1.0.3
+      '@zk-kit/lean-imt': 2.0.1
+      '@zk-kit/utils': 1.2.0
+      js-sha256: 0.10.1
+      json-bigint: 1.0.0
+      poseidon-lite: 0.2.1
+
+  '@pcd/semaphore-group-pcd@0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@pcd/pcd-types': 0.11.4
+      '@pcd/semaphore-identity-pcd': 0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/semaphore-signature-pcd': 0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/util': 0.5.4
+      '@semaphore-protocol/group': 3.15.2
+      '@semaphore-protocol/identity': 3.15.2
+      '@semaphore-protocol/proof': 3.15.2(@semaphore-protocol/group@3.15.2)(@semaphore-protocol/identity@3.15.2)
+      json-bigint: 1.0.0
+      typescript: 5.5.4
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@pcd/semaphore-identity-pcd@0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@pcd/pcd-types': 0.11.4
+      '@pcd/pod': 0.1.7
+      '@pcd/util': 0.5.4
+      '@semaphore-protocol/core': 4.0.3(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@semaphore-protocol/identity': 3.15.2
+      '@types/json-bigint': 1.0.4
+      '@zk-kit/eddsa-poseidon': 1.0.3
+      '@zk-kit/utils': 1.2.1
+      js-sha256: 0.11.0
+      json-bigint: 1.0.0
+      poseidon-lite: 0.3.0
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@pcd/semaphore-signature-pcd@0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@pcd/pcd-types': 0.11.4
+      '@pcd/semaphore-identity-pcd': 0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/util': 0.5.4
+      '@semaphore-protocol/group': 3.15.2
+      '@semaphore-protocol/identity': 3.15.2
+      '@semaphore-protocol/proof': 3.15.2(@semaphore-protocol/group@3.15.2)(@semaphore-protocol/identity@3.15.2)
+      json-bigint: 1.0.0
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@pcd/snarkjs@0.7.7':
+    dependencies:
+      '@iden3/binfileutils': 0.0.12
+      '@pcd/circom_runtime': 0.1.28
+      bfj: 7.1.0
+      blake2b-wasm: 2.4.0
+      ejs: 3.1.10
+      fastfile: 0.0.20
+      ffjavascript: 0.3.0
+      js-sha3: 0.8.0
+      logplease: 1.2.15
+      r1csfile: 0.0.48
+
+  '@pcd/util@0.5.4':
+    dependencies:
+      buffer: 6.0.3
+      email-validator: 2.0.4
+      js-sha256: 0.10.1
+      secure-random: 1.1.2
+      uuid: 9.0.1
+
+  '@pcd/zk-eddsa-event-ticket-pcd@0.6.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@pcd/eddsa-pcd': 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/eddsa-ticket-pcd': 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/pcd-types': 0.11.4
+      '@pcd/semaphore-identity-pcd': 0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/semaphore-signature-pcd': 0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/snarkjs': 0.7.7
+      '@pcd/util': 0.5.4
+      '@semaphore-protocol/identity': 3.15.2
+      circomlibjs: 0.1.7(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      json-bigint: 1.0.0
+      snarkjs: 0.7.4
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@pcd/zuauth@1.4.5(bufferutil@4.0.8)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@pcd/eddsa-pcd': 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/eddsa-ticket-pcd': 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/passport-interface': 0.11.9(bufferutil@4.0.8)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(utf-8-validate@5.0.10)
+      '@pcd/pcd-types': 0.11.4
+      '@pcd/semaphore-identity-pcd': 0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@pcd/zk-eddsa-event-ticket-pcd': 0.6.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   '@peculiar/asn1-schema@2.3.13':
     dependencies:
       asn1js: 3.0.5
@@ -18003,10 +18391,25 @@ snapshots:
       - debug
       - utf-8-validate
 
+  '@semaphore-protocol/group@3.15.2':
+    dependencies:
+      '@ethersproject/bignumber': 5.7.0
+      '@ethersproject/bytes': 5.7.0
+      '@ethersproject/keccak256': 5.7.0
+      '@zk-kit/incremental-merkle-tree': 1.1.0
+
   '@semaphore-protocol/group@4.0.3':
     dependencies:
       '@zk-kit/lean-imt': 2.1.0
       '@zk-kit/utils': 1.0.0
+
+  '@semaphore-protocol/identity@3.15.2':
+    dependencies:
+      '@ethersproject/bignumber': 5.7.0
+      '@ethersproject/keccak256': 5.7.0
+      '@ethersproject/random': 5.7.0
+      '@ethersproject/strings': 5.7.0
+      js-sha512: 0.8.0
 
   '@semaphore-protocol/identity@4.0.3':
     dependencies:
@@ -18014,6 +18417,17 @@ snapshots:
       '@zk-kit/eddsa-poseidon': 1.0.2
       '@zk-kit/utils': 1.2.0
       poseidon-lite: 0.2.0
+
+  '@semaphore-protocol/proof@3.15.2(@semaphore-protocol/group@3.15.2)(@semaphore-protocol/identity@3.15.2)':
+    dependencies:
+      '@ethersproject/bignumber': 5.7.0
+      '@ethersproject/bytes': 5.7.0
+      '@ethersproject/keccak256': 5.7.0
+      '@ethersproject/strings': 5.7.0
+      '@semaphore-protocol/group': 3.15.2
+      '@semaphore-protocol/identity': 3.15.2
+      '@zk-kit/groth16': 0.3.0
+      '@zk-kit/incremental-merkle-tree': 0.4.3
 
   '@semaphore-protocol/proof@4.0.3(@semaphore-protocol/group@4.0.3)(@semaphore-protocol/identity@4.0.3)(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
     dependencies:
@@ -18665,6 +19079,8 @@ snapshots:
       pretty-format: 29.7.0
 
   '@types/js-cookie@2.2.7': {}
+
+  '@types/json-bigint@1.0.4': {}
 
   '@types/json-schema@7.0.15': {}
 
@@ -19621,6 +20037,10 @@ snapshots:
     dependencies:
       '@zk-kit/utils': 1.0.0
 
+  '@zk-kit/baby-jubjub@1.0.3':
+    dependencies:
+      '@zk-kit/utils': 1.2.1
+
   '@zk-kit/circuits@0.4.0':
     dependencies:
       circomlib: 2.0.5
@@ -19630,6 +20050,25 @@ snapshots:
       '@zk-kit/baby-jubjub': 1.0.1
       '@zk-kit/utils': 1.0.0
       buffer: 6.0.3
+
+  '@zk-kit/eddsa-poseidon@1.0.3':
+    dependencies:
+      '@zk-kit/baby-jubjub': 1.0.3
+      '@zk-kit/utils': 1.2.1
+      buffer: 6.0.3
+
+  '@zk-kit/groth16@0.3.0':
+    dependencies:
+      circom_runtime: 0.1.24
+      ffjavascript: 0.2.60
+
+  '@zk-kit/incremental-merkle-tree@0.4.3': {}
+
+  '@zk-kit/incremental-merkle-tree@1.1.0': {}
+
+  '@zk-kit/lean-imt@2.0.1':
+    dependencies:
+      '@zk-kit/utils': 1.0.0
 
   '@zk-kit/lean-imt@2.1.0':
     dependencies:
@@ -19645,6 +20084,10 @@ snapshots:
       buffer: 6.0.3
 
   '@zk-kit/utils@1.2.0':
+    dependencies:
+      buffer: 6.0.3
+
+  '@zk-kit/utils@1.2.1':
     dependencies:
       buffer: 6.0.3
 
@@ -20070,7 +20513,7 @@ snapshots:
 
   axe-core@4.10.0: {}
 
-  axios-debug-log@1.0.0(axios@1.7.3(debug@4.3.6)):
+  axios-debug-log@1.0.0(axios@1.7.3):
     dependencies:
       '@types/debug': 4.1.12
       axios: 1.7.3(debug@4.3.6)
@@ -20721,6 +21164,10 @@ snapshots:
   circom_runtime@0.1.21:
     dependencies:
       ffjavascript: 0.2.56
+
+  circom_runtime@0.1.24:
+    dependencies:
+      ffjavascript: 0.2.60
 
   circom_runtime@0.1.25:
     dependencies:
@@ -21948,6 +22395,8 @@ snapshots:
 
   email-addresses@3.1.0: {}
 
+  email-validator@2.0.4: {}
+
   emittery@0.13.1: {}
 
   emoji-regex@10.3.0: {}
@@ -23077,6 +23526,12 @@ snapshots:
     dependencies:
       wasmbuilder: 0.0.16
       wasmcurves: 0.2.0
+      web-worker: 1.3.0
+
+  ffjavascript@0.2.60:
+    dependencies:
+      wasmbuilder: 0.0.16
+      wasmcurves: 0.2.2
       web-worker: 1.3.0
 
   ffjavascript@0.2.63:
@@ -25482,7 +25937,13 @@ snapshots:
 
   js-graph-algorithms@1.0.18: {}
 
+  js-sha256@0.10.1: {}
+
+  js-sha256@0.11.0: {}
+
   js-sha3@0.8.0: {}
+
+  js-sha512@0.8.0: {}
 
   js-tokens@4.0.0: {}
 
@@ -25559,6 +26020,10 @@ snapshots:
   jsesc@0.5.0: {}
 
   jsesc@2.5.2: {}
+
+  json-bigint@1.0.0:
+    dependencies:
+      bignumber.js: 9.1.2
 
   json-buffer@3.0.0: {}
 
@@ -25811,6 +26276,12 @@ snapshots:
       - supports-color
 
   libphonenumber-js@1.11.5: {}
+
+  libsodium-sumo@0.7.15: {}
+
+  libsodium-wrappers-sumo@0.7.15:
+    dependencies:
+      libsodium-sumo: 0.7.15
 
   lighthouse-logger@1.4.2:
     dependencies:
@@ -28075,6 +28546,10 @@ snapshots:
 
   poseidon-lite@0.2.0: {}
 
+  poseidon-lite@0.2.1: {}
+
+  poseidon-lite@0.3.0: {}
+
   possible-typed-array-names@1.0.0: {}
 
   postcss-import@15.1.0(postcss@8.4.41):
@@ -29036,6 +29511,8 @@ snapshots:
       node-addon-api: 5.1.0
       node-gyp-build: 4.8.1
 
+  secure-random@1.1.2: {}
+
   seek-bzip@1.0.6:
     dependencies:
       commander: 2.20.3
@@ -29307,7 +29784,7 @@ snapshots:
       '@aduh95/viz.js': 3.7.0
       '@solidity-parser/parser': 0.16.2
       axios: 1.7.3(debug@4.3.6)
-      axios-debug-log: 1.0.0(axios@1.7.3(debug@4.3.6))
+      axios-debug-log: 1.0.0(axios@1.7.3)
       cli-color: 2.0.4
       commander: 11.1.0
       convert-svg-to-png: 0.6.4(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
@@ -30536,6 +31013,8 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
+
+  url-join@4.0.1: {}
 
   url-parse-lax@3.0.0:
     dependencies:
