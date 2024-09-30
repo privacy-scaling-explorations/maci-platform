@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
+import { type StandardMerkleTreeData } from "@openzeppelin/merkle-tree/dist/standard";
 import { type ZKEdDSAEventTicketPCD } from "@pcd/zk-eddsa-event-ticket-pcd/ZKEdDSAEventTicketPCD";
 import { Identity } from "@semaphore-protocol/core";
 import { isAfter } from "date-fns";
@@ -48,6 +50,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   const [error, setError] = useState<string>();
   const [pollData, setPollData] = useState<IGetPollData>();
   const [tallyData, setTallyData] = useState<TallyData>();
+  const [treeData, setTreeData] = useState<StandardMerkleTreeData<string[]>>();
 
   const [semaphoreIdentity, setSemaphoreIdentity] = useState<Identity | undefined>();
   const [zupassProof, setZupassProof] = useState<PCD>();
@@ -168,6 +171,25 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         setIsLoading(false);
         break;
       case GatekeeperTrait.FreeForAll:
+        setIsLoading(false);
+        break;
+      case GatekeeperTrait.MerkleProof:
+        if (!signer) {
+          setIsLoading(false);
+          return;
+        }
+        if (!treeData) {
+          setIsLoading(false);
+          return;
+        }
+        try {
+          const merkleTree = StandardMerkleTree.load(treeData);
+          const proof = merkleTree.getProof([signer.address]);
+          const encodedProof = AbiCoder.defaultAbiCoder().encode(["bytes32[]"], [proof]);
+          setSgData(encodedProof);
+        } catch (e) {
+          setSgData(undefined);
+        }
         setIsLoading(false);
         break;
       default:
@@ -449,6 +471,22 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     }
   }, [signer, votingEndsAt, setIsLoading, setTallyData, setPollData, poll.data]);
 
+  /// check the tree data
+  useEffect(() => {
+    // if we have the tree url then it means we can get the tree data through there
+    if (config.treeUrl) {
+      setIsLoading(true);
+      fetch(config.treeUrl)
+        .then((res) => res.json())
+        .then((res: StandardMerkleTreeData<string[]>) => {
+          setTreeData(res);
+        })
+        .catch(() => undefined);
+
+      setIsLoading(false);
+    }
+  }, [setIsLoading]);
+
   const value = useMemo(
     () => ({
       isLoading,
@@ -466,6 +504,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       onVote,
       gatekeeperTrait,
       storeZupassProof,
+      treeData,
     }),
     [
       isLoading,
@@ -482,6 +521,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       onVote,
       gatekeeperTrait,
       storeZupassProof,
+      treeData,
     ],
   );
 

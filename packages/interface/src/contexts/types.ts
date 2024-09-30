@@ -1,3 +1,4 @@
+import { type StandardMerkleTreeData } from "@openzeppelin/merkle-tree/dist/standard";
 import { type TallyData, type IGetPollData, type GatekeeperTrait } from "maci-cli/sdk";
 import { type ReactNode } from "react";
 
@@ -23,6 +24,7 @@ export interface MaciContextType {
   maciPubKey?: string;
   gatekeeperTrait?: GatekeeperTrait;
   storeZupassProof: (args: PCD) => Promise<void>;
+  treeData?: StandardMerkleTreeData<string[]>;
   onSignup: (onError: () => void) => Promise<void>;
   onVote: (
     args: IVoteArgs[],
