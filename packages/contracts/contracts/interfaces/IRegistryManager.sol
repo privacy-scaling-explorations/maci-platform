@@ -39,6 +39,7 @@ interface IRegistryManager {
     address indexed registry,
     RequestType indexed requestType,
     bytes32 indexed recipient,
+    uint256 recipientIndex,
     uint256 index,
     address payout,
     string metadataUrl
@@ -47,6 +48,7 @@ interface IRegistryManager {
     address indexed registry,
     RequestType indexed requestType,
     bytes32 indexed recipient,
+    uint256 recipientIndex,
     uint256 index,
     address payout,
     string metadataUrl
@@ -55,6 +57,7 @@ interface IRegistryManager {
     address indexed registry,
     RequestType indexed requestType,
     bytes32 indexed recipient,
+    uint256 recipientIndex,
     uint256 index,
     address payout,
     string metadataUrl

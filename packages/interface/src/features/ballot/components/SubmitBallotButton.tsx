@@ -6,14 +6,12 @@ import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
-import { useProjectIdMapping } from "~/features/projects/hooks/useProjects";
 
 export const SubmitBallotButton = (): JSX.Element => {
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
   const { onVote, isLoading, initialVoiceCredits } = useMaci();
   const { ballot, publishBallot, sumBallot } = useBallot();
-  const projectIndices = useProjectIdMapping(ballot);
 
   const ableToSubmit = useMemo(
     () => sumBallot(ballot.votes) <= initialVoiceCredits,
@@ -25,30 +23,24 @@ export const SubmitBallotButton = (): JSX.Element => {
   }, []);
 
   const handleSubmitBallot = useCallback(async () => {
-    const votes = ballot.votes.map(({ amount, projectId }) => {
-      const index = projectIndices[projectId];
-      if (index === undefined || index === -1) {
-        throw new Error("There are some problems due to project index mapping.");
-      }
-
-      return {
-        voteOptionIndex: BigInt(index),
-        newVoteWeight: BigInt(amount),
-      };
-    });
+    const votes = ballot.votes.map(({ amount, projectId, projectIndex }) => ({
+      projectId,
+      voteOptionIndex: BigInt(projectIndex),
+      newVoteWeight: BigInt(amount),
+    }));
 
     await onVote(votes, onVotingError, () => {
       publishBallot();
       router.push("/ballot/confirmation");
     });
-  }, [ballot, router, onVote, publishBallot, onVotingError, projectIndices]);
+  }, [ballot, router, onVote, publishBallot, onVotingError]);
 
   const handleOpenDialog = useCallback(() => {
     setOpen(true);
   }, [setOpen]);
 
   return (
-    <>
+    <div>
       <Button variant={ableToSubmit ? "primary" : "disabled"} onClick={handleOpenDialog}>
         {ableToSubmit ? "submit your ballot" : "Exceed initial voice credits"}
       </Button>
@@ -73,6 +65,6 @@ export const SubmitBallotButton = (): JSX.Element => {
         title="exceed initial voice credits"
         onOpenChange={setOpen}
       />
-    </>
+    </div>
   );
 };

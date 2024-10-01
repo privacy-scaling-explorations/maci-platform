@@ -13,7 +13,7 @@ interface IProjectContributionsProps {
 }
 
 const ProjectContributions = ({ isLoading, project = undefined }: IProjectContributionsProps): JSX.Element => (
-  <>
+  <div>
     <Heading as="h3" size="2xl">
       Contributions
     </Heading>
@@ -34,7 +34,7 @@ const ProjectContributions = ({ isLoading, project = undefined }: IProjectContri
               OTHER: Globe,
             }[link.type];
             return (
-              <>
+              <div>
                 {createElement(icon ?? "div", {
                   className: "w-4 h-4 mt-1",
                 })}
@@ -42,13 +42,13 @@ const ProjectContributions = ({ isLoading, project = undefined }: IProjectContri
                 <div className="flex-1 truncate" title={link.description}>
                   {link.description}
                 </div>
-              </>
+              </div>
             );
           }}
         />
       </div>
     </div>
-  </>
+  </div>
 );
 
 export default ProjectContributions;

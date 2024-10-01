@@ -8,7 +8,7 @@ import { formatNumber } from "~/utils/formatNumber";
 import { useAppState } from "~/utils/state";
 import { EAppState } from "~/utils/types";
 
-import type { Attestation } from "~/utils/types";
+import type { IRecipient } from "~/utils/types";
 
 import { useProjectMetadata } from "../hooks/useProjects";
 import { EProjectState } from "../types";
@@ -18,25 +18,25 @@ import { ProjectAvatar } from "./ProjectAvatar";
 import { ProjectBanner } from "./ProjectBanner";
 
 export interface IProjectItemProps {
-  attestation: Attestation;
+  recipient: IRecipient;
   isLoading: boolean;
   state?: EProjectState;
   action?: (e: Event) => void;
 }
 
 export const ProjectItem = ({
-  attestation,
+  recipient,
   isLoading,
   state = undefined,
   action = undefined,
 }: IProjectItemProps): JSX.Element => {
-  const metadata = useProjectMetadata(attestation.metadataPtr);
+  const metadata = useProjectMetadata(recipient.metadataUrl);
   const appState = useAppState();
 
   return (
     <article
       className="dark:bg-lightBlack group rounded-xl bg-white shadow-lg hover:shadow-sm"
-      data-testid={`project-${attestation.id}`}
+      data-testid={`project-${recipient.id}`}
     >
       <div className="opacity-70 transition-opacity group-hover:opacity-100">
         <ProjectBanner url={metadata.data?.bannerImageUrl} />
@@ -46,7 +46,7 @@ export const ProjectItem = ({
 
       <div className="p-4 pt-2">
         <Heading as="h3" className="truncate dark:text-white" size="lg">
-          <Skeleton isLoading={isLoading}>{attestation.name}</Skeleton>
+          <Skeleton isLoading={isLoading}>{metadata.data?.name}</Skeleton>
         </Heading>
 
         <div className="line-clamp-2 h-10 text-sm text-gray-400">

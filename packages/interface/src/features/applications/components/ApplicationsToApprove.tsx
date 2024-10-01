@@ -1,57 +1,37 @@
 import Link from "next/link";
-import { useMemo, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FiAlertCircle } from "react-icons/fi";
+import { zeroAddress } from "viem";
 
 import { EmptyState } from "~/components/EmptyState";
 import { Button } from "~/components/ui/Button";
 import { Form } from "~/components/ui/Form";
 import { Heading } from "~/components/ui/Heading";
 import { Spinner } from "~/components/ui/Spinner";
-import { useApplications } from "~/features/applications/hooks/useApplications";
-import { fetchApprovedApplications } from "~/utils/fetchAttestationsWithoutCache";
-
-import type { Attestation } from "~/utils/types";
+import { useMaci } from "~/contexts/Maci";
+import { useApprovedApplications, usePendingApplications } from "~/features/applications/hooks/useApplications";
 
 import { useApproveApplication } from "../hooks/useApproveApplication";
-import { useApprovedApplications } from "../hooks/useApprovedApplications";
 import { ApplicationsToApproveSchema } from "../types";
 
 import { ApplicationHeader } from "./ApplicationHeader";
 import { ApplicationItem } from "./ApplicationItem";
 import { ApproveButton } from "./ApproveButton";
 
+/**
+ * Displays the applications that are pending approval.
+ */
 export const ApplicationsToApprove = (): JSX.Element => {
-  const applications = useApplications();
-  const approved = useApprovedApplications();
+  const { pollData } = useMaci();
+
+  const approved = useApprovedApplications(pollData?.registry ?? zeroAddress);
+  const pending = usePendingApplications(pollData?.registry ?? zeroAddress);
   const approve = useApproveApplication();
-  const [refetchedData, setRefetchedData] = useState<Attestation[]>();
-
-  const approvedById = useMemo(
-    () =>
-      [...(approved.data ?? []), ...(refetchedData ?? [])].reduce((map, x) => {
-        map.set(x.refUID, true);
-        return map;
-      }, new Map<string, boolean>()),
-    [approved.data, refetchedData],
-  );
-
-  const applicationsToApprove = applications.data?.filter((application) => !approvedById.get(application.id));
 
   useEffect(() => {
-    const fetchData = async () => {
-      const ret = await fetchApprovedApplications();
-      setRefetchedData(ret);
-    };
-
-    /// delay refetch data for 5 seconds
-    const timeout = setTimeout(() => {
-      fetchData();
-    }, 5000);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [approve.isPending, approve.isSuccess]);
+    approved.refetch().catch();
+    pending.refetch().catch();
+  }, [approve.isSuccess, approve.isPending, approve.isError]);
 
   return (
     <div className="flex w-full justify-center dark:text-white">
@@ -61,7 +41,7 @@ export const ApplicationsToApprove = (): JSX.Element => {
         </Heading>
 
         <p className="text-gray-400">
-          Select the applications you want to approve. You must be a configured admin to approve applications.
+          Select the applications you want to approve. You must be an admin to be able to approve applications.
         </p>
 
         <p className="flex items-center gap-2 text-blue-400">
@@ -70,7 +50,7 @@ export const ApplicationsToApprove = (): JSX.Element => {
           <span>Newly submitted applications can take 10 minutes to show up.</span>
         </p>
 
-        <div className="mt-6 text-2xl font-extrabold uppercase text-black dark:text-white">{`${applications.data?.length} applications found`}</div>
+        <div className="mt-6 text-2xl font-extrabold uppercase text-black dark:text-white">{`${(pending.data?.length ?? 0) + (approved.data?.length ?? 0)} applications found`}</div>
 
         <Form
           defaultValues={{ selected: [] }}
@@ -79,14 +59,14 @@ export const ApplicationsToApprove = (): JSX.Element => {
             approve.mutate(values.selected);
           }}
         >
-          {applications.isLoading && (
+          {pending.isLoading && (
             <div className="flex items-center justify-center py-16">
               <Spinner />
             </div>
           )}
 
-          {!applications.isLoading && !applications.data?.length ? (
-            <EmptyState title="No applications">
+          {!pending.isLoading && !pending.data?.length ? (
+            <EmptyState title="No pending applications">
               <Button as={Link} href="/applications/new" variant="primary">
                 Go to create application
               </Button>
@@ -97,15 +77,14 @@ export const ApplicationsToApprove = (): JSX.Element => {
             <ApproveButton isLoading={approve.isPending} />
           </div>
 
-          <ApplicationHeader applications={applicationsToApprove} />
+          <ApplicationHeader applications={pending.data ?? []} />
 
-          {applications.data?.map((item) => (
-            <ApplicationItem
-              key={item.id}
-              {...item}
-              isApproved={approvedById.get(item.id)}
-              isLoading={applications.isLoading}
-            />
+          {pending.data?.map((item) => (
+            <ApplicationItem key={item.index} {...item} isApproved={false} isLoading={pending.isLoading} />
+          ))}
+
+          {approved.data?.map((item) => (
+            <ApplicationItem key={item.index} {...item} isApproved isLoading={approved.isLoading} />
           ))}
         </Form>
       </div>

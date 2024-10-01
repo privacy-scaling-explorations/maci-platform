@@ -1,38 +1,33 @@
-import { type Transaction } from "@ethereum-attestation-service/eas-sdk";
 import { type UseMutationResult, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { config, eas } from "~/config";
 import { type TransactionError } from "~/features/voters/hooks/useApproveVoters";
-import { useAttest } from "~/hooks/useEAS";
-import { useEthersSigner } from "~/hooks/useEthersSigner";
-import { createAttestation } from "~/lib/eas/createAttestation";
+import { useSubmitApproval } from "~/hooks/useRegistry";
 
+/**
+ * Approve applications
+ *
+ * @param opts - Options for the mutation
+ * @returns the result of the mutation
+ */
 export function useApproveApplication(opts?: {
   onSuccess?: () => void;
-}): UseMutationResult<Transaction<string[]>, Error | TransactionError, string[]> {
-  const attest = useAttest();
-  const signer = useEthersSigner();
+}): UseMutationResult<boolean[], Error | TransactionError, string[]> {
+  const approve = useSubmitApproval();
 
   return useMutation({
     mutationFn: async (applicationIds: string[]) => {
-      if (!signer) {
-        throw new Error("Connect wallet first");
+      const successes: boolean[] = [];
+
+      // eslint-disable-next-line @typescript-eslint/prefer-for-of
+      for (let i = 0; i < applicationIds.length; i += 1) {
+        const applicationId = applicationIds[i];
+        // eslint-disable-next-line no-await-in-loop
+        const success = await approve.mutateAsync({ refUID: applicationId! });
+        successes.push(success);
       }
 
-      const attestations = await Promise.all(
-        applicationIds.map((refUID) =>
-          createAttestation(
-            {
-              values: { type: "application", round: config.roundId },
-              schemaUID: eas.schemas.approval,
-              refUID,
-            },
-            signer,
-          ),
-        ),
-      );
-      return attest.mutateAsync(attestations.map((att) => ({ ...att, data: [att.data] })));
+      return successes;
     },
     onSuccess: () => {
       toast.success("Application approved successfully!");

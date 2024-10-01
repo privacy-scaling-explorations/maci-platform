@@ -38,7 +38,7 @@ const ClearBallot = (): JSX.Element | null => {
   };
 
   return (
-    <>
+    <div>
       <button
         className="cursor-pointer text-gray-400 underline hover:text-black"
         type="button"
@@ -57,10 +57,14 @@ const ClearBallot = (): JSX.Element | null => {
         title="Are you sure?"
         onOpenChange={setOpen}
       />
-    </>
+    </div>
   );
 };
 
+/**
+ * Empty ballot component
+ * @returns a component that displays a message and a button to view projects
+ */
 const EmptyBallot = (): JSX.Element => (
   <div className="flex flex-1 items-center justify-center">
     <div className=" max-w-[360px] space-y-4">
@@ -81,6 +85,10 @@ const EmptyBallot = (): JSX.Element => (
   </div>
 );
 
+/**
+ * Ballot allocation form component
+ * @returns a component that displays the ballot allocation form
+ */
 const BallotAllocationForm = (): JSX.Element => {
   const appState = useAppState();
   const { ballot, sumBallot } = useBallot();

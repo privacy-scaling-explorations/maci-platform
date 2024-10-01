@@ -10,41 +10,40 @@ import { useMetadata } from "~/hooks/useMetadata";
 import { formatDate } from "~/utils/time";
 
 import type { Application } from "~/features/applications/types";
-import type { Attestation } from "~/utils/types";
+import type { IRecipient, IRecipientContract } from "~/utils/types";
 
-export interface IApplicationItemProps extends Attestation {
+export interface IApplicationItemProps {
+  index: string;
+  recipient: IRecipient | IRecipientContract;
   isApproved?: boolean;
   isLoading?: boolean;
 }
 
 export const ApplicationItem = ({
-  id,
+  index,
   recipient,
-  name,
-  metadataPtr,
-  time,
   isApproved = false,
   isLoading = false,
 }: IApplicationItemProps): JSX.Element => {
-  const metadata = useMetadata<Application>(metadataPtr);
+  const metadata = useMetadata<Application>(recipient.metadataUrl);
 
   const form = useFormContext();
 
   const { fundingSources = [], profileImageUrl } = metadata.data ?? {};
 
   return (
-    <Link href={`/projects/${id}`} target="_blank">
+    <Link href={`/projects/${recipient.id}`} target="_blank">
       <div className="dark:hover:bg-lighterBlack flex cursor-pointer items-center gap-2 py-4 hover:bg-blue-50">
         <label className="flex flex-1 cursor-pointer justify-center p-2">
-          <Checkbox disabled={isApproved} value={id} {...form.register(`selected`)} type="checkbox" />
+          <Checkbox disabled={isApproved} value={index} {...form.register(`selected`)} type="checkbox" />
         </label>
 
         <div className="flex flex-[8] items-center gap-4">
-          <ProjectAvatar isLoading={isLoading} profileId={recipient} size="sm" url={profileImageUrl} />
+          <ProjectAvatar isLoading={isLoading} size="sm" url={profileImageUrl} />
 
           <div className="flex flex-col">
             <Skeleton className="mb-1 min-h-5 min-w-24" isLoading={isLoading}>
-              <span className="uppercase">{name}</span>
+              <span className="uppercase">{metadata.data?.name}</span>
             </Skeleton>
 
             <div className="text-sm text-gray-400">
@@ -57,7 +56,7 @@ export const ApplicationItem = ({
           <ClockIcon className="size-3" />
 
           <Skeleton className="mb-1 min-h-5 min-w-24" isLoading={isLoading}>
-            {formatDate(time * 1000)}
+            {metadata.data?.submittedAt ? formatDate(metadata.data.submittedAt) : "N/A"}
           </Skeleton>
         </div>
 
