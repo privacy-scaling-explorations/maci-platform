@@ -26,7 +26,7 @@ export const SortFilter = (): JSX.Element => {
       <SearchInput className="w-full" placeholder="Search project..." value={search} onChange={onChange} />
 
       <SortByDropdown
-        options={["name_asc", "name_desc", "time_asc", "time_desc"]}
+        options={["name_asc", "name_desc"]}
         value={`${orderBy}_${sortOrder}`}
         onChange={async (sort) => {
           const [order, sorting] = sort.split("_") as [OrderBy, SortOrder];

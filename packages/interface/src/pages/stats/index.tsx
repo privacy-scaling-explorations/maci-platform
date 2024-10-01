@@ -1,6 +1,7 @@
 import { differenceInDays } from "date-fns";
 import dynamic from "next/dynamic";
 import { useMemo, type PropsWithChildren } from "react";
+import { zeroAddress } from "viem";
 import { useAccount } from "wagmi";
 
 import { ConnectButton } from "~/components/ConnectButton";
@@ -8,7 +9,8 @@ import { Alert } from "~/components/ui/Alert";
 import { Heading } from "~/components/ui/Heading";
 import { config } from "~/config";
 import { useMaci } from "~/contexts/Maci";
-import { useProjectCount, useProjectsResults, useResults } from "~/hooks/useResults";
+import { useProjectCount } from "~/features/projects/hooks/useProjects";
+import { useProjectsResults, useResults } from "~/hooks/useResults";
 import { Layout } from "~/layouts/DefaultLayout";
 import { formatNumber } from "~/utils/formatNumber";
 import { useAppState } from "~/utils/state";
@@ -28,17 +30,18 @@ const Stat = ({ title, children = null }: PropsWithChildren<{ title: string }>) 
 
 const Stats = () => {
   const { isLoading, pollData } = useMaci();
+  const { chain, isConnected } = useAccount();
   const results = useResults(pollData);
-  const count = useProjectCount();
+
+  const count = useProjectCount({ chain: chain!, registryAddress: pollData?.registry ?? zeroAddress });
   const { data: projectsResults } = useProjectsResults(pollData);
-  const { isConnected } = useAccount();
 
   const { averageVotes, projects = {} } = results.data ?? {};
 
   const chartData = useMemo(() => {
     const data = (projectsResults?.pages[0] ?? [])
       .map((project) => ({
-        x: project.name,
+        x: project.index,
         y: projects[project.id]?.votes,
       }))
       .slice(0, 15);
@@ -75,7 +78,7 @@ const Stats = () => {
       </div>
 
       <div className="grid gap-2 md:grid-cols-3">
-        <Stat title="Projects applied">{count.data?.count}</Stat>
+        <Stat title="Projects applied">{count.data?.count.toString()}</Stat>
 
         <Stat title="Projects voted for">{Object.keys(projects).length}</Stat>
 

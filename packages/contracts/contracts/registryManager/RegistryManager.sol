@@ -57,17 +57,20 @@ contract RegistryManager is Ownable, IRegistryManager, ICommon {
   /// @inheritdoc IRegistryManager
   function process(Request memory request) public virtual override isValidRequest(request) {
     request.status = Status.Pending;
-    requests[requestCount] = request;
+    uint256 index = requestCount;
 
     unchecked {
       requestCount++;
     }
+
+    requests[index] = request;
 
     emit RequestSent(
       request.registry,
       request.requestType,
       request.recipient.id,
       request.index,
+      index,
       request.recipient.recipient,
       request.recipient.metadataUrl
     );
@@ -85,6 +88,7 @@ contract RegistryManager is Ownable, IRegistryManager, ICommon {
       request.requestType,
       request.recipient.id,
       request.index,
+      index,
       request.recipient.recipient,
       request.recipient.metadataUrl
     );
@@ -108,6 +112,7 @@ contract RegistryManager is Ownable, IRegistryManager, ICommon {
       request.requestType,
       request.recipient.id,
       request.index,
+      index,
       request.recipient.recipient,
       request.recipient.metadataUrl
     );

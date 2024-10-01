@@ -8,7 +8,7 @@ import { VotingWidget } from "~/features/projects/components/VotingWidget";
 import { useAppState } from "~/utils/state";
 import { EAppState } from "~/utils/types";
 
-import type { Attestation } from "~/utils/types";
+import type { IRecipient } from "~/utils/types";
 
 import { useProjectMetadata } from "../hooks/useProjects";
 
@@ -17,16 +17,11 @@ import { ProjectDescriptionSection } from "./ProjectDescriptionSection";
 
 export interface IProjectDetailsProps {
   action?: ReactNode;
-  projectId?: string;
-  attestation?: Attestation;
+  project: IRecipient;
 }
 
-const ProjectDetails = ({
-  projectId = "",
-  attestation = undefined,
-  action = undefined,
-}: IProjectDetailsProps): JSX.Element => {
-  const metadata = useProjectMetadata(attestation?.metadataPtr);
+const ProjectDetails = ({ project, action = undefined }: IProjectDetailsProps): JSX.Element => {
+  const metadata = useProjectMetadata(project.metadataUrl);
 
   const { bio, websiteUrl, payoutAddress, github, twitter, fundingSources, profileImageUrl, bannerImageUrl } =
     metadata.data ?? {};
@@ -36,7 +31,7 @@ const ProjectDetails = ({
   return (
     <div className="relative dark:text-white">
       <div className="mb-7">
-        <Navigation projectName={attestation?.name ?? "project name"} />
+        <Navigation projectName={metadata.data?.name ?? "project name"} />
       </div>
 
       <div className="overflow-hidden rounded-3xl">
@@ -49,10 +44,12 @@ const ProjectDetails = ({
 
       <div className="flex items-center justify-between">
         <Heading as="h3" size="3xl">
-          {attestation?.name}
+          {metadata.data?.name}
         </Heading>
 
-        {appState === EAppState.VOTING && <VotingWidget projectId={projectId} />}
+        {appState === EAppState.VOTING && (
+          <VotingWidget projectId={project.id} projectIndex={Number.parseInt(project.index, 10)} />
+        )}
       </div>
 
       <ProjectContacts author={payoutAddress} github={github} twitter={twitter} website={websiteUrl} />

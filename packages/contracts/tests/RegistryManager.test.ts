@@ -130,6 +130,7 @@ describe("RegistryManager", () => {
         addRequest.requestType,
         addRequest.recipient.id,
         addRequest.index,
+        addRequest.index,
         addRequest.recipient.recipient,
         addRequest.recipient.metadataUrl,
       );
@@ -177,6 +178,7 @@ describe("RegistryManager", () => {
         addRequest.requestType,
         addRequest.recipient.id,
         addRequest.index,
+        addRequest.index,
         addRequest.recipient.recipient,
         addRequest.recipient.metadataUrl,
       );
@@ -200,6 +202,7 @@ describe("RegistryManager", () => {
         changeRequest.requestType,
         changeRequest.recipient.id,
         changeRequest.index,
+        1,
         changeRequest.recipient.recipient,
         changeRequest.recipient.metadataUrl,
       );
@@ -211,6 +214,7 @@ describe("RegistryManager", () => {
         changeRequest.requestType,
         changeRequest.recipient.id,
         changeRequest.index,
+        1,
         changeRequest.recipient.recipient,
         changeRequest.recipient.metadataUrl,
       );
@@ -274,6 +278,7 @@ describe("RegistryManager", () => {
         addRequest.requestType,
         addRequest.recipient.id,
         addRequest.index,
+        2,
         addRequest.recipient.recipient,
         addRequest.recipient.metadataUrl,
       );
@@ -285,6 +290,7 @@ describe("RegistryManager", () => {
         changeRequest.requestType,
         changeRequest.recipient.id,
         changeRequest.index,
+        3,
         changeRequest.recipient.recipient,
         changeRequest.recipient.metadataUrl,
       );
@@ -296,6 +302,7 @@ describe("RegistryManager", () => {
         addRequest.requestType,
         addRequest.recipient.id,
         addRequest.index,
+        2,
         addRequest.recipient.recipient,
         addRequest.recipient.metadataUrl,
       );
@@ -307,6 +314,7 @@ describe("RegistryManager", () => {
         changeRequest.requestType,
         changeRequest.recipient.id,
         changeRequest.index,
+        3,
         changeRequest.recipient.recipient,
         changeRequest.recipient.metadataUrl,
       );
@@ -352,6 +360,7 @@ describe("RegistryManager", () => {
         removeRequest.requestType,
         removeRequest.recipient.id,
         removeRequest.index,
+        4,
         removeRequest.recipient.recipient,
         removeRequest.recipient.metadataUrl,
       );
@@ -365,6 +374,7 @@ describe("RegistryManager", () => {
         removeRequest.requestType,
         removeRequest.recipient.id,
         removeRequest.index,
+        count - 1n,
         removeRequest.recipient.recipient,
         removeRequest.recipient.metadataUrl,
       );

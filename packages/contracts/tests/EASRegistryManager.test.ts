@@ -64,23 +64,25 @@ describe("EASRegistryManager", () => {
   });
 
   it("should allow owner to approve requests to the registry", async () => {
-    const addRequest = await registryManager.getRequest(0);
+    const requestIndex = 0;
+    const addRequest = await registryManager.getRequest(requestIndex);
 
     expect(addRequest.status).to.equal(ERegistryManagerRequestStatus.Pending);
 
-    await expect(registryManager.connect(owner).approve(0))
+    await expect(registryManager.connect(owner).approve(requestIndex))
       .to.emit(registryManager, "RequestApproved")
       .withArgs(
         addRequest.registry,
         addRequest.requestType,
         addRequest.recipient.id,
         addRequest.index,
+        requestIndex,
         addRequest.recipient.recipient,
         addRequest.recipient.metadataUrl,
       );
 
     const changeRequest = {
-      index: 0,
+      index: requestIndex,
       registry: await mockRegistry.getAddress(),
       requestType: ERegistryManagerRequestType.Change,
       status: ERegistryManagerRequestStatus.Pending,
@@ -98,6 +100,7 @@ describe("EASRegistryManager", () => {
         changeRequest.requestType,
         changeRequest.recipient.id,
         changeRequest.index,
+        1,
         changeRequest.recipient.recipient,
         changeRequest.recipient.metadataUrl,
       );
@@ -109,6 +112,7 @@ describe("EASRegistryManager", () => {
         changeRequest.requestType,
         changeRequest.recipient.id,
         changeRequest.index,
+        1,
         changeRequest.recipient.recipient,
         changeRequest.recipient.metadataUrl,
       );

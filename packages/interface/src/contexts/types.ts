@@ -1,9 +1,10 @@
 import { type StandardMerkleTreeData } from "@openzeppelin/merkle-tree/dist/standard";
-import { type TallyData, type IGetPollData, type GatekeeperTrait } from "maci-cli/sdk";
+import { type TallyData, type GatekeeperTrait } from "maci-cli/sdk";
 import { type ReactNode } from "react";
 
 import type { PCD } from "@pcd/pcd-types";
 import type { Ballot, Vote } from "~/features/ballot/types";
+import type { IPollData } from "~/utils/fetchPoll";
 
 export interface IVoteArgs {
   voteOptionIndex: bigint;
@@ -19,7 +20,7 @@ export interface MaciContextType {
   isRegistered?: boolean;
   pollId?: string;
   error?: string;
-  pollData?: IGetPollData;
+  pollData?: IPollData;
   tallyData?: TallyData;
   maciPubKey?: string;
   gatekeeperTrait?: GatekeeperTrait;
@@ -41,9 +42,9 @@ export interface BallotContextType {
   ballot: Ballot;
   isLoading: boolean;
   addToBallot: (votes: Vote[], pollId?: string) => void;
-  removeFromBallot: (projectId: string) => void;
+  removeFromBallot: (projectIndex: number) => void;
   deleteBallot: () => void;
-  ballotContains: (id: string) => Vote | undefined;
+  ballotContains: (index: number) => Vote | undefined;
   sumBallot: (votes?: Vote[]) => number;
   publishBallot: () => void;
 }
