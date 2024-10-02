@@ -76,7 +76,7 @@ export const Info = ({
       <InfoContainer size={size}>
         {showRoundInfo && <RoundInfo roundId={roundId} />}
 
-        {showBallot && <BallotOverview title={asPath.includes("ballot") ? "Summary" : undefined} roundId={roundId} />}
+        {showBallot && <BallotOverview roundId={roundId} title={asPath.includes("ballot") ? "Summary" : undefined} />}
 
         {showRoundInfo && roundState === ERoundState.VOTING && <VotingInfo />}
 

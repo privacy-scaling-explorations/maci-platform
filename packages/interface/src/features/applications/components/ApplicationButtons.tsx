@@ -1,42 +1,25 @@
-import { useMemo, useCallback, useState } from "react";
+import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
-import { useAccount } from "wagmi";
 
-import { Button, IconButton } from "~/components/ui/Button";
-import { Dialog } from "~/components/ui/Dialog";
-import { Spinner } from "~/components/ui/Spinner";
-import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
+import { FormActionButtons } from "~/components/FormActionButtons";
 
-import type { Application } from "../types";
 import type { ImpactMetrix, ContributionLink, FundingSource } from "~/features/projects/types";
 
-export enum EApplicationStep {
-  PROFILE,
-  ADVANCED,
-  REVIEW,
-}
+import { type Application, EApplicationStep } from "../types";
 
 interface IApplicationButtonsProps {
   step: EApplicationStep;
   isUploading: boolean;
   isPending: boolean;
-  onNextStep: () => void;
-  onBackStep: () => void;
+  setStep: (step: EApplicationStep) => void;
 }
 
 export const ApplicationButtons = ({
   step,
   isUploading,
   isPending,
-  onNextStep,
-  onBackStep,
+  setStep,
 }: IApplicationButtonsProps): JSX.Element => {
-  const { isCorrectNetwork } = useIsCorrectNetwork();
-
-  const { address } = useAccount();
-
-  const [showDialog, setShowDialog] = useState<boolean>(false);
-
   const form = useFormContext<Application>();
 
   const [
@@ -100,65 +83,34 @@ export const ApplicationButtons = ({
     return true;
   };
 
-  const handleOnClickNextStep = useCallback(
-    (event: UIEvent) => {
-      event.preventDefault();
+  const onNextStep = () => {
+    if (!checkStepComplete()) {
+      throw new Error("Step not completed.");
+    }
 
-      if (checkStepComplete()) {
-        onNextStep();
-      } else {
-        setShowDialog(true);
-      }
-    },
-    [onNextStep, setShowDialog, checkStepComplete],
-  );
+    if (step === EApplicationStep.PROFILE) {
+      setStep(EApplicationStep.ADVANCED);
+    } else if (step === EApplicationStep.ADVANCED) {
+      setStep(EApplicationStep.REVIEW);
+    }
+  };
 
-  const handleOnClickBackStep = useCallback(
-    (event: UIEvent) => {
-      event.preventDefault();
-      onBackStep();
-    },
-    [onBackStep],
-  );
-
-  const handleOnOpenChange = useCallback(() => {
-    setShowDialog(false);
-  }, [setShowDialog]);
+  const onBackStep = () => {
+    if (step === EApplicationStep.ADVANCED) {
+      setStep(EApplicationStep.PROFILE);
+    } else if (step === EApplicationStep.REVIEW) {
+      setStep(EApplicationStep.ADVANCED);
+    }
+  };
 
   return (
-    <div className="flex justify-end gap-2">
-      <Dialog
-        description="There are still some inputs not fulfilled, please complete all the required information."
-        isOpen={showDialog}
-        size="sm"
-        title="Please complete all the required information"
-        onOpenChange={handleOnOpenChange}
-      />
-
-      {step !== EApplicationStep.PROFILE && (
-        <Button className="text-gray-300 underline" size="auto" variant="ghost" onClick={handleOnClickBackStep}>
-          Back
-        </Button>
-      )}
-
-      {step !== EApplicationStep.REVIEW && (
-        <Button size="auto" variant="primary" onClick={handleOnClickNextStep}>
-          Next
-        </Button>
-      )}
-
-      {step === EApplicationStep.REVIEW && (
-        <IconButton
-          disabled={isPending || !address || !isCorrectNetwork}
-          icon={isPending ? Spinner : null}
-          isLoading={isPending}
-          size="auto"
-          type="submit"
-          variant="primary"
-        >
-          {isUploading ? "Uploading metadata" : "Submit"}
-        </IconButton>
-      )}
-    </div>
+    <FormActionButtons
+      hasNextStep={step !== EApplicationStep.REVIEW}
+      hasPrevStep={step !== EApplicationStep.PROFILE}
+      isPending={isPending}
+      isUploading={isUploading}
+      onBackStep={onBackStep}
+      onNextStep={onNextStep}
+    />
   );
 };

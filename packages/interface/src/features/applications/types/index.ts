@@ -75,3 +75,9 @@ export const ApplicationsToApproveSchema = z.object({
   selected: z.array(z.string()),
 });
 export type TApplicationsToApprove = z.infer<typeof ApplicationsToApproveSchema>;
+
+export enum EApplicationStep {
+  PROFILE,
+  ADVANCED,
+  REVIEW,
+}

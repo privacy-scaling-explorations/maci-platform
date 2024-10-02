@@ -54,8 +54,11 @@ export interface BallotProviderProps {
 }
 
 export interface RoundContextType {
-  rounds: Round[];
+  isContractsDeployed: boolean;
+  rounds: Round[] | undefined;
   getRound: (roundId: string) => Round | undefined;
+  addRound: (round: Round) => void;
+  deployContracts: () => void;
 }
 
 export interface RoundProviderProps {

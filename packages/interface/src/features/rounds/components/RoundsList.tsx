@@ -7,10 +7,8 @@ export const RoundsList = (): JSX.Element => {
   const { rounds } = useRound();
 
   return (
-    <div className="grid grid-cols-3 px-16 py-4">
-      {rounds.map((round) => (
-        <RoundItem key={round.roundId} round={round} />
-      ))}
+    <div className="grid grid-cols-3 gap-4 px-16 py-4">
+      {rounds?.map((round) => <RoundItem key={round.roundId} round={round} />)}
     </div>
   );
 };

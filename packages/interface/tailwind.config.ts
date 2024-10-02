@@ -86,6 +86,10 @@ export default {
         "112": "28rem",
         "128": "32rem",
       },
+      content: {
+        arrowDownIcon: 'url("/arrow-down.svg")',
+        arrowUpIcon: 'url("/arrow-up.svg")',
+      },
     },
   },
 } satisfies Config;

@@ -37,16 +37,14 @@ const HomePage = (): JSX.Element => {
             <p className="text-gray-400">Configure and deploy your contracts to get started.</p>
 
             <Button size="auto" variant="primary">
-              <a href="/coordinator">Get Started</a>
+              <a href="/admin">Get Started</a>
             </Button>
           </div>
         )}
 
-        {isConnected && !isAdmin && rounds.length === 0 && (
-          <p className="text-gray-400">There are no rounds deployed.</p>
-        )}
+        {isConnected && !isAdmin && !rounds && <p className="text-gray-400">There are no rounds deployed.</p>}
 
-        {rounds.length > 0 && <RoundsList />}
+        {rounds && rounds.length > 0 && <RoundsList />}
       </div>
 
       <FAQList />

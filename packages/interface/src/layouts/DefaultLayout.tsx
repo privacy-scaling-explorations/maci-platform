@@ -72,8 +72,8 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
       links.push(
         ...[
           {
-            href: "/applications",
-            children: "Applications",
+            href: "/admin",
+            children: "Admin",
           },
         ],
       );
@@ -85,10 +85,6 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
           {
             href: "/voters",
             children: "Voters",
-          },
-          {
-            href: "/coordinator",
-            children: "Coordinator",
           },
         ],
       );

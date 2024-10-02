@@ -1,20 +1,20 @@
 import { Transaction } from "@ethereum-attestation-service/eas-sdk";
 import { useRouter } from "next/router";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useLocalStorage } from "react-use";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
 
 import { ImageUpload } from "~/components/ImageUpload";
+import { Steps } from "~/components/Steps";
 import { FieldArray, Form, FormControl, FormSection, Select, Textarea } from "~/components/ui/Form";
 import { Input } from "~/components/ui/Input";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
 import { useCreateApplication } from "../hooks/useCreateApplication";
-import { ApplicationSchema, contributionTypes, fundingSourceTypes } from "../types";
+import { ApplicationSchema, contributionTypes, fundingSourceTypes, EApplicationStep } from "../types";
 
-import { ApplicationButtons, EApplicationStep } from "./ApplicationButtons";
-import { ApplicationSteps } from "./ApplicationSteps";
+import { ApplicationButtons } from "./ApplicationButtons";
 import { ImpactTags } from "./ImpactTags";
 import { ReviewApplicationDetails } from "./ReviewApplicationDetails";
 
@@ -31,34 +31,12 @@ export const ApplicationForm = ({ roundId }: IApplicationFormProps): JSX.Element
 
   const router = useRouter();
 
-  /**
-   * There are 3 steps for creating an application.
-   * The first step is to set the project introduction (profile);
-   * the second step is to set the contributions, impacts, and funding sources (advanced);
-   * the last step is to review the input values, allow editing by going back to previous steps (review).
-   */
   const [step, setStep] = useState<EApplicationStep>(EApplicationStep.PROFILE);
-
-  const handleNextStep = useCallback(() => {
-    if (step === EApplicationStep.PROFILE) {
-      setStep(EApplicationStep.ADVANCED);
-    } else if (step === EApplicationStep.ADVANCED) {
-      setStep(EApplicationStep.REVIEW);
-    }
-  }, [step, setStep]);
-
-  const handleBackStep = useCallback(() => {
-    if (step === EApplicationStep.REVIEW) {
-      setStep(EApplicationStep.ADVANCED);
-    } else if (step === EApplicationStep.ADVANCED) {
-      setStep(EApplicationStep.PROFILE);
-    }
-  }, [step, setStep]);
 
   const create = useCreateApplication({
     onSuccess: (data: Transaction<string[]>) => {
       clearDraft();
-      router.push(`/applications/confirmation?txHash=${data.tx.hash}`);
+      router.push(`/rounds/${roundId}/applications/confirmation?txHash=${data.tx.hash}`);
     },
     onError: (err: { reason?: string; data?: { message: string } }) =>
       toast.error("Application create error", {
@@ -71,7 +49,7 @@ export const ApplicationForm = ({ roundId }: IApplicationFormProps): JSX.Element
 
   return (
     <div className="dark:border-lighterBlack rounded-lg border border-gray-200 p-4">
-      <ApplicationSteps step={step} />
+      <Steps step={step} stepNames={["Project Profile", "Contribution & Impact", "Review & Submit"]} />
 
       <Form
         defaultValues={{
@@ -236,9 +214,8 @@ export const ApplicationForm = ({ roundId }: IApplicationFormProps): JSX.Element
         <ApplicationButtons
           isPending={create.isPending}
           isUploading={create.isUploading}
+          setStep={setStep}
           step={step}
-          onBackStep={handleBackStep}
-          onNextStep={handleNextStep}
         />
       </Form>
     </div>

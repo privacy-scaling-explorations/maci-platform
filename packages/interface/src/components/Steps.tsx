@@ -10,13 +10,17 @@ export enum EStepState {
 interface IStepCategoryProps {
   title: string;
   progress: EStepState;
+  isLast?: boolean;
 }
 
-interface IApplicationStepsProps {
+interface IStepsProps {
   step: number;
+  stepNames: string[];
 }
 
-const StepCategory = ({ title, progress }: IStepCategoryProps): JSX.Element => (
+const Interline = (): JSX.Element => <div className="h-[1px] w-9 bg-gray-300" />;
+
+const StepCategory = ({ title, progress, isLast = false }: IStepCategoryProps): JSX.Element => (
   <div className="flex items-center gap-3">
     {progress === EStepState.ACTIVE && (
       <Image alt="circle-check-blue" height="22" src="/circle-check-blue.svg" width="22" />
@@ -29,21 +33,15 @@ const StepCategory = ({ title, progress }: IStepCategoryProps): JSX.Element => (
     {progress === EStepState.DEFAULT && <div className="h-4 w-4 rounded-full border-2 border-gray-300" />}
 
     <p className={clsx("text-md", progress === EStepState.ACTIVE ? "text-blue-400" : "text-gray-300")}>{title}</p>
+
+    {!isLast && <Interline />}
   </div>
 );
 
-const Interline = (): JSX.Element => <div className="h-[1px] w-9 bg-gray-300" />;
-
-export const ApplicationSteps = ({ step }: IApplicationStepsProps): JSX.Element => (
+export const Steps = ({ step, stepNames }: IStepsProps): JSX.Element => (
   <div className="mb-4 flex items-center gap-4">
-    <StepCategory progress={step} title="Project Profile" />
-
-    <Interline />
-
-    <StepCategory progress={step - 1} title="Contribution & Impact" />
-
-    <Interline />
-
-    <StepCategory progress={step - 2} title="Review & Submit" />
+    {stepNames.map((name, i) => (
+      <StepCategory key={name} isLast={i === stepNames.length - 1} progress={step - i} title={name} />
+    ))}
   </div>
 );
