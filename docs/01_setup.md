@@ -2,11 +2,13 @@
 
 Follow these instructions to deploy your own instance of MACI-PLATFORM.
 
-## Video Tutorial
+## Video Tutorials
 
-A complete installation tutorial can be seen here:
+Complete installation tutorials can be seen here:
 
-[![Watch the Video](https://img.youtube.com/vi/86VBbO1E4Vk/0.jpg)](https://www.youtube.com/watch?v=86VBbO1E4Vk)
+- [Deploying Contracts and Subgraph](https://www.youtube.com/watch?v=-QA0VB9EUMk)
+- [Frontend Deployment](https://www.youtube.com/watch?v=q0yS8RfwDcw)
+- [Finalizing a MACI Round](https://www.youtube.com/watch?v=nlS3hOC0ljw)
 
 ## 1. Fork Repo
 
