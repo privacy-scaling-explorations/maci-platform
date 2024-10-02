@@ -1,0 +1,13 @@
+{
+    "links":{
+        "projects": "Projects",
+        "ballot": "My Ballot",
+        "ballot_submitted": "Submitted Ballot",
+        "stats": "Stats",
+        "applications": "Applications",
+        "voters": "Voters",
+        "showSubmitBallot": "This is not a final submission, you can edit your ballot and resubmit it anytime during the voting period."
+
+    },
+    "tallying": "The result is under tallying"
+}

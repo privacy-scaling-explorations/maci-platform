@@ -12,6 +12,7 @@ import { EAppState } from "~/utils/types";
 
 import { ConnectButton } from "./ConnectButton";
 import { IconButton } from "./ui/Button";
+import { LanguageButton } from "./LanguageButton";
 import { Logo } from "./ui/Logo";
 
 interface INavLinkProps extends ComponentPropsWithRef<typeof Link> {
@@ -100,9 +101,11 @@ const Header = ({ navLinks }: IHeaderProps) => {
           })}
         </div>
 
+
         <div className="flex-1 md:ml-8" />
 
         <div className="ml-4 flex items-center gap-4 md:ml-8 xl:ml-32">
+          <LanguageButton />
           <IconButton
             className="text-gray-600"
             icon={theme === "light" ? SunIcon : MoonIcon}

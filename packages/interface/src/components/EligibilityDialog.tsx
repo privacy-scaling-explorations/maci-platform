@@ -5,6 +5,7 @@ import { zuAuthPopup } from "@pcd/zuauth";
 import { GatekeeperTrait, getZupassGatekeeperData } from "maci-cli/sdk";
 import { useRouter } from "next/router";
 import { useState, useCallback, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import { toast } from "sonner";
 import { useAccount, useDisconnect } from "wagmi";
 
@@ -34,6 +35,7 @@ export const EligibilityDialog = (): JSX.Element | null => {
     storeZupassProof,
   } = useMaci();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const appState = useAppState();
 
@@ -205,7 +207,7 @@ export const EligibilityDialog = (): JSX.Element | null => {
         description="The result is under tallying, please come back to check the result later."
         isOpen={openDialog}
         size="sm"
-        title="The result is under tallying"
+        title={t("tallying")}
         onOpenChange={handleCloseDialog}
       />
     );

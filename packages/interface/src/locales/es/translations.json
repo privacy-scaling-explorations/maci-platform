@@ -1,0 +1,12 @@
+{
+    "links": {
+        "projects": "Proyectos",
+        "ballot": "Mi Boleta",
+        "ballot_submitted": "Boleta Enviada",
+        "stats": "Estadísticas",
+        "applications": "Aplicaciones",
+        "voters": "Votantes",
+        "showSubmitBallot": "Esto no es una presentación final, puedes editar tu boleta y enviarla nuevamente en cualquier momento durante el período de votación."
+    },
+    "tallying": "El resultado está siendo contabilizado"
+}

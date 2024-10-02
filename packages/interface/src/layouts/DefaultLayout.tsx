@@ -1,6 +1,7 @@
 import { GatekeeperTrait } from "maci-cli/sdk";
 import { type ReactNode, type PropsWithChildren, useMemo } from "react";
 import { useAccount } from "wagmi";
+import { useTranslation } from "react-i18next";
 
 import Header from "~/components/Header";
 import { Info } from "~/components/Info";
@@ -26,33 +27,34 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
   const appState = useAppState();
   const { ballot } = useBallot();
   const { isRegistered, gatekeeperTrait } = useMaci();
+  const { t } = useTranslation();
 
   const navLinks = useMemo(() => {
     const links = [
       {
         href: "/projects",
-        children: "Projects",
+        children: t("links.projects"),
       },
     ];
 
     if (appState === EAppState.VOTING && isRegistered) {
       links.push({
         href: "/ballot",
-        children: "My Ballot",
+        children: t("links.ballot"),
       });
     }
 
     if ((appState === EAppState.TALLYING || appState === EAppState.RESULTS) && ballot.published) {
       links.push({
         href: "/ballot/confirmation",
-        children: "Submitted Ballot",
+        children: t("links.ballot_submitted"),
       });
     }
 
     if (appState === EAppState.RESULTS) {
       links.push({
         href: "/stats",
-        children: "Stats",
+        children: t("links.stats"),
       });
     }
 
@@ -61,7 +63,7 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
         ...[
           {
             href: "/applications",
-            children: "Applications",
+            children: t("links.applications"),
           },
         ],
       );
@@ -72,7 +74,7 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
         ...[
           {
             href: "/voters",
-            children: "Voters",
+            children: t("links.voters"),
           },
         ],
       );
@@ -93,6 +95,7 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
   const { address } = useAccount();
   const { ballot } = useBallot();
   const appState = useAppState();
+  const { t } = useTranslation();
 
   const { showInfo, showBallot, showSubmitButton } = props;
 
@@ -114,7 +117,7 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
 
               <Notice
                 italic
-                content="This is not a final submission, you can edit your ballot and resubmit it anytime during the voting period."
+                content={t("links.showSubmitBallot")}
               />
             </div>
           )}

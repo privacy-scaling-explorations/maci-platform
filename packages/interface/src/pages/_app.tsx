@@ -3,9 +3,11 @@ import { Inter } from "next/font/google";
 
 import { Providers } from "~/providers";
 import "~/styles/globals.css";
+import "~/styles/languageButton.css";
 import { api } from "~/utils/api";
 
 import type { AppProps } from "next/app";
+import './i18n';
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
