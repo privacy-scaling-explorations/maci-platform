@@ -9,6 +9,7 @@ import {
   PublishMessage as PublishMessageEvent,
   SetRegistry as SetRegistryEvent,
 } from "../generated/templates/Poll/Poll";
+import { Registry as RegistryContract } from "../generated/templates/Registry/Registry";
 
 import { ONE_BIG_INT } from "./utils/constants";
 import { createOrLoadRegistry } from "./utils/entity";
@@ -75,8 +76,11 @@ export function handleSetRegistry(event: SetRegistryEvent): void {
     return;
   }
 
+  const contract = RegistryContract.bind(event.params.registry);
+
   const registry = createOrLoadRegistry(event.params.registry);
   registry.poll = poll.id;
+  registry.metadataUrl = contract.getRegistryMetadataUrl();
   registry.save();
 
   poll.registry = event.params.registry;

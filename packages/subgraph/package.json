@@ -17,7 +17,7 @@
     "generate:schema": "cp ./schemas/schema.${VERSION:-v1}.graphql schema.graphql",
     "prebuild": "pnpm codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ maci-subgraph",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ maci",
     "create-local": "graph create --node http://localhost:8020/ maci-subgraph",
     "remove-local": "graph remove --node http://localhost:8020/ maci-subgraph",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 maci-subgraph --network localhost",

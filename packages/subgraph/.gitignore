@@ -4,6 +4,6 @@ build
 generated
 subgraph.yaml
 schema.graphql
+config/network.json
 tests/.bin/
 tests/.latest.json
-

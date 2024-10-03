@@ -25,7 +25,8 @@
     "types": "tsc -p tsconfig.json --noEmit",
     "generate-keypair": "pnpm run run:node ./scripts/generateKeypair.ts",
     "download-zkeys:test": "pnpm run run:node ./scripts/downloadZKeys.ts test ./zkeys",
-    "download-zkeys:prod": "pnpm run run:node ./scripts/downloadZKeys.ts prod ./zkeys"
+    "download-zkeys:prod": "pnpm run run:node ./scripts/downloadZKeys.ts prod ./zkeys",
+    "upload-round-metadata": "pnpm run run:node ./scripts/uploadRoundMetadata.ts"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.79.0",
@@ -38,6 +39,7 @@
     "@nestjs/websockets": "^10.3.10",
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@vercel/blob": "^0.19.0",
     "@zerodev/ecdsa-validator": "^5.3.1",
     "@zerodev/permissions": "^5.4.3",
     "@zerodev/sdk": "^5.3.8",
@@ -54,6 +56,7 @@
     "maci-contracts": "^2.3.0",
     "maci-domainobjs": "^2.0.0",
     "maci-subgraph": "^2.3.0",
+    "date-fns": "^4.1.0",
     "mustache": "^4.2.0",
     "permissionless": ">=0.1.18 <=0.1.29",
     "reflect-metadata": "^0.2.0",

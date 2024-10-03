@@ -44,6 +44,7 @@ type Request @entity {
   requestType: RequestType!
   index: BigInt
   status: Status!
+
   "relations"
   recipient: Recipient!
   registryManager: RegistryManager!
@@ -62,12 +63,14 @@ type Recipient @entity {
   index: BigInt!
   deleted: Boolean!
   initialized: Boolean!
+
   "relations"
   registry: Registry!
 }
 
 type Registry @entity {
   id: Bytes! # address
+  metadataUrl: String
   "relations"
   poll: Poll
   recipients: [Recipient!]! @derivedFrom(field: "registry")
