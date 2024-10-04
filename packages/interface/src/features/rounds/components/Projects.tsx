@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 
 import { InfiniteLoading } from "~/components/InfiniteLoading";
@@ -9,6 +9,7 @@ import { StatusBar } from "~/components/StatusBar";
 import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
+import { useRound } from "~/contexts/Round";
 import { useResults } from "~/hooks/useResults";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
@@ -25,9 +26,13 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
   const appState = useRoundState(roundId);
   const projects = useSearchProjects({ roundId, needApproval: appState !== ERoundState.APPLICATION });
 
-  const { pollData, pollId, isRegistered } = useMaci();
+  const { isRegistered } = useMaci();
   const { addToBallot, removeFromBallot, ballotContains, ballot } = useBallot();
-  const results = useResults(roundId, pollData);
+  const { getRoundByRoundId } = useRound();
+
+  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const results = useResults(roundId, round?.tallyFile);
+  const pollId = useMemo(() => round?.pollId, [round]);
 
   const handleAction = useCallback(
     (projectId: string) => (e: Event) => {

@@ -117,7 +117,7 @@ const BallotAllocationForm = ({ roundId }: IBallotAllocationFormProps): JSX.Elem
       <div className="border-t border-gray-300">
         <div className="p-8">
           {ballot.votes.length ? (
-            <AllocationFormWrapper projectIsLink disabled={roundState === ERoundState.RESULTS} />
+            <AllocationFormWrapper projectIsLink disabled={roundState === ERoundState.RESULTS} roundId={roundId} />
           ) : (
             <EmptyBallot />
           )}

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { HiOutlineTrash } from "react-icons/hi";
 
@@ -5,6 +6,7 @@ import { IconButton } from "~/components/ui/Button";
 import { Table, Tbody, Tr, Td } from "~/components/ui/Table";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
+import { useRound } from "~/contexts/Round";
 
 import type { Vote } from "../types";
 import type { ReactNode } from "react";
@@ -13,25 +15,30 @@ import { AllocationInput } from "./AllocationInput";
 import { ProjectAvatarWithName } from "./ProjectAvatarWithName";
 
 interface AllocationFormProps {
+  roundId: string;
   disabled?: boolean;
   projectIsLink?: boolean;
   renderHeader?: () => ReactNode;
 }
 
 export const AllocationFormWrapper = ({
+  roundId,
   disabled = false,
   projectIsLink = false,
   renderHeader = undefined,
 }: AllocationFormProps): JSX.Element => {
   const form = useFormContext<{ votes: Vote[] }>();
-  const { initialVoiceCredits, pollId } = useMaci();
+  const { initialVoiceCredits } = useMaci();
   const { addToBallot: onSave, removeFromBallot: onRemove } = useBallot();
+  const { getRoundByRoundId } = useRound();
 
   const { fields, remove } = useFieldArray({
     name: "votes",
     keyName: "key",
     control: form.control,
   });
+
+  const pollId = useMemo(() => getRoundByRoundId(roundId)?.pollId, [roundId, getRoundByRoundId]);
 
   return (
     <Table>

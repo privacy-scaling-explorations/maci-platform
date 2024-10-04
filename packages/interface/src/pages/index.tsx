@@ -42,11 +42,11 @@ const HomePage = (): JSX.Element => {
           </div>
         )}
 
-        {isConnected && !isAdmin && rounds.length === 0 && (
+        {isConnected && !isAdmin && rounds && rounds.length === 0 && (
           <p className="text-gray-400">There are no rounds deployed.</p>
         )}
 
-        {rounds.length > 0 && <RoundsList />}
+        {rounds && rounds.length > 0 && <RoundsList />}
       </div>
 
       <FAQList />

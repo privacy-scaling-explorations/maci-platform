@@ -8,7 +8,7 @@ import { useRoundState } from "~/utils/state";
 import { formatPeriod } from "~/utils/time";
 import { ERoundState } from "~/utils/types";
 
-import type { Round } from "~/features/rounds/types";
+import type { IRoundData } from "~/utils/types";
 
 interface ITimeBarProps {
   start: Date;
@@ -20,7 +20,7 @@ interface IRoundTagProps {
 }
 
 interface IRoundItemProps {
-  round: Round;
+  round: IRoundData;
 }
 
 const TimeBar = ({ start, end }: ITimeBarProps): JSX.Element => {

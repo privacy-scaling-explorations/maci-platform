@@ -40,8 +40,8 @@ export const Info = ({
   showBallot = false,
 }: IInfoProps): JSX.Element => {
   const roundState = useRoundState(roundId);
-  const { getRound } = useRound();
-  const round = getRound(roundId);
+  const { getRoundByRoundId } = useRound();
+  const round = getRoundByRoundId(roundId);
   const { asPath } = useRouter();
 
   const steps = [
@@ -76,9 +76,9 @@ export const Info = ({
       <InfoContainer size={size}>
         {showRoundInfo && <RoundInfo roundId={roundId} />}
 
-        {showBallot && <BallotOverview title={asPath.includes("ballot") ? "Summary" : undefined} roundId={roundId} />}
+        {showBallot && <BallotOverview roundId={roundId} title={asPath.includes("ballot") ? "Summary" : undefined} />}
 
-        {showRoundInfo && roundState === ERoundState.VOTING && <VotingInfo />}
+        {showRoundInfo && roundState === ERoundState.VOTING && <VotingInfo roundId={roundId} />}
 
         {showAppState &&
           steps.map((step) => (

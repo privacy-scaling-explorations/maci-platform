@@ -1,10 +1,10 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 import { InfiniteLoading } from "~/components/InfiniteLoading";
-import { useMaci } from "~/contexts/Maci";
+import { useRound } from "~/contexts/Round";
 import { useResults, useProjectsResults } from "~/hooks/useResults";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
@@ -19,9 +19,10 @@ interface IProjectsResultsProps {
 
 export const ProjectsResults = ({ roundId }: IProjectsResultsProps): JSX.Element => {
   const router = useRouter();
-  const { pollData } = useMaci();
-  const projects = useProjectsResults(roundId, pollData);
-  const results = useResults(roundId);
+  const { getRoundByRoundId } = useRound();
+  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const projects = useProjectsResults(roundId, round?.tallyFile);
+  const results = useResults(roundId, round?.tallyFile);
   const roundState = useRoundState(roundId);
 
   const handleAction = useCallback(

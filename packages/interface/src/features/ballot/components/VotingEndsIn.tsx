@@ -1,8 +1,10 @@
+import { useMemo } from "react";
 import { createGlobalState, useHarmonicIntervalFn } from "react-use";
 import { tv } from "tailwind-variants";
 
 import { createComponent } from "~/components/ui";
 import { useMaci } from "~/contexts/Maci";
+import { useRound } from "~/contexts/Round";
 import { calculateTimeLeft } from "~/utils/time";
 
 const useEndDate = createGlobalState<[number, number, number, number]>([0, 0, 0, 0]);
@@ -19,8 +21,19 @@ export function useVotingTimeLeft(votingEndsAt: Date): [number, number, number, 
 
 const TimeSlice = createComponent("span", tv({ base: "text-gray-900" }));
 
-export const VotingEndsIn = (): JSX.Element => {
-  const { isLoading, votingEndsAt } = useMaci();
+interface IVotingEndsInProps {
+  roundId: string;
+}
+
+export const VotingEndsIn = ({ roundId }: IVotingEndsInProps): JSX.Element => {
+  const { isLoading } = useMaci();
+  const { getRoundByRoundId } = useRound();
+
+  const votingEndsAt = useMemo(() => {
+    const round = getRoundByRoundId(roundId);
+    return round?.votingEndsAt ? new Date(round.votingEndsAt) : new Date();
+  }, [roundId, getRoundByRoundId]);
+
   const [days, hours, minutes, seconds] = useVotingTimeLeft(votingEndsAt);
 
   if (isLoading) {

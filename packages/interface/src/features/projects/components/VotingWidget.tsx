@@ -6,19 +6,24 @@ import { Button } from "~/components/ui/Button";
 import { Input } from "~/components/ui/Input";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
+import { useRound } from "~/contexts/Round";
 
 import { EButtonState } from "../types";
 
 interface IVotingWidgetProps {
   projectId: string;
+  roundId: string;
 }
 
-export const VotingWidget = ({ projectId }: IVotingWidgetProps): JSX.Element => {
-  const { pollId, initialVoiceCredits } = useMaci();
+export const VotingWidget = ({ projectId, roundId }: IVotingWidgetProps): JSX.Element => {
+  const { initialVoiceCredits } = useMaci();
   const { ballotContains, removeFromBallot, addToBallot } = useBallot();
   const projectBallot = useMemo(() => ballotContains(projectId), [ballotContains, projectId]);
   const projectIncluded = useMemo(() => !!projectBallot, [projectBallot]);
   const [amount, setAmount] = useState<number | undefined>(projectBallot?.amount);
+  const { getRoundByRoundId } = useRound();
+
+  const pollId = useMemo(() => getRoundByRoundId(roundId)?.pollId, [roundId, getRoundByRoundId]);
 
   /**
    * buttonState

@@ -54,7 +54,7 @@ const ProjectDetails = ({
           {attestation?.name}
         </Heading>
 
-        {roundState === ERoundState.VOTING && <VotingWidget projectId={projectId} />}
+        {roundState === ERoundState.VOTING && <VotingWidget projectId={projectId} roundId={roundId} />}
       </div>
 
       <ProjectContacts author={payoutAddress} github={github} twitter={twitter} website={websiteUrl} />

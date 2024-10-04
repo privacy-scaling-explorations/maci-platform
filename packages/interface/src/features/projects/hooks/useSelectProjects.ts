@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { useBallot } from "~/contexts/Ballot";
-import { useMaci } from "~/contexts/Maci";
+import { useRound } from "~/contexts/Round";
 
 export interface IUseSelectProjectsReturn {
   count: number;
@@ -11,11 +11,17 @@ export interface IUseSelectProjectsReturn {
   getState: (id: string) => 0 | 1 | 2;
 }
 
-export function useSelectProjects(): IUseSelectProjectsReturn {
+interface IUseSelectProjectsProps {
+  roundId: string;
+}
+
+export function useSelectProjects({ roundId }: IUseSelectProjectsProps): IUseSelectProjectsReturn {
   const { addToBallot, ballotContains } = useBallot();
-  const { pollId } = useMaci();
+  const { getRoundByRoundId } = useRound();
 
   const [selected, setSelected] = useState<Record<string, boolean>>({});
+
+  const pollId = useMemo(() => getRoundByRoundId(roundId)?.pollId, [roundId, getRoundByRoundId]);
 
   const toAdd = useMemo(
     () =>
