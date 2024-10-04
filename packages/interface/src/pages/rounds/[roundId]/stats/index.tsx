@@ -33,10 +33,12 @@ interface IStatsProps {
 }
 
 const Stats = ({ roundId }: IStatsProps) => {
-  const { isLoading, pollData } = useMaci();
-  const results = useResults(roundId, pollData);
+  const { isLoading } = useMaci();
+  const { getRoundByRoundId } = useRound();
+  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const results = useResults(roundId, round?.tallyFile);
   const count = useProjectCount(roundId);
-  const { data: projectsResults } = useProjectsResults(roundId, pollData);
+  const { data: projectsResults } = useProjectsResults(roundId);
   const { isConnected } = useAccount();
 
   const { averageVotes, projects = {} } = results.data ?? {};
@@ -56,7 +58,7 @@ const Stats = ({ roundId }: IStatsProps) => {
     return <div>Loading...</div>;
   }
 
-  if (!pollData && !isConnected) {
+  if (!isConnected) {
     return (
       <Alert className="mx-auto max-w-sm text-center" variant="info">
         <Heading size="lg">Connect your wallet to see results</Heading>
@@ -66,10 +68,6 @@ const Stats = ({ roundId }: IStatsProps) => {
         </div>
       </Alert>
     );
-  }
-
-  if (!pollData) {
-    return <div>Something went wrong. Try later.</div>;
   }
 
   return (
@@ -85,7 +83,7 @@ const Stats = ({ roundId }: IStatsProps) => {
 
         <Stat title="Projects voted for">{Object.keys(projects).length}</Stat>
 
-        <Stat title="People Voting">{pollData.numSignups ? Number(pollData.numSignups) - 1 : 0}</Stat>
+        <Stat title="People Voting">{round?.numSignups ? Number(round.numSignups) - 1 : 0}</Stat>
 
         <Stat title="Average votes per project">{formatNumber(averageVotes)}</Stat>
       </div>
@@ -99,8 +97,8 @@ interface IStatsPageProps {
 
 const StatsPage = ({ roundId }: IStatsPageProps): JSX.Element => {
   const roundState = useRoundState(roundId);
-  const { getRound } = useRound();
-  const round = getRound(roundId);
+  const { getRoundByRoundId } = useRound();
+  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
   const duration = round?.votingEndsAt && differenceInDays(round.votingEndsAt, new Date());
 
   return (

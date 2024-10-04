@@ -1,10 +1,9 @@
 import { type StandardMerkleTreeData } from "@openzeppelin/merkle-tree/dist/standard";
-import { type TallyData, type IGetPollData, type GatekeeperTrait } from "maci-cli/sdk";
+import { type GatekeeperTrait } from "maci-cli/sdk";
 import { type ReactNode } from "react";
 
 import type { PCD } from "@pcd/pcd-types";
 import type { Ballot, Vote } from "~/features/ballot/types";
-import type { Round } from "~/features/rounds/types";
 
 export interface IVoteArgs {
   voteOptionIndex: bigint;
@@ -15,13 +14,9 @@ export interface MaciContextType {
   isLoading: boolean;
   isEligibleToVote: boolean;
   initialVoiceCredits: number;
-  votingEndsAt: Date;
   stateIndex?: string;
   isRegistered?: boolean;
-  pollId?: string;
   error?: string;
-  pollData?: IGetPollData;
-  tallyData?: TallyData;
   maciPubKey?: string;
   gatekeeperTrait?: GatekeeperTrait;
   storeZupassProof: (args: PCD) => Promise<void>;
@@ -29,6 +24,7 @@ export interface MaciContextType {
   onSignup: (onError: () => void) => Promise<void>;
   onVote: (
     args: IVoteArgs[],
+    pollId: string,
     onError: () => void | Promise<void>,
     onSuccess: () => void | Promise<void>,
   ) => Promise<void>;
@@ -53,9 +49,29 @@ export interface BallotProviderProps {
   children: ReactNode;
 }
 
+export interface IRoundData {
+  isMerged: boolean;
+  pollId: string;
+  duration: string;
+  deployTime: string;
+  numSignups: string;
+  pollAddress: string;
+  mode: string;
+  registryAddress: string;
+  roundId: string;
+  description: string;
+  startsAt: string;
+  registrationEndsAt: string;
+  votingStartsAt: string;
+  votingEndsAt: string;
+  tallyFile: string;
+}
+
 export interface RoundContextType {
-  rounds: Round[];
-  getRound: (roundId: string) => Round | undefined;
+  rounds: IRoundData[];
+  getRoundByRoundId: (roundId: string) => IRoundData | undefined;
+  getRoundByPollId: (pollId: string) => IRoundData | undefined;
+  isLoading: boolean;
 }
 
 export interface RoundProviderProps {

@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { type TallyData } from "maci-cli/sdk";
 import { z } from "zod";
 
-import { config, eas } from "~/config";
+import { eas } from "~/config";
 import { FilterSchema } from "~/features/filter/types";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { fetchAttestations } from "~/utils/fetchAttestations";
@@ -11,13 +11,13 @@ import { getAllApprovedProjects } from "./projects";
 
 export const resultsRouter = createTRPCRouter({
   votes: publicProcedure
-    .input(z.object({ roundId: z.string(), pollId: z.string().nullish() }))
-    .query(async ({ input }) => calculateMaciResults(input.roundId, input.pollId)),
+    .input(z.object({ roundId: z.string(), tallyFile: z.string().optional() }))
+    .query(async ({ input }) => calculateMaciResults(input.roundId, input.tallyFile)),
 
   project: publicProcedure
-    .input(z.object({ id: z.string(), roundId: z.string(), pollId: z.string().nullish() }))
+    .input(z.object({ id: z.string(), roundId: z.string(), tallyFile: z.string().optional() }))
     .query(async ({ input }) => {
-      const { projects } = await calculateMaciResults(input.roundId, input.pollId);
+      const { projects } = await calculateMaciResults(input.roundId, input.tallyFile);
 
       return {
         amount: projects[input.id]?.votes ?? 0,
@@ -25,9 +25,9 @@ export const resultsRouter = createTRPCRouter({
     }),
 
   projects: publicProcedure
-    .input(FilterSchema.extend({ roundId: z.string(), pollId: z.string().nullish() }))
+    .input(FilterSchema.extend({ roundId: z.string(), tallyFile: z.string().optional() }))
     .query(async ({ input }) => {
-      const { projects } = await calculateMaciResults(input.roundId, input.pollId);
+      const { projects } = await calculateMaciResults(input.roundId, input.tallyFile);
 
       const sortedIDs = Object.entries(projects)
         .sort((a, b) => b[1].votes - a[1].votes)
@@ -48,17 +48,17 @@ export const resultsRouter = createTRPCRouter({
 
 export async function calculateMaciResults(
   roundId: string,
-  pollId?: string | null,
+  tallyFile?: string,
 ): Promise<{
   averageVotes: number;
   projects: Record<string, { votes: number; voters: number }>;
 }> {
-  if (!pollId) {
-    throw new Error("No pollId provided.");
+  if (!tallyFile) {
+    throw new Error("No tallyFile URL provided.");
   }
 
   const [tallyData, projects] = await Promise.all([
-    fetch(`${config.tallyUrl}/tally-${pollId}.json`)
+    fetch(tallyFile)
       .then((res) => res.json() as Promise<TallyData>)
       .catch(() => undefined),
     getAllApprovedProjects({ roundId }),
