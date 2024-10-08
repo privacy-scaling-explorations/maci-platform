@@ -29,6 +29,12 @@ export function mockPollContract(): void {
   ).returns([ethereum.Value.fromI32(30), ethereum.Value.fromI32(40)]);
 }
 
+export function mockRegistryContract(): void {
+  createMockedFunction(DEFAULT_REGISTRY_ADDRESS, "getRegistryMetadataUrl", "getRegistryMetadataUrl():(string)").returns(
+    [ethereum.Value.fromString("url")],
+  );
+}
+
 export function mockMaciContract(): void {
   createMockedFunction(
     Address.fromString("0xA16081F360e3847006dB660bae1c6d1b2e17eC2A"),

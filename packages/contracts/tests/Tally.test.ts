@@ -50,6 +50,7 @@ describe("Tally", () => {
   let project: Signer;
 
   let ownerAddress: string;
+  let userAddress: string;
   let projectAddress: string;
 
   const maxRecipients = TALLY_RESULTS.tally.length;
@@ -74,7 +75,11 @@ describe("Tally", () => {
 
   before(async () => {
     [owner, user, project] = await getSigners();
-    [ownerAddress, , projectAddress] = await Promise.all([owner.getAddress(), user.getAddress(), project.getAddress()]);
+    [ownerAddress, userAddress, projectAddress] = await Promise.all([
+      owner.getAddress(),
+      user.getAddress(),
+      project.getAddress(),
+    ]);
 
     payoutToken = await deployContract("MockERC20", owner, true, "Payout token", "PT");
 
@@ -209,16 +214,13 @@ describe("Tally", () => {
     await payoutToken.transfer(user, userAmount);
 
     await payoutToken.approve(tally, ownerAmount).then((tx) => tx.wait());
-    await tally.deposit(ownerAmount).then((tx) => tx.wait());
+    await expect(tally.deposit(ownerAmount)).to.emit(tally, "Deposited").withArgs(ownerAddress, ownerAmount);
 
     await payoutToken
       .connect(user)
       .approve(tally, userAmount)
       .then((tx) => tx.wait());
-    await tally
-      .connect(user)
-      .deposit(userAmount)
-      .then((tx) => tx.wait());
+    await expect(tally.connect(user).deposit(userAmount)).to.emit(tally, "Deposited").withArgs(userAddress, userAmount);
 
     const [tokenBalance, totalAmount] = await Promise.all([payoutToken.balanceOf(tally), tally.totalAmount()]);
 
@@ -357,18 +359,19 @@ describe("Tally", () => {
       ),
     ).to.be.revertedWithCustomError(tally, "InvalidTallyVotesProof");
 
-    const firstReceipt = await tally
-      .addTallyResults(
-        indices.slice(1),
-        tallyResults.slice(1),
-        tallyResultProofs.slice(1),
-        TALLY_RESULTS.salt,
-        TOTAL_SPENT_VOICE_CREDITS.commitment,
-        PER_VO_SPENT_VOICE_CREDITS.commitment,
-      )
-      .then((tx) => tx.wait());
+    const promise = await tally.addTallyResults(
+      indices.slice(1),
+      tallyResults.slice(1),
+      tallyResultProofs.slice(1),
+      TALLY_RESULTS.salt,
+      TOTAL_SPENT_VOICE_CREDITS.commitment,
+      PER_VO_SPENT_VOICE_CREDITS.commitment,
+    );
 
-    expect(firstReceipt?.status).to.equal(1);
+    for (let index = 1; index < indices.length; index += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await expect(promise).to.emit(tally, "ResultAdded").withArgs(index, tallyResults[index]);
+    }
 
     await expect(
       tally.claim({
@@ -397,18 +400,18 @@ describe("Tally", () => {
       ),
     ).to.be.revertedWithCustomError(tally, "TooManyResults");
 
-    const lastReceipt = await tally
-      .addTallyResults(
+    await expect(
+      tally.addTallyResults(
         indices.slice(0, 1),
         tallyResults.slice(0, 1),
         tallyResultProofs.slice(0, 1),
         TALLY_RESULTS.salt,
         TOTAL_SPENT_VOICE_CREDITS.commitment,
         PER_VO_SPENT_VOICE_CREDITS.commitment,
-      )
-      .then((tx) => tx.wait());
-
-    expect(lastReceipt?.status).to.equal(1);
+      ),
+    )
+      .to.emit(tally, "ResultAdded")
+      .withArgs(0, tallyResults[0]);
   });
 
   it("should not allow to add tally results twice", async () => {
@@ -480,7 +483,14 @@ describe("Tally", () => {
       };
 
       // eslint-disable-next-line no-await-in-loop
-      await tally.claim(params).then((tx) => tx.wait());
+      const amount = await tally.getAllocatedAmount(
+        params.voiceCreditsPerOption,
+        params.totalSpent,
+        params.tallyResult,
+      );
+
+      // eslint-disable-next-line no-await-in-loop
+      await expect(tally.claim(params)).to.emit(tally, "Claimed").withArgs(index, projectAddress, amount);
     }
   });
 

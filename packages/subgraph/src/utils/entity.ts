@@ -1,7 +1,17 @@
 /* eslint-disable no-underscore-dangle */
 import { BigInt as GraphBN, Bytes, ethereum, Address } from "@graphprotocol/graph-ts";
 
-import { Account, MACI, Recipient, Registry, RegistryManager, User } from "../../generated/schema";
+import {
+  Account,
+  Claim,
+  Deposit,
+  MACI,
+  Recipient,
+  Registry,
+  RegistryManager,
+  TallyResult,
+  User,
+} from "../../generated/schema";
 import { Registry as RegistryTemplate } from "../../generated/templates";
 
 export const createOrLoadMACI = (event: ethereum.Event, stateTreeDepth: GraphBN = GraphBN.fromI32(10)): MACI => {
@@ -98,4 +108,44 @@ export const createOrLoadRecipient = (
   }
 
   return recipient;
+};
+
+export const createOrLoadDeposit = (sender: Bytes, amount: GraphBN, tally: Bytes): Deposit => {
+  let deposit = Deposit.load(sender);
+
+  if (!deposit) {
+    deposit = new Deposit(sender);
+    deposit.amount = amount;
+    deposit.tally = tally;
+    deposit.save();
+  }
+
+  return deposit;
+};
+
+export const createOrLoadClaim = (index: GraphBN, recipient: Bytes, amount: GraphBN, tally: Bytes): Claim => {
+  let claim = Claim.load(index.toString());
+
+  if (!claim) {
+    claim = new Claim(index.toString());
+    claim.recipient = recipient;
+    claim.amount = amount;
+    claim.tally = tally;
+    claim.save();
+  }
+
+  return claim;
+};
+
+export const createOrLoadTallyResult = (index: GraphBN, result: GraphBN, tally: Bytes): TallyResult => {
+  let tallyResult = TallyResult.load(index.toString());
+
+  if (!tallyResult) {
+    tallyResult = new TallyResult(index.toString());
+    tallyResult.result = result;
+    tallyResult.tally = tally;
+    tallyResult.save();
+  }
+
+  return tallyResult;
 };

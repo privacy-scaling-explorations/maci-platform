@@ -4,7 +4,15 @@
     "outDir": "./build",
     "strictNullChecks": true,
     "skipLibCheck": true,
-    "typeRoots": ["./src/@types/global.d.ts"]
+    "target": "ES2020",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "lib": ["es2015", "dom"],
+    "typeRoots": ["node_modules/@types", "./src/@types/global.d.ts"]
   },
-  "include": ["./src", "./tests", "./generated"]
+  "include": ["./src", "./tests", "./generated", "./scripts"]
 }

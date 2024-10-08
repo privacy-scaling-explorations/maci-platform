@@ -52,6 +52,11 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
   /// @notice Initialized or not
   bool internal initialized;
 
+  /// @notice events
+  event Deposited(address indexed sender, uint256 indexed amount);
+  event Claimed(uint256 indexed index, address indexed receiver, uint256 indexed amount);
+  event ResultAdded(uint256 indexed index, uint256 indexed result);
+
   /// @notice custom errors
   error CooldownPeriodNotOver();
   error VotingPeriodNotOver();
@@ -156,6 +161,8 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
   function deposit(uint256 amount) public isInitialized whenNotPaused beforeVotingDeadline {
     totalAmount += amount;
 
+    emit Deposited(msg.sender, amount);
+
     token.safeTransferFrom(msg.sender, address(this), amount);
   }
 
@@ -241,6 +248,8 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
     );
 
     totalVotesSquares += tallyResult ** 2;
+
+    emit ResultAdded(voteOptionIndex, tallyResult);
   }
 
   /// @inheritdoc IPayoutStrategy
@@ -251,6 +260,8 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
     totalAmount -= amount;
 
     IRecipientRegistry.Recipient memory recipient = registry.getRecipient(params.index);
+
+    emit Claimed(params.index, recipient.recipient, amount);
 
     if (claimed[params.index]) {
       revert AlreadyClaimed();
