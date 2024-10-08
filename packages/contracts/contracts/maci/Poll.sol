@@ -5,6 +5,7 @@ import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { Poll as BasePoll } from "maci-contracts/contracts/Poll.sol";
 
 import { ICommon } from "../interfaces/ICommon.sol";
+import { IRecipientRegistry } from "../interfaces/IRecipientRegistry.sol";
 
 /// @title Poll
 /// @notice A Poll contract allows voters to submit encrypted messages
@@ -16,7 +17,7 @@ contract Poll is Ownable, BasePoll, ICommon {
   address public registry;
 
   /// @notice The timestamp of the block at which the Poll was deployed
-  uint256 internal initTime;
+  uint256 public initTime;
 
   /// @notice events
   event SetRegistry(address indexed registry);
@@ -90,8 +91,7 @@ contract Poll is Ownable, BasePoll, ICommon {
     _;
   }
 
-  /// @notice A modifier that causes the function to revert if the voting period is
-  /// over
+  /// @notice A modifier that causes the function to revert if the voting period is over
   modifier isWithinVotingDeadline() override {
     uint256 secondsPassed = block.timestamp - initTime;
 
@@ -110,12 +110,24 @@ contract Poll is Ownable, BasePoll, ICommon {
     emit SetRegistry(registryAddress);
   }
 
+  /// @notice Get the poll registry.
+  /// @return registry The poll registry
+  function getRegistry() public view returns (IRecipientRegistry) {
+    return IRecipientRegistry(registry);
+  }
+
   /// @notice The initialization function.
   function init() public override onlyOwner isRegistryInitialized {
     initTime = block.timestamp;
     super.init();
 
     emit PollInit();
+  }
+
+  /// @inheritdoc BasePoll
+  function getDeployTimeAndDuration() public view override returns (uint256 pollDeployTime, uint256 pollDuration) {
+    pollDeployTime = initTime;
+    pollDuration = duration;
   }
 
   /// @inheritdoc BasePoll
