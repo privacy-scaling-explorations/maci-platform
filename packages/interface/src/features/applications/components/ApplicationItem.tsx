@@ -1,5 +1,6 @@
 import { ClockIcon } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { Badge } from "~/components/ui/Badge";
@@ -9,7 +10,7 @@ import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { useMetadata } from "~/hooks/useMetadata";
 import { formatDate } from "~/utils/time";
 
-import type { Application } from "~/features/applications/types";
+import type { TApplicationsToApprove, Application } from "../types";
 import type { IRecipient, IRecipientContract } from "~/utils/types";
 
 export interface IApplicationItemProps {
@@ -27,9 +28,19 @@ export const ApplicationItem = ({
 }: IApplicationItemProps): JSX.Element => {
   const metadata = useMetadata<Application>(recipient.metadataUrl);
 
-  const form = useFormContext();
+  const form = useFormContext<TApplicationsToApprove>();
 
   const { fundingSources = [], profileImageUrl } = metadata.data ?? {};
+
+  useEffect(() => {
+    if (isApproved) {
+      const selected = form.watch("selected");
+      form.setValue(
+        "selected",
+        selected.filter((s) => s !== index),
+      );
+    }
+  }, [isApproved, form, index]);
 
   return (
     <Link href={`/projects/${recipient.id}`} target="_blank">
