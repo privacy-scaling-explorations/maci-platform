@@ -6,8 +6,8 @@ import { ERoundState } from "./types";
 
 export const useRoundState = (roundId: string): ERoundState => {
   const now = new Date();
-  const { getRound } = useRound();
-  const round = getRound(roundId);
+  const { getRoundByRoundId } = useRound();
+  const round = getRoundByRoundId(roundId);
 
   if (!round) {
     return ERoundState.DEFAULT;
@@ -21,13 +21,14 @@ export const useRoundState = (roundId: string): ERoundState => {
     return ERoundState.VOTING;
   }
 
-  if (round.votingEndsAt && isAfter(now, round.votingEndsAt) && !round.tallyURL) {
+  if (round.votingEndsAt && isAfter(now, round.votingEndsAt)) {
     return ERoundState.TALLYING;
   }
 
-  if (round.tallyURL) {
-    return ERoundState.RESULTS;
-  }
+  /// TODO: how to collect tally.json url
+  // if (round.votingEndsAt && isAfter(now, round.votingEndsAt)) {
+  //   return ERoundState.RESULTS;
+  // }
 
   return ERoundState.DEFAULT;
 };

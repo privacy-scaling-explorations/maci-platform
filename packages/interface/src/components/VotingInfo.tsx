@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useHarmonicIntervalFn } from "react-use";
 
 import { useMaci } from "~/contexts/Maci";
+import { useRound } from "~/contexts/Round";
 import { calculateTimeLeft } from "~/utils/time";
 
 import { TimeSlot } from "./TimeSlot";
 
-export const VotingInfo = (): JSX.Element => {
-  const { isLoading, votingEndsAt } = useMaci();
+interface IVotingInfoProps {
+  roundId: string;
+}
+
+export const VotingInfo = ({ roundId }: IVotingInfoProps): JSX.Element => {
+  const { isLoading } = useMaci();
+  const { getRoundByRoundId } = useRound();
   const [timeLeft, setTimeLeft] = useState<[number, number, number, number]>([0, 0, 0, 0]);
+
+  const votingEndsAt = useMemo(() => {
+    const round = getRoundByRoundId(roundId);
+    return round?.votingEndsAt ? new Date(round.votingEndsAt) : new Date();
+  }, [getRoundByRoundId, roundId]);
 
   useHarmonicIntervalFn(() => {
     setTimeLeft(calculateTimeLeft(votingEndsAt));

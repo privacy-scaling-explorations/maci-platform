@@ -13,6 +13,7 @@ export interface RoundMetadata {
   registrationEndsAt: Date;
   votingStartsAt: Date;
   votingEndsAt: Date;
+  tallyFile: string;
 }
 
 interface IUploadMetadataProps {
@@ -29,9 +30,11 @@ function isValidDate(formattedDateStr: string) {
 }
 
 export async function uploadRoundMetadata({ data, name }: IUploadMetadataProps): Promise<string> {
+  // NOTICE! this is when you use vercel storage, if you're using another tool, please change this part.
   const blob = await put(name, JSON.stringify(data), {
     access: "public",
     token: process.env.BLOB_READ_WRITE_TOKEN,
+    addRandomSuffix: false,
   });
 
   return blob.url;
@@ -139,6 +142,9 @@ export async function collectMetadata(): Promise<RoundMetadata> {
 
   rl.close();
 
+  // NOTICE! this is when you use vercel blob storage, if you're using another tool, please change this part.
+  const vercelStoragePrefix = `https://${process.env.BLOB_READ_WRITE_TOKEN?.split("_")[3]}.public.blob.vercel-storage.com`;
+
   return {
     roundId,
     description,
@@ -146,6 +152,7 @@ export async function collectMetadata(): Promise<RoundMetadata> {
     registrationEndsAt,
     votingStartsAt,
     votingEndsAt,
+    tallyFile: `${vercelStoragePrefix}/tally-${roundId}.json`,
   };
 }
 

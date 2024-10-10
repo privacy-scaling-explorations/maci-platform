@@ -35,8 +35,8 @@ export const BallotConfirmation = ({ roundId }: IBallotConfirmationProps): JSX.E
   const allocations = ballot.votes;
   const { data: projectCount } = useProjectCount(roundId);
   const roundState = useRoundState(roundId);
-  const { getRound } = useRound();
-  const round = getRound(roundId);
+  const { getRoundByRoundId } = useRound();
+  const round = getRoundByRoundId(roundId);
 
   const sum = useMemo(() => formatNumber(sumBallot(ballot.votes)), [ballot, sumBallot]);
 

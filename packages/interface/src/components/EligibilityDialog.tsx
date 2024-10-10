@@ -4,12 +4,13 @@ import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd";
 import { zuAuthPopup } from "@pcd/zuauth";
 import { GatekeeperTrait, getZupassGatekeeperData } from "maci-cli/sdk";
 import { useRouter } from "next/router";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 import { useAccount, useDisconnect } from "wagmi";
 
 import { zupass, config } from "~/config";
 import { useMaci } from "~/contexts/Maci";
+import { useRound } from "~/contexts/Round";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { useRoundState } from "~/utils/state";
 import { ERoundState, jsonPCD } from "~/utils/types";
@@ -25,20 +26,19 @@ interface IEligibilityDialogProps {
 export const EligibilityDialog = ({ roundId = "" }: IEligibilityDialogProps): JSX.Element | null => {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
+  const { getRoundByRoundId } = useRound();
 
   const [openDialog, setOpenDialog] = useState<boolean>(!!address);
-  const {
-    onSignup,
-    isEligibleToVote,
-    isRegistered,
-    initialVoiceCredits,
-    votingEndsAt,
-    gatekeeperTrait,
-    storeZupassProof,
-  } = useMaci();
+  const { onSignup, isEligibleToVote, isRegistered, initialVoiceCredits, gatekeeperTrait, storeZupassProof } =
+    useMaci();
   const router = useRouter();
 
   const roundState = useRoundState(roundId);
+
+  const votingEndsAt = useMemo(() => {
+    const round = getRoundByRoundId(roundId);
+    return round?.votingEndsAt ? new Date(round.votingEndsAt) : new Date();
+  }, [roundId, getRoundByRoundId]);
 
   const onError = useCallback(() => toast.error("Signup error"), []);
 
