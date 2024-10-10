@@ -14,8 +14,18 @@ Complete installation tutorials can be seen here:
 
 [Fork MACI-PLATFORM](https://github.com/privacy-scaling-explorations/maci-platform/tree/main)
 
-1. Click to view the `packages/interface/.env.example` file in your newly created repo
-2. Copy its contents and paste into a text editor
+1. Clone the forked repo and navigate into the project folder `cd maci-platform`
+
+```bash
+git clone [forked github repository]
+cd maci-platform
+```
+
+2. Copy `packages/interface/.env.example` into a new `.env` file using the following command:
+
+```bash
+cp packages/interface/.env.example packages/interface/.env
+```
 
 ## 2. Deploy MACI
 
@@ -23,12 +33,15 @@ As a coordinator you need to deploy a MACI instance and poll.
 
 ### Install MACI
 
+> [!IMPORTANT]
+> If you encounter an error saying that the pnpm version is incompatible, install the compatible version by running `pnpm i -g pnpm@<target_version>`, replacing <target_version> with the version specified in the error.
+
 You can read about the [MACI requirements here](https://maci.pse.dev/docs/quick-start/installation). To install MACI run the following commands:
 
 ```bash
 git clone https://github.com/privacy-scaling-explorations/maci.git && \
 cd maci && \
-git checkout v2.1.0 && \
+git checkout v2.4.0 && \
 pnpm i && \
 pnpm run build
 ```
@@ -54,7 +67,7 @@ Note the locations of the zkey files as the CLI requires them as command-line fl
 
 ### Set .env Files
 
-Head to the `packages/contracts` folder and copy the `.env.example` file. Make sure to include a mnemonic and RPC url.
+Head to the `packages/contracts` folder and copy the `.env.example` file. Make sure to include a mnemonic and RPC url. Make sure to specify the env variable for your desired network.
 
 ```
 MNEMONIC="your_ethereum_secret_key"
@@ -92,7 +105,7 @@ cp default-deployed-contracts.json deployed-contracts.json
 ```
 
 > [!IMPORTANT]
-> Make sure that you use the production zkeys, and set the `pollDuration` with the correct time on **seconds**.
+> Ensure that you replace the `coordinatorPubKey` generated in the [previous step](#Generate-MACI-Keys) and set the `pollDuration` to the correct time in **seconds**.
 
 ### Deploy MACI Contracts
 
@@ -109,7 +122,7 @@ Of course you could run without the `incremental` flag to deploy everything by y
 pnpm deploy:NETWORK
 ```
 
-Run pnpm deploy-poll to deploy your first Poll (you can specify the network by appending :network to the command, e.g. pnpm deploy-poll:sepolia - please refer to the available networks on the `package.json` scripts section).
+To deploy your first Poll (you need to specify the same network as the MACI contracts by appending :network to the command, e.g. pnpm deploy-poll:sepolia - please refer to the available networks on the `package.json` scripts section).
 
 ```sh
 pnpm deploy-poll:NETWORK
@@ -133,7 +146,7 @@ cd apps/subgraph
 
 1. Make sure you have `{network}.json` file in `config` folder, where network is a CLI name supported for subgraph network [https://thegraph.com/docs/en/developing/supported-networks/](https://thegraph.com/docs/en/developing/supported-networks/).
 
-2. Create subgraph in [the graph studio](https://thegraph.com/studio/).
+2. Create a subgraph in [the graph studio](https://thegraph.com/studio/). Note down the name of the subgraph
 
 3. Add network, maci contract address and maci contract deployed block.
 
@@ -145,13 +158,16 @@ cd apps/subgraph
 }
 ```
 
-4. Run `pnpm run build`. You can use env variables `NETWORK` and `VERSION` to switch config files.
-   - Create an `.env` file, and run the follow command in the console `export $(xargs < .env)`
-5. Run `graph auth --studio {key}`. You can find the key in subgraph studio dashboard.
-6. Run `pnpm run deploy` to deploy subgraph
+4. If you haven't installed the graph CLI in your computer globally yet, do so by running `pnpm i -g @graphprotocol/graph-cli`
+5. Run `pnpm run build`. You can use env variables `NETWORK` and `VERSION` to switch config files.
+   - Create an `.env` file, and run the following command in the console `export $(xargs < .env)`
+6. Copy the authenticate command from the 'Auth and Deploy' section in the Subgraph Studio graph details, paste it into the terminal, and execute it. The command should look like this: `graph auth --studio {key}`.
+7. Change `package.json` deploy script to `graph deploy --node https://api.studio.thegraph.com/deploy/ <name>` where <name> is the name that you gave to the subgraph you created.
+8. Run `pnpm run deploy` to deploy the subgraph.
+9. Note down the url of the deployed subgraph API endpoint.
 
 > [!IMPORTANT]
-> The `pnpm run deploy` command call `maci-subgraph` as the subgraph name as default, but if you named your subgraph differently (e.g. maci-graph, my-graph, etc.), please change the command to `graph deploy --node https://api.studio.thegraph.com/deploy/ :your_subgraph_name`
+> If you always use the latest version the URL will be `https://api.studio.thegraph.com/query/<USER_ID>/<YOUR_SUBGRAPH_NAME>/version/latest`.
 
 #### Network
 
