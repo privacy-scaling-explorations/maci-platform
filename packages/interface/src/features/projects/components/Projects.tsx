@@ -2,6 +2,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useCallback } from "react";
 import { FiAlertCircle } from "react-icons/fi";
+import { zeroAddress } from "viem";
 
 import { InfiniteLoading } from "~/components/InfiniteLoading";
 import { SortFilter } from "~/components/SortFilter";
@@ -20,24 +21,26 @@ import { ProjectItem, ProjectItemAwarded } from "./ProjectItem";
 
 export const Projects = (): JSX.Element => {
   const appState = useAppState();
-  const projects = useSearchProjects({ needApproval: appState !== EAppState.APPLICATION });
 
   const { pollData, pollId, isRegistered } = useMaci();
+  const projects = useSearchProjects({ search: "", registryAddress: pollData?.registry ?? zeroAddress });
+
   const { addToBallot, removeFromBallot, ballotContains, ballot } = useBallot();
   const results = useResults(pollData);
 
   const handleAction = useCallback(
-    (projectId: string) => (e: Event) => {
+    (projectIndex: number, projectId: string) => (e: Event) => {
       e.preventDefault();
 
       if (!pollId) {
         return;
       }
 
-      if (!ballotContains(projectId)) {
+      if (!ballotContains(projectIndex)) {
         addToBallot(
           [
             {
+              projectIndex,
               projectId,
               amount: 0,
             },
@@ -45,20 +48,20 @@ export const Projects = (): JSX.Element => {
           pollId,
         );
       } else {
-        removeFromBallot(projectId);
+        removeFromBallot(projectIndex);
       }
     },
     [ballotContains, addToBallot, removeFromBallot, pollId],
   );
 
-  const defineState = (projectId: string): EProjectState => {
+  const defineState = (projectIndex: number): EProjectState => {
     if (!isRegistered) {
       return EProjectState.UNREGISTERED;
     }
-    if (ballotContains(projectId) && ballot.published && !ballot.edited) {
+    if (ballotContains(projectIndex) && ballot.published && !ballot.edited) {
       return EProjectState.SUBMITTED;
     }
-    if (ballotContains(projectId)) {
+    if (ballotContains(projectIndex)) {
       return EProjectState.ADDED;
     }
     return EProjectState.DEFAULT;
@@ -113,10 +116,10 @@ export const Projects = (): JSX.Element => {
             ) : null}
 
             <ProjectItem
-              action={handleAction(item.id)}
-              attestation={item}
-              isLoading={isLoading}
-              state={defineState(item.id)}
+              action={handleAction(Number.parseInt(item.index, 10), item.id)}
+              isLoading={projects.isLoading}
+              recipient={item}
+              state={defineState(Number.parseInt(item.index, 10))}
             />
           </Link>
         )}

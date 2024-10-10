@@ -35,6 +35,7 @@ export const ApplicationSchema = z.object({
       /^(http:\/\/|https:\/\/)/i.test(url) ? url : `https://${url}`,
     ),
   payoutAddress: EthAddressSchema,
+  submittedAt: z.number().optional(),
   github: z.string().optional(),
   twitter: z.string().optional(),
   contributionDescription: z.string().min(3),

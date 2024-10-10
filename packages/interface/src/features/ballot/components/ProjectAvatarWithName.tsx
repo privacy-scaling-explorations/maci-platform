@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { zeroAddress } from "viem";
 
+import { useMaci } from "~/contexts/Maci";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { useProjectById, useProjectMetadata } from "~/features/projects/hooks/useProjects";
 
@@ -16,8 +18,10 @@ export const ProjectAvatarWithName = ({
   showDescription = false,
   allocation = 0,
 }: ProjectAvatarWithNameProps): JSX.Element => {
-  const { data: projects } = useProjectById(id);
-  const metadata = useProjectMetadata(projects?.[0]?.metadataPtr);
+  const { pollData } = useMaci();
+
+  const { data: projects } = useProjectById(id, pollData?.registry ?? zeroAddress);
+  const metadata = useProjectMetadata(projects?.metadataUrl);
 
   const Component = isLink ? Link : "div";
 
@@ -26,7 +30,7 @@ export const ProjectAvatarWithName = ({
       <ProjectAvatar rounded="full" size="sm" url={metadata.data?.bannerImageUrl} />
 
       <div>
-        <div className="font-bold uppercase">{projects?.[0]?.name}</div>
+        <div className="font-bold uppercase">{metadata.data?.name}</div>
 
         <div className="text-sm text-gray-400">
           <p>{showDescription && (metadata.data?.bio ?? null)}</p>

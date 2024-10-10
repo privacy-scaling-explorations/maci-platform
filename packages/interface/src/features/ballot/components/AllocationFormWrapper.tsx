@@ -65,7 +65,7 @@ export const AllocationFormWrapper = ({
                 variant="none"
                 onClick={() => {
                   remove(i);
-                  onRemove(project.projectId);
+                  onRemove(project.projectIndex);
                 }}
               />
             </Td>

@@ -77,7 +77,6 @@ export function handleSetRegistry(event: SetRegistryEvent): void {
   }
 
   const contract = RegistryContract.bind(event.params.registry);
-
   const registry = createOrLoadRegistry(event.params.registry);
   registry.poll = poll.id;
   registry.metadataUrl = contract.getRegistryMetadataUrl();

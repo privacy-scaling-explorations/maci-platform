@@ -39,8 +39,8 @@ export const ProjectsResults = (): JSX.Element => {
 
           <ProjectItem
             action={handleAction(item.id)}
-            attestation={item}
             isLoading={isLoading}
+            recipient={item}
             state={EProjectState.SUBMITTED}
           />
         </Link>
