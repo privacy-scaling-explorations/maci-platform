@@ -24,6 +24,8 @@ env:
   NEXT_PUBLIC_VOTING_END_DATE: ${{ secrets.NEXT_PUBLIC_VOTING_END_DATE }}
   NEXT_PUBLIC_RESULTS_DATE: ${{ secrets.NEXT_PUBLIC_RESULTS_DATE }}
   TEST_MNEMONIC: ${{ secrets.TEST_MNEMONIC }}
+  GH_PAT: ${{ secrets.GH_PAT }}
+  GH_USERNAME: ${{ secrets.GH_USERNAME }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -91,9 +93,6 @@ jobs:
         with:
           run: pnpm run test:e2e
           working-directory: packages/interface
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-          GH_USERNAME: ${{ secrets.GH_USERNAME }}
 
       - uses: actions/upload-artifact@v4
         if: always()
