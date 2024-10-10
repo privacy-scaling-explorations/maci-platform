@@ -91,6 +91,9 @@ jobs:
         with:
           run: pnpm run test:e2e
           working-directory: packages/interface
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_USERNAME: ${{ secrets.GH_USERNAME }}
 
       - uses: actions/upload-artifact@v4
         if: always()
