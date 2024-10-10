@@ -3,7 +3,8 @@ on:
   workflow_dispatch:
 
   schedule:
-    - cron: "0 9 * * *" # run every day at 9:00 UTC
+    # run every day at 9:00 UTC
+    - cron: "0 9 * * *"
 
   push:
     branches: [main]
