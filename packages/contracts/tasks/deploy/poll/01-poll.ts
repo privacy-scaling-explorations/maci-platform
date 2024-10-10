@@ -2,7 +2,7 @@
 import { ContractStorage, Deployment, EMode } from "maci-contracts";
 import { PubKey } from "maci-domainobjs";
 
-import { type Poll, type MACI } from "../../../typechain-types";
+import { type Poll, type MACI, Tally } from "../../../typechain-types";
 import { EContracts, EDeploySteps, REGISTRY_TYPES, TRegistryManager, TRegistry } from "../../helpers/constants";
 
 const deployment = Deployment.getInstance();
@@ -31,7 +31,11 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
       throw new Error("Need to deploy VkRegistry contract first");
     }
 
-    const { MACI__factory: MACIFactory, Poll__factory: PollFactory } = await import("../../../typechain-types");
+    const {
+      MACI__factory: MACIFactory,
+      Poll__factory: PollFactory,
+      Tally__factory: TallyFactory,
+    } = await import("../../../typechain-types");
 
     const maciContract = await deployment.getContract<MACI>({ name: EContracts.MACI, abi: MACIFactory.abi });
     const pollId = await maciContract.nextPollId();
@@ -113,8 +117,9 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
       address: messageProcessorContractAddress,
     });
 
-    const tallyContract = await deployment.getContract({
+    const tallyContract = await deployment.getContract<Tally>({
       name: EContracts.Tally,
+      abi: TallyFactory.abi,
       address: tallyContractAddress,
     });
 
