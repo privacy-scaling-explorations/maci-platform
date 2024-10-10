@@ -17,6 +17,7 @@ export const FilterSchema = z.object({
   sortOrder: z.nativeEnum(SortOrder).default(SortOrder.asc),
   search: z.preprocess((v) => (v === "null" || v === "undefined" ? null : v), z.string().nullish()),
   needApproval: z.boolean().optional().default(true),
+  roundId: z.string(),
 });
 
 export type Filter = z.infer<typeof FilterSchema>;

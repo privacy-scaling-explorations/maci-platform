@@ -1,7 +1,7 @@
 import { type Transaction } from "@ethereum-attestation-service/eas-sdk";
 import { type UseMutationResult, useMutation } from "@tanstack/react-query";
 
-import { config, eas } from "~/config";
+import { eas } from "~/config";
 import { useAttest } from "~/hooks/useEAS";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { createAttestation } from "~/lib/eas/createAttestation";
@@ -25,11 +25,12 @@ export function useApproveVoters(options: {
         throw new Error("Connect wallet first");
       }
 
+      /// TODO: should be changed to event name instead of roundId
       const attestations = await Promise.all(
         voters.map((recipient) =>
           createAttestation(
             {
-              values: { type: "voter", round: config.roundId },
+              values: { type: "voter" },
               schemaUID: eas.schemas.approval,
               recipient,
             },

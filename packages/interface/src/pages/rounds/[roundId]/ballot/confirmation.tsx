@@ -6,7 +6,11 @@ import { useBallot } from "~/contexts/Ballot";
 import { BallotConfirmation } from "~/features/ballot/components/BallotConfirmation";
 import { Layout } from "~/layouts/DefaultLayout";
 
-const BallotConfirmationPage = (): JSX.Element | null => {
+interface IBallotConfirmationPageProps {
+  roundId: string;
+}
+
+const BallotConfirmationPage = ({ roundId }: IBallotConfirmationPageProps): JSX.Element | null => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { ballot, isLoading: isBallotLoading } = useBallot();
@@ -28,7 +32,11 @@ const BallotConfirmationPage = (): JSX.Element | null => {
     manageDisplay();
   }, [manageDisplay]);
 
-  return <Layout requireAuth>{isLoading ? <Spinner className="h-6 w-6" /> : <BallotConfirmation />}</Layout>;
+  return (
+    <Layout requireAuth>
+      {isLoading ? <Spinner className="h-6 w-6" /> : <BallotConfirmation roundId={roundId} />}
+    </Layout>
+  );
 };
 
 export default BallotConfirmationPage;

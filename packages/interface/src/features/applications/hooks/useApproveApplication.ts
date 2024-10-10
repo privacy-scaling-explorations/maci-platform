@@ -2,13 +2,14 @@ import { type Transaction } from "@ethereum-attestation-service/eas-sdk";
 import { type UseMutationResult, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { config, eas } from "~/config";
+import { eas } from "~/config";
 import { type TransactionError } from "~/features/voters/hooks/useApproveVoters";
 import { useAttest } from "~/hooks/useEAS";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { createAttestation } from "~/lib/eas/createAttestation";
 
-export function useApproveApplication(opts?: {
+export function useApproveApplication(opts: {
+  roundId: string;
   onSuccess?: () => void;
 }): UseMutationResult<Transaction<string[]>, Error | TransactionError, string[]> {
   const attest = useAttest();
@@ -24,7 +25,7 @@ export function useApproveApplication(opts?: {
         applicationIds.map((refUID) =>
           createAttestation(
             {
-              values: { type: "application", round: config.roundId },
+              values: { type: "application", round: opts.roundId },
               schemaUID: eas.schemas.approval,
               refUID,
             },
@@ -36,7 +37,7 @@ export function useApproveApplication(opts?: {
     },
     onSuccess: () => {
       toast.success("Application approved successfully!");
-      opts?.onSuccess?.();
+      opts.onSuccess?.();
     },
     onError: (err: { reason?: string; data?: { message: string } }) =>
       toast.error("Application approve error", {

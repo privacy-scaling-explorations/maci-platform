@@ -11,6 +11,7 @@ import type { Ballot } from "~/features/ballot/types";
 import type { Attestation } from "~/utils/types";
 
 interface IUseSearchProjectsProps {
+  roundId: string;
   filterOverride?: Partial<Filter>;
   needApproval?: boolean;
 }
@@ -25,21 +26,22 @@ export function useProjectsById(ids: string[]): UseTRPCQueryResult<Attestation[]
 
 const seed = 0;
 export function useSearchProjects({
+  roundId,
   filterOverride = {},
   needApproval = true,
 }: IUseSearchProjectsProps): UseTRPCInfiniteQueryResult<Attestation[], unknown, unknown> {
   const { ...filter } = useFilter();
 
   return api.projects.search.useInfiniteQuery(
-    { seed, ...filter, ...filterOverride, needApproval },
+    { roundId, seed, ...filter, ...filterOverride, needApproval },
     {
       getNextPageParam: (_, pages) => pages.length,
     },
   );
 }
 
-export function useProjectIdMapping(ballot: Ballot): Record<string, number> {
-  const { data } = api.projects.allApproved.useQuery();
+export function useProjectIdMapping(ballot: Ballot, roundId: string): Record<string, number> {
+  const { data } = api.projects.allApproved.useQuery({ roundId });
 
   const projectIndices = useMemo(
     () =>
@@ -59,6 +61,6 @@ export function useProjectMetadata(metadataPtr?: string): UseTRPCQueryResult<App
   return useMetadata<Application>(metadataPtr);
 }
 
-export function useProjectCount(): UseTRPCQueryResult<{ count: number }, unknown> {
-  return api.projects.count.useQuery();
+export function useProjectCount(roundId: string): UseTRPCQueryResult<{ count: number }, unknown> {
+  return api.projects.count.useQuery({ roundId });
 }

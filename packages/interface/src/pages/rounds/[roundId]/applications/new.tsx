@@ -4,11 +4,15 @@ import { Alert } from "~/components/ui/Alert";
 import { Heading } from "~/components/ui/Heading";
 import { ApplicationForm } from "~/features/applications/components/ApplicationForm";
 import { Layout } from "~/layouts/DefaultLayout";
-import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { useRoundState } from "~/utils/state";
+import { ERoundState } from "~/utils/types";
 
-const NewProjectPage = (): JSX.Element => {
-  const state = useAppState();
+interface INewProjectPageProps {
+  roundId: string;
+}
+
+const NewProjectPage = ({ roundId }: INewProjectPageProps): JSX.Element => {
+  const state = useRoundState(roundId);
 
   return (
     <Layout>
@@ -34,10 +38,10 @@ const NewProjectPage = (): JSX.Element => {
             <i className="text-sm">Applications can be edited and approved until the Application period ends.</i>
           </p>
 
-          {state !== EAppState.APPLICATION ? (
+          {state !== ERoundState.APPLICATION ? (
             <Alert title="Application period has ended" variant="info" />
           ) : (
-            <ApplicationForm />
+            <ApplicationForm roundId={roundId} />
           )}
         </div>
       </div>
