@@ -28,6 +28,9 @@ const PollQuery = `
         id
         metadataUrl
       }
+      tally {
+        id
+      }
     }
   }
 `;
@@ -50,6 +53,7 @@ function mappedPollData(polls: Poll[]): IPollData[] {
     registryAddress: poll.registry.id,
     metadataUrl: poll.registry.metadataUrl,
     initTime: poll.initTime,
+    tallyAddress: poll.tally.id,
   }));
 }
 

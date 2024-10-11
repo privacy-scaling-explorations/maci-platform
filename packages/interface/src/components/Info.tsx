@@ -39,7 +39,7 @@ export const Info = ({
   showAppState = false,
   showBallot = false,
 }: IInfoProps): JSX.Element => {
-  const roundState = useRoundState(pollId);
+  const roundState = useRoundState({ pollId });
 
   const { getRoundByPollId } = useRound();
   const round = getRoundByPollId(pollId);

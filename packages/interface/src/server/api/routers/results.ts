@@ -1,20 +1,21 @@
 import { TRPCError } from "@trpc/server";
-import { type TallyData } from "maci-cli/sdk";
 import { z } from "zod";
 
-import { FilterSchema } from "~/features/filter/types";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { fetchApprovedProjects, fetchProjects } from "~/utils/fetchProjects";
+import { fetchTally } from "~/utils/fetchTally";
+
+import type { IRecipient } from "~/utils/types";
 
 export const resultsRouter = createTRPCRouter({
   votes: publicProcedure
-    .input(z.object({ registryAddress: z.string(), tallyFile: z.string().optional() }))
-    .query(async ({ input }) => calculateMaciResults(input.registryAddress, input.tallyFile)),
+    .input(z.object({ registryAddress: z.string(), tallyAddress: z.string() }))
+    .query(async ({ input }) => calculateMaciResults(input.registryAddress, input.tallyAddress)),
 
   project: publicProcedure
-    .input(z.object({ id: z.string(), registryAddress: z.string(), tallyFile: z.string().optional() }))
+    .input(z.object({ id: z.string(), registryAddress: z.string(), tallyAddress: z.string() }))
     .query(async ({ input }) => {
-      const { projects } = await calculateMaciResults(input.registryAddress, input.tallyFile);
+      const { projects } = await calculateMaciResults(input.registryAddress, input.tallyAddress);
 
       return {
         amount: projects[input.id]?.votes ?? 0,
@@ -22,46 +23,45 @@ export const resultsRouter = createTRPCRouter({
     }),
 
   projects: publicProcedure
-    .input(FilterSchema.extend({ registryAddress: z.string() }))
-    .query(async ({ input }) => fetchProjects(input.registryAddress)),
+    .input(z.object({ registryAddress: z.string(), tallyAddress: z.string() }))
+    .query(async ({ input }) => {
+      const { projects: results } = await calculateMaciResults(input.registryAddress, input.tallyAddress);
+      const projects = await fetchProjects(input.registryAddress);
+
+      return mappedProjectsResults(results, projects);
+    }),
 });
 
 /**
  * Calculate the results of the MACI tally
  *
  * @param registryAddress - The registry address
- * @param tallyFile - The tally file URL
+ * @param tallyAddress - The poll address
  * @returns The results of the tally
  */
 export async function calculateMaciResults(
   registryAddress: string,
-  tallyFile?: string,
+  tallyAddress: string,
 ): Promise<{
   averageVotes: number;
   projects: Record<string, { votes: number; voters: number }>;
 }> {
-  if (!tallyFile) {
-    throw new Error("No tallyFile URL provided.");
-  }
-
   const [tallyData, projects] = await Promise.all([
-    fetch(tallyFile)
-      .then((res) => res.json() as Promise<TallyData>)
-      .catch(() => undefined),
+    fetchTally(tallyAddress).catch(() => undefined),
     fetchApprovedProjects(registryAddress),
   ]);
 
   if (!tallyData) {
     throw new TRPCError({
       code: "BAD_REQUEST",
-      message: "Voting has not ended yet",
+      message: "The data is not tallied yet",
     });
   }
 
-  const results = tallyData.results.tally.reduce((acc, tally, index) => {
+  const results = tallyData.results.reduce((acc, tally, index) => {
     const project = projects[index];
     if (project) {
-      acc.set(project.id, { votes: Number(tally), voters: 0 });
+      acc.set(project.id, { votes: Number(tally.result), voters: 0 });
     }
 
     return acc;
@@ -73,6 +73,14 @@ export async function calculateMaciResults(
     averageVotes,
     projects: Object.fromEntries(results),
   };
+}
+
+function mappedProjectsResults(results: Record<string, { votes: number; voters: number }>, projects: IRecipient[]) {
+  const projectWithVotes = projects.map((project) => ({
+    ...project,
+    votes: results[project.id]?.votes ?? 0,
+  }));
+  return projectWithVotes.sort((a, b) => (a.votes > b.votes ? -1 : 1));
 }
 
 /**

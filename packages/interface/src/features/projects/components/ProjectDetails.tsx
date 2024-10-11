@@ -27,7 +27,7 @@ const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetails
   const { bio, websiteUrl, payoutAddress, github, twitter, fundingSources, profileImageUrl, bannerImageUrl } =
     metadata.data ?? {};
 
-  const roundState = useRoundState(pollId);
+  const roundState = useRoundState({ pollId });
 
   return (
     <div className="relative dark:text-white">

@@ -56,6 +56,7 @@ export interface RoundContextType {
   getRoundByRoundId: (roundId: string) => IRoundData | undefined;
   getRoundByPollId: (pollId: string) => IRoundData | undefined;
   isLoading: boolean;
+  isRoundTallied: (tallyAddress: string) => boolean;
 }
 
 export interface RoundProviderProps {

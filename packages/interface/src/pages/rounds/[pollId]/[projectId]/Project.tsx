@@ -23,11 +23,11 @@ const ProjectDetailsPage = ({ projectId = "", pollId }: IProjectDetailsProps): J
 
   const projects = useProjectById(projectId, round?.registryAddress ?? zeroAddress);
 
-  const appState = useRoundState(pollId);
+  const roundState = useRoundState({ pollId });
 
   return (
     <LayoutWithSidebar eligibilityCheck showBallot showInfo pollId={pollId} sidebar="left">
-      {appState === ERoundState.APPLICATION && <ReviewBar pollId={pollId} projectId={projectId} />}
+      {roundState === ERoundState.APPLICATION && <ReviewBar pollId={pollId} projectId={projectId} />}
 
       {projects.data && <ProjectDetails pollId={pollId} project={projects.data as unknown as IRecipient} />}
     </LayoutWithSidebar>
