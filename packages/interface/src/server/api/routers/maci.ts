@@ -4,7 +4,7 @@ import { z, ZodType } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { fetchMetadata } from "~/utils/fetchMetadata";
 import { fetchPolls } from "~/utils/fetchPoll";
-import { fetchTally } from "~/utils/fetchTally";
+import { fetchTally, fetchTallies } from "~/utils/fetchTally";
 import { fetchUser } from "~/utils/fetchUser";
 
 import type { IPollData, IRoundMetadata, IRoundData } from "~/utils/types";
@@ -20,15 +20,23 @@ const PollSchema = z.object({
   initTime: z.union([z.string(), z.number(), z.bigint()]).nullable(),
   registryAddress: z.string(),
   metadataUrl: z.string(),
+  tallyAddress: z.string(),
 }) satisfies ZodType<IPollData>;
 
 export const maciRouter = createTRPCRouter({
   user: publicProcedure
     .input(z.object({ publicKey: z.string() }))
     .query(async ({ input }) => fetchUser(PubKey.deserialize(input.publicKey).rawPubKey)),
-  poll: publicProcedure.query(async () => fetchPolls()),
-  tally: publicProcedure.input(z.object({ id: z.string() })).query(async ({ input }) => fetchTally(input.id)),
-  round: publicProcedure.input(z.object({ polls: z.array(PollSchema) })).query(async ({ input }) =>
+  polls: publicProcedure.query(async () => fetchPolls()),
+  tally: publicProcedure
+    .input(z.object({ tallyAddress: z.string() }))
+    .query(async ({ input }) => fetchTally(input.tallyAddress)),
+  tallies: publicProcedure.query(async () => fetchTallies()),
+  isTallied: publicProcedure.input(z.object({ tallyAddress: z.string() })).query(async ({ input }) => {
+    const tallyData = await fetchTally(input.tallyAddress);
+    return !!tallyData;
+  }),
+  rounds: publicProcedure.input(z.object({ polls: z.array(PollSchema) })).query(async ({ input }) =>
     Promise.all(
       input.polls.map((poll) =>
         fetchMetadata<IRoundMetadata>(poll.metadataUrl).then((metadata) => {
@@ -54,6 +62,7 @@ export const maciRouter = createTRPCRouter({
             registrationEndsAt: new Date(data.registrationEndsAt),
             votingStartsAt,
             votingEndsAt,
+            tallyAddress: poll.tallyAddress,
           } as IRoundData;
         }),
       ),

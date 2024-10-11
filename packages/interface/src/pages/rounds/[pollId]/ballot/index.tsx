@@ -33,7 +33,7 @@ const ClearBallot = ({ pollId }: IClearBallotProps): JSX.Element | null => {
     setOpen(true);
   }, [setOpen]);
 
-  if ([ERoundState.TALLYING, ERoundState.RESULTS].includes(useRoundState(pollId))) {
+  if ([ERoundState.TALLYING, ERoundState.RESULTS].includes(useRoundState({ pollId }))) {
     return null;
   }
 
@@ -97,7 +97,7 @@ interface IBallotAllocationFormProps {
 }
 
 const BallotAllocationForm = ({ pollId, mode }: IBallotAllocationFormProps): JSX.Element => {
-  const roundState = useRoundState(pollId);
+  const roundState = useRoundState({ pollId });
   const { getBallot, sumBallot } = useBallot();
   const { initialVoiceCredits } = useMaci();
 
@@ -154,7 +154,7 @@ interface IBallotPageProps {
 const BallotPage = ({ pollId }: IBallotPageProps): JSX.Element => {
   const { getBallot, sumBallot } = useBallot();
   const { getRoundByPollId } = useRound();
-  const roundState = useRoundState(pollId);
+  const roundState = useRoundState({ pollId });
 
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
   const ballot = useMemo(() => getBallot(pollId), [round?.pollId, getBallot]);

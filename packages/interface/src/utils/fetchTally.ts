@@ -24,9 +24,22 @@ const tallyQuery = `
   }
 `;
 
+const talliesQuery = `
+  query Tally {
+    tallies {
+      id
+      results {
+        id
+        result
+      }
+    }
+  }
+`;
+
 /**
  * Fetches the tally data from the subgraph
  *
+ * @param id the address of the tally contract
  * @returns The tally data
  */
 export async function fetchTally(id: string): Promise<Tally | undefined> {
@@ -36,4 +49,18 @@ export async function fetchTally(id: string): Promise<Tally | undefined> {
       query: tallyQuery.replace("id: $id", `id: "${id}"`),
     }),
   }).then((response: GraphQLResponse) => response.data?.tally);
+}
+
+/**
+ * Fetches all the tallies from the subgraph
+ *
+ * @returns The on-chain tallies
+ */
+export async function fetchTallies(): Promise<Tally[] | undefined> {
+  return cachedFetch<{ tallies: Tally[] }>(config.maciSubgraphUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      query: talliesQuery,
+    }),
+  }).then((r) => r.data.tallies);
 }

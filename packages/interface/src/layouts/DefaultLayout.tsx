@@ -24,7 +24,7 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
     [wallets],
   );
 
-  const roundState = useRoundState(props.pollId ?? "");
+  const roundState = useRoundState({ pollId: props.pollId ?? "" });
   const { getBallot } = useBallot();
   const { isRegistered, gatekeeperTrait } = useMaci();
 
@@ -60,8 +60,8 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
 
     if (roundState === ERoundState.RESULTS) {
       links.push({
-        href: `/rounds/${props.pollId}/stats`,
-        children: "Stats",
+        href: `/rounds/${props.pollId}/result`,
+        children: "Result",
       });
     }
 
@@ -102,7 +102,7 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
   const { authenticated } = usePrivy();
   const { getBallot } = useBallot();
 
-  const roundState = useRoundState(props.pollId ?? "");
+  const roundState = useRoundState({ pollId: props.pollId ?? "" });
 
   const ballot = useMemo(() => getBallot(props.pollId!), [props.pollId, getBallot]);
 

@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query: { pollId }
 
 export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.Element => {
   const { getBallot, sumBallot } = useBallot();
-  const roundState = useRoundState(pollId);
+  const roundState = useRoundState({ pollId });
   const { getRoundByPollId } = useRound();
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
 

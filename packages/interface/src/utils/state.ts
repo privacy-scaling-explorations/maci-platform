@@ -1,13 +1,19 @@
 import { isAfter } from "date-fns";
+import { ZeroAddress } from "ethers";
 
 import { useRound } from "~/contexts/Round";
 
 import { ERoundState } from "./types";
 
-export const useRoundState = (pollId: string): ERoundState => {
+interface IUseRoundState {
+  pollId: string;
+}
+
+export const useRoundState = ({ pollId }: IUseRoundState): ERoundState => {
   const now = new Date();
-  const { getRoundByPollId } = useRound();
+  const { getRoundByPollId, isRoundTallied } = useRound();
   const round = getRoundByPollId(pollId);
+  const isTallied = isRoundTallied(round?.tallyAddress ?? ZeroAddress);
 
   if (!round) {
     return ERoundState.DEFAULT;
@@ -21,14 +27,12 @@ export const useRoundState = (pollId: string): ERoundState => {
     return ERoundState.VOTING;
   }
 
-  // TODO commented out for testing results
-  // if (isAfter(now, round.votingEndsAt)) {
-  //   return ERoundState.TALLYING;
-  // }
-
-  // TODO: how to collect tally.json url
-  if (isAfter(now, round.votingEndsAt)) {
+  if (isAfter(now, round.votingEndsAt) && isTallied) {
     return ERoundState.RESULTS;
+  }
+
+  if (isAfter(now, round.votingEndsAt) && !isTallied) {
+    return ERoundState.TALLYING;
   }
 
   return ERoundState.DEFAULT;

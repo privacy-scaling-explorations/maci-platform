@@ -34,7 +34,7 @@ export const EligibilityDialog = ({ pollId = "" }: IEligibilityDialogProps): JSX
     useMaci();
   const router = useRouter();
 
-  const roundState = useRoundState(pollId);
+  const roundState = useRoundState({ pollId });
 
   const votingEndsAt = useMemo(() => {
     const round = getRoundByPollId(pollId);

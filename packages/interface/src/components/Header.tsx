@@ -63,7 +63,7 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
   const { asPath } = useRouter();
   const [isOpen, setOpen] = useState(false);
   const { getBallot } = useBallot();
-  const roundState = useRoundState(pollId);
+  const roundState = useRoundState({ pollId });
   const { theme, setTheme } = useTheme();
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
