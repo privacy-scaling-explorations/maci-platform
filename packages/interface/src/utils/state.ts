@@ -22,7 +22,7 @@ export const useRoundState = (roundId: string): ERoundState => {
   }
 
   if (round.votingEndsAt && isAfter(now, round.votingEndsAt)) {
-    return ERoundState.TALLYING;
+    return ERoundState.RESULTS;
   }
 
   /// TODO: how to collect tally.json url
