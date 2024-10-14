@@ -35,6 +35,9 @@ yarn-error.log*
 deploy-config.json
 deployed-contracts.json
 
+# e2e
+packages/interface/metamask/
+
 # vercel
 .vercel
 
