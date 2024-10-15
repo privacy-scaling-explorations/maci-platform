@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useCallback, useMemo } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { zeroAddress } from "viem";
@@ -26,6 +27,7 @@ interface IApplicationsToApproveProps {
  * Displays the applications that are pending approval.
  */
 export const ApplicationsToApprove = ({ pollId }: IApplicationsToApproveProps): JSX.Element => {
+  const router = useRouter();
   const { getRoundByPollId } = useRound();
 
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
@@ -73,7 +75,7 @@ export const ApplicationsToApprove = ({ pollId }: IApplicationsToApproveProps): 
 
           {!pending.isLoading && !pending.data?.length ? (
             <EmptyState title="No pending applications">
-              <Button as={Link} href={`/rounds/${pollId}/applications/new`} variant="primary">
+              <Button as={Link} href={`${router.asPath}/new`} variant="primary">
                 Go to create application
               </Button>
             </EmptyState>
