@@ -9,6 +9,7 @@ import {
   type ComponentProps,
   forwardRef,
   cloneElement,
+  useState,
 } from "react";
 import {
   FormProvider,
@@ -227,16 +228,25 @@ export const Form = <S extends z.Schema>({
     resolver: zodResolver(schema),
     mode: "onBlur",
   });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Pass the form methods to a FormProvider. This lets us access the form from components with useFormContext
   return (
     <FormProvider {...form}>
       <form
-        onSubmit={form.handleSubmit((data) => {
-          onSubmit(data, form);
-        })}
+        onSubmit={form.handleSubmit(
+          (data) => {
+            setErrorMessage(null);
+            onSubmit(data, form);
+          },
+          () => {
+            setErrorMessage("There are errors in the form. Please go back and check the warnings.");
+          },
+        )}
       >
         {children}
+
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       </form>
     </FormProvider>
   );
