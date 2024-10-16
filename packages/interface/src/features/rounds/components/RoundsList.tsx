@@ -8,9 +8,7 @@ export const RoundsList = (): JSX.Element => {
 
   return (
     <div className="grid grid-cols-3 px-16 py-4">
-      {rounds.map((round) => (
-        <RoundItem key={round.roundId} round={round} />
-      ))}
+      {rounds?.map((round) => <RoundItem key={round.roundId} round={round} />)}
     </div>
   );
 };

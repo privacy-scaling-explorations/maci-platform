@@ -48,8 +48,6 @@ module.exports = createEnv({
     NEXT_PUBLIC_MACI_START_BLOCK: z.string().optional(),
     NEXT_PUBLIC_MACI_SUBGRAPH_URL: z.string().url().optional(),
 
-    NEXT_PUBLIC_TALLY_URL: z.string().url(),
-
     NEXT_PUBLIC_ROUND_LOGO: z.string().optional(),
 
     NEXT_PUBLIC_SEMAPHORE_SUBGRAPH: z.string().url().optional(),
@@ -80,8 +78,6 @@ module.exports = createEnv({
     NEXT_PUBLIC_MACI_ADDRESS: process.env.NEXT_PUBLIC_MACI_ADDRESS,
     NEXT_PUBLIC_MACI_START_BLOCK: process.env.NEXT_PUBLIC_MACI_START_BLOCK,
     NEXT_PUBLIC_MACI_SUBGRAPH_URL: process.env.NEXT_PUBLIC_MACI_SUBGRAPH_URL,
-
-    NEXT_PUBLIC_TALLY_URL: process.env.NEXT_PUBLIC_TALLY_URL,
 
     NEXT_PUBLIC_ROUND_LOGO: process.env.NEXT_PUBLIC_ROUND_LOGO,
 

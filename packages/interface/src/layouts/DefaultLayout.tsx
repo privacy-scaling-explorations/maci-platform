@@ -58,14 +58,10 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
     }
 
     if (config.admin === address! && props.roundId) {
-      links.push(
-        ...[
-          {
-            href: `/rounds/${props.roundId}/applications`,
-            children: "Applications",
-          },
-        ],
-      );
+      links.push({
+        href: `/rounds/${props.roundId}/applications`,
+        children: "Applications",
+      });
     }
 
     if (config.admin === address!) {

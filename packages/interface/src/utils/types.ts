@@ -1,4 +1,5 @@
-import { type Address } from "viem";
+import type { IGetPollData } from "maci-cli/sdk";
+import type { Address } from "viem";
 
 export enum ERoundState {
   LOADING = "LOADING",
@@ -89,3 +90,36 @@ export const AttestationsQuery = `
     }
   }
 `;
+
+export interface IPollData extends IGetPollData {
+  registryAddress: string;
+  metadataUrl: string;
+}
+
+export interface IRoundMetadata {
+  roundId: string;
+  description: string;
+  startsAt: string;
+  registrationEndsAt: string;
+  votingStartsAt: string;
+  votingEndsAt: string;
+  tallyFile: string;
+}
+
+export interface IRoundData {
+  isMerged: boolean;
+  pollId: string;
+  duration: string;
+  deployTime: string;
+  numSignups: string;
+  pollAddress: string;
+  mode: string;
+  registryAddress: string;
+  roundId: string;
+  description: string;
+  startsAt: string;
+  registrationEndsAt: string;
+  votingStartsAt: string;
+  votingEndsAt: string;
+  tallyFile: string;
+}

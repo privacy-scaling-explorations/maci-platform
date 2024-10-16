@@ -4,7 +4,7 @@ import { useAccount } from "wagmi";
 import type { BallotContextType, BallotProviderProps } from "./types";
 import type { Ballot, Vote } from "~/features/ballot/types";
 
-import { useMaci } from "./Maci";
+import { useRound } from "./Round";
 
 export const BallotContext = createContext<BallotContextType | undefined>(undefined);
 
@@ -13,9 +13,9 @@ const defaultBallot = { votes: [], published: false, edited: false };
 export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: BallotProviderProps) => {
   const [ballot, setBallot] = useState<Ballot>(defaultBallot);
   const [isLoading, setLoading] = useState<boolean>(true);
+  const { rounds } = useRound();
 
   const { isDisconnected } = useAccount();
-  const { pollData } = useMaci();
 
   // when summing the ballot we take the individual vote and square it
   // if the mode is quadratic voting, otherwise we just add the amount
@@ -23,9 +23,9 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
     (votes?: Vote[]) =>
       (votes ?? []).reduce((sum, x) => {
         const amount = !Number.isNaN(Number(x.amount)) ? Number(x.amount) : 0;
-        return sum + (pollData && pollData.mode.toString() === "0" ? amount ** 2 : amount);
+        return sum + (rounds && rounds.length > 0 && rounds[0]?.mode.toString() === "0" ? amount ** 2 : amount);
       }, 0),
-    [pollData],
+    [rounds],
   );
 
   const ballotContains = useCallback((id: string) => ballot.votes.find((v) => v.projectId === id), [ballot]);
