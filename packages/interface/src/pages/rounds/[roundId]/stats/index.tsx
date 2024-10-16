@@ -6,13 +6,15 @@ import { useAccount } from "wagmi";
 import { ConnectButton } from "~/components/ConnectButton";
 import { Alert } from "~/components/ui/Alert";
 import { Heading } from "~/components/ui/Heading";
-import { config } from "~/config";
 import { useMaci } from "~/contexts/Maci";
+import { useRound } from "~/contexts/Round";
 import { useProjectCount, useProjectsResults, useResults } from "~/hooks/useResults";
 import { Layout } from "~/layouts/DefaultLayout";
 import { formatNumber } from "~/utils/formatNumber";
-import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { useRoundState } from "~/utils/state";
+import { ERoundState } from "~/utils/types";
+
+import type { GetServerSideProps } from "next";
 
 const ResultsChart = dynamic(async () => import("~/features/results/components/Chart"), { ssr: false });
 
@@ -26,11 +28,17 @@ const Stat = ({ title, children = null }: PropsWithChildren<{ title: string }>) 
   </div>
 );
 
-const Stats = () => {
-  const { isLoading, pollData } = useMaci();
-  const results = useResults(pollData);
-  const count = useProjectCount();
-  const { data: projectsResults } = useProjectsResults(pollData);
+interface IStatsProps {
+  roundId: string;
+}
+
+const Stats = ({ roundId }: IStatsProps) => {
+  const { isLoading } = useMaci();
+  const { getRoundByRoundId } = useRound();
+  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const results = useResults(roundId, round?.tallyFile);
+  const count = useProjectCount(roundId);
+  const { data: projectsResults } = useProjectsResults(roundId);
   const { isConnected } = useAccount();
 
   const { averageVotes, projects = {} } = results.data ?? {};
@@ -50,7 +58,7 @@ const Stats = () => {
     return <div>Loading...</div>;
   }
 
-  if (!pollData && !isConnected) {
+  if (!isConnected) {
     return (
       <Alert className="mx-auto max-w-sm text-center" variant="info">
         <Heading size="lg">Connect your wallet to see results</Heading>
@@ -60,10 +68,6 @@ const Stats = () => {
         </div>
       </Alert>
     );
-  }
-
-  if (!pollData) {
-    return <div>Something went wrong. Try later.</div>;
   }
 
   return (
@@ -79,7 +83,7 @@ const Stats = () => {
 
         <Stat title="Projects voted for">{Object.keys(projects).length}</Stat>
 
-        <Stat title="People Voting">{pollData.numSignups ? Number(pollData.numSignups) - 1 : 0}</Stat>
+        <Stat title="People Voting">{round?.numSignups ? Number(round.numSignups) - 1 : 0}</Stat>
 
         <Stat title="Average votes per project">{formatNumber(averageVotes)}</Stat>
       </div>
@@ -87,18 +91,24 @@ const Stats = () => {
   );
 };
 
-const StatsPage = (): JSX.Element => {
-  const appState = useAppState();
-  const duration = config.resultsAt && differenceInDays(config.resultsAt, new Date());
+interface IStatsPageProps {
+  roundId: string;
+}
+
+const StatsPage = ({ roundId }: IStatsPageProps): JSX.Element => {
+  const roundState = useRoundState(roundId);
+  const { getRoundByRoundId } = useRound();
+  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const duration = round?.votingEndsAt && differenceInDays(round.votingEndsAt, new Date());
 
   return (
-    <Layout>
+    <Layout roundId={roundId}>
       <Heading as="h1" size="3xl">
         Stats
       </Heading>
 
-      {appState === EAppState.RESULTS ? (
-        <Stats />
+      {roundState === ERoundState.RESULTS ? (
+        <Stats roundId={roundId} />
       ) : (
         <Alert className="mx-auto max-w-sm text-center" variant="info">
           The results will be revealed in <div className="text-3xl">{duration && duration > 0 ? duration : 0}</div>
@@ -110,3 +120,8 @@ const StatsPage = (): JSX.Element => {
 };
 
 export default StatsPage;
+
+export const getServerSideProps: GetServerSideProps = async ({ query: { roundId } }) =>
+  Promise.resolve({
+    props: { roundId },
+  });

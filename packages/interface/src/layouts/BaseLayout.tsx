@@ -2,15 +2,7 @@ import clsx from "clsx";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
-import {
-  type ReactNode,
-  type PropsWithChildren,
-  createContext,
-  useContext,
-  useEffect,
-  useCallback,
-  useMemo,
-} from "react";
+import { type PropsWithChildren, createContext, useContext, useEffect, useCallback, useMemo } from "react";
 import { tv } from "tailwind-variants";
 import { useAccount } from "wagmi";
 
@@ -18,6 +10,8 @@ import { Footer } from "~/components/Footer";
 import { createComponent } from "~/components/ui";
 import { metadata } from "~/config";
 import { useMaci } from "~/contexts/Maci";
+
+import type { IBaseLayoutProps } from "./types";
 
 const Context = createContext({ eligibilityCheck: false, showBallot: false });
 
@@ -39,7 +33,7 @@ const MainContainer = createComponent(
 
 export const useLayoutOptions = (): { eligibilityCheck: boolean; showBallot: boolean } => useContext(Context);
 
-const Sidebar = ({ side = undefined, ...props }: { side?: "left" | "right" } & PropsWithChildren) => (
+const Sidebar = ({ side = undefined, ...props }: PropsWithChildren<{ side?: "left" | "right" }>) => (
   <div>
     <div
       className={clsx("px-2 md:w-[336px] md:px-4", {
@@ -49,15 +43,6 @@ const Sidebar = ({ side = undefined, ...props }: { side?: "left" | "right" } & P
     />
   </div>
 );
-
-export interface LayoutProps {
-  title?: string;
-  requireAuth?: boolean;
-  requireRegistration?: boolean;
-  eligibilityCheck?: boolean;
-  showBallot?: boolean;
-  type?: string;
-}
 
 export const BaseLayout = ({
   header = null,
@@ -70,13 +55,7 @@ export const BaseLayout = ({
   showBallot = false,
   type = undefined,
   children = null,
-}: PropsWithChildren<
-  {
-    sidebar?: "left" | "right";
-    sidebarComponent?: ReactNode;
-    header?: ReactNode;
-  } & LayoutProps
->): JSX.Element => {
+}: IBaseLayoutProps): JSX.Element => {
   const { theme } = useTheme();
   const router = useRouter();
   const { address, isConnecting } = useAccount();

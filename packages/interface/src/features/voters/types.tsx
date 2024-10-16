@@ -9,3 +9,9 @@ export const EthAddressSchema = z.custom<string>(
       .every((address) => isAddress(address as Address)) || isAddress(val as Address),
   "Invalid address",
 );
+
+export const ApproveVotersSchema = z.object({
+  voters: EthAddressSchema,
+});
+
+export type TApproveVoters = z.infer<typeof ApproveVotersSchema>;

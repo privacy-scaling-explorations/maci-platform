@@ -1,16 +1,20 @@
 import { Button } from "~/components/ui/Button";
 import { config } from "~/config";
-import { useMaci } from "~/contexts/Maci";
 import { useProjectResults } from "~/hooks/useResults";
 import { formatNumber } from "~/utils/formatNumber";
 
 export interface IProjectAwardedProps {
+  roundId: string;
+  tallyFile?: string;
   id?: string;
 }
 
-export const ProjectAwarded = ({ id = "" }: IProjectAwardedProps): JSX.Element | null => {
-  const { pollData } = useMaci();
-  const amount = useProjectResults(id, pollData);
+export const ProjectAwarded = ({
+  roundId,
+  tallyFile = undefined,
+  id = "",
+}: IProjectAwardedProps): JSX.Element | null => {
+  const amount = useProjectResults(id, roundId, tallyFile);
 
   if (amount.isLoading) {
     return null;

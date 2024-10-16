@@ -6,14 +6,20 @@ import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
+import { useRound } from "~/contexts/Round";
 import { useProjectIdMapping } from "~/features/projects/hooks/useProjects";
 
-export const SubmitBallotButton = (): JSX.Element => {
+interface ISubmitBallotButtonProps {
+  roundId: string;
+}
+
+export const SubmitBallotButton = ({ roundId }: ISubmitBallotButtonProps): JSX.Element => {
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
   const { onVote, isLoading, initialVoiceCredits } = useMaci();
   const { ballot, publishBallot, sumBallot } = useBallot();
-  const projectIndices = useProjectIdMapping(ballot);
+  const { getRoundByRoundId } = useRound();
+  const projectIndices = useProjectIdMapping(ballot, roundId);
 
   const ableToSubmit = useMemo(
     () => sumBallot(ballot.votes) <= initialVoiceCredits,
@@ -23,6 +29,8 @@ export const SubmitBallotButton = (): JSX.Element => {
   const onVotingError = useCallback(() => {
     toast.error("Voting error");
   }, []);
+
+  const pollId = useMemo(() => getRoundByRoundId(roundId)?.pollId, [roundId, getRoundByRoundId]);
 
   const handleSubmitBallot = useCallback(async () => {
     const votes = ballot.votes.map(({ amount, projectId }) => {
@@ -37,7 +45,11 @@ export const SubmitBallotButton = (): JSX.Element => {
       };
     });
 
-    await onVote(votes, onVotingError, () => {
+    if (!pollId) {
+      throw new Error("The pollId is undefined.");
+    }
+
+    await onVote(votes, pollId, onVotingError, () => {
       publishBallot();
       router.push("/ballot/confirmation");
     });

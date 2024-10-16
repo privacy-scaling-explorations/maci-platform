@@ -8,11 +8,15 @@ import { Heading } from "~/components/ui/Heading";
 import { useApplicationByTxHash } from "~/features/applications/hooks/useApplicationByTxHash";
 import { ProjectItem } from "~/features/projects/components/ProjectItem";
 import { Layout } from "~/layouts/DefaultLayout";
-import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { useRoundState } from "~/utils/state";
+import { ERoundState } from "~/utils/types";
 
-const ConfirmProjectPage = (): JSX.Element => {
-  const state = useAppState();
+interface IConfirmProjectPageProps {
+  roundId: string;
+}
+
+const ConfirmProjectPage = ({ roundId }: IConfirmProjectPageProps): JSX.Element => {
+  const state = useRoundState(roundId);
 
   const searchParams = useSearchParams();
   const txHash = useMemo(() => searchParams.get("txHash"), [searchParams]);
@@ -38,11 +42,11 @@ const ConfirmProjectPage = (): JSX.Element => {
             <i className="text-sm">Applications can be edited and approved until the Application period ends.</i>
           </p>
 
-          {state !== EAppState.APPLICATION && <Alert title="Application period has ended" variant="info" />}
+          {state !== ERoundState.APPLICATION && <Alert title="Application period has ended" variant="info" />}
 
           {attestation && (
             <Link href={`/projects/${attestation.id}`}>
-              <ProjectItem attestation={attestation} isLoading={false} />
+              <ProjectItem attestation={attestation} isLoading={false} roundId={roundId} />
             </Link>
           )}
         </div>
