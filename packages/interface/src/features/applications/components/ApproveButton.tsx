@@ -21,6 +21,7 @@ export const ApproveButton = ({ isLoading = false }: IApproveButtonProps): JSX.E
   return (
     <Button
       suppressHydrationWarning
+      className="w-full sm:w-auto"
       disabled={!selectedCount || !isAdmin || isLoading || !isCorrectNetwork}
       size="auto"
       type="submit"

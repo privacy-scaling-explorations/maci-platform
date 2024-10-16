@@ -3,7 +3,7 @@ import Image from "next/image";
 import { config, metadata } from "~/config";
 
 export const Logo = (): JSX.Element => (
-  <div className="h-10">
+  <div className="hidden h-10 md:block">
     {config.logoUrl ? (
       <Image alt="logo" className="dark:invert" height="35" src={config.logoUrl} width="150" />
     ) : (
