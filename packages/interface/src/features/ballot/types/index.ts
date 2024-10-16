@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const VoteSchema = z.object({
   projectId: z.string(),
+  projectIndex: z.number().min(0),
   amount: z.number().min(0),
 });
 

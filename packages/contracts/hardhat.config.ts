@@ -6,6 +6,8 @@ import "hardhat-contract-sizer";
 import "maci-contracts/tasks/deploy";
 import "maci-contracts/tasks/runner/deployFull";
 import "maci-contracts/tasks/runner/deployPoll";
+import "maci-contracts/tasks/runner/merge";
+import "maci-contracts/tasks/runner/prove";
 import "maci-contracts/tasks/runner/verifyFull";
 import "solidity-docgen";
 

@@ -1,10 +1,17 @@
+import { zeroAddress } from "viem";
+import { useAccount } from "wagmi";
+
 import { useBallot } from "~/contexts/Ballot";
+import { useMaci } from "~/contexts/Maci";
 import { useProjectCount } from "~/features/projects/hooks/useProjects";
 
 export const AddedProjects = (): JSX.Element => {
   const { ballot } = useBallot();
+  const { pollData } = useMaci();
+  const { chain } = useAccount();
+  const { data: projectCount } = useProjectCount({ registryAddress: pollData?.registry ?? zeroAddress, chain: chain! });
+
   const allocations = ballot.votes;
-  const { data: projectCount } = useProjectCount();
 
   return (
     <div className="border-b border-gray-200 py-2">
@@ -20,7 +27,7 @@ export const AddedProjects = (): JSX.Element => {
         </span>
 
         <span className="text-gray-300">
-          <b>{projectCount?.count}</b>
+          <b>{projectCount?.count.toString()}</b>
         </span>
       </div>
     </div>

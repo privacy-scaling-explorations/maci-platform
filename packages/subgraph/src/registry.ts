@@ -13,6 +13,8 @@ export function handleAddRecipient(event: RecipientAdded): void {
     event.address,
   );
 
+  // we want to ensure that the index is the recipient index in the registry
+  recipient.index = event.params.index;
   recipient.initialized = true;
   recipient.save();
 }
@@ -25,6 +27,7 @@ export function handleChangeRecipient(event: RecipientChanged): void {
   }
 
   recipient.metadataUrl = event.params.metadataUrl.toString();
+  recipient.id = event.params.id;
   recipient.index = event.params.index;
   recipient.initialized = true;
   recipient.deleted = false;
