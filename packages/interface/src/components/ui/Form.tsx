@@ -9,6 +9,9 @@ import {
   type ComponentProps,
   forwardRef,
   cloneElement,
+  useState,
+  useCallback,
+  useEffect,
 } from "react";
 import {
   FormProvider,
@@ -62,7 +65,7 @@ export const Label = createComponent(
   }),
 );
 
-export const ErrorMessage = createComponent("div", tv({ base: "pt-1 text-xs text-red-500" }));
+export const ErrorMessage = createComponent("div", tv({ base: "pt-1 text-xs text-red" }));
 
 export const Textarea = createComponent("textarea", tv({ base: [...inputBase, "w-full"] }));
 
@@ -227,16 +230,34 @@ export const Form = <S extends z.Schema>({
     resolver: zodResolver(schema),
     mode: "onBlur",
   });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const onSubmitForm = useCallback(
+    form.handleSubmit(
+      (data) => {
+        setErrorMessage(null);
+        onSubmit(data, form);
+      },
+      () => {
+        setErrorMessage("There are errors in the form. Please go back and check the warnings.");
+      },
+    ),
+    [setErrorMessage, onSubmit, form],
+  );
+  useEffect(() => {
+    if (errorMessage) {
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 7000);
+    }
+  }, [errorMessage]);
 
   // Pass the form methods to a FormProvider. This lets us access the form from components with useFormContext
   return (
     <FormProvider {...form}>
-      <form
-        onSubmit={form.handleSubmit((data) => {
-          onSubmit(data, form);
-        })}
-      >
+      <form onSubmit={onSubmitForm}>
         {children}
+
+        {errorMessage && <ErrorMessage style={{ textAlign: "end" }}>{errorMessage}</ErrorMessage>}
       </form>
     </FormProvider>
   );
