@@ -35,7 +35,7 @@ const StepCategory = ({ title, progress }: IStepCategoryProps): JSX.Element => (
 const Interline = (): JSX.Element => <div className="h-[1px] w-9 bg-gray-300" />;
 
 export const ApplicationSteps = ({ step }: IApplicationStepsProps): JSX.Element => (
-  <div className="mb-4 flex items-center gap-4">
+  <div className="mb-4 flex items-center gap-1 sm:gap-4">
     <StepCategory progress={step} title="Project Profile" />
 
     <Interline />

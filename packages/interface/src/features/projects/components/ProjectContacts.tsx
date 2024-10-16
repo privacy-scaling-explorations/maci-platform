@@ -22,7 +22,7 @@ export const ProjectContacts = ({
       <Link href={`https://etherscan.io/address/${author}`} target="_blank">
         <FaEthereum />
 
-        {author}
+        {`${author.slice(0, 6)}...${author.slice(-4)}`}
       </Link>
     )}
 

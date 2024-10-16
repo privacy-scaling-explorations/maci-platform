@@ -31,13 +31,13 @@ export const Footer = (): JSX.Element => (
 
     <div className="flex justify-end gap-4">
       <a className="flex items-center gap-1" href="https://maci.pse.dev" rel="noreferrer" target="_blank">
-        <span>Documentation</span>
+        <span>Docs</span>
 
         <Image alt="arrow-go-to" className="dark:invert" height="18" src="/arrow-go-to.svg" width="18" />
       </a>
 
       <a className="flex items-center gap-1" href="https://maci.pse.dev" rel="noreferrer" target="_blank">
-        <span>About MACI-PLATFORM</span>
+        <span>About</span>
 
         <Image alt="arrow-go-to" className="dark:invert" height="18" src="/arrow-go-to.svg" width="18" />
       </a>

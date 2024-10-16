@@ -8,11 +8,11 @@ interface IApplicationHeaderProps {
 
 export const ApplicationHeader = ({ applications = [] }: IApplicationHeaderProps): JSX.Element => (
   <div className="dark:bg-lighterBlack flex items-center bg-gray-50 py-4">
-    <div className="flex-1 justify-center">
+    <div className="flex-2 justify-center">
       <SelectAllButton applications={applications} />
     </div>
 
-    <div className="flex-[8] pl-6">Project</div>
+    <div className="flex-[2] sm:flex-[8] sm:pl-6">Project</div>
 
     <div className="flex-[3]">Submitted on</div>
 

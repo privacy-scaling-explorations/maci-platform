@@ -34,12 +34,12 @@ export const ApplicationItem = ({
 
   return (
     <Link href={`/projects/${id}`} target="_blank">
-      <div className="dark:hover:bg-lighterBlack flex cursor-pointer items-center gap-2 py-4 hover:bg-blue-50">
-        <label className="flex flex-1 cursor-pointer justify-center p-2">
+      <div className="dark:hover:bg-lighterBlack flex cursor-pointer items-center py-4 hover:bg-blue-50 sm:gap-1 sm:gap-2">
+        <label className="flex flex-1 cursor-pointer justify-center sm:p-2">
           <Checkbox disabled={isApproved} value={id} {...form.register(`selected`)} type="checkbox" />
         </label>
 
-        <div className="flex flex-[8] items-center gap-4">
+        <div className="flex flex-[5] items-center gap-4 sm:flex-[8]">
           <ProjectAvatar isLoading={isLoading} profileId={recipient} size="sm" url={profileImageUrl} />
 
           <div className="flex flex-col">
