@@ -11,6 +11,7 @@ import {
   cloneElement,
   useState,
   useCallback,
+  useEffect,
 } from "react";
 import {
   FormProvider,
@@ -240,8 +241,15 @@ export const Form = <S extends z.Schema>({
         setErrorMessage("There are errors in the form. Please go back and check the warnings.");
       },
     ),
-    [],
+    [setErrorMessage, onSubmit, form],
   );
+  useEffect(() => {
+    if (errorMessage) {
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 7000);
+    }
+  }, [errorMessage]);
 
   // Pass the form methods to a FormProvider. This lets us access the form from components with useFormContext
   return (
