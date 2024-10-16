@@ -64,7 +64,7 @@ export const Label = createComponent(
   }),
 );
 
-export const ErrorMessage = createComponent("div", tv({ base: "pt-1 text-xs text-red-500" }));
+export const ErrorMessage = createComponent("div", tv({ base: "pt-1 text-xs text-red" }));
 
 export const Textarea = createComponent("textarea", tv({ base: [...inputBase, "w-full"] }));
 
@@ -249,7 +249,7 @@ export const Form = <S extends z.Schema>({
       <form onSubmit={onSubmitForm}>
         {children}
 
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+        {errorMessage && <ErrorMessage style={{ textAlign: "end" }}>{errorMessage}</ErrorMessage>}
       </form>
     </FormProvider>
   );
