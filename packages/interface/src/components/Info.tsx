@@ -2,10 +2,9 @@ import { useRouter } from "next/router";
 import { tv } from "tailwind-variants";
 
 import { createComponent } from "~/components/ui";
-import { config } from "~/config";
-import { useMaci } from "~/contexts/Maci";
-import { useAppState } from "~/utils/state";
-import { EInfoCardState, EAppState } from "~/utils/types";
+import { useRound } from "~/contexts/Round";
+import { useRoundState } from "~/utils/state";
+import { EInfoCardState, ERoundState } from "~/utils/types";
 
 import { BallotOverview } from "./BallotOverview";
 import { InfoCard } from "./InfoCard";
@@ -25,8 +24,9 @@ const InfoContainer = createComponent(
   }),
 );
 
-interface InfoProps {
+interface IInfoProps {
   size: string;
+  roundId: string;
   showRoundInfo?: boolean;
   showAppState?: boolean;
   showBallot?: boolean;
@@ -34,73 +34,71 @@ interface InfoProps {
 
 export const Info = ({
   size,
+  roundId,
   showRoundInfo = false,
   showAppState = false,
   showBallot = false,
-}: InfoProps): JSX.Element => {
-  const { votingEndsAt } = useMaci();
-  const appState = useAppState();
+}: IInfoProps): JSX.Element => {
+  const roundState = useRoundState(roundId);
+  const { getRoundByRoundId } = useRound();
+  const round = getRoundByRoundId(roundId);
   const { asPath } = useRouter();
 
   const steps = [
     {
       label: "application",
-      state: EAppState.APPLICATION,
-      start: config.startsAt,
-      end: config.registrationEndsAt,
+      state: ERoundState.APPLICATION,
+      start: round?.startsAt ? new Date(round.startsAt) : new Date(),
+      end: round?.registrationEndsAt ? new Date(round.registrationEndsAt) : new Date(),
     },
     {
       label: "voting",
-      state: EAppState.VOTING,
-      start: config.registrationEndsAt,
-      end: votingEndsAt,
+      state: ERoundState.VOTING,
+      start: round?.registrationEndsAt ? new Date(round.registrationEndsAt) : new Date(),
+      end: round?.votingEndsAt ? new Date(round.votingEndsAt) : new Date(),
     },
     {
       label: "tallying",
-      state: EAppState.TALLYING,
-      start: votingEndsAt,
-      end: config.resultsAt,
+      state: ERoundState.TALLYING,
+      start: round?.votingEndsAt ? new Date(round.votingEndsAt) : new Date(),
+      end: round?.votingEndsAt ? new Date(round.votingEndsAt) : new Date(),
     },
     {
       label: "results",
-      state: EAppState.RESULTS,
-      start: config.resultsAt,
-      end: config.resultsAt,
+      state: ERoundState.RESULTS,
+      start: round?.votingEndsAt ? new Date(round.votingEndsAt) : new Date(),
+      end: round?.votingEndsAt ? new Date(round.votingEndsAt) : new Date(),
     },
   ];
 
   return (
     <div className="w-full">
       <InfoContainer size={size}>
-        {showRoundInfo && <RoundInfo />}
+        {showRoundInfo && <RoundInfo roundId={roundId} />}
 
-        {showBallot && <BallotOverview title={asPath.includes("ballot") ? "Summary" : undefined} />}
+        {showBallot && <BallotOverview roundId={roundId} title={asPath.includes("ballot") ? "Summary" : undefined} />}
 
-        {showRoundInfo && appState === EAppState.VOTING && <VotingInfo />}
+        {showRoundInfo && roundState === ERoundState.VOTING && <VotingInfo roundId={roundId} />}
 
         {showAppState &&
-          steps.map(
-            (step) =>
-              step.start &&
-              step.end && (
-                <InfoCard
-                  key={step.label}
-                  end={step.end}
-                  start={step.start}
-                  state={defineState({ state: step.state, appState })}
-                  title={step.label}
-                />
-              ),
-          )}
+          steps.map((step) => (
+            <InfoCard
+              key={step.label}
+              end={step.end}
+              start={step.start}
+              state={defineState({ state: step.state, roundState })}
+              title={step.label}
+            />
+          ))}
       </InfoContainer>
     </div>
   );
 };
 
-function defineState({ state, appState }: { state: EAppState; appState: EAppState }): EInfoCardState {
-  const statesOrder = [EAppState.APPLICATION, EAppState.VOTING, EAppState.TALLYING, EAppState.RESULTS];
+function defineState({ state, roundState }: { state: ERoundState; roundState: ERoundState }): EInfoCardState {
+  const statesOrder = [ERoundState.APPLICATION, ERoundState.VOTING, ERoundState.TALLYING, ERoundState.RESULTS];
   const currentStateOrder = statesOrder.indexOf(state);
-  const appStateOrder = statesOrder.indexOf(appState);
+  const appStateOrder = statesOrder.indexOf(roundState);
 
   if (currentStateOrder < appStateOrder) {
     return EInfoCardState.PASSED;

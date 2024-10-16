@@ -1,25 +1,34 @@
 import { isAfter } from "date-fns";
 
-import { config } from "~/config";
-import { useMaci } from "~/contexts/Maci";
+import { useRound } from "~/contexts/Round";
 
-import { EAppState } from "./types";
+import { ERoundState } from "./types";
 
-export const useAppState = (): EAppState => {
+export const useRoundState = (roundId: string): ERoundState => {
   const now = new Date();
-  const { votingEndsAt, pollData, tallyData } = useMaci();
+  const { getRoundByRoundId } = useRound();
+  const round = getRoundByRoundId(roundId);
 
-  if (config.registrationEndsAt && isAfter(config.registrationEndsAt, now)) {
-    return EAppState.APPLICATION;
+  if (!round) {
+    return ERoundState.DEFAULT;
   }
 
-  if (isAfter(votingEndsAt, now)) {
-    return EAppState.VOTING;
+  if (round.registrationEndsAt && isAfter(round.registrationEndsAt, now)) {
+    return ERoundState.APPLICATION;
   }
 
-  if (!pollData?.isMerged || !tallyData) {
-    return EAppState.TALLYING;
+  if (round.votingEndsAt && isAfter(round.votingEndsAt, now)) {
+    return ERoundState.VOTING;
   }
 
-  return EAppState.RESULTS;
+  if (round.votingEndsAt && isAfter(now, round.votingEndsAt)) {
+    return ERoundState.TALLYING;
+  }
+
+  /// TODO: how to collect tally.json url
+  // if (round.votingEndsAt && isAfter(now, round.votingEndsAt)) {
+  //   return ERoundState.RESULTS;
+  // }
+
+  return ERoundState.DEFAULT;
 };

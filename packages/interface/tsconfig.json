@@ -39,5 +39,5 @@
     ".next/types/**/*.ts",
     "src/pages/api/indexer/webhook._ts"
   ],
-  "exclude": ["node_modules", "commitlint.config.js"]
+  "exclude": ["node_modules", "commitlint.config.js", "metamask", "playwright-report"]
 }

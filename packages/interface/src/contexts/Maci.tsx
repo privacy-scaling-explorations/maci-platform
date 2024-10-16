@@ -3,15 +3,11 @@ import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 import { type StandardMerkleTreeData } from "@openzeppelin/merkle-tree/dist/standard";
 import { type ZKEdDSAEventTicketPCD } from "@pcd/zk-eddsa-event-ticket-pcd/ZKEdDSAEventTicketPCD";
 import { Identity } from "@semaphore-protocol/core";
-import { isAfter } from "date-fns";
-import { type Signer, BrowserProvider, AbiCoder } from "ethers";
+import { type Signer, AbiCoder } from "ethers";
 import {
   signup,
   isRegisteredUser,
   publishBatch,
-  type TallyData,
-  type IGetPollData,
-  getPoll,
   genKeyPair,
   GatekeeperTrait,
   getGatekeeperTrait,
@@ -29,7 +25,6 @@ import { getSemaphoreProof } from "~/utils/semaphore";
 
 import type { IVoteArgs, MaciContextType, MaciProviderProps } from "./types";
 import type { PCD } from "@pcd/pcd-types";
-import type { EIP1193Provider } from "viem";
 import type { Attestation } from "~/utils/types";
 
 export const MaciContext = createContext<MaciContextType | undefined>(undefined);
@@ -48,8 +43,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   const [initialVoiceCredits, setInitialVoiceCredits] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-  const [pollData, setPollData] = useState<IGetPollData>();
-  const [tallyData, setTallyData] = useState<TallyData>();
   const [treeData, setTreeData] = useState<StandardMerkleTreeData<string[]>>();
 
   const [semaphoreIdentity, setSemaphoreIdentity] = useState<Identity | undefined>();
@@ -67,8 +60,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     { publicKey: maciPubKey ?? "" },
     { enabled: Boolean(maciPubKey && config.maciSubgraphUrl) },
   );
-
-  const poll = api.maci.poll.useQuery(undefined, { enabled: Boolean(config.maciSubgraphUrl) });
 
   // fetch the gatekeeper trait
   useEffect(() => {
@@ -224,15 +215,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     }
   }, [setMaciPrivKey, setMaciPubKey, setSemaphoreIdentity]);
 
-  // on load we fetch the data from the poll
-  useEffect(() => {
-    if (poll.data) {
-      return;
-    }
-
-    poll.refetch().catch(console.error);
-  }, [poll]);
-
   // generate the maci keypair using a ECDSA signature
   const generateKeypair = useCallback(async () => {
     // if we are not connected then do not generate the key pair
@@ -256,15 +238,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       setZupassProof(proof);
     },
     [setZupassProof],
-  );
-
-  // memo to calculate the voting end date
-  const votingEndsAt = useMemo(
-    () =>
-      pollData && pollData.duration !== 0
-        ? new Date(Number(pollData.deployTime) * 1000 + Number(pollData.duration) * 1000)
-        : config.resultsAt,
-    [pollData?.deployTime, pollData?.duration],
   );
 
   // function to be used to signup to MACI
@@ -301,8 +274,8 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
 
   // function to be used to vote on a poll
   const onVote = useCallback(
-    async (votes: IVoteArgs[], onError: () => Promise<void>, onSuccess: () => Promise<void>) => {
-      if (!signer || !stateIndex || !pollData) {
+    async (votes: IVoteArgs[], pollId: string, onError: () => Promise<void>, onSuccess: () => Promise<void>) => {
+      if (!signer || !stateIndex) {
         return;
       }
 
@@ -327,7 +300,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         maciAddress: config.maciAddress!,
         publicKey: maciPubKey!,
         privateKey: maciPrivKey!,
-        pollId: BigInt(pollData.id),
+        pollId: BigInt(pollId),
         signer,
       })
         .then(() => onSuccess())
@@ -339,7 +312,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
           setIsLoading(false);
         });
     },
-    [stateIndex, pollData, maciPubKey, maciPrivKey, signer, setIsLoading, setError],
+    [stateIndex, maciPubKey, maciPrivKey, signer, setIsLoading, setError],
   );
 
   useEffect(() => {
@@ -408,69 +381,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     setInitialVoiceCredits,
   ]);
 
-  /// check the poll data and tally data
-  useEffect(() => {
-    setIsLoading(true);
-
-    // if we have the subgraph url then it means we can get the poll data through there
-    if (config.maciSubgraphUrl) {
-      if (!poll.data) {
-        setIsLoading(false);
-        return;
-      }
-
-      const { isMerged, id } = poll.data;
-
-      setPollData(poll.data);
-
-      if (isMerged) {
-        fetch(`${config.tallyUrl}/tally-${id}.json`)
-          .then((res) => res.json() as Promise<TallyData>)
-          .then((res) => {
-            setTallyData(res);
-          })
-          .catch(() => undefined);
-      }
-
-      setIsLoading(false);
-    } else {
-      if (!window.ethereum) {
-        setIsLoading(false);
-        return;
-      }
-
-      const provider = new BrowserProvider(window.ethereum as unknown as EIP1193Provider, {
-        chainId: config.network.id,
-        name: config.network.name,
-      });
-
-      getPoll({
-        maciAddress: config.maciAddress!,
-        provider,
-      })
-        .then((data) => {
-          setPollData(data);
-          return data;
-        })
-        .then(async (data) => {
-          if (!data.isMerged || (votingEndsAt && isAfter(votingEndsAt, new Date()))) {
-            return undefined;
-          }
-
-          return fetch(`${config.tallyUrl}/tally-${data.id}.json`)
-            .then((res) => res.json() as Promise<TallyData>)
-            .then((res) => {
-              setTallyData(res);
-            })
-            .catch(() => undefined);
-        })
-        .catch(console.error)
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
-  }, [signer, votingEndsAt, setIsLoading, setTallyData, setPollData, poll.data]);
-
   /// check the tree data
   useEffect(() => {
     // if we have the tree url then it means we can get the tree data through there
@@ -492,13 +402,9 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       isLoading,
       isEligibleToVote,
       initialVoiceCredits,
-      votingEndsAt,
       stateIndex,
       isRegistered: isRegistered ?? false,
-      pollId: pollData?.id.toString(),
       error,
-      pollData,
-      tallyData,
       maciPubKey,
       onSignup,
       onVote,
@@ -510,11 +416,8 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       isLoading,
       isEligibleToVote,
       initialVoiceCredits,
-      votingEndsAt,
       stateIndex,
       isRegistered,
-      pollData,
-      tallyData,
       error,
       maciPubKey,
       onSignup,

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useMemo, useEffect, useState } from "react";
+import { useMemo, useEffect, useState, useCallback } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 
 import { EmptyState } from "~/components/EmptyState";
@@ -14,16 +14,20 @@ import type { Attestation } from "~/utils/types";
 
 import { useApproveApplication } from "../hooks/useApproveApplication";
 import { useApprovedApplications } from "../hooks/useApprovedApplications";
-import { ApplicationsToApproveSchema } from "../types";
+import { ApplicationsToApproveSchema, type TApplicationsToApprove } from "../types";
 
 import { ApplicationHeader } from "./ApplicationHeader";
 import { ApplicationItem } from "./ApplicationItem";
 import { ApproveButton } from "./ApproveButton";
 
-export const ApplicationsToApprove = (): JSX.Element => {
-  const applications = useApplications();
-  const approved = useApprovedApplications();
-  const approve = useApproveApplication();
+interface IApplicationsToApproveProps {
+  roundId: string;
+}
+
+export const ApplicationsToApprove = ({ roundId }: IApplicationsToApproveProps): JSX.Element => {
+  const applications = useApplications(roundId);
+  const approved = useApprovedApplications(roundId);
+  const approve = useApproveApplication({ roundId });
   const [refetchedData, setRefetchedData] = useState<Attestation[]>();
 
   const approvedById = useMemo(
@@ -39,7 +43,7 @@ export const ApplicationsToApprove = (): JSX.Element => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const ret = await fetchApprovedApplications();
+      const ret = await fetchApprovedApplications(roundId);
       setRefetchedData(ret);
     };
 
@@ -52,6 +56,13 @@ export const ApplicationsToApprove = (): JSX.Element => {
       clearTimeout(timeout);
     };
   }, [approve.isPending, approve.isSuccess]);
+
+  const handleSubmit = useCallback(
+    (values: TApplicationsToApprove) => {
+      approve.mutate(values.selected);
+    },
+    [approve],
+  );
 
   return (
     <div className="flex w-full justify-center dark:text-white">
@@ -72,13 +83,7 @@ export const ApplicationsToApprove = (): JSX.Element => {
 
         <div className="mt-6 text-2xl font-extrabold uppercase text-black dark:text-white">{`${applications.data?.length} applications found`}</div>
 
-        <Form
-          defaultValues={{ selected: [] }}
-          schema={ApplicationsToApproveSchema}
-          onSubmit={(values) => {
-            approve.mutate(values.selected);
-          }}
-        >
+        <Form defaultValues={{ selected: [] }} schema={ApplicationsToApproveSchema} onSubmit={handleSubmit}>
           {applications.isLoading && (
             <div className="flex items-center justify-center py-16">
               <Spinner />

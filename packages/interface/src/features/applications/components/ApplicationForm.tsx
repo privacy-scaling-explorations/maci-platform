@@ -11,14 +11,18 @@ import { Input } from "~/components/ui/Input";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
 import { useCreateApplication } from "../hooks/useCreateApplication";
-import { ApplicationSchema, contributionTypes, fundingSourceTypes } from "../types";
+import { ApplicationSchema, contributionTypes, fundingSourceTypes, type Application } from "../types";
 
 import { ApplicationButtons, EApplicationStep } from "./ApplicationButtons";
 import { ApplicationSteps } from "./ApplicationSteps";
 import { ImpactTags } from "./ImpactTags";
 import { ReviewApplicationDetails } from "./ReviewApplicationDetails";
 
-export const ApplicationForm = (): JSX.Element => {
+interface IApplicationFormProps {
+  roundId: string;
+}
+
+export const ApplicationForm = ({ roundId }: IApplicationFormProps): JSX.Element => {
   const clearDraft = useLocalStorage("application-draft")[2];
 
   const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
@@ -60,7 +64,15 @@ export const ApplicationForm = (): JSX.Element => {
       toast.error("Application create error", {
         description: err.reason ?? err.data?.message,
       }),
+    roundId,
   });
+
+  const handleSubmit = useCallback(
+    (application: Application) => {
+      create.mutate(application);
+    },
+    [create],
+  );
 
   const { error: createError } = create;
 
@@ -73,9 +85,7 @@ export const ApplicationForm = (): JSX.Element => {
           payoutAddress: address,
         }}
         schema={ApplicationSchema}
-        onSubmit={(application) => {
-          create.mutate(application);
-        }}
+        onSubmit={handleSubmit}
       >
         <FormSection
           className={step === EApplicationStep.PROFILE ? "block" : "hidden"}

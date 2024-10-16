@@ -7,8 +7,6 @@ export const metadata = {
   image: "/api/og",
 };
 
-const parseDate = (env?: string) => (env ? new Date(env) : undefined);
-
 // URLs for the EAS GraphQL endpoint for each chain
 const easScanUrl = {
   ethereum: "https://easscan.org/graphql",
@@ -76,19 +74,14 @@ export const config = {
   pageSize: 3 * 4,
   // TODO: temp solution until we come up with solid one
   // https://github.com/privacy-scaling-explorations/maci-platform/issues/31
-  voteLimit: 50,
-  startsAt: parseDate(process.env.NEXT_PUBLIC_START_DATE),
-  registrationEndsAt: parseDate(process.env.NEXT_PUBLIC_REGISTRATION_END_DATE),
-  resultsAt: parseDate(process.env.NEXT_PUBLIC_RESULTS_DATE),
   tokenName: process.env.NEXT_PUBLIC_TOKEN_NAME!,
-  eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "MACI-PLATFORM",
-  roundId: process.env.NEXT_PUBLIC_ROUND_ID!,
+  eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "Add your event name",
+  eventDescription: process.env.NEXT_PUBLIC_EVENT_DESCRIPTION ?? "Add your event description",
   admin: (process.env.NEXT_PUBLIC_ADMIN_ADDRESS ?? "") as `0x${string}`,
   network: wagmiChains[process.env.NEXT_PUBLIC_CHAIN_NAME as keyof typeof wagmiChains],
   maciAddress: process.env.NEXT_PUBLIC_MACI_ADDRESS,
   maciStartBlock: Number(process.env.NEXT_PUBLIC_MACI_START_BLOCK ?? 0),
   maciSubgraphUrl: process.env.NEXT_PUBLIC_MACI_SUBGRAPH_URL ?? "",
-  tallyUrl: process.env.NEXT_PUBLIC_TALLY_URL,
   roundOrganizer: process.env.NEXT_PUBLIC_ROUND_ORGANIZER ?? "PSE",
   roundLogo: process.env.NEXT_PUBLIC_ROUND_LOGO,
   semaphoreSubgraphUrl: process.env.NEXT_PUBLIC_SEMAPHORE_SUBGRAPH,
@@ -101,7 +94,6 @@ export const theme = {
 
 export const eas = {
   url: easScanUrl[process.env.NEXT_PUBLIC_CHAIN_NAME as keyof typeof easScanUrl],
-  attesterAddress: process.env.NEXT_PUBLIC_APPROVED_APPLICATIONS_ATTESTER ?? "",
 
   contracts: {
     eas: easContractAddresses[process.env.NEXT_PUBLIC_CHAIN_NAME as keyof typeof easContractAddresses],

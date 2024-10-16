@@ -5,8 +5,8 @@ import { Navigation } from "~/components/ui/Navigation";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { ProjectBanner } from "~/features/projects/components/ProjectBanner";
 import { VotingWidget } from "~/features/projects/components/VotingWidget";
-import { useAppState } from "~/utils/state";
-import { EAppState } from "~/utils/types";
+import { useRoundState } from "~/utils/state";
+import { ERoundState } from "~/utils/types";
 
 import type { Attestation } from "~/utils/types";
 
@@ -16,12 +16,14 @@ import { ProjectContacts } from "./ProjectContacts";
 import { ProjectDescriptionSection } from "./ProjectDescriptionSection";
 
 export interface IProjectDetailsProps {
+  roundId: string;
   action?: ReactNode;
   projectId?: string;
   attestation?: Attestation;
 }
 
 const ProjectDetails = ({
+  roundId,
   projectId = "",
   attestation = undefined,
   action = undefined,
@@ -31,12 +33,12 @@ const ProjectDetails = ({
   const { bio, websiteUrl, payoutAddress, github, twitter, fundingSources, profileImageUrl, bannerImageUrl } =
     metadata.data ?? {};
 
-  const appState = useAppState();
+  const roundState = useRoundState(roundId);
 
   return (
     <div className="relative dark:text-white">
       <div className="mb-7">
-        <Navigation projectName={attestation?.name ?? "project name"} />
+        <Navigation projectName={attestation?.name ?? "project name"} roundId={roundId} />
       </div>
 
       <div className="overflow-hidden rounded-3xl">
@@ -52,7 +54,7 @@ const ProjectDetails = ({
           {attestation?.name}
         </Heading>
 
-        {appState === EAppState.VOTING && <VotingWidget projectId={projectId} />}
+        {roundState === ERoundState.VOTING && <VotingWidget projectId={projectId} roundId={roundId} />}
       </div>
 
       <ProjectContacts author={payoutAddress} github={github} twitter={twitter} website={websiteUrl} />

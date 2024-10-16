@@ -1,24 +1,34 @@
 import { test as base, chromium, type BrowserContext } from "@playwright/test";
 import { initialSetup } from "@synthetixio/synpress/commands/metamask";
 import { init, setExpectInstance } from "@synthetixio/synpress/commands/playwright";
-import { prepareMetamask } from "@synthetixio/synpress/helpers";
+import decompress from "decompress";
+
+import fs from "fs";
+import path from "path";
 
 import { NETWORKS, TEST_MNEMONIC, TEST_PASSWORD } from "./constants";
+
+const METAMASK_ARCHIVE_PATH = path.resolve(__dirname, "../metamask-chrome-11.15.1.zip");
+const METAMASK_OUTPUT_PATH = path.resolve(__dirname, "../metamask");
 
 export const test = base.extend<{
   context: BrowserContext;
 }>({
   context: async ({}, use) => {
+    if (!fs.existsSync(METAMASK_OUTPUT_PATH)) {
+      await decompress(METAMASK_ARCHIVE_PATH, METAMASK_OUTPUT_PATH);
+    } else if (process.env.FORCE === "true") {
+      await fs.promises.rmdir(METAMASK_OUTPUT_PATH);
+      await decompress(METAMASK_ARCHIVE_PATH, METAMASK_OUTPUT_PATH);
+    }
+
     // required for synpress as it shares same expect instance as playwright
     await setExpectInstance(test.expect);
 
-    // download metamask
-    const metamaskPath = await prepareMetamask(process.env.METAMASK_VERSION || "11.15.1");
-
     // prepare browser args
     const browserArgs = [
-      `--disable-extensions-except=${metamaskPath}`,
-      `--load-extension=${metamaskPath}`,
+      `--disable-extensions-except=${METAMASK_OUTPUT_PATH}`,
+      `--load-extension=${METAMASK_OUTPUT_PATH}`,
       "--disable-dev-shm-usage",
       "--no-sandbox",
       "--disable-gpu",

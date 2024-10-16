@@ -1,10 +1,14 @@
 import { useBallot } from "~/contexts/Ballot";
 import { useProjectCount } from "~/features/projects/hooks/useProjects";
 
-export const AddedProjects = (): JSX.Element => {
+interface IAddedProjectsProps {
+  roundId: string;
+}
+
+export const AddedProjects = ({ roundId }: IAddedProjectsProps): JSX.Element => {
   const { ballot } = useBallot();
   const allocations = ballot.votes;
-  const { data: projectCount } = useProjectCount();
+  const { data: projectCount } = useProjectCount(roundId);
 
   return (
     <div className="border-b border-gray-200 py-2">

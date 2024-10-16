@@ -1,10 +1,9 @@
 import { UserRoundPlus } from "lucide-react";
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 import { isAddress } from "viem";
-import { z } from "zod";
 
 import { IconButton } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
@@ -14,7 +13,7 @@ import { useIsAdmin } from "~/hooks/useIsAdmin";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
 import { useApproveVoters } from "../hooks/useApproveVoters";
-import { EthAddressSchema } from "../types";
+import { ApproveVotersSchema, type TApproveVoters } from "../types";
 
 function parseAddresses(addresses = ""): string[] {
   return addresses
@@ -66,15 +65,25 @@ const ApproveVoters = () => {
 
   const buttonText = isAdmin ? `Add voters` : "You must be an admin";
 
+  const handleSubmit = useCallback(
+    (values: TApproveVoters) => {
+      const voters = parseAddresses(values.voters);
+      approve.mutate(voters);
+    },
+    [parseAddresses, approve],
+  );
+
+  const buttonOnClick = useCallback(() => {
+    setOpen(true);
+  }, [setOpen]);
+
   return (
     <div>
       <IconButton
         disabled={!isAdmin || !isCorrectNetwork}
         icon={UserRoundPlus}
         variant="primary"
-        onClick={() => {
-          setOpen(true);
-        }}
+        onClick={buttonOnClick}
       >
         {!isCorrectNetwork ? `Connect to ${correctNetwork.name}` : buttonText}
       </IconButton>
@@ -86,15 +95,7 @@ const ApproveVoters = () => {
         title="Approve voters"
         onOpenChange={setOpen}
       >
-        <Form
-          schema={z.object({
-            voters: EthAddressSchema,
-          })}
-          onSubmit={(values) => {
-            const voters = parseAddresses(values.voters);
-            approve.mutate(voters);
-          }}
-        >
+        <Form schema={ApproveVotersSchema} onSubmit={handleSubmit}>
           <div className="mb-2" />
 
           <FormControl name="voters">
