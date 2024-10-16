@@ -10,6 +10,7 @@ import {
   forwardRef,
   cloneElement,
   useState,
+  useCallback,
 } from "react";
 import {
   FormProvider,
@@ -229,21 +230,23 @@ export const Form = <S extends z.Schema>({
     mode: "onBlur",
   });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const onSubmitForm = useCallback(
+    form.handleSubmit(
+      (data) => {
+        setErrorMessage(null);
+        onSubmit(data, form);
+      },
+      () => {
+        setErrorMessage("There are errors in the form. Please go back and check the warnings.");
+      },
+    ),
+    [],
+  );
 
   // Pass the form methods to a FormProvider. This lets us access the form from components with useFormContext
   return (
     <FormProvider {...form}>
-      <form
-        onSubmit={form.handleSubmit(
-          (data) => {
-            setErrorMessage(null);
-            onSubmit(data, form);
-          },
-          () => {
-            setErrorMessage("There are errors in the form. Please go back and check the warnings.");
-          },
-        )}
-      >
+      <form onSubmit={onSubmitForm}>
         {children}
 
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
