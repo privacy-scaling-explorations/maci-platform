@@ -8,6 +8,7 @@ import { useMaci } from "./Maci";
 
 export const BallotContext = createContext<BallotContextType | undefined>(undefined);
 
+// the default ballot is an empty ballot
 const defaultBallot = { votes: [], published: false, edited: false };
 
 export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: BallotProviderProps) => {
@@ -28,7 +29,8 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
     [pollData],
   );
 
-  const ballotContains = useCallback((id: string) => ballot.votes.find((v) => v.projectId === id), [ballot]);
+  // check if the ballot contains a specific project based on its index
+  const ballotContains = useCallback((index: number) => ballot.votes.find((v) => v.projectIndex === index), [ballot]);
 
   const toObject = useCallback(
     (key: string, arr: object[] = []) => arr.reduce((acc, x) => ({ ...acc, [x[key as keyof typeof acc]]: x }), {}),
@@ -55,8 +57,8 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
 
   // remove certain project from the ballot
   const removeFromBallot = useCallback(
-    (projectId: string) => {
-      const votes = ballot.votes.filter((v) => v.projectId !== projectId);
+    (projectIndex: number) => {
+      const votes = ballot.votes.filter((v) => v.projectIndex !== projectIndex);
 
       setBallot({ ...ballot, votes });
     },
@@ -86,7 +88,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
     setBallot({ ...ballot, published: true, edited: false });
   }, [ballot, setBallot]);
 
-  /// Read existing ballot in localStorage
+  // Read existing ballot in localStorage
   useEffect(() => {
     const savedBallot = JSON.parse(
       localStorage.getItem("ballot") ?? JSON.stringify(defaultBallot),

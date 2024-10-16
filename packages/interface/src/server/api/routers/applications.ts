@@ -1,31 +1,24 @@
 import { z } from "zod";
 
-import { config, eas } from "~/config";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { fetchAttestations } from "~/utils/fetchAttestations";
-import { createDataFilter } from "~/utils/fetchAttestationsUtils";
-
-export const FilterSchema = z.object({
-  limit: z.number().default(3 * 8),
-  cursor: z.number().default(0),
-});
+import {
+  fetchApplicationById,
+  fetchApplicationByProjectId,
+  fetchApprovedApplications,
+  fetchPendingApplications,
+} from "~/utils/fetchApplications";
 
 export const applicationsRouter = createTRPCRouter({
-  approvals: publicProcedure.input(z.object({ ids: z.array(z.string()).optional() })).query(async ({ input }) =>
-    fetchAttestations([eas.schemas.approval], {
-      where: {
-        attester: { equals: config.admin },
-        refUID: input.ids ? { in: input.ids } : undefined,
-        AND: [createDataFilter("type", "bytes32", "application"), createDataFilter("round", "bytes32", config.roundId)],
-      },
-    }),
-  ),
-  list: publicProcedure.input(FilterSchema).query(async () =>
-    fetchAttestations([eas.schemas.metadata], {
-      orderBy: [{ time: "desc" }],
-      where: {
-        AND: [createDataFilter("type", "bytes32", "application"), createDataFilter("round", "bytes32", config.roundId)],
-      },
-    }),
-  ),
+  approvals: publicProcedure
+    .input(z.object({ registryAddress: z.string() }))
+    .query(async ({ input }) => fetchApprovedApplications(input.registryAddress)),
+  pending: publicProcedure
+    .input(z.object({ registryAddress: z.string() }))
+    .query(async ({ input }) => fetchPendingApplications(input.registryAddress)),
+  getById: publicProcedure
+    .input(z.object({ registryAddress: z.string(), id: z.string() }))
+    .query(async ({ input }) => fetchApplicationById(input.registryAddress, input.id)),
+  getByProjectId: publicProcedure
+    .input(z.object({ registryAddress: z.string(), projectId: z.string() }))
+    .query(async ({ input }) => fetchApplicationByProjectId(input.projectId, input.registryAddress)),
 });

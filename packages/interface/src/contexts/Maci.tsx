@@ -3,15 +3,12 @@ import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 import { type StandardMerkleTreeData } from "@openzeppelin/merkle-tree/dist/standard";
 import { type ZKEdDSAEventTicketPCD } from "@pcd/zk-eddsa-event-ticket-pcd/ZKEdDSAEventTicketPCD";
 import { Identity } from "@semaphore-protocol/core";
-import { isAfter } from "date-fns";
-import { type Signer, BrowserProvider, AbiCoder } from "ethers";
+import { type Signer, AbiCoder } from "ethers";
 import {
   signup,
   isRegisteredUser,
   publishBatch,
   type TallyData,
-  type IGetPollData,
-  getPoll,
   genKeyPair,
   GatekeeperTrait,
   getGatekeeperTrait,
@@ -29,8 +26,7 @@ import { getSemaphoreProof } from "~/utils/semaphore";
 
 import type { IVoteArgs, MaciContextType, MaciProviderProps } from "./types";
 import type { PCD } from "@pcd/pcd-types";
-import type { EIP1193Provider } from "viem";
-import type { Attestation } from "~/utils/types";
+import type { IPollData, Attestation } from "~/utils/types";
 
 export const MaciContext = createContext<MaciContextType | undefined>(undefined);
 
@@ -48,7 +44,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   const [initialVoiceCredits, setInitialVoiceCredits] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-  const [pollData, setPollData] = useState<IGetPollData>();
+  const [pollData, setPollData] = useState<IPollData>();
   const [tallyData, setTallyData] = useState<TallyData>();
   const [treeData, setTreeData] = useState<StandardMerkleTreeData<string[]>>();
 
@@ -251,6 +247,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     setSemaphoreIdentity(newSemaphoreIdentity);
   }, [address, signatureMessage, signMessageAsync, setMaciPrivKey, setMaciPubKey, setSemaphoreIdentity]);
 
+  // callback to be called from external component to store the zupass proof
   const storeZupassProof = useCallback(
     (proof: PCD) => {
       setZupassProof(proof);
@@ -262,7 +259,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   const votingEndsAt = useMemo(
     () =>
       pollData && pollData.duration !== 0
-        ? new Date(Number(pollData.deployTime) * 1000 + Number(pollData.duration) * 1000)
+        ? new Date(Number(pollData.initTime) * 1000 + Number(pollData.duration) * 1000)
         : config.resultsAt,
     [pollData?.deployTime, pollData?.duration],
   );
@@ -410,64 +407,30 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
 
   /// check the poll data and tally data
   useEffect(() => {
-    setIsLoading(true);
+    if (!poll.data) {
+      return;
+    }
 
     // if we have the subgraph url then it means we can get the poll data through there
     if (config.maciSubgraphUrl) {
-      if (!poll.data) {
-        setIsLoading(false);
-        return;
-      }
-
       const { isMerged, id } = poll.data;
 
       setPollData(poll.data);
 
       if (isMerged) {
+        setIsLoading(true);
         fetch(`${config.tallyUrl}/tally-${id}.json`)
           .then((res) => res.json() as Promise<TallyData>)
           .then((res) => {
             setTallyData(res);
           })
-          .catch(() => undefined);
+          .catch(() => undefined)
+          .finally(() => {
+            setIsLoading(false);
+          });
       }
-
-      setIsLoading(false);
     } else {
-      if (!window.ethereum) {
-        setIsLoading(false);
-        return;
-      }
-
-      const provider = new BrowserProvider(window.ethereum as unknown as EIP1193Provider, {
-        chainId: config.network.id,
-        name: config.network.name,
-      });
-
-      getPoll({
-        maciAddress: config.maciAddress!,
-        provider,
-      })
-        .then((data) => {
-          setPollData(data);
-          return data;
-        })
-        .then(async (data) => {
-          if (!data.isMerged || (votingEndsAt && isAfter(votingEndsAt, new Date()))) {
-            return undefined;
-          }
-
-          return fetch(`${config.tallyUrl}/tally-${data.id}.json`)
-            .then((res) => res.json() as Promise<TallyData>)
-            .then((res) => {
-              setTallyData(res);
-            })
-            .catch(() => undefined);
-        })
-        .catch(console.error)
-        .finally(() => {
-          setIsLoading(false);
-        });
+      throw new Error("maci subgraph url is not provided");
     }
   }, [signer, votingEndsAt, setIsLoading, setTallyData, setPollData, poll.data]);
 

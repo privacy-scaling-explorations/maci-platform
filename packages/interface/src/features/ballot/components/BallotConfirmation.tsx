@@ -2,6 +2,8 @@ import { format } from "date-fns";
 import Link from "next/link";
 import { useMemo } from "react";
 import { tv } from "tailwind-variants";
+import { zeroAddress } from "viem";
+import { useAccount } from "wagmi";
 
 import { createComponent } from "~/components/ui";
 import { Button } from "~/components/ui/Button";
@@ -9,6 +11,7 @@ import { Heading } from "~/components/ui/Heading";
 import { Notice } from "~/components/ui/Notice";
 import { config } from "~/config";
 import { useBallot } from "~/contexts/Ballot";
+import { useMaci } from "~/contexts/Maci";
 import { useProjectCount } from "~/features/projects/hooks/useProjects";
 import { formatNumber } from "~/utils/formatNumber";
 import { useAppState } from "~/utils/state";
@@ -16,7 +19,7 @@ import { EAppState } from "~/utils/types";
 
 import { ProjectAvatarWithName } from "./ProjectAvatarWithName";
 
-const feedbackUrl = process.env.NEXT_PUBLIC_FEEDBACK_URL;
+const feedbackUrl = process.env.NEXT_PUBLIC_FEEDBACK_URL!;
 
 const Card = createComponent(
   "div",
@@ -28,7 +31,11 @@ const Card = createComponent(
 export const BallotConfirmation = (): JSX.Element => {
   const { ballot, sumBallot } = useBallot();
   const allocations = ballot.votes;
-  const { data: projectCount } = useProjectCount();
+
+  const { pollData } = useMaci();
+  const { chain } = useAccount();
+  const { data: projectCount } = useProjectCount({ registryAddress: pollData?.registry ?? zeroAddress, chain: chain! });
+
   const appState = useAppState();
 
   const sum = useMemo(() => formatNumber(sumBallot(ballot.votes)), [ballot, sumBallot]);
