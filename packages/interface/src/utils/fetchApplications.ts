@@ -89,7 +89,7 @@ const IndividualRequest = `
 
 const ApplicationById = `
   query ApplicationById($registryAddress: String!, $id: String!) {
-    requests(where: { recipient_: { registry: $registryAddress}, id: $id, requestType: "Add"  }) {
+    requests(where: { recipient_: { registry: $registryAddress }, id: $id, requestType: "Add"  }) {
       id
       index
       recipient {

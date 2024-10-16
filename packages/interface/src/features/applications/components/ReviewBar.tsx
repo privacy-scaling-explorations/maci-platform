@@ -27,7 +27,7 @@ export const ReviewBar = ({ projectId }: IReviewBarProps): JSX.Element => {
   const application = useApplicationByProjectId(projectId, pollData?.registry ?? zeroAddress);
   const approve = useApproveApplication();
 
-  // determine whether the project is approved ornot
+  // determine whether the project is approved or not
   const isApproved = useMemo(() => {
     if (project.data && (project.data as unknown as IRecipient).initialized) {
       return true;

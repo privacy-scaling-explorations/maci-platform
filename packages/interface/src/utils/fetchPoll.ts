@@ -1,10 +1,8 @@
-import { BigNumberish } from "ethers";
-import { IGetPollData } from "maci-cli/sdk";
 import { type Hex, zeroAddress } from "viem";
 
 import { config } from "~/config";
 
-import type { Poll } from "./types";
+import type { IPollData, Poll } from "./types";
 
 import { createCachedFetch } from "./fetch";
 
@@ -34,11 +32,6 @@ const PollQuery = `
     }
   }
 `;
-
-export interface IPollData extends IGetPollData {
-  registry: Hex;
-  initTime: BigNumberish;
-}
 
 /**
  * Fetches the poll data from the subgraph

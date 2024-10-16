@@ -5,8 +5,7 @@ import { useAppState } from "~/utils/state";
 import { EAppState } from "~/utils/types";
 
 import type { UseTRPCInfiniteQueryResult, UseTRPCQueryResult } from "@trpc/react-query/shared";
-import type { IPollData } from "~/utils/fetchPoll";
-import type { IRecipient } from "~/utils/types";
+import type { IPollData, IRecipient } from "~/utils/types";
 
 export function useResults(
   pollData?: IPollData,

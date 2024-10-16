@@ -1,3 +1,5 @@
+import type { BigNumberish } from "ethers";
+import type { IGetPollData } from "maci-cli/sdk";
 import type { Hex, Address } from "viem";
 
 export enum EAppState {
@@ -271,4 +273,9 @@ export interface Poll {
   registry: {
     id: string;
   };
+}
+
+export interface IPollData extends IGetPollData {
+  registry: Hex;
+  initTime: BigNumberish;
 }

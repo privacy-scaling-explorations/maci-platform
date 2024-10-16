@@ -26,8 +26,7 @@ import { getSemaphoreProof } from "~/utils/semaphore";
 
 import type { IVoteArgs, MaciContextType, MaciProviderProps } from "./types";
 import type { PCD } from "@pcd/pcd-types";
-import type { IPollData } from "~/utils/fetchPoll";
-import type { Attestation } from "~/utils/types";
+import type { IPollData, Attestation } from "~/utils/types";
 
 export const MaciContext = createContext<MaciContextType | undefined>(undefined);
 
@@ -408,28 +407,30 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
 
   /// check the poll data and tally data
   useEffect(() => {
+    if (!poll.data) {
+      return;
+    }
+
     // if we have the subgraph url then it means we can get the poll data through there
     if (config.maciSubgraphUrl) {
-      if (!poll.data) {
-        return;
-      }
-
-      setIsLoading(true);
-
       const { isMerged, id } = poll.data;
 
       setPollData(poll.data);
 
       if (isMerged) {
+        setIsLoading(true);
         fetch(`${config.tallyUrl}/tally-${id}.json`)
           .then((res) => res.json() as Promise<TallyData>)
           .then((res) => {
             setTallyData(res);
           })
-          .catch(() => undefined);
+          .catch(() => undefined)
+          .finally(() => {
+            setIsLoading(false);
+          });
       }
-
-      setIsLoading(false);
+    } else {
+      throw new Error("maci subgraph url is not provided");
     }
   }, [signer, votingEndsAt, setIsLoading, setTallyData, setPollData, poll.data]);
 

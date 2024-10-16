@@ -4,7 +4,7 @@ import { type ReactNode } from "react";
 
 import type { PCD } from "@pcd/pcd-types";
 import type { Ballot, Vote } from "~/features/ballot/types";
-import type { IPollData } from "~/utils/fetchPoll";
+import type { IPollData } from "~/utils/types";
 
 export interface IVoteArgs {
   voteOptionIndex: bigint;
@@ -44,7 +44,7 @@ export interface BallotContextType {
   addToBallot: (votes: Vote[], pollId?: string) => void;
   removeFromBallot: (projectIndex: number) => void;
   deleteBallot: () => void;
-  ballotContains: (index: number) => Vote | undefined;
+  ballotContains: (projectIndex: number) => Vote | undefined;
   sumBallot: (votes?: Vote[]) => number;
   publishBallot: () => void;
 }
