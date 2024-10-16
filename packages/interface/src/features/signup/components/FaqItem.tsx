@@ -15,9 +15,9 @@ export const FAQItem = ({ title, description }: IFAQItemProps): JSX.Element => {
   }, [isOpen, setIsOpen]);
 
   return (
-    <div className="flex w-3/5 flex-col gap-4 border-b border-b-black py-6 dark:border-b-white dark:text-white">
+    <div className="flex w-4/5 flex-col gap-4 border-b border-b-black py-6 sm:w-3/5 dark:border-b-white dark:text-white">
       <button className="flex cursor-pointer justify-between" type="button" onClick={openDescription}>
-        <p className="font-mono text-2xl uppercase">{title}</p>
+        <p className="w-full font-mono text-2xl uppercase sm:w-auto">{title}</p>
 
         <Image
           alt="arrow-down"
@@ -28,7 +28,7 @@ export const FAQItem = ({ title, description }: IFAQItemProps): JSX.Element => {
         />
       </button>
 
-      {isOpen && description}
+      {isOpen && <p className="text-center sm:text-left">{description}</p>}
     </div>
   );
 };

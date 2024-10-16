@@ -36,9 +36,13 @@ interface IMobileMenuProps {
 const MobileMenu = ({ isOpen = false, navLinks }: IMobileMenuProps) => (
   <div
     className={clsx("fixed left-0 top-16 z-10 h-full w-full bg-white transition-transform duration-150", {
-      "translate-x-full": !isOpen,
+      "-translate-x-full": !isOpen,
     })}
   >
+    <Link key="home" className={clsx("block p-4 text-2xl  font-semibold")} href="/">
+      Home
+    </Link>
+
     {navLinks.map((link) => (
       <Link key={link.href} className={clsx("block p-4 text-2xl  font-semibold")} {...link} />
     ))}

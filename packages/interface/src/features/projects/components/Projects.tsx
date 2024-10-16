@@ -90,7 +90,7 @@ export const Projects = (): JSX.Element => {
         />
       )}
 
-      <div className="mb-4 flex justify-between">
+      <div className="mb-4 flex flex-col justify-between sm:flex-row">
         <Heading as="h3" size="3xl">
           Projects
         </Heading>

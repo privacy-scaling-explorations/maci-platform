@@ -65,7 +65,7 @@ export const BallotConfirmation = (): JSX.Element => {
         <div className="mt-4 flex w-full justify-end">
           <h4>Total votes allocated:</h4>
 
-          <p>{sum}</p>
+          <p className="ml-1">{sum}</p>
         </div>
       </div>
 
@@ -76,7 +76,7 @@ export const BallotConfirmation = (): JSX.Element => {
       />
 
       {appState === EAppState.VOTING && (
-        <Card>
+        <Card className="flex-col sm:flex-row">
           <div className="flex-3 flex flex-col gap-4">
             <b className="font-mono text-2xl uppercase">Changed your mind?</b>
 
@@ -84,14 +84,14 @@ export const BallotConfirmation = (): JSX.Element => {
           </div>
 
           <div>
-            <Button as={Link} href="/ballot" variant="primary">
+            <Button as={Link} className="w-80 sm:w-fit" href="/ballot" variant="primary">
               Edit my ballot
             </Button>
           </div>
         </Card>
       )}
 
-      <Card>
+      <Card className="flex-col sm:flex-row">
         <div className="flex-3 flex flex-col gap-4">
           <b className="font-mono text-2xl uppercase">{`Help us improve our next round of ${config.eventName}`}</b>
 
@@ -102,13 +102,13 @@ export const BallotConfirmation = (): JSX.Element => {
         </div>
 
         <div>
-          <Button as={Link} href={feedbackUrl} target="_blank" variant="primary">
+          <Button as={Link} className="w-80 sm:w-fit" href={feedbackUrl} target="_blank" variant="primary">
             Share your feedback
           </Button>
         </div>
       </Card>
 
-      <Card>
+      <Card className="flex-col sm:flex-row">
         <div className="flex-3 flex flex-col gap-4">
           <b className="font-mono text-2xl uppercase">Want to run a round?</b>
 
@@ -119,7 +119,13 @@ export const BallotConfirmation = (): JSX.Element => {
         </div>
 
         <div>
-          <Button as={Link} href="https://discord.com/invite/sF5CT5rzrR" target="_blank" variant="primary">
+          <Button
+            as={Link}
+            className="w-80 sm:w-fit"
+            href="https://discord.com/invite/sF5CT5rzrR"
+            target="_blank"
+            variant="primary"
+          >
             Contact us
           </Button>
         </div>

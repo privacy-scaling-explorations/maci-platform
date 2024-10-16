@@ -24,8 +24,8 @@ const SignupPage = (): JSX.Element => {
     <Layout type="home">
       <EligibilityDialog />
 
-      <div className="flex h-[90vh] w-screen flex-col items-center justify-center gap-4 bg-blue-50 dark:bg-black">
-        <Heading className="max-w-screen-lg text-center" size="6xl">
+      <div className="flex h-[100vh] w-screen flex-col items-center justify-center gap-4 bg-blue-50 sm:h-[90vh] dark:bg-black">
+        <Heading className="mt-4 max-w-screen-lg text-center sm:mt-0" size="6xl">
           {config.eventName}
         </Heading>
 
@@ -57,7 +57,7 @@ const SignupPage = (): JSX.Element => {
 
         {isConnected && !isRegistered && <JoinButton />}
 
-        <div className="my-8">
+        <div className="my-8 w-80 sm:w-fit">
           <Info showAppState size="default" />
         </div>
       </div>

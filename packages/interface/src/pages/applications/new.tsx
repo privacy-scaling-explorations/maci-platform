@@ -12,7 +12,7 @@ const NewProjectPage = (): JSX.Element => {
 
   return (
     <Layout>
-      <div className="flex w-full justify-center">
+      <div className="flex w-fit justify-center px-2 sm:w-full sm:px-0">
         <div className="flex flex-col gap-4 md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
           <Heading as="h3" size="3xl">
             New Application

@@ -70,7 +70,7 @@ export const VotingWidget = ({ projectId }: IVotingWidgetProps): JSX.Element => 
         </button>
       )}
 
-      <div className="flex items-center justify-center gap-5 rounded-xl border border-gray-200 p-5 dark:border-gray-800">
+      <div className="mt-4 flex items-center justify-center gap-5 rounded-xl border border-gray-200 p-5 sm:mt-0 dark:border-gray-800">
         <NumericFormat
           allowNegative={false}
           aria-label="allocation-input"

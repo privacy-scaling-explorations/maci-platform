@@ -18,7 +18,7 @@ const InfoContainer = createComponent(
     base: "flex items-center justify-center gap-2 rounded-lg bg-white p-5 shadow-lg dark:bg-lightBlack",
     variants: {
       size: {
-        sm: "flex-col",
+        sm: "flex-col pt-0",
         default: "flex-col max-lg:w-full lg:flex-row",
       },
     },

@@ -24,10 +24,10 @@ const Context = createContext({ eligibilityCheck: false, showBallot: false });
 const MainContainer = createComponent(
   "div",
   tv({
-    base: "w-screen flex-1 md:flex",
+    base: "w-full flex-1 md:flex",
     variants: {
       type: {
-        default: "mt-12 pl-2 pr-6",
+        default: "pl-2 pr-2 sm:mt-12 mt-4",
         home: "mt-0 pl-0 pr-0",
       },
     },
