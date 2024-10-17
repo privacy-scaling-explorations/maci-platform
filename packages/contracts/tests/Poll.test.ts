@@ -1,23 +1,19 @@
 import { expect } from "chai";
 import { encodeBytes32String, ZeroAddress, type Signer } from "ethers";
-import hardhat from "hardhat";
-import { deployContract, Deployment, deployPoseidonContracts, genEmptyBallotRoots, getSigners } from "maci-contracts";
+import { deployContract, genEmptyBallotRoots, getSigners } from "maci-contracts";
 import { Keypair, Message, PubKey } from "maci-domainobjs";
 
-import { type Poll, Poll__factory as PollFactory, PollFactory as PollFactoryContract } from "../typechain-types";
+import type { Poll } from "../typechain-types";
 
 import { DEFAULT_SR_QUEUE_OPS, STATE_TREE_DEPTH, treeDepths } from "./constants";
-import { timeTravel } from "./utils";
+import { deployTestPoll, timeTravel } from "./utils";
 
 describe("Poll", () => {
-  let pollFactory: PollFactoryContract;
   let pollContract: Poll;
   let owner: Signer;
   let user: Signer;
 
   const { pubKey: coordinatorPubKey } = new Keypair();
-
-  const deployment = Deployment.getInstance(hardhat);
 
   const emptyBallotRoots = genEmptyBallotRoots(STATE_TREE_DEPTH);
   const emptyBallotRoot = emptyBallotRoots[treeDepths.voteOptionTreeDepth];
@@ -32,34 +28,8 @@ describe("Poll", () => {
 
   before(async () => {
     [owner, user] = await getSigners();
-    const { PoseidonT3Contract, PoseidonT4Contract, PoseidonT5Contract, PoseidonT6Contract } =
-      await deployPoseidonContracts(owner);
 
-    const contractFactory = await hardhat.ethers.getContractFactory("contracts/maci/PollFactory.sol:PollFactory", {
-      signer: owner,
-      libraries: {
-        PoseidonT3: PoseidonT3Contract,
-        PoseidonT4: PoseidonT4Contract,
-        PoseidonT5: PoseidonT5Contract,
-        PoseidonT6: PoseidonT6Contract,
-      },
-    });
-
-    pollFactory = await deployment.deployContractWithLinkedLibraries({ contractFactory, signer: owner });
-
-    const pollAddress = await pollFactory.deploy.staticCall(
-      duration,
-      treeDepths,
-      coordinatorPubKey.asContractParam(),
-      await owner.getAddress(),
-      emptyBallotRoot,
-    );
-
-    await pollFactory
-      .deploy("100", treeDepths, coordinatorPubKey.asContractParam(), await owner.getAddress(), emptyBallotRoot)
-      .then((tx) => tx.wait());
-
-    pollContract = PollFactory.connect(pollAddress, owner);
+    pollContract = await deployTestPoll({ signer: owner, emptyBallotRoot, treeDepths, duration, coordinatorPubKey });
   });
 
   it("should fail if unauthorized user tries to set the poll registry", async () => {
@@ -104,6 +74,8 @@ describe("Poll", () => {
     await expect(pollContract.connect(owner).setRegistry(address))
       .to.emit(pollContract, "SetRegistry")
       .withArgs(address);
+
+    expect(await pollContract.getRegistry()).to.equal(address);
 
     await expect(pollContract.connect(owner).setRegistry(address)).to.be.revertedWithCustomError(
       pollContract,
