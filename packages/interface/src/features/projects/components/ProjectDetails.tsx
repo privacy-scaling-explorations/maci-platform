@@ -37,7 +37,7 @@ const ProjectDetails = ({
 
   return (
     <div className="relative dark:text-white">
-      <div className="mb-7">
+      <div className="mb-7 px-2">
         <Navigation projectName={attestation?.name ?? "project name"} roundId={roundId} />
       </div>
 
@@ -49,7 +49,7 @@ const ProjectDetails = ({
         <ProjectAvatar className="-mt-20 ml-8" rounded="full" size="lg" url={profileImageUrl} />
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-center justify-between px-2 sm:flex-row">
         <Heading as="h3" size="3xl">
           {attestation?.name}
         </Heading>
@@ -59,9 +59,9 @@ const ProjectDetails = ({
 
       <ProjectContacts author={payoutAddress} github={github} twitter={twitter} website={websiteUrl} />
 
-      <p className="text-gray-400">{bio}</p>
+      <p className="px-2 text-gray-400">{bio}</p>
 
-      <div className="my-8 flex flex-col gap-8">
+      <div className="my-8 flex flex-col gap-8 px-2">
         <p className="text-xl uppercase">
           <b>Impact statements</b>
         </p>
