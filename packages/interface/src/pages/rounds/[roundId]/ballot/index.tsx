@@ -99,7 +99,7 @@ const BallotAllocationForm = ({ roundId }: IBallotAllocationFormProps): JSX.Elem
   const sum = useMemo(() => sumBallot(ballot.votes), [ballot, sumBallot]);
 
   return (
-    <div className="px-8">
+    <div className="px-2 sm:px-8">
       <Heading className="tracking-tighter" size="4xl">
         My Ballot
       </Heading>
@@ -115,7 +115,7 @@ const BallotAllocationForm = ({ roundId }: IBallotAllocationFormProps): JSX.Elem
       <div className="mb-4 justify-end sm:flex">{ballot.votes.length ? <ClearBallot roundId={roundId} /> : null}</div>
 
       <div className="border-t border-gray-300">
-        <div className="p-8">
+        <div className="px-0 sm:p-8">
           {ballot.votes.length ? (
             <AllocationFormWrapper projectIsLink disabled={roundState === ERoundState.RESULTS} roundId={roundId} />
           ) : (

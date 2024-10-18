@@ -51,7 +51,7 @@ export const AllocationFormWrapper = ({
               <ProjectAvatarWithName showDescription id={project.projectId} isLink={projectIsLink} />
             </Td>
 
-            <Td className="pr-0">
+            <Td className="pl-0 pr-0 sm:pl-2">
               <AllocationInput
                 defaultValue={project.amount}
                 disabled={disabled}
