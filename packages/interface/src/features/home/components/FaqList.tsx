@@ -3,7 +3,7 @@ import { Heading } from "~/components/ui/Heading";
 import { FAQItem } from "./FaqItem";
 
 export const FAQList = (): JSX.Element => (
-  <div className="mt-28 flex flex-col items-center justify-center dark:text-white">
+  <div className="mt-14 flex flex-col items-center justify-center sm:mt-28 dark:text-white">
     <Heading size="6xl">FAQ</Heading>
 
     <FAQItem
@@ -13,7 +13,7 @@ export const FAQList = (): JSX.Element => (
 
     <FAQItem
       description="(This is related to what gatekeeper is used.)"
-      title="Who are the requirements for participation?"
+      title="What are the requirements for participation?"
     />
 
     <FAQItem

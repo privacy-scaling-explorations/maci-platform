@@ -126,14 +126,14 @@ export const ApplicationForm = ({ roundId }: IApplicationFormProps): JSX.Element
             </FormControl>
           </div>
 
-          <div className="mb-4 gap-4 md:flex">
+          <div className="mb-4 flex flex-col gap-4 sm:flex-row">
             <FormControl
               required
               hint="The size should be smaller than 1MB."
               label="Project avatar"
               name="profileImageUrl"
             >
-              <ImageUpload className="h-48 w-48 " />
+              <ImageUpload className="h-48 w-48" />
             </FormControl>
 
             <FormControl
@@ -143,7 +143,7 @@ export const ApplicationForm = ({ roundId }: IApplicationFormProps): JSX.Element
               label="Project background image"
               name="bannerImageUrl"
             >
-              <ImageUpload className="h-48 " />
+              <ImageUpload className="h-48" />
             </FormControl>
           </div>
         </FormSection>

@@ -37,7 +37,7 @@ export const ProjectItem = ({
 
   return (
     <article
-      className="dark:bg-lightBlack group rounded-xl bg-white shadow-lg hover:shadow-sm"
+      className="dark:bg-lightBlack group w-96 rounded-xl bg-white shadow-lg hover:shadow-sm sm:w-full"
       data-testid={`project-${attestation.id}`}
     >
       <div className="opacity-70 transition-opacity group-hover:opacity-100">
