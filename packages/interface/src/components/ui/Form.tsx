@@ -33,6 +33,8 @@ import { Tooltip } from "./Tooltip";
 
 import { createComponent } from ".";
 
+const TIMEOUT_DURATION = 7000;
+
 export const Select = createComponent(
   "select",
   tv({
@@ -244,11 +246,17 @@ export const Form = <S extends z.Schema>({
     [setErrorMessage, onSubmit, form],
   );
   useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
     if (errorMessage) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         setErrorMessage(null);
-      }, 7000);
+      }, TIMEOUT_DURATION);
     }
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [errorMessage]);
 
   // Pass the form methods to a FormProvider. This lets us access the form from components with useFormContext
