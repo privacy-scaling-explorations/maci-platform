@@ -15,6 +15,7 @@ export const SelectAllButton = ({ applications = [] }: ISelectAllButtonProps): J
   const isAllSelected = selected.length > 0 && selected.length === applications.length;
   return (
     <Button
+      className="px-2 text-sm sm:px-4 sm:text-base"
       disabled={!applications.length}
       type="button"
       onClick={() => {
