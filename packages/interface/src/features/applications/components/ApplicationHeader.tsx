@@ -12,7 +12,7 @@ export const ApplicationHeader = ({ applications = [] }: IApplicationHeaderProps
       <SelectAllButton applications={applications} />
     </div>
 
-    <div className="flex-[8] pl-6">Project</div>
+    <div className="flex-[2] sm:flex-[8] sm:pl-6">Project</div>
 
     <div className="flex-[3]">Submitted on</div>
 

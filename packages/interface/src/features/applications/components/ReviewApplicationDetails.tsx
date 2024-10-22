@@ -19,7 +19,7 @@ const ValueField = ({ title, body = undefined, required = false }: IValueFieldPr
   const emptyPlaceholder = "(empty)";
 
   return (
-    <div className="flex flex-col gap-2 text-sm">
+    <div className="flex flex-col gap-2 text-xs sm:text-sm">
       <b className={clsx(required && "after:text-blue-400 after:content-['*']")}>{title}</b>
 
       <div className="text-light flex flex-wrap gap-2 text-gray-400">
@@ -55,7 +55,7 @@ export const ReviewApplicationDetails = (): JSX.Element => {
 
         <ValueField required body={application.bio} title="Project description" />
 
-        <div className="grid grid-flow-row grid-cols-2 gap-4">
+        <div className="grid grid-flow-row gap-4 sm:grid-cols-2">
           <ValueField required body={application.websiteUrl} title="Website" />
 
           <ValueField required body={application.payoutAddress} title="Payout address" />
@@ -65,7 +65,7 @@ export const ReviewApplicationDetails = (): JSX.Element => {
           <ValueField body={application.github} title="Github" />
         </div>
 
-        <div className="flex gap-6">
+        <div className="gap-6 sm:flex">
           <div>
             <p>Project avatar</p>
 
@@ -77,7 +77,7 @@ export const ReviewApplicationDetails = (): JSX.Element => {
             />
           </div>
 
-          <div className="flex-1">
+          <div className="mt-6 flex-1 sm:mt-0">
             <p>Project cover image</p>
 
             <div
