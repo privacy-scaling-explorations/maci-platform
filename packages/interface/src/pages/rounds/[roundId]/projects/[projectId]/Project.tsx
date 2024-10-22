@@ -1,9 +1,13 @@
+import { useMemo } from "react";
+import { zeroAddress } from "viem";
+
+import { useRound } from "~/contexts/Round";
 import { ReviewBar } from "~/features/applications/components/ReviewBar";
 import ProjectDetails from "~/features/projects/components/ProjectDetails";
 import { useProjectById } from "~/features/projects/hooks/useProjects";
 import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
 import { useRoundState } from "~/utils/state";
-import { ERoundState } from "~/utils/types";
+import { ERoundState, IRecipient } from "~/utils/types";
 
 import type { GetServerSideProps } from "next";
 
@@ -12,16 +16,20 @@ export interface IProjectDetailsProps {
   projectId?: string;
 }
 
-const ProjectDetailsPage = ({ roundId, projectId = "" }: IProjectDetailsProps): JSX.Element => {
-  const projects = useProjectById(projectId);
-  const { name } = projects.data?.[0] ?? {};
+const ProjectDetailsPage = ({ projectId = "", roundId }: IProjectDetailsProps): JSX.Element => {
+  const { getRoundByRoundId } = useRound();
+
+  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+
+  const projects = useProjectById(projectId, round?.registryAddress ?? zeroAddress);
+
   const appState = useRoundState(roundId);
 
   return (
-    <LayoutWithSidebar eligibilityCheck showBallot showInfo sidebar="left" title={name}>
+    <LayoutWithSidebar eligibilityCheck showBallot showInfo roundId={roundId} sidebar="left">
       {appState === ERoundState.APPLICATION && <ReviewBar projectId={projectId} roundId={roundId} />}
 
-      <ProjectDetails attestation={projects.data?.[0]} projectId={projectId} roundId={roundId} />
+      {projects.data && <ProjectDetails project={projects.data as unknown as IRecipient} roundId={roundId} />}
     </LayoutWithSidebar>
   );
 };

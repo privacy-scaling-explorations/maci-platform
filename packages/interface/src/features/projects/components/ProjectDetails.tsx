@@ -8,7 +8,7 @@ import { VotingWidget } from "~/features/projects/components/VotingWidget";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
-import type { Attestation } from "~/utils/types";
+import type { IRecipient } from "~/utils/types";
 
 import { useProjectMetadata } from "../hooks/useProjects";
 
@@ -18,17 +18,11 @@ import { ProjectDescriptionSection } from "./ProjectDescriptionSection";
 export interface IProjectDetailsProps {
   roundId: string;
   action?: ReactNode;
-  projectId?: string;
-  attestation?: Attestation;
+  project: IRecipient;
 }
 
-const ProjectDetails = ({
-  roundId,
-  projectId = "",
-  attestation = undefined,
-  action = undefined,
-}: IProjectDetailsProps): JSX.Element => {
-  const metadata = useProjectMetadata(attestation?.metadataPtr);
+const ProjectDetails = ({ roundId, project, action = undefined }: IProjectDetailsProps): JSX.Element => {
+  const metadata = useProjectMetadata(project.metadataUrl);
 
   const { bio, websiteUrl, payoutAddress, github, twitter, fundingSources, profileImageUrl, bannerImageUrl } =
     metadata.data ?? {};
@@ -38,7 +32,7 @@ const ProjectDetails = ({
   return (
     <div className="relative dark:text-white">
       <div className="mb-7 px-2">
-        <Navigation projectName={attestation?.name ?? "project name"} roundId={roundId} />
+        <Navigation projectName={metadata.data?.name ?? "project name"} roundId={roundId} />
       </div>
 
       <div className="overflow-hidden rounded-3xl">
@@ -51,10 +45,12 @@ const ProjectDetails = ({
 
       <div className="flex flex-col items-center justify-between px-2 sm:flex-row">
         <Heading as="h3" size="3xl">
-          {attestation?.name}
+          {metadata.data?.name}
         </Heading>
 
-        {roundState === ERoundState.VOTING && <VotingWidget projectId={projectId} roundId={roundId} />}
+        {roundState === ERoundState.VOTING && (
+          <VotingWidget projectId={project.id} projectIndex={Number.parseInt(project.index, 10)} roundId={roundId} />
+        )}
       </div>
 
       <ProjectContacts author={payoutAddress} github={github} twitter={twitter} website={websiteUrl} />

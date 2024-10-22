@@ -1,6 +1,7 @@
 import { differenceInDays } from "date-fns";
 import dynamic from "next/dynamic";
 import { useMemo, type PropsWithChildren } from "react";
+import { Hex, zeroAddress } from "viem";
 import { useAccount } from "wagmi";
 
 import { ConnectButton } from "~/components/ConnectButton";
@@ -8,7 +9,8 @@ import { Alert } from "~/components/ui/Alert";
 import { Heading } from "~/components/ui/Heading";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
-import { useProjectCount, useProjectsResults, useResults } from "~/hooks/useResults";
+import { useProjectCount } from "~/features/projects/hooks/useProjects";
+import { useProjectsResults, useResults } from "~/hooks/useResults";
 import { Layout } from "~/layouts/DefaultLayout";
 import { formatNumber } from "~/utils/formatNumber";
 import { useRoundState } from "~/utils/state";
@@ -34,19 +36,24 @@ interface IStatsProps {
 
 const Stats = ({ roundId }: IStatsProps) => {
   const { isLoading } = useMaci();
+  const { chain, isConnected } = useAccount();
   const { getRoundByRoundId } = useRound();
+
   const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
-  const results = useResults(roundId, round?.tallyFile);
-  const count = useProjectCount(roundId);
-  const { data: projectsResults } = useProjectsResults(roundId);
-  const { isConnected } = useAccount();
+  const results = useResults(roundId, (round?.registryAddress ?? zeroAddress) as Hex, round?.tallyFile);
+  const count = useProjectCount({
+    chain: chain!,
+    registryAddress: (round?.registryAddress ?? zeroAddress) as Hex,
+  });
+
+  const { data: projectsResults } = useProjectsResults(roundId, (round?.registryAddress ?? zeroAddress) as Hex);
 
   const { averageVotes, projects = {} } = results.data ?? {};
 
   const chartData = useMemo(() => {
     const data = (projectsResults?.pages[0] ?? [])
       .map((project) => ({
-        x: project.name,
+        x: project.index,
         y: projects[project.id]?.votes,
       }))
       .slice(0, 15);
@@ -79,7 +86,7 @@ const Stats = ({ roundId }: IStatsProps) => {
       </div>
 
       <div className="grid gap-2 md:grid-cols-3">
-        <Stat title="Projects applied">{count.data?.count}</Stat>
+        <Stat title="Projects applied">{count.data?.count.toString()}</Stat>
 
         <Stat title="Projects voted for">{Object.keys(projects).length}</Stat>
 

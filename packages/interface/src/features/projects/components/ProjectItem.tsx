@@ -8,7 +8,7 @@ import { formatNumber } from "~/utils/formatNumber";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
-import type { Attestation } from "~/utils/types";
+import type { IRecipient } from "~/utils/types";
 
 import { useProjectMetadata } from "../hooks/useProjects";
 import { EProjectState } from "../types";
@@ -19,7 +19,7 @@ import { ProjectBanner } from "./ProjectBanner";
 
 export interface IProjectItemProps {
   roundId: string;
-  attestation: Attestation;
+  recipient: IRecipient;
   isLoading: boolean;
   state?: EProjectState;
   action?: (e: Event) => void;
@@ -27,18 +27,18 @@ export interface IProjectItemProps {
 
 export const ProjectItem = ({
   roundId,
-  attestation,
+  recipient,
   isLoading,
   state = undefined,
   action = undefined,
 }: IProjectItemProps): JSX.Element => {
-  const metadata = useProjectMetadata(attestation.metadataPtr);
+  const metadata = useProjectMetadata(recipient.metadataUrl);
   const roundState = useRoundState(roundId);
 
   return (
     <article
       className="dark:bg-lightBlack group w-96 rounded-xl bg-white shadow-lg hover:shadow-sm sm:w-full"
-      data-testid={`project-${attestation.id}`}
+      data-testid={`project-${recipient.id}`}
     >
       <div className="opacity-70 transition-opacity group-hover:opacity-100">
         <ProjectBanner url={metadata.data?.bannerImageUrl} />
@@ -48,7 +48,7 @@ export const ProjectItem = ({
 
       <div className="p-4 pt-2">
         <Heading as="h3" className="truncate dark:text-white" size="lg">
-          <Skeleton isLoading={isLoading}>{attestation.name}</Skeleton>
+          <Skeleton isLoading={isLoading}>{metadata.data?.name}</Skeleton>
         </Heading>
 
         <div className="line-clamp-2 h-10 text-sm text-gray-400">

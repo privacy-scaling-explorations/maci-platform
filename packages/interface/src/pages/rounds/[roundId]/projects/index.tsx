@@ -3,11 +3,7 @@ import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
 
 import type { GetServerSideProps } from "next";
 
-export interface IRoundsPageProps {
-  roundId: string;
-}
-
-const RoundsPage = ({ roundId }: IRoundsPageProps): JSX.Element => (
+const RoundsPage = ({ roundId }: { roundId: string }): JSX.Element => (
   <LayoutWithSidebar eligibilityCheck showBallot showInfo roundId={roundId} sidebar="left">
     <Projects roundId={roundId} />
   </LayoutWithSidebar>

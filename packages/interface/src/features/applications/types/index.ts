@@ -27,6 +27,7 @@ export const ApplicationSchema = z.object({
   bio: z.string().min(3),
   profileImageUrl: z.string().optional(),
   bannerImageUrl: z.string().optional(),
+  submittedAt: z.number().optional(),
   websiteUrl: z
     .string()
     .min(1)

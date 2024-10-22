@@ -1,9 +1,9 @@
-import type { Attestation } from "~/utils/types";
+import type { IRequest } from "~/utils/types";
 
 import { SelectAllButton } from "./SelectAllButton";
 
 interface IApplicationHeaderProps {
-  applications?: Attestation[];
+  applications?: IRequest[];
 }
 
 export const ApplicationHeader = ({ applications = [] }: IApplicationHeaderProps): JSX.Element => (

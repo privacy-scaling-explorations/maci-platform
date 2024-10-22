@@ -39,9 +39,9 @@ export interface BallotContextType {
   ballot: Ballot;
   isLoading: boolean;
   addToBallot: (votes: Vote[], pollId?: string) => void;
-  removeFromBallot: (projectId: string) => void;
+  removeFromBallot: (index: number) => void;
   deleteBallot: () => void;
-  ballotContains: (id: string) => Vote | undefined;
+  ballotContains: (index: number) => Vote | undefined;
   sumBallot: (votes?: Vote[]) => number;
   publishBallot: () => void;
 }

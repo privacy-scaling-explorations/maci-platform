@@ -7,7 +7,6 @@ import { Dialog } from "~/components/ui/Dialog";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
-import { useProjectIdMapping } from "~/features/projects/hooks/useProjects";
 
 interface ISubmitBallotButtonProps {
   roundId: string;
@@ -19,7 +18,6 @@ export const SubmitBallotButton = ({ roundId }: ISubmitBallotButtonProps): JSX.E
   const { onVote, isLoading, initialVoiceCredits } = useMaci();
   const { ballot, publishBallot, sumBallot } = useBallot();
   const { getRoundByRoundId } = useRound();
-  const projectIndices = useProjectIdMapping(ballot, roundId);
 
   const ableToSubmit = useMemo(
     () => sumBallot(ballot.votes) <= initialVoiceCredits,
@@ -33,17 +31,11 @@ export const SubmitBallotButton = ({ roundId }: ISubmitBallotButtonProps): JSX.E
   const pollId = useMemo(() => getRoundByRoundId(roundId)?.pollId, [roundId, getRoundByRoundId]);
 
   const handleSubmitBallot = useCallback(async () => {
-    const votes = ballot.votes.map(({ amount, projectId }) => {
-      const index = projectIndices[projectId];
-      if (index === undefined || index === -1) {
-        throw new Error("There are some problems due to project index mapping.");
-      }
-
-      return {
-        voteOptionIndex: BigInt(index),
-        newVoteWeight: BigInt(amount),
-      };
-    });
+    const votes = ballot.votes.map(({ amount, projectId, projectIndex }) => ({
+      projectId,
+      voteOptionIndex: BigInt(projectIndex),
+      newVoteWeight: BigInt(amount),
+    }));
 
     if (!pollId) {
       throw new Error("The pollId is undefined.");
@@ -51,9 +43,9 @@ export const SubmitBallotButton = ({ roundId }: ISubmitBallotButtonProps): JSX.E
 
     await onVote(votes, pollId, onVotingError, () => {
       publishBallot();
-      router.push("/ballot/confirmation");
+      router.push(`/rounds/${roundId}/ballot/confirmation`);
     });
-  }, [ballot, router, onVote, publishBallot, onVotingError, projectIndices]);
+  }, [ballot, router, onVote, publishBallot, onVotingError, roundId]);
 
   const handleOpenDialog = useCallback(() => {
     setOpen(true);

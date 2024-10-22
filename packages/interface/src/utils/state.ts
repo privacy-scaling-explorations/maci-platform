@@ -21,14 +21,15 @@ export const useRoundState = (roundId: string): ERoundState => {
     return ERoundState.VOTING;
   }
 
-  if (isAfter(now, round.votingEndsAt)) {
-    return ERoundState.TALLYING;
-  }
-
-  /// TODO: how to collect tally.json url
-  // if (round.votingEndsAt && isAfter(now, round.votingEndsAt)) {
-  //   return ERoundState.RESULTS;
+  // TODO commented out for testing results
+  // if (isAfter(now, round.votingEndsAt)) {
+  //   return ERoundState.TALLYING;
   // }
+
+  // TODO: how to collect tally.json url
+  if (isAfter(now, round.votingEndsAt)) {
+    return ERoundState.RESULTS;
+  }
 
   return ERoundState.DEFAULT;
 };

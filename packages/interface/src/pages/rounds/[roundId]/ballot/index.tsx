@@ -67,7 +67,7 @@ const ClearBallot = ({ roundId }: IClearBallotProps): JSX.Element | null => {
   );
 };
 
-const EmptyBallot = (): JSX.Element => (
+const EmptyBallot = ({ roundId }: { roundId: string }): JSX.Element => (
   <div className="flex flex-1 items-center justify-center">
     <div className=" max-w-[360px] space-y-4">
       <Heading className="text-center" size="lg">
@@ -79,7 +79,7 @@ const EmptyBallot = (): JSX.Element => (
       </p>
 
       <div className="flex items-center justify-center gap-3">
-        <Button as={Link} href="/projects" size="auto" variant="primary">
+        <Button as={Link} href={`/rounds/${roundId}/projects`} size="auto" variant="primary">
           View projects
         </Button>
       </div>
@@ -107,7 +107,7 @@ const BallotAllocationForm = ({ roundId }: IBallotAllocationFormProps): JSX.Elem
       <p className="my-4 text-gray-400">Once you have reviewed your vote allocation, you can submit your ballot.</p>
 
       {ballot.published && (
-        <Link className="text-blue-400 hover:underline" href="/ballot/confirmation">
+        <Link className="text-blue-400 hover:underline" href={`/rounds/${roundId}/ballot/confirmation`}>
           Check your submitted ballot
         </Link>
       )}
@@ -119,7 +119,7 @@ const BallotAllocationForm = ({ roundId }: IBallotAllocationFormProps): JSX.Elem
           {ballot.votes.length ? (
             <AllocationFormWrapper projectIsLink disabled={roundState === ERoundState.RESULTS} roundId={roundId} />
           ) : (
-            <EmptyBallot />
+            <EmptyBallot roundId={roundId} />
           )}
         </div>
 

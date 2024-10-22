@@ -8,7 +8,7 @@ interface INavigationProps {
 export const Navigation = ({ projectName, roundId }: INavigationProps): JSX.Element => (
   <div className="flex gap-2 text-sm uppercase text-gray-400">
     <span>
-      <Link href={`/rounds/${roundId}`}>Projects</Link>
+      <Link href={`/rounds/${roundId}/projects`}>Projects</Link>
     </span>
 
     <span>{">"}</span>

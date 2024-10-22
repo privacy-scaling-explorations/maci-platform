@@ -27,7 +27,7 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
 
     if (roundState !== ERoundState.DEFAULT) {
       links.push({
-        href: `/rounds/${props.roundId}`,
+        href: `/rounds/${props.roundId}/projects`,
         children: "Projects",
       });
     }
@@ -64,17 +64,6 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
       });
     }
 
-    if (config.admin === address!) {
-      links.push(
-        ...[
-          {
-            href: "/applications",
-            children: "Applications",
-          },
-        ],
-      );
-    }
-
     if (config.admin === address! && gatekeeperTrait === GatekeeperTrait.EAS) {
       links.push(
         ...[
@@ -105,6 +94,7 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
   const { address } = useAccount();
   const { ballot } = useBallot();
   const roundId = props.roundId ?? "";
+
   const roundState = useRoundState(roundId);
 
   const { showInfo, showBallot, showSubmitButton } = props;

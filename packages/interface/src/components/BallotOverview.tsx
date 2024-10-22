@@ -28,11 +28,7 @@ export const BallotOverview = ({ title = undefined, roundId }: IBallotOverviewPr
     >
       <div className="dark:bg-lightBlack my-8 flex-col items-center gap-2 rounded-lg bg-white p-5 uppercase shadow-lg dark:text-white">
         <Heading as="h3" size="3xl">
-          {title && (
-            <Heading as="h3" size="3xl">
-              {title}
-            </Heading>
-          )}
+          {title}
         </Heading>
 
         <AddedProjects roundId={roundId} />

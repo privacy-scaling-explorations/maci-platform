@@ -6,11 +6,14 @@ import { useBallot } from "~/contexts/Ballot";
 import { BallotConfirmation } from "~/features/ballot/components/BallotConfirmation";
 import { Layout } from "~/layouts/DefaultLayout";
 
-interface IBallotConfirmationPageProps {
-  roundId: string;
-}
+import type { GetServerSideProps } from "next";
 
-const BallotConfirmationPage = ({ roundId }: IBallotConfirmationPageProps): JSX.Element | null => {
+export const getServerSideProps: GetServerSideProps = async ({ query: { roundId } }) =>
+  Promise.resolve({
+    props: { roundId },
+  });
+
+const BallotConfirmationPage = ({ roundId }: { roundId: string }): JSX.Element | null => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { ballot, isLoading: isBallotLoading } = useBallot();
@@ -24,9 +27,9 @@ const BallotConfirmationPage = ({ roundId }: IBallotConfirmationPageProps): JSX.
     if (ballot.published) {
       setIsLoading(false);
     } else {
-      router.push("/ballot");
+      router.push(`/rounds/${roundId}/ballot`);
     }
-  }, [router, ballot, isBallotLoading]);
+  }, [router, ballot, isBallotLoading, roundId]);
 
   useEffect(() => {
     manageDisplay();
