@@ -24,8 +24,7 @@ interface IUploadMetadataProps {
 dotenv.config({ path: path.resolve(import.meta.dirname, "../.env") });
 
 function isValidDate(formattedDateStr: string) {
-  const splitDate = formattedDateStr.split("-");
-  const parsed = parse(`${splitDate[2]}/${splitDate[1]}/${splitDate[0]}`, "P", new Date(), { locale: enGB });
+  const parsed = parse(`${formattedDateStr}Z`, "yyyy/M/d H:m:sX", new Date(), { locale: enGB });
   return isValid(parsed);
 }
 
@@ -66,23 +65,26 @@ export async function collectMetadata(): Promise<RoundMetadata> {
 
   const askStartTime = () =>
     new Promise<Date>((resolve, reject) => {
-      rl.question("When would you like to start this round? (Please respond in the format yyyy-mm-dd) ", (answer) => {
-        const valid = isValidDate(answer);
+      rl.question(
+        "When would you like to start this round? (Please respond in the format {Year}/{Month}/{Day} {Hour}:{Minute}:{Second} in UTC time) ",
+        (answer) => {
+          const valid = isValidDate(answer);
 
-        if (!valid) {
-          reject(new Error("Please answer in valid format."));
-        }
+          if (!valid) {
+            reject(new Error("Please answer in valid format."));
+          }
 
-        // eslint-disable-next-line no-console
-        console.log("You would like to start this round at:", answer);
-        resolve(new Date(answer));
-      });
+          // eslint-disable-next-line no-console
+          console.log("You would like to start this round at:", answer);
+          resolve(new Date(answer));
+        },
+      );
     });
 
   const askRegistrationEndTime = () =>
     new Promise<Date>((resolve, reject) => {
       rl.question(
-        "When would you like to end the registration for applications? (Please respond in the format yyyy-mm-dd) ",
+        "When would you like to end the registration for applications? (Please respond in the format {Year}/{Month}/{Day} {Hour}:{Minute}:{Second} in UTC time) ",
         (answer) => {
           const valid = isValidDate(answer);
 
@@ -100,7 +102,7 @@ export async function collectMetadata(): Promise<RoundMetadata> {
   const askVotingStartTime = () =>
     new Promise<Date>((resolve, reject) => {
       rl.question(
-        "When would you like to start the voting for this round? (Please respond in the format yyyy-mm-dd) ",
+        "When would you like to start the voting for this round? (Please respond in the format {Year}/{Month}/{Day} {Hour}:{Minute}:{Second} in UTC time) ",
         (answer) => {
           const valid = isValidDate(answer);
 
@@ -118,7 +120,7 @@ export async function collectMetadata(): Promise<RoundMetadata> {
   const askVotingEndTime = () =>
     new Promise<Date>((resolve, reject) => {
       rl.question(
-        "When would you like to end the voting for this round? (Please respond in the format yyyy-mm-dd) ",
+        "When would you like to end the voting for this round? (Please respond in the format {Year}/{Month}/{Day} {Hour}:{Minute}:{Second} in UTC time) ",
         (answer) => {
           const valid = isValidDate(answer);
 
