@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useMemo, useEffect, useState, useCallback } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 
@@ -25,6 +26,7 @@ interface IApplicationsToApproveProps {
 }
 
 export const ApplicationsToApprove = ({ roundId }: IApplicationsToApproveProps): JSX.Element => {
+  const router = useRouter();
   const applications = useApplications(roundId);
   const approved = useApprovedApplications(roundId);
   const approve = useApproveApplication({ roundId });
@@ -92,7 +94,7 @@ export const ApplicationsToApprove = ({ roundId }: IApplicationsToApproveProps):
 
           {!applications.isLoading && !applications.data?.length ? (
             <EmptyState title="No applications">
-              <Button as={Link} href="/applications/new" variant="primary">
+              <Button as={Link} href={`${router.asPath}/new`} variant="primary">
                 Go to create application
               </Button>
             </EmptyState>

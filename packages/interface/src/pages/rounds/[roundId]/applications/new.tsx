@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { FiAlertCircle } from "react-icons/fi";
 
 import { Alert } from "~/components/ui/Alert";
@@ -7,11 +8,9 @@ import { Layout } from "~/layouts/DefaultLayout";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
-interface INewProjectPageProps {
-  roundId: string;
-}
-
-const NewProjectPage = ({ roundId }: INewProjectPageProps): JSX.Element => {
+const NewProjectPage = (): JSX.Element => {
+  const router = useRouter();
+  const roundId = router.query.roundId as string;
   const state = useRoundState(roundId);
 
   return (
