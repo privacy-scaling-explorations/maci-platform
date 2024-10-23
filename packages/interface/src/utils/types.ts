@@ -94,6 +94,7 @@ export const AttestationsQuery = `
 export interface IPollData extends IGetPollData {
   registryAddress: string;
   metadataUrl: string;
+  initTime: bigint | number | string | null;
 }
 
 export interface IRoundMetadata {
@@ -109,17 +110,15 @@ export interface IRoundMetadata {
 export interface IRoundData {
   isMerged: boolean;
   pollId: string;
-  duration: string;
-  deployTime: string;
   numSignups: string;
   pollAddress: string;
   mode: string;
   registryAddress: string;
   roundId: string;
   description: string;
-  startsAt: string;
-  registrationEndsAt: string;
-  votingStartsAt: string;
-  votingEndsAt: string;
+  startsAt: Date;
+  registrationEndsAt: Date;
+  votingStartsAt: Date;
+  votingEndsAt: Date;
   tallyFile: string;
 }

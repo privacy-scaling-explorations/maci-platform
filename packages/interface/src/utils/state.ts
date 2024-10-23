@@ -13,15 +13,15 @@ export const useRoundState = (roundId: string): ERoundState => {
     return ERoundState.DEFAULT;
   }
 
-  if (round.registrationEndsAt && isAfter(round.registrationEndsAt, now)) {
+  if (isAfter(round.registrationEndsAt, now)) {
     return ERoundState.APPLICATION;
   }
 
-  if (round.votingEndsAt && isAfter(round.votingEndsAt, now)) {
+  if (isAfter(round.votingEndsAt, now)) {
     return ERoundState.VOTING;
   }
 
-  if (round.votingEndsAt && isAfter(now, round.votingEndsAt)) {
+  if (isAfter(now, round.votingEndsAt)) {
     return ERoundState.TALLYING;
   }
 

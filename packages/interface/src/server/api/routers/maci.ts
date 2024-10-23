@@ -16,6 +16,7 @@ const PollSchema = z.object({
   duration: z.union([z.string(), z.number(), z.bigint()]),
   deployTime: z.union([z.string(), z.number(), z.bigint()]),
   numSignups: z.union([z.string(), z.number(), z.bigint()]),
+  initTime: z.union([z.string(), z.number(), z.bigint()]).nullable(),
   registryAddress: z.string(),
   metadataUrl: z.string(),
 }) satisfies ZodType<IPollData>;
@@ -31,21 +32,26 @@ export const maciRouter = createTRPCRouter({
         fetchMetadata<IRoundMetadata>(poll.metadataUrl).then((metadata) => {
           const data = metadata as unknown as IRoundMetadata;
 
+          const votingStartsAt =
+            poll.initTime === null ? new Date(data.votingStartsAt) : new Date(Number(poll.initTime) * 1000);
+          const votingEndsAt =
+            poll.initTime === null
+              ? new Date(data.votingEndsAt)
+              : new Date((Number(poll.initTime) + Number(poll.duration)) * 1000);
+
           return {
             isMerged: poll.isMerged,
             pollId: poll.id,
-            duration: poll.duration,
-            deployTime: poll.deployTime,
             numSignups: poll.numSignups,
             pollAddress: poll.address,
             mode: poll.mode,
             registryAddress: poll.registryAddress,
             roundId: data.roundId,
             description: data.description,
-            startsAt: data.startsAt,
-            registrationEndsAt: data.registrationEndsAt,
-            votingStartsAt: data.votingStartsAt,
-            votingEndsAt: data.votingEndsAt,
+            startsAt: new Date(data.startsAt),
+            registrationEndsAt: new Date(data.registrationEndsAt),
+            votingStartsAt,
+            votingEndsAt,
             tallyFile: data.tallyFile,
           } as IRoundData;
         }),
