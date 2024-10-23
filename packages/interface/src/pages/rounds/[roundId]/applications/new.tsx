@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useMemo } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 
 import { Alert } from "~/components/ui/Alert";
@@ -10,7 +11,18 @@ import { ERoundState } from "~/utils/types";
 
 const NewProjectPage = (): JSX.Element => {
   const router = useRouter();
-  const roundId = router.query.roundId as string;
+
+  const roundId = useMemo((): string => {
+    if (router.query.roundId) {
+      return router.query.roundId as string;
+    }
+
+    // Parse from URL if not in params
+    const path = router.asPath;
+    const match = path.match(/\/rounds\/([^/]+)/);
+    return match?.[1] ? match[1] : "";
+  }, [router]);
+
   const state = useRoundState(roundId);
 
   return (

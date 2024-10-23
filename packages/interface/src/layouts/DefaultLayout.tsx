@@ -64,17 +64,6 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
       });
     }
 
-    if (config.admin === address!) {
-      links.push(
-        ...[
-          {
-            href: "/applications",
-            children: "Applications",
-          },
-        ],
-      );
-    }
-
     if (config.admin === address! && gatekeeperTrait === GatekeeperTrait.EAS) {
       links.push(
         ...[
