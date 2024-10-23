@@ -111,8 +111,8 @@ export const eas = {
 export const zupass = {
   pcdType: "eddsa-ticket-pcd",
   publicKey: [
-    "1ebfb986fbac5113f8e2c72286fe9362f8e7d211dbc68227a468d7b919e75003",
-    "10ec38f11baacad5535525bbe8e343074a483c051aa1616266f3b1df3fb7d204",
+    "044e711fd3a1792a825aa896104da5276bbe710fd9b59dddea1aaf8d84535aaf",
+    "2b259329f0adf98c9b6cf2a11db7225fdcaa4f8796c61864e86154477da10663",
   ],
   eventName: process.env.NEXT_PUBLIC_ZUPASS_EVENT_NAME!,
 } as const;

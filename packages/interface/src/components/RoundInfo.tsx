@@ -12,7 +12,7 @@ export const RoundInfo = ({ roundId }: IRoundInfoProps): JSX.Element => (
     <h4>Round</h4>
 
     <div className="flex items-center gap-2">
-      {config.roundLogo && <Image alt="round logo" height="20" src={`/${config.roundLogo}`} width="20" />}
+      {config.roundLogo && <Image alt="round logo" height="30" src={`/${config.roundLogo}`} width="30" />}
 
       <Heading as="h3" size="3xl">
         {roundId}
