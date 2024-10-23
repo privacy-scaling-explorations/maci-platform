@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { encodeBytes32String, parseUnits, Signer } from "ethers";
+import { AbiCoder, encodeBytes32String, parseUnits, Signer } from "ethers";
 import {
   getSigners,
   deployContract,
@@ -121,6 +121,14 @@ describe("Tally", () => {
       messages.push([message, keypair.pubKey]);
     }
 
+    await maci
+      .signUp(
+        keypair.pubKey.asContractParam(),
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
+      )
+      .then((tx) => tx.wait());
+
     await poll
       .publishMessageBatch(
         messages.map(([m]) => m.asContractParam()),
@@ -161,7 +169,10 @@ describe("Tally", () => {
         [],
         [],
         [],
+        TOTAL_SPENT_VOICE_CREDITS.spent,
+        TOTAL_SPENT_VOICE_CREDITS.salt,
         TALLY_RESULTS.salt,
+        TALLY_RESULTS.commitment,
         TOTAL_SPENT_VOICE_CREDITS.commitment,
         PER_VO_SPENT_VOICE_CREDITS.commitment,
       ),
@@ -207,6 +218,13 @@ describe("Tally", () => {
 
     await payoutToken.approve(user, userAmount).then((tx) => tx.wait());
     await payoutToken.transfer(user, userAmount);
+
+    const { intStateTreeDepth } = await poll.treeDepths();
+    const [numSignUps] = await poll.numSignUpsAndMessages();
+    const tallyBatchNum = await tally.tallyBatchNum();
+
+    // Require that there are untallied ballots left
+    console.log(intStateTreeDepth, tallyBatchNum * 2n ** intStateTreeDepth, numSignUps);
 
     await payoutToken.approve(tally, ownerAmount).then((tx) => tx.wait());
     await tally.deposit(ownerAmount).then((tx) => tx.wait());
@@ -260,21 +278,24 @@ describe("Tally", () => {
     }
   });
 
-  it("should not allow to add tally results before voting deadline", async () => {
+  it("should not allow to add tally results before tallying", async () => {
     await expect(
       tally.addTallyResults(
         [],
         [],
         [],
+        TOTAL_SPENT_VOICE_CREDITS.spent,
+        TOTAL_SPENT_VOICE_CREDITS.salt,
         TALLY_RESULTS.salt,
+        TALLY_RESULTS.commitment,
         TOTAL_SPENT_VOICE_CREDITS.commitment,
         PER_VO_SPENT_VOICE_CREDITS.commitment,
       ),
-    ).to.be.revertedWithCustomError(tally, "VotingPeriodNotOver");
+    ).to.be.revertedWithCustomError(tally, "VotesNotTallied");
   });
 
-  it("should not allow to claim before voting deadline", async () => {
-    await expect(tally.claim(emptyClaimParams)).to.be.revertedWithCustomError(tally, "VotingPeriodNotOver");
+  it("should not allow to claim before tallying", async () => {
+    await expect(tally.claim(emptyClaimParams)).to.be.revertedWithCustomError(tally, "VotesNotTallied");
   });
 
   it("should not allow to claim funds if there are no any votes", async () => {
@@ -294,7 +315,10 @@ describe("Tally", () => {
           [],
           [],
           [],
+          TOTAL_SPENT_VOICE_CREDITS.spent,
+          TOTAL_SPENT_VOICE_CREDITS.salt,
           TALLY_RESULTS.salt,
+          TALLY_RESULTS.commitment,
           TOTAL_SPENT_VOICE_CREDITS.commitment,
           PER_VO_SPENT_VOICE_CREDITS.commitment,
         ),
@@ -340,7 +364,10 @@ describe("Tally", () => {
         [0],
         [TALLY_RESULTS.tally[0]],
         [invalidProof],
+        TOTAL_SPENT_VOICE_CREDITS.spent,
+        TOTAL_SPENT_VOICE_CREDITS.salt,
         TALLY_RESULTS.salt,
+        TALLY_RESULTS.commitment,
         TOTAL_SPENT_VOICE_CREDITS.commitment,
         PER_VO_SPENT_VOICE_CREDITS.commitment,
       ),
@@ -351,7 +378,10 @@ describe("Tally", () => {
         indices.slice(1),
         tallyResults.slice(1),
         tallyResultProofs.slice(1),
+        TOTAL_SPENT_VOICE_CREDITS.spent,
+        TOTAL_SPENT_VOICE_CREDITS.salt,
         TALLY_RESULTS.salt,
+        TALLY_RESULTS.commitment,
         TOTAL_SPENT_VOICE_CREDITS.commitment,
         PER_VO_SPENT_VOICE_CREDITS.commitment,
       )
@@ -363,8 +393,6 @@ describe("Tally", () => {
       tally.claim({
         index: 0,
         voiceCreditsPerOption: PER_VO_SPENT_VOICE_CREDITS.tally[0],
-        tallyResult: tallyResults[0],
-        totalSpent: TOTAL_SPENT_VOICE_CREDITS.spent,
         tallyResultProof: tallyResultProofs[0],
         tallyResultSalt: TALLY_RESULTS.salt,
         voteOptionTreeDepth: treeDepths.voteOptionTreeDepth,
@@ -380,7 +408,10 @@ describe("Tally", () => {
         [indices[0], tallyResults.length],
         [tallyResults[0], 0n],
         [tallyResultProofs[0], additionalProof],
+        TOTAL_SPENT_VOICE_CREDITS.spent,
+        TOTAL_SPENT_VOICE_CREDITS.salt,
         TALLY_RESULTS.salt,
+        TALLY_RESULTS.commitment,
         TOTAL_SPENT_VOICE_CREDITS.commitment,
         PER_VO_SPENT_VOICE_CREDITS.commitment,
       ),
@@ -391,7 +422,10 @@ describe("Tally", () => {
         indices.slice(0, 1),
         tallyResults.slice(0, 1),
         tallyResultProofs.slice(0, 1),
+        TOTAL_SPENT_VOICE_CREDITS.spent,
+        TOTAL_SPENT_VOICE_CREDITS.salt,
         TALLY_RESULTS.salt,
+        TALLY_RESULTS.commitment,
         TOTAL_SPENT_VOICE_CREDITS.commitment,
         PER_VO_SPENT_VOICE_CREDITS.commitment,
       )
@@ -412,7 +446,10 @@ describe("Tally", () => {
         [0],
         [TALLY_RESULTS.tally[0]],
         [invalidProof],
+        TOTAL_SPENT_VOICE_CREDITS.spent,
+        TOTAL_SPENT_VOICE_CREDITS.salt,
         TALLY_RESULTS.salt,
+        TALLY_RESULTS.commitment,
         TOTAL_SPENT_VOICE_CREDITS.commitment,
         PER_VO_SPENT_VOICE_CREDITS.commitment,
       ),
@@ -447,41 +484,29 @@ describe("Tally", () => {
   });
 
   it("should calculate rewards per project", async () => {
-    const tallyResults = TALLY_RESULTS.tally.map((x) => BigInt(x));
     const voiceCreditsPerOptions = PER_VO_SPENT_VOICE_CREDITS.tally.map((x) => BigInt(x));
-    const budget = await payoutToken.balanceOf(tally);
 
     const expectedRewards = [
-      9012413244165830783n,
-      1552310421321149129846n,
-      3456104942999765660263n,
-      606317844329397788254n,
-      83908671708440493505n,
-      114053640482546893023n,
-      339053188661031771904n,
-      32631150239393525252n,
-      1763946736951215707909n,
-      3425959975385659260745n,
-      544474046722880535633n,
-      465226967954353402878n,
+      430000000000n,
+      7295000000000n,
+      15195000000000n,
+      2935000000000n,
+      680000000000n,
+      2455000000000n,
+      3135000000000n,
+      395000000000n,
+      8220000000000n,
+      14580000000000n,
+      3605000000000n,
+      3030000000000n,
       0n,
     ];
 
-    const amounts = await tally.getAllocatedAmounts(
-      budget,
-      voiceCreditsPerOptions,
-      TOTAL_SPENT_VOICE_CREDITS.spent,
-      tallyResults,
-    );
+    const amounts = await tally.getAllocatedAmounts(voiceCreditsPerOptions);
 
     for (let index = 0; index < amounts.length; index += 1) {
       // eslint-disable-next-line no-await-in-loop
-      const amount = await tally.getAllocatedAmount(
-        budget,
-        voiceCreditsPerOptions[index],
-        TOTAL_SPENT_VOICE_CREDITS.spent,
-        tallyResults[index],
-      );
+      const amount = await tally.getAllocatedAmount(index, voiceCreditsPerOptions[index]);
 
       expect(amounts[index].toString()).to.equal(amount.toString());
       expect(amount).to.equal(expectedRewards[index]);
@@ -589,7 +614,7 @@ describe("Tally", () => {
     );
   });
 
-  it("should not deposit after voting period is over", async () => {
-    await expect(tally.deposit(1n)).to.be.revertedWithCustomError(tally, "VotingPeriodOver");
+  it("should not deposit after votes are tallied", async () => {
+    await expect(tally.deposit(1n)).to.be.revertedWithCustomError(tally, "VotesTallied");
   });
 });

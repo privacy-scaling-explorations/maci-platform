@@ -20,10 +20,6 @@ interface IPayoutStrategy {
     uint256 index;
     /// @notice The voice credit options received for recipient
     uint256 voiceCreditsPerOption;
-    /// @notice Flattened array of the tally
-    uint256 tallyResult;
-    /// @notice The total amount of voice credits spent
-    uint256 totalSpent;
     /// @notice Corresponding proof of the tally result
     uint256[][] tallyResultProof;
     /// @notice The respective salt in the results object in the tally.json

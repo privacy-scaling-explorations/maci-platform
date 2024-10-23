@@ -28,9 +28,6 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
   /// @notice The poll registry
   IRecipientRegistry public registry;
 
-  /// @notice The total amount of funds deposited
-  uint256 public totalAmount;
-
   /// @notice The max contribution amount
   uint256 public maxContributionAmount;
 
@@ -43,6 +40,9 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
   /// @notice The sum of tally result squares
   uint256 public totalVotesSquares;
 
+  /// @notice The alpha used in quadratic funding formula
+  uint256 public alpha;
+
   /// @notice Fixed recipient count for claim
   uint256 public recipientCount;
 
@@ -54,8 +54,7 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
 
   /// @notice custom errors
   error CooldownPeriodNotOver();
-  error VotingPeriodNotOver();
-  error VotingPeriodOver();
+  error VotesTallied();
   error InvalidBudget();
   error NoProjectHasMoreThanOneVote();
   error InvalidWithdrawal();
@@ -93,25 +92,19 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
     _;
   }
 
-  /// @notice A modifier that causes the function to revert if the voting period is over
-  modifier beforeVotingDeadline() {
-    (uint256 deployTime, uint256 duration) = poll.getDeployTimeAndDuration();
-    uint256 secondsPassed = block.timestamp - deployTime;
-
-    if (secondsPassed > duration) {
-      revert VotingPeriodOver();
+  /// @notice A modifier that causes the function to revert if the tallying is over
+  modifier beforeTallying() {
+    if (isTallied()) {
+      revert VotesTallied();
     }
 
     _;
   }
 
-  /// @notice A modifier that causes the function to revert if the voting period is not over
-  modifier afterVotingDeadline() {
-    (uint256 deployTime, uint256 duration) = poll.getDeployTimeAndDuration();
-    uint256 secondsPassed = block.timestamp - deployTime;
-
-    if (secondsPassed <= duration) {
-      revert VotingPeriodNotOver();
+  /// @notice A modifier that causes the function to revert if the tallying is not over
+  modifier afterTallying() {
+    if (!isTallied()) {
+      revert VotesNotTallied();
     }
 
     _;
@@ -153,9 +146,7 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
   }
 
   /// @inheritdoc IPayoutStrategy
-  function deposit(uint256 amount) public isInitialized whenNotPaused beforeVotingDeadline {
-    totalAmount += amount;
-
+  function deposit(uint256 amount) public isInitialized whenNotPaused beforeTallying {
     token.safeTransferFrom(msg.sender, address(this), amount);
   }
 
@@ -165,7 +156,7 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
     uint256[] calldata amounts
   ) public override isInitialized onlyOwner whenNotPaused afterCooldown {
     uint256 amountLength = amounts.length;
-    uint256 totalFunds = totalAmount;
+    uint256 totalFunds = token.balanceOf(address(this));
     uint256 sum = 0;
 
     for (uint256 index = 0; index < amountLength; ) {
@@ -185,8 +176,11 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
         index++;
       }
     }
+  }
 
-    totalAmount -= sum;
+  /// @inheritdoc IPayoutStrategy
+  function totalAmount() public view override returns (uint256) {
+    return token.balanceOf(address(this));
   }
 
   /// @inheritdoc TallyBase
@@ -194,10 +188,13 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
     uint256[] calldata voteOptionIndices,
     uint256[] calldata results,
     uint256[][][] calldata tallyResultProofs,
+    uint256 totalSpentCredits,
+    uint256 totalSpentSalt,
     uint256 tallyResultSalt,
+    uint256 newResultsCommitment,
     uint256 spentVoiceCreditsHashes,
     uint256 perVOSpentVoiceCreditsHashes
-  ) public override isInitialized afterVotingDeadline onlyOwner {
+  ) public override isInitialized onlyOwner {
     if (recipientCount == 0) {
       recipientCount = registry.recipientCount();
     }
@@ -210,10 +207,17 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
       voteOptionIndices,
       results,
       tallyResultProofs,
+      totalSpentCredits,
+      totalSpentSalt,
       tallyResultSalt,
+      newResultsCommitment,
       spentVoiceCreditsHashes,
       perVOSpentVoiceCreditsHashes
     );
+
+    if (alpha == 0 || totalSpent != totalSpentCredits) {
+      alpha = calculateAlpha(totalAmount());
+    }
 
     if (recipientCount < totalTallyResults) {
       revert TooManyResults();
@@ -244,16 +248,9 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
   }
 
   /// @inheritdoc IPayoutStrategy
-  function claim(
-    IPayoutStrategy.Claim calldata params
-  ) public override isInitialized whenNotPaused afterVotingDeadline {
-    uint256 amount = getAllocatedAmount(
-      token.balanceOf(address(this)),
-      params.voiceCreditsPerOption,
-      params.totalSpent,
-      params.tallyResult
-    );
-    totalAmount -= amount;
+  function claim(IPayoutStrategy.Claim calldata params) public override isInitialized whenNotPaused afterTallying {
+    uint256 tallyResult = tallyResults[params.index].value;
+    uint256 amount = getAllocatedAmount(params.index, params.voiceCreditsPerOption);
 
     IRecipientRegistry.Recipient memory recipient = registry.getRecipient(params.index);
 
@@ -265,7 +262,7 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
 
     bool isValid = verifyTallyResult(
       params.index,
-      params.tallyResult,
+      tallyResult,
       params.tallyResultProof,
       params.tallyResultSalt,
       params.voteOptionTreeDepth,
@@ -281,30 +278,15 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
   }
 
   /// @notice Get allocated token amounts (without verification).
-  /// @param budget The total budget for the recipients
   /// @param voiceCreditsPerOptions The voice credit options received for recipient
-  /// @param totalSpent The total amount of voice credits spent
-  /// @param results The tally result for recipient
   function getAllocatedAmounts(
-    uint256 budget,
-    uint256[] calldata voiceCreditsPerOptions,
-    uint256 totalSpent,
-    uint256[] calldata results
-  ) public view returns (uint256[] memory amounts) {
-    uint256 length = results.length;
-    uint256 alpha = calculateAlpha(budget, totalSpent);
+    uint256[] calldata voiceCreditsPerOptions
+  ) public view afterTallying returns (uint256[] memory amounts) {
+    uint256 length = voiceCreditsPerOptions.length;
     amounts = new uint256[](length);
 
     for (uint256 index = 0; index < length; ) {
-      uint256 tallyResult = results[index];
-      uint256 voiceCreditsPerOption = voiceCreditsPerOptions[index];
-
-      uint256 quadratic = alpha * voiceCreditFactor * tallyResult * tallyResult;
-      uint256 totalSpentCredits = voiceCreditFactor * voiceCreditsPerOption;
-      uint256 linearPrecision = ALPHA_PRECISION * totalSpentCredits;
-      uint256 linearAlpha = alpha * totalSpentCredits;
-
-      amounts[index] = ((quadratic + linearPrecision) - linearAlpha) / ALPHA_PRECISION;
+      amounts[index] = getAllocatedAmount(index, voiceCreditsPerOptions[index]);
 
       unchecked {
         index++;
@@ -315,17 +297,10 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
   }
 
   /// @notice Get allocated token amount (without verification).
-  /// @param budget The total budget for the recipients
+  /// @param index The vote option index
   /// @param voiceCreditsPerOption The voice credit options received for recipient
-  /// @param totalSpent The total amount of voice credits spent
-  /// @param tallyResult The tally result for recipient
-  function getAllocatedAmount(
-    uint256 budget,
-    uint256 voiceCreditsPerOption,
-    uint256 totalSpent,
-    uint256 tallyResult
-  ) public view returns (uint256) {
-    uint256 alpha = calculateAlpha(budget, totalSpent);
+  function getAllocatedAmount(uint256 index, uint256 voiceCreditsPerOption) public view afterTallying returns (uint256) {
+    uint256 tallyResult = tallyResults[index].value;
     uint256 quadratic = alpha * voiceCreditFactor * tallyResult * tallyResult;
     uint256 totalSpentCredits = voiceCreditFactor * voiceCreditsPerOption;
     uint256 linearPrecision = ALPHA_PRECISION * totalSpentCredits;
@@ -337,8 +312,7 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
   /// @notice Calculate the alpha for the capital constrained quadratic formula
   /// @dev page 17 of https://arxiv.org/pdf/1809.06421.pdf
   /// @param budget The total budget for the recipients
-  /// @param totalSpent The total amount of voice credits spent
-  function calculateAlpha(uint256 budget, uint256 totalSpent) public view returns (uint256) {
+  function calculateAlpha(uint256 budget) public view afterTallying returns (uint256) {
     uint256 contributions = totalSpent * voiceCreditFactor;
 
     if (budget < contributions) {
