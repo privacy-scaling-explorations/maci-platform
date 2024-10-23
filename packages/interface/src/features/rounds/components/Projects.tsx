@@ -6,6 +6,7 @@ import { FiAlertCircle } from "react-icons/fi";
 import { InfiniteLoading } from "~/components/InfiniteLoading";
 import { SortFilter } from "~/components/SortFilter";
 import { StatusBar } from "~/components/StatusBar";
+import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
@@ -23,8 +24,8 @@ export interface IProjectsProps {
 }
 
 export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
-  const appState = useRoundState(roundId);
-  const projects = useSearchProjects({ roundId, needApproval: appState !== ERoundState.APPLICATION });
+  const roundState = useRoundState(roundId);
+  const projects = useSearchProjects({ roundId, needApproval: roundState !== ERoundState.APPLICATION });
 
   const { isRegistered } = useMaci();
   const { addToBallot, removeFromBallot, ballotContains, ballot } = useBallot();
@@ -74,7 +75,7 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
 
   return (
     <div>
-      {appState === ERoundState.APPLICATION && (
+      {roundState === ERoundState.APPLICATION && (
         <StatusBar
           content={
             <div className="flex items-center gap-2">
@@ -86,7 +87,7 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
         />
       )}
 
-      {(appState === ERoundState.TALLYING || appState === ERoundState.RESULTS) && (
+      {(roundState === ERoundState.TALLYING || roundState === ERoundState.RESULTS) && (
         <StatusBar
           content={
             <div className="flex items-center gap-2">
@@ -108,6 +109,16 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
         </div>
       </div>
 
+      {roundState === ERoundState.APPLICATION && (
+        <div className="mb-4 flex w-full justify-end">
+          <Link href={`/rounds/${roundId}/applications/new`}>
+            <Button size="auto" variant="primary">
+              Create Application
+            </Button>
+          </Link>
+        </div>
+      )}
+
       <InfiniteLoading
         {...projects}
         renderItem={(item, { isLoading }) => (
@@ -116,7 +127,7 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
             className={clsx("relative", { "animate-pulse": isLoading })}
             href={`/rounds/${roundId}/${item.id}`}
           >
-            {!results.isLoading && appState === ERoundState.RESULTS ? (
+            {!results.isLoading && roundState === ERoundState.RESULTS ? (
               <ProjectItemAwarded amount={results.data?.projects[item.id]?.votes} />
             ) : null}
 
