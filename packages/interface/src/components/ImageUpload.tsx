@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { ImageIcon } from "lucide-react";
-import { type ComponentProps, useRef } from "react";
+import { type ComponentProps, useRef, useCallback } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -33,6 +33,10 @@ export const ImageUpload = ({
     },
   });
 
+  const onClickIconButton = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  }, []);
+
   return (
     <Controller
       control={control}
@@ -43,7 +47,7 @@ export const ImageUpload = ({
           className={clsx("relative cursor-pointer overflow-hidden", className)}
           onClick={() => ref.current?.click()}
         >
-          <IconButton className="absolute bottom-1 right-1" icon={ImageIcon} />
+          <IconButton className="absolute bottom-1 right-1" icon={ImageIcon} onClick={onClickIconButton} />
 
           <div
             className={clsx("h-full rounded-xl bg-gray-200 bg-cover bg-center bg-no-repeat")}
