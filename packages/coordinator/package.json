@@ -53,7 +53,7 @@
     "lowdb": "^1.0.0",
     "maci-circuits": "^2.3.0",
     "maci-cli": "^2.3.0",
-    "maci-contracts": "^2.3.0",
+    "maci-contracts": "0.0.0-ci.bcae53f",
     "maci-domainobjs": "^2.0.0",
     "maci-subgraph": "^2.3.0",
     "date-fns": "^4.1.0",

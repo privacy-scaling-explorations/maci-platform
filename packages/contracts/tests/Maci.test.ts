@@ -9,9 +9,9 @@ import { MACI, Poll__factory as PollFactory, Poll as PollContract } from "../typ
 import {
   NOTHING_UP_MY_SLEEVE,
   STATE_TREE_DEPTH,
-  duration,
-  initialVoiceCreditBalance,
-  messageBatchSize,
+  DURATION,
+  INITIAL_VOICE_CREDIT_BALANCE,
+  MESSAGE_BATCH_SIZE,
   treeDepths,
 } from "./constants";
 import { deployTestContracts } from "./utils";
@@ -36,7 +36,7 @@ describe("Maci", () => {
       [owner, user] = await getSigners();
 
       const contracts = await deployTestContracts({
-        initialVoiceCreditBalance,
+        initialVoiceCreditBalance: INITIAL_VOICE_CREDIT_BALANCE,
         stateTreeDepth: STATE_TREE_DEPTH,
         signer: owner,
       });
@@ -46,7 +46,7 @@ describe("Maci", () => {
 
       // deploy on chain poll
       const tx = await maciContract.deployPoll(
-        duration,
+        DURATION,
         treeDepths,
         coordinator.pubKey.asContractParam(),
         verifierContract,
@@ -66,7 +66,7 @@ describe("Maci", () => {
       pollContract = PollFactory.connect(pollContracts.poll, owner);
 
       // deploy local poll
-      const p = maciState.deployPoll(BigInt(deployTime + duration), treeDepths, messageBatchSize, coordinator);
+      const p = maciState.deployPoll(BigInt(deployTime + DURATION), treeDepths, MESSAGE_BATCH_SIZE, coordinator);
       expect(p.toString()).to.eq(pollId.toString());
       // publish the NOTHING_UP_MY_SLEEVE message
       const messageData = [NOTHING_UP_MY_SLEEVE];

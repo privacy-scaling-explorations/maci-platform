@@ -3,6 +3,7 @@ import {
   deployConstantInitialVoiceCreditProxy,
   deployFreeForAllSignUpGatekeeper,
   deployMaci,
+  Deployment,
   deployMockVerifier,
   deployPoseidonContracts,
   deployVkRegistry,
@@ -13,8 +14,10 @@ import {
 } from "maci-contracts";
 
 import type { ContractFactory, Signer, JsonRpcProvider } from "ethers";
+import type { TreeDepths } from "maci-core";
+import type { PubKey } from "maci-domainobjs";
 
-import { type MACI } from "../typechain-types";
+import { Poll, PollFactory as PollFactoryContract, Poll__factory as PollFactory, type MACI } from "../typechain-types";
 
 /**
  * An interface that represents argument for deployment test contracts
@@ -94,7 +97,7 @@ export const deployTestContracts = async ({
       "contracts/maci/MACI.sol:MACI",
       "contracts/maci/PollFactory.sol:PollFactory",
       "MessageProcessorFactory",
-      "TallyFactory",
+      "contracts/maci/TallyFactory.sol:TallyFactory",
     ].map((factory) =>
       ethers.getContractFactory(factory, {
         libraries: {
@@ -124,6 +127,68 @@ export const deployTestContracts = async ({
     maciContract: maciContract as MACI,
     vkRegistryContract,
   };
+};
+
+/**
+ * An interface that represents arguments for test poll deployment
+ */
+export interface IDeployTestPollArgs {
+  signer: Signer;
+  emptyBallotRoot: bigint | number;
+  treeDepths: TreeDepths;
+  duration: bigint | number;
+  coordinatorPubKey: PubKey;
+}
+
+/**
+ * Deploy a test poll using poll factory.
+ *
+ * @param signer - the signer to use
+ * @param emptyBallotRoot - the empty ballot root
+ * @param treeDepths - the tree depths
+ * @param duration - the poll duration
+ * @param coordinatorPubKey - the coordinator public key
+ * @returns the deployed poll contract
+ */
+export const deployTestPoll = async ({
+  signer,
+  emptyBallotRoot,
+  treeDepths,
+  duration,
+  coordinatorPubKey,
+}: IDeployTestPollArgs): Promise<Poll> => {
+  const { PoseidonT3Contract, PoseidonT4Contract, PoseidonT5Contract, PoseidonT6Contract } =
+    await deployPoseidonContracts(signer);
+
+  const contractFactory = await ethers.getContractFactory("contracts/maci/PollFactory.sol:PollFactory", {
+    signer,
+    libraries: {
+      PoseidonT3: PoseidonT3Contract,
+      PoseidonT4: PoseidonT4Contract,
+      PoseidonT5: PoseidonT5Contract,
+      PoseidonT6: PoseidonT6Contract,
+    },
+  });
+
+  const deployment = Deployment.getInstance();
+  const pollFactory = await deployment.deployContractWithLinkedLibraries<PollFactoryContract>({
+    contractFactory,
+    signer,
+  });
+
+  const pollAddress = await pollFactory.deploy.staticCall(
+    duration,
+    treeDepths,
+    coordinatorPubKey.asContractParam(),
+    await signer.getAddress(),
+    emptyBallotRoot,
+  );
+
+  await pollFactory
+    .deploy("100", treeDepths, coordinatorPubKey.asContractParam(), await signer.getAddress(), emptyBallotRoot)
+    .then((tx) => tx.wait());
+
+  return PollFactory.connect(pollAddress, signer);
 };
 
 /**
