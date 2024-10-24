@@ -16,19 +16,20 @@ export const SubmitBallotButton = ({ roundId }: ISubmitBallotButtonProps): JSX.E
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
   const { onVote, isLoading, initialVoiceCredits } = useMaci();
-  const { ballot, publishBallot, sumBallot } = useBallot();
+  const { getBallot, publishBallot, sumBallot } = useBallot();
   const { getRoundByRoundId } = useRound();
-
-  const ableToSubmit = useMemo(
-    () => sumBallot(ballot.votes) <= initialVoiceCredits,
-    [sumBallot, ballot, initialVoiceCredits],
-  );
 
   const onVotingError = useCallback(() => {
     toast.error("Voting error");
   }, []);
 
   const pollId = useMemo(() => getRoundByRoundId(roundId)?.pollId, [roundId, getRoundByRoundId]);
+
+  const ballot = useMemo(() => getBallot(pollId!), [pollId, getBallot]);
+  const ableToSubmit = useMemo(
+    () => sumBallot(ballot.votes) <= initialVoiceCredits,
+    [sumBallot, ballot, initialVoiceCredits],
+  );
 
   const handleSubmitBallot = useCallback(async () => {
     const votes = ballot.votes.map(({ amount, projectId, projectIndex }) => ({
@@ -42,10 +43,10 @@ export const SubmitBallotButton = ({ roundId }: ISubmitBallotButtonProps): JSX.E
     }
 
     await onVote(votes, pollId, onVotingError, () => {
-      publishBallot();
+      publishBallot(pollId);
       router.push(`/rounds/${roundId}/ballot/confirmation`);
     });
-  }, [ballot, router, onVote, publishBallot, onVotingError, roundId]);
+  }, [ballot, router, onVote, publishBallot, onVotingError, roundId, pollId]);
 
   const handleOpenDialog = useCallback(() => {
     setOpen(true);

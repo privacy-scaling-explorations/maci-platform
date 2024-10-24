@@ -33,10 +33,12 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
   const projects = useSearchProjects({ roundId, search: "", registryAddress: round?.registryAddress ?? zeroAddress });
 
   const { isRegistered } = useMaci();
-  const { addToBallot, removeFromBallot, ballotContains, ballot } = useBallot();
+  const { addToBallot, removeFromBallot, ballotContains, getBallot } = useBallot();
 
   const results = useResults(roundId, (round?.registryAddress ?? zeroAddress) as Hex, round?.tallyFile);
   const pollId = useMemo(() => round?.pollId, [round]);
+
+  const ballot = useMemo(() => getBallot(pollId!), [pollId, getBallot]);
 
   const handleAction = useCallback(
     (projectIndex: number, projectId: string) => (e: Event) => {
@@ -46,7 +48,7 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
         return;
       }
 
-      if (!ballotContains(projectIndex)) {
+      if (!ballotContains(projectIndex, pollId)) {
         addToBallot(
           [
             {
@@ -58,7 +60,7 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
           pollId,
         );
       } else {
-        removeFromBallot(projectIndex);
+        removeFromBallot(projectIndex, pollId);
       }
     },
     [ballotContains, addToBallot, removeFromBallot, pollId],
@@ -68,10 +70,10 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
     if (!isRegistered) {
       return EProjectState.UNREGISTERED;
     }
-    if (ballotContains(projectIndex) && ballot.published && !ballot.edited) {
+    if (ballotContains(projectIndex, pollId!) && ballot.published && !ballot.edited) {
       return EProjectState.SUBMITTED;
     }
-    if (ballotContains(projectIndex)) {
+    if (ballotContains(projectIndex, pollId!)) {
       return EProjectState.ADDED;
     }
     return EProjectState.DEFAULT;

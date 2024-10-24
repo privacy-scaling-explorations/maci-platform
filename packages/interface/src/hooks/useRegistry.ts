@@ -6,7 +6,7 @@ import { approveApplication, submitApplication } from "~/utils/registry";
 import type { Hex, TransactionReceipt } from "viem";
 
 /*
- *Arguments for the submitApplication function
+ * Arguments for the submitApplication function
  */
 interface SubmitApplicationArgs {
   /**

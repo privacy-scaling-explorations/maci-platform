@@ -4,10 +4,15 @@ import { useMemo } from "react";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 
-export const VotingUsage = (): JSX.Element => {
-  const { initialVoiceCredits } = useMaci();
-  const { ballot, sumBallot } = useBallot();
+interface IVotingUsageProps {
+  pollId: string;
+}
 
+export const VotingUsage = ({ pollId }: IVotingUsageProps): JSX.Element => {
+  const { initialVoiceCredits } = useMaci();
+  const { getBallot, sumBallot } = useBallot();
+
+  const ballot = getBallot(pollId);
   const sum = useMemo(() => sumBallot(ballot.votes), [sumBallot, ballot]);
 
   return (

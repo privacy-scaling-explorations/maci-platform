@@ -65,7 +65,7 @@ export const AllocationFormWrapper = ({
                 name={`votes.${i}.amount`}
                 votingMaxProject={initialVoiceCredits}
                 onBlur={() => {
-                  onSave(form.getValues().votes, round?.pollId);
+                  onSave(form.getValues().votes, round?.pollId ?? "");
                 }}
               />
             </Td>
@@ -79,7 +79,7 @@ export const AllocationFormWrapper = ({
                 variant="none"
                 onClick={() => {
                   remove(i);
-                  onRemove(project.projectIndex);
+                  onRemove(project.projectIndex, round?.pollId ?? "");
                 }}
               />
             </Td>

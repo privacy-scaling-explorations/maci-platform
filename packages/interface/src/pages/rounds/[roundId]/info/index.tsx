@@ -4,7 +4,6 @@ import { useMemo } from "react";
 import { useAccount } from "wagmi";
 
 import { ConnectButton } from "~/components/ConnectButton";
-import { EligibilityDialog } from "~/components/EligibilityDialog";
 import { Info } from "~/components/Info";
 import { JoinButton } from "~/components/JoinButton";
 import { Button } from "~/components/ui/Button";
@@ -29,8 +28,6 @@ const InfoPage = ({ roundId }: { roundId: string }): JSX.Element => {
 
   return (
     <Layout roundId={roundId} type="home">
-      <EligibilityDialog />
-
       <div className="flex h-[90vh] w-screen flex-col items-center justify-center gap-4 bg-blue-50 dark:bg-black">
         <Heading className="max-w-screen-lg text-center" size="6xl">
           {config.eventName}

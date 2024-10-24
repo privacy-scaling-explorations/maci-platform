@@ -11,7 +11,7 @@ interface IAddedProjectsProps {
 }
 
 export const AddedProjects = ({ roundId }: IAddedProjectsProps): JSX.Element => {
-  const { ballot } = useBallot();
+  const { getBallot } = useBallot();
   const { chain } = useAccount();
   const { getRoundByRoundId } = useRound();
 
@@ -22,7 +22,7 @@ export const AddedProjects = ({ roundId }: IAddedProjectsProps): JSX.Element => 
     chain: chain!,
   });
 
-  const allocations = ballot.votes;
+  const ballot = useMemo(() => getBallot(round?.pollId ?? ""), [round?.pollId, getBallot]);
 
   return (
     <div className="border-b border-gray-200 py-2">
@@ -30,7 +30,7 @@ export const AddedProjects = ({ roundId }: IAddedProjectsProps): JSX.Element => 
 
       <div className="mt-2 flex gap-2 text-2xl">
         <span>
-          <b>{allocations.length}</b>
+          <b>{ballot.votes.length}</b>
         </span>
 
         <span className="text-gray-300">

@@ -10,6 +10,7 @@ export const BallotSchema = z.object({
   votes: z.array(VoteSchema),
   published: z.boolean().default(false),
   edited: z.boolean().default(false),
+  pollId: z.string().optional(),
 });
 
 export type Vote = z.infer<typeof VoteSchema>;

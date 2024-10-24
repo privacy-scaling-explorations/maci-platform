@@ -19,12 +19,13 @@ interface IVotingWidgetProps {
 export const VotingWidget = ({ projectId, roundId, projectIndex }: IVotingWidgetProps): JSX.Element => {
   const { initialVoiceCredits } = useMaci();
   const { ballotContains, removeFromBallot, addToBallot } = useBallot();
-  const projectBallot = useMemo(() => ballotContains(projectIndex), [ballotContains, projectIndex]);
-  const projectIncluded = useMemo(() => !!projectBallot, [projectBallot]);
-  const [amount, setAmount] = useState<number | undefined>(projectBallot?.amount);
+
   const { getRoundByRoundId } = useRound();
 
   const pollId = useMemo(() => getRoundByRoundId(roundId)?.pollId, [roundId, getRoundByRoundId]);
+  const projectBallot = useMemo(() => ballotContains(projectIndex, pollId ?? ""), [ballotContains, projectIndex]);
+  const projectIncluded = useMemo(() => !!projectBallot, [projectBallot]);
+  const [amount, setAmount] = useState<number | undefined>(projectBallot?.amount);
 
   /**
    * buttonState
@@ -38,7 +39,7 @@ export const VotingWidget = ({ projectId, roundId, projectIndex }: IVotingWidget
   );
 
   const handleRemove = useCallback(() => {
-    removeFromBallot(projectIndex);
+    removeFromBallot(projectIndex, pollId ?? "");
     setAmount(undefined);
     setButtonState(0);
   }, [projectIndex, removeFromBallot]);
@@ -56,7 +57,7 @@ export const VotingWidget = ({ projectId, roundId, projectIndex }: IVotingWidget
       return;
     }
 
-    addToBallot([{ projectId, amount, projectIndex }], pollId);
+    addToBallot([{ projectId, amount, projectIndex }], pollId ?? "");
     if (buttonState === EButtonState.DEFAULT) {
       setButtonState(EButtonState.ADDED);
     } else {

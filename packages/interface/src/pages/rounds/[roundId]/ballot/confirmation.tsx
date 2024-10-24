@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 
 import { Spinner } from "~/components/ui/Spinner";
-import { useBallot } from "~/contexts/Ballot";
+import { defaultBallot, useBallot } from "~/contexts/Ballot";
+import { useRound } from "~/contexts/Round";
 import { BallotConfirmation } from "~/features/ballot/components/BallotConfirmation";
 import { Layout } from "~/layouts/DefaultLayout";
 
@@ -16,7 +17,17 @@ export const getServerSideProps: GetServerSideProps = async ({ query: { roundId 
 const BallotConfirmationPage = ({ roundId }: { roundId: string }): JSX.Element | null => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { ballot, isLoading: isBallotLoading } = useBallot();
+  const { getRoundByRoundId } = useRound();
+  const { getBallot, isLoading: isBallotLoading } = useBallot();
+
+  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const ballot = useMemo(() => {
+    if (round?.pollId) {
+      return getBallot(round.pollId);
+    }
+    return defaultBallot;
+  }, [round?.pollId, getBallot]);
+
   const router = useRouter();
 
   const manageDisplay = useCallback(() => {
