@@ -124,6 +124,7 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
         </div>
       )}
 
+
       <InfiniteLoading
         {...projects}
         renderItem={(item, { isLoading }) => (
@@ -136,13 +137,19 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
               <ProjectItemAwarded amount={results.data?.projects[item.id]?.votes} />
             ) : null}
 
-            <ProjectItem
-              action={handleAction(Number.parseInt(item.index, 10), item.id)}
-              isLoading={projects.isLoading}
-              pollId={pollId}
-              recipient={item}
-              state={defineState(Number.parseInt(item.index, 10))}
-            />
+            {
+              // if the round is not in the application stage, then only display 
+              // projects that have been approved
+              (roundState === ERoundState.APPLICATION || item.initialized === true) && (
+                <ProjectItem
+                  action={handleAction(Number.parseInt(item.index, 10), item.id)}
+                  isLoading={projects.isLoading}
+                  pollId={pollId}
+                  recipient={item}
+                  state={defineState(Number.parseInt(item.index, 10))}
+                />
+              ) 
+            }
           </Link>
         )}
       />

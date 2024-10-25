@@ -14,6 +14,8 @@ import { useProjectMetadata } from "../hooks/useProjects";
 
 import { ProjectContacts } from "./ProjectContacts";
 import { ProjectDescriptionSection } from "./ProjectDescriptionSection";
+import { Button } from "~/components/ui/Button";
+import Link from "next/link";
 
 export interface IProjectDetailsProps {
   pollId: string;
@@ -50,6 +52,14 @@ const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetails
 
         {roundState === ERoundState.VOTING && (
           <VotingWidget pollId={pollId} projectId={project.id} projectIndex={Number.parseInt(project.index, 10)} />
+        )}
+
+        {roundState === ERoundState.APPLICATION && (
+          <Link href={`/rounds/${pollId}/${project.id}/edit`}>
+            <Button size="auto" variant="inverted">
+              Edit
+            </Button>
+          </Link>
         )}
       </div>
 
