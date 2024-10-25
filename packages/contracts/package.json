@@ -52,11 +52,12 @@
     "@openzeppelin/contracts": "^5.0.2",
     "circomlibjs": "^0.1.7",
     "ethers": "^6.13.2",
-    "hardhat": "^2.22.8",
+    "hardhat": "^2.22.15",
     "lowdb": "^1.0.0",
-    "maci-contracts": "^2.3.0",
-    "maci-core": "^2.2.0",
-    "maci-domainobjs": "^2.2.0",
+    "maci-contracts": "0.0.0-ci.bcae53f",
+    "maci-core": "^2.4.0",
+    "maci-crypto": "^2.4.0",
+    "maci-domainobjs": "^2.4.0",
     "solidity-docgen": "^0.6.0-beta.36"
   },
   "devDependencies": {
