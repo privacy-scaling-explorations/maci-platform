@@ -28,7 +28,7 @@ export const ProjectAvatarWithName = ({
   const Component = isLink ? Link : "div";
 
   return (
-    <Component className="flex flex-1 items-center gap-4" href={`/rounds/${roundId}/projects/${id}`} tabIndex={-1}>
+    <Component className="flex flex-1 items-center gap-4" href={`/rounds/${roundId}/${id}`} tabIndex={-1}>
       <ProjectAvatar rounded="full" size="sm" url={metadata.data?.bannerImageUrl} />
 
       <div>

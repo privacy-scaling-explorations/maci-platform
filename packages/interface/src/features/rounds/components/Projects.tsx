@@ -131,7 +131,7 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
           <Link
             key={item.id}
             className={clsx("relative", { "animate-pulse": isLoading })}
-            href={`/rounds/${roundId}/projects/${item.id}`}
+            href={`/rounds/${roundId}/${item.id}`}
           >
             {!results.isLoading && roundState === ERoundState.RESULTS ? (
               <ProjectItemAwarded amount={results.data?.projects[item.id]?.votes} />

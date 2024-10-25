@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FaTelegramPlane, FaGithub, FaDiscord } from "react-icons/fa";
+import { FaGithub, FaDiscord } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 import { Logo } from "./ui/Logo";
@@ -9,10 +9,6 @@ export const Footer = (): JSX.Element => (
     <div className="flex items-center justify-start gap-4">
       <a aria-label="twitter" href="https://x.com/zkMACI" rel="noreferrer" target="_blank">
         <FaXTwitter />
-      </a>
-
-      <a aria-label="telegram" href="https://telegram.com" rel="noreferrer" target="_blank">
-        <FaTelegramPlane />
       </a>
 
       <a

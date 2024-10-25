@@ -85,7 +85,7 @@ const EmptyBallot = ({ roundId }: IEmptyBallotProps): JSX.Element => (
       </p>
 
       <div className="flex items-center justify-center gap-3">
-        <Button as={Link} href={`/rounds/${roundId}/projects`} size="auto" variant="primary">
+        <Button as={Link} href={`/rounds/${roundId}`} size="auto" variant="primary">
           View projects
         </Button>
       </div>
