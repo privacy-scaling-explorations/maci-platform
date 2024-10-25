@@ -61,10 +61,10 @@ const RoundTag = ({ state }: IRoundTagProps): JSX.Element => {
 };
 
 export const RoundItem = ({ round }: IRoundItemProps): JSX.Element => {
-  const roundState = useRoundState(round.roundId);
+  const roundState = useRoundState(round.pollId);
 
   return (
-    <Link href={`/rounds/${round.roundId}/info`}>
+    <Link href={`/rounds/${round.pollId}`}>
       <div className="m-2 rounded-md border-gray-50 bg-white px-5 py-6 drop-shadow-md">
         <TimeBar end={new Date(round.votingEndsAt)} start={new Date(round.startsAt)} />
 

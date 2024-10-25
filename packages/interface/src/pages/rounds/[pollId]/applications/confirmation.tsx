@@ -16,17 +16,17 @@ import { ERoundState, type IRecipient } from "~/utils/types";
 
 import type { GetServerSideProps } from "next";
 
-export const getServerSideProps: GetServerSideProps = async ({ query: { roundId } }) =>
+export const getServerSideProps: GetServerSideProps = async ({ query: { pollId } }) =>
   Promise.resolve({
-    props: { roundId },
+    props: { pollId },
   });
 
-const ConfirmProjectPage = ({ roundId }: { roundId: string }): JSX.Element => {
-  const state = useRoundState(roundId);
+const ConfirmProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
+  const state = useRoundState(pollId);
 
-  const { getRoundByRoundId } = useRound();
+  const { getRoundByPollId } = useRound();
 
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
 
   const searchParams = useSearchParams();
 
@@ -83,8 +83,8 @@ const ConfirmProjectPage = ({ roundId }: { roundId: string }): JSX.Element => {
             </div>
           )}
 
-          <Link href={`/rounds/${roundId}/projects/${project.recipient.id}`}>
-            <ProjectItem isLoading={false} recipient={project.recipient as IRecipient} roundId={roundId} />
+          <Link href={`/rounds/${pollId}/${project.recipient.id}`}>
+            <ProjectItem isLoading={false} pollId={pollId} recipient={project.recipient as IRecipient} />
           </Link>
         </div>
       </div>

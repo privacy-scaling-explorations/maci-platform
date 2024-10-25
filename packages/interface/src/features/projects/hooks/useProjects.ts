@@ -8,7 +8,7 @@ import type { UseTRPCInfiniteQueryResult, UseTRPCQueryResult } from "@trpc/react
 import type { IRecipient } from "~/utils/types";
 
 interface IUseSearchProjectsProps {
-  roundId: string;
+  pollId: string;
   search: string;
   registryAddress: string;
 }
@@ -22,12 +22,11 @@ export function useProjectsById(ids: string[], registryAddress: string): UseTRPC
 }
 
 export function useSearchProjects({
-  roundId,
   search,
   registryAddress,
 }: IUseSearchProjectsProps): UseTRPCInfiniteQueryResult<IRecipient[], unknown, unknown> {
   return api.projects.search.useInfiniteQuery(
-    { search, registryAddress, roundId },
+    { search, registryAddress },
     {
       getNextPageParam: (_, pages) => pages.length,
     },

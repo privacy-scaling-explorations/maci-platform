@@ -22,17 +22,17 @@ export function useVotingTimeLeft(votingEndsAt: Date): [number, number, number, 
 const TimeSlice = createComponent("span", tv({ base: "text-gray-900" }));
 
 interface IVotingEndsInProps {
-  roundId: string;
+  pollId: string;
 }
 
-export const VotingEndsIn = ({ roundId }: IVotingEndsInProps): JSX.Element => {
+export const VotingEndsIn = ({ pollId }: IVotingEndsInProps): JSX.Element => {
   const { isLoading } = useMaci();
-  const { getRoundByRoundId } = useRound();
+  const { getRoundByPollId } = useRound();
 
   const votingEndsAt = useMemo(() => {
-    const round = getRoundByRoundId(roundId);
+    const round = getRoundByPollId(pollId);
     return round?.votingEndsAt ? new Date(round.votingEndsAt) : new Date();
-  }, [roundId, getRoundByRoundId]);
+  }, [pollId, getRoundByPollId]);
 
   const [days, hours, minutes, seconds] = useVotingTimeLeft(votingEndsAt);
 

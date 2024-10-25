@@ -16,23 +16,23 @@ import { ProjectContacts } from "./ProjectContacts";
 import { ProjectDescriptionSection } from "./ProjectDescriptionSection";
 
 export interface IProjectDetailsProps {
-  roundId: string;
+  pollId: string;
   action?: ReactNode;
   project: IRecipient;
 }
 
-const ProjectDetails = ({ roundId, project, action = undefined }: IProjectDetailsProps): JSX.Element => {
+const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetailsProps): JSX.Element => {
   const metadata = useProjectMetadata(project.metadataUrl);
 
   const { bio, websiteUrl, payoutAddress, github, twitter, fundingSources, profileImageUrl, bannerImageUrl } =
     metadata.data ?? {};
 
-  const roundState = useRoundState(roundId);
+  const roundState = useRoundState(pollId);
 
   return (
     <div className="relative dark:text-white">
       <div className="mb-7 px-2">
-        <Navigation projectName={metadata.data?.name ?? "project name"} roundId={roundId} />
+        <Navigation pollId={pollId} projectName={metadata.data?.name ?? "project name"} />
       </div>
 
       <div className="overflow-hidden rounded-3xl">
@@ -49,7 +49,7 @@ const ProjectDetails = ({ roundId, project, action = undefined }: IProjectDetail
         </Heading>
 
         {roundState === ERoundState.VOTING && (
-          <VotingWidget projectId={project.id} projectIndex={Number.parseInt(project.index, 10)} roundId={roundId} />
+          <VotingWidget pollId={pollId} projectId={project.id} projectIndex={Number.parseInt(project.index, 10)} />
         )}
       </div>
 

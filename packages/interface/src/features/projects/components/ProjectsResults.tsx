@@ -15,23 +15,23 @@ import { EProjectState } from "../types";
 import { ProjectItem, ProjectItemAwarded } from "./ProjectItem";
 
 interface IProjectsResultsProps {
-  roundId: string;
+  pollId: string;
 }
 
-export const ProjectsResults = ({ roundId }: IProjectsResultsProps): JSX.Element => {
+export const ProjectsResults = ({ pollId }: IProjectsResultsProps): JSX.Element => {
   const router = useRouter();
-  const { getRoundByRoundId } = useRound();
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
-  const projects = useProjectsResults(roundId, (round?.registryAddress ?? zeroAddress) as Hex);
-  const results = useResults(roundId, (round?.registryAddress ?? zeroAddress) as Hex, round?.tallyFile);
-  const roundState = useRoundState(roundId);
+  const { getRoundByPollId } = useRound();
+  const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
+  const projects = useProjectsResults((round?.registryAddress ?? zeroAddress) as Hex);
+  const results = useResults(pollId, (round?.registryAddress ?? zeroAddress) as Hex, round?.tallyFile);
+  const roundState = useRoundState(pollId);
 
   const handleAction = useCallback(
     (projectId: string) => (e: Event) => {
       e.preventDefault();
-      router.push(`/rounds/${roundId}/projects/${projectId}`);
+      router.push(`/rounds/${pollId}/projects/${projectId}`);
     },
-    [router, roundId],
+    [router, pollId],
   );
 
   return (
@@ -41,7 +41,7 @@ export const ProjectsResults = ({ roundId }: IProjectsResultsProps): JSX.Element
         <Link
           key={item.id}
           className={clsx("relative", { "animate-pulse": isLoading })}
-          href={`/rounds/${roundId}/projects/${item.id}`}
+          href={`/rounds/${pollId}/${item.id}`}
         >
           {!results.isLoading && roundState === ERoundState.RESULTS ? (
             <ProjectItemAwarded amount={results.data?.projects[item.id]?.votes} />
@@ -50,8 +50,8 @@ export const ProjectsResults = ({ roundId }: IProjectsResultsProps): JSX.Element
           <ProjectItem
             action={handleAction(item.id)}
             isLoading={isLoading}
+            pollId={pollId}
             recipient={item}
-            roundId={roundId}
             state={EProjectState.SUBMITTED}
           />
         </Link>

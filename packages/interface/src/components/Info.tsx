@@ -26,7 +26,7 @@ const InfoContainer = createComponent(
 
 interface IInfoProps {
   size: string;
-  roundId: string;
+  pollId: string;
   showRoundInfo?: boolean;
   showAppState?: boolean;
   showBallot?: boolean;
@@ -34,15 +34,15 @@ interface IInfoProps {
 
 export const Info = ({
   size,
-  roundId,
+  pollId,
   showRoundInfo = false,
   showAppState = false,
   showBallot = false,
 }: IInfoProps): JSX.Element => {
-  const roundState = useRoundState(roundId);
+  const roundState = useRoundState(pollId);
 
-  const { getRoundByRoundId } = useRound();
-  const round = getRoundByRoundId(roundId);
+  const { getRoundByPollId } = useRound();
+  const round = getRoundByPollId(pollId);
   const { asPath } = useRouter();
 
   const steps = [
@@ -75,17 +75,11 @@ export const Info = ({
   return (
     <div className="w-full">
       <InfoContainer size={size}>
-        {showRoundInfo && <RoundInfo roundId={roundId} />}
+        {showRoundInfo && <RoundInfo roundId={round?.roundId ?? ""} />}
 
-        {showBallot && (
-          <BallotOverview
-            pollId={round?.pollId ?? ""}
-            roundId={roundId}
-            title={asPath.includes("ballot") ? "Summary" : undefined}
-          />
-        )}
+        {showBallot && <BallotOverview pollId={pollId} title={asPath.includes("ballot") ? "Summary" : undefined} />}
 
-        {showRoundInfo && roundState === ERoundState.VOTING && <VotingInfo roundId={roundId} />}
+        {showRoundInfo && roundState === ERoundState.VOTING && <VotingInfo pollId={pollId} />}
 
         {showAppState &&
           steps.map((step) => (

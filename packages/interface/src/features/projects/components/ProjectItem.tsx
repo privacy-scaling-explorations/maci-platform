@@ -18,7 +18,7 @@ import { ProjectAvatar } from "./ProjectAvatar";
 import { ProjectBanner } from "./ProjectBanner";
 
 export interface IProjectItemProps {
-  roundId: string;
+  pollId: string;
   recipient: IRecipient;
   isLoading: boolean;
   state?: EProjectState;
@@ -26,14 +26,14 @@ export interface IProjectItemProps {
 }
 
 export const ProjectItem = ({
-  roundId,
+  pollId,
   recipient,
   isLoading,
   state = undefined,
   action = undefined,
 }: IProjectItemProps): JSX.Element => {
   const metadata = useProjectMetadata(recipient.metadataUrl);
-  const roundState = useRoundState(roundId);
+  const roundState = useRoundState(pollId);
 
   return (
     <article

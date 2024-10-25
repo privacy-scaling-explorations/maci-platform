@@ -30,14 +30,14 @@ export type TUseCreateApplicationReturn = Omit<
 export function useCreateApplication(options: {
   onSuccess: (id: bigint) => void;
   onError: (err: Error) => void;
-  roundId: string;
+  pollId: string;
 }): TUseCreateApplicationReturn {
   const upload = useUploadMetadata();
 
   const { chain } = useAccount();
-  const { getRoundByRoundId } = useRound();
+  const { getRoundByPollId } = useRound();
 
-  const roundData = getRoundByRoundId(options.roundId);
+  const roundData = getRoundByPollId(options.pollId);
 
   const submitApplication = useSubmitApplication();
   const signer = useEthersSigner();

@@ -9,13 +9,13 @@ import { ERoundState } from "~/utils/types";
 
 import type { GetServerSideProps } from "next";
 
-export const getServerSideProps: GetServerSideProps = async ({ query: { roundId } }) =>
+export const getServerSideProps: GetServerSideProps = async ({ query: { pollId } }) =>
   Promise.resolve({
-    props: { roundId },
+    props: { pollId },
   });
 
-const NewProjectPage = ({ roundId }: { roundId: string }): JSX.Element => {
-  const state = useRoundState(roundId);
+const NewProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
+  const state = useRoundState(pollId);
 
   return (
     <Layout>
@@ -44,7 +44,7 @@ const NewProjectPage = ({ roundId }: { roundId: string }): JSX.Element => {
           {state !== ERoundState.APPLICATION ? (
             <Alert title="Application period has ended" variant="info" />
           ) : (
-            <ApplicationForm roundId={roundId} />
+            <ApplicationForm pollId={pollId} />
           )}
         </div>
       </div>

@@ -10,24 +10,23 @@ import { AddedProjects } from "./AddedProjects";
 import { VotingUsage } from "./VotingUsage";
 
 interface IBallotOverviewProps {
-  roundId: string;
   title?: string;
   pollId: string;
 }
 
-export const BallotOverview = ({ title = undefined, roundId, pollId }: IBallotOverviewProps): JSX.Element => {
+export const BallotOverview = ({ title = undefined, pollId }: IBallotOverviewProps): JSX.Element => {
   const { getBallot } = useBallot();
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
 
-  const roundState = useRoundState(roundId);
+  const roundState = useRoundState(pollId);
 
   return (
     <Link
       href={
         ballot.published && (roundState === ERoundState.TALLYING || roundState === ERoundState.RESULTS)
-          ? `/rounds/${roundId}/ballot/confirmation`
-          : `/rounds/${roundId}/ballot`
+          ? `/rounds/${pollId}/ballot/confirmation`
+          : `/rounds/${pollId}/ballot`
       }
     >
       <div className="dark:bg-lightBlack my-8 flex-col items-center gap-2 rounded-lg bg-white p-5 uppercase shadow-lg dark:text-white">
@@ -35,7 +34,7 @@ export const BallotOverview = ({ title = undefined, roundId, pollId }: IBallotOv
           {title}
         </Heading>
 
-        <AddedProjects roundId={roundId} />
+        <AddedProjects pollId={pollId} />
 
         <VotingUsage pollId={pollId} />
       </div>
