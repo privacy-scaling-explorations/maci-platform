@@ -36,7 +36,7 @@ export const VotingWidget = ({ projectId, pollId, projectIndex }: IVotingWidgetP
 
   const handleRemove = useCallback(() => {
     removeFromBallot(projectIndex, pollId);
-    setAmount(undefined);
+    setAmount(0);
     setButtonState(0);
   }, [projectIndex, removeFromBallot]);
 
@@ -49,7 +49,7 @@ export const VotingWidget = ({ projectId, pollId, projectIndex }: IVotingWidgetP
   };
 
   const handleButtonAction = () => {
-    if (!amount) {
+    if (amount === undefined) {
       return;
     }
 
