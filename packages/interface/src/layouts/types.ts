@@ -21,6 +21,7 @@ export interface ILayoutProps extends PropsWithChildren<LayoutProps> {
   showInfo?: boolean;
   showSubmitButton?: boolean;
   roundId?: string;
+  pollId?: string;
 }
 
 export interface IAdminLayoutProps extends PropsWithChildren<LayoutProps> {

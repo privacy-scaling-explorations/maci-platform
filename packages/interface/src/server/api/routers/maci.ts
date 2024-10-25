@@ -36,7 +36,7 @@ export const maciRouter = createTRPCRouter({
             poll.initTime === null ? new Date(data.votingStartsAt) : new Date(Number(poll.initTime) * 1000);
           const votingEndsAt =
             poll.initTime === null
-              ? new Date(data.votingEndsAt)
+              ? new Date(new Date(data.votingStartsAt).getTime() + Number(poll.duration) * 1000)
               : new Date((Number(poll.initTime) + Number(poll.duration)) * 1000);
 
           return {

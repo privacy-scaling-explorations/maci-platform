@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { HiOutlineTrash } from "react-icons/hi";
+import { Hex } from "viem";
 
 import { IconButton } from "~/components/ui/Button";
 import { Table, Tbody, Tr, Td } from "~/components/ui/Table";
@@ -38,7 +39,7 @@ export const AllocationFormWrapper = ({
     control: form.control,
   });
 
-  const pollId = useMemo(() => getRoundByRoundId(roundId)?.pollId, [roundId, getRoundByRoundId]);
+  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
 
   return (
     <Table>
@@ -48,7 +49,13 @@ export const AllocationFormWrapper = ({
         {fields.map((project, i) => (
           <Tr key={project.projectId} className={projectIsLink && "hover:shadow-md"}>
             <Td className="w-full" variant="first">
-              <ProjectAvatarWithName showDescription id={project.projectId} isLink={projectIsLink} />
+              <ProjectAvatarWithName
+                showDescription
+                id={project.projectId}
+                isLink={projectIsLink}
+                registryAddress={round?.registryAddress as Hex}
+                roundId={roundId}
+              />
             </Td>
 
             <Td className="pl-0 pr-0 sm:pl-2">
@@ -58,7 +65,7 @@ export const AllocationFormWrapper = ({
                 name={`votes.${i}.amount`}
                 votingMaxProject={initialVoiceCredits}
                 onBlur={() => {
-                  onSave(form.getValues().votes, pollId);
+                  onSave(form.getValues().votes, round?.pollId ?? "");
                 }}
               />
             </Td>
@@ -72,7 +79,7 @@ export const AllocationFormWrapper = ({
                 variant="none"
                 onClick={() => {
                   remove(i);
-                  onRemove(project.projectId);
+                  onRemove(project.projectIndex, round?.pollId ?? "");
                 }}
               />
             </Td>

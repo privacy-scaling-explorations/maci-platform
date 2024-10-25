@@ -36,14 +36,15 @@ export interface MaciProviderProps {
 }
 
 export interface BallotContextType {
-  ballot: Ballot;
+  ballots: Ballot[];
   isLoading: boolean;
-  addToBallot: (votes: Vote[], pollId?: string) => void;
-  removeFromBallot: (projectId: string) => void;
-  deleteBallot: () => void;
-  ballotContains: (id: string) => Vote | undefined;
+  addToBallot: (votes: Vote[], pollId: string) => void;
+  removeFromBallot: (index: number, pollId: string) => void;
+  deleteBallot: (pollId: string) => void;
+  ballotContains: (index: number, pollId: string) => Vote | undefined;
   sumBallot: (votes?: Vote[]) => number;
-  publishBallot: () => void;
+  publishBallot: (pollId: string) => void;
+  getBallot: (pollId: string) => Ballot;
 }
 
 export interface BallotProviderProps {

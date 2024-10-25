@@ -93,8 +93,8 @@ export const EligibilityDialog = ({ roundId = "" }: IEligibilityDialogProps): JS
   }, [disconnect]);
 
   const handleGoToCreateApp = useCallback(() => {
-    router.push("/applications/new");
-  }, [router]);
+    router.push(`/rounds/${roundId}/applications/new`);
+  }, [router, roundId]);
 
   if (roundState === ERoundState.APPLICATION) {
     return (

@@ -233,6 +233,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     setSemaphoreIdentity(newSemaphoreIdentity);
   }, [address, signatureMessage, signMessageAsync, setMaciPrivKey, setMaciPubKey, setSemaphoreIdentity]);
 
+  // callback to be called from external component to store the zupass proof
   const storeZupassProof = useCallback(
     (proof: PCD) => {
       setZupassProof(proof);
@@ -328,7 +329,9 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   }, [isDisconnected]);
 
   useEffect(() => {
-    generateKeypair().catch(console.error);
+    if (!localStorage.getItem("maciPrivKey") || !localStorage.getItem("maciPubKey")) {
+      generateKeypair().catch(console.error);
+    }
   }, [generateKeypair]);
 
   useEffect(() => {

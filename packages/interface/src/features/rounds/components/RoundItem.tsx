@@ -16,7 +16,7 @@ interface ITimeBarProps {
 }
 
 interface IRoundTagProps {
-  isOpen: boolean;
+  state: ERoundState;
 }
 
 interface IRoundItemProps {
@@ -35,30 +35,44 @@ const TimeBar = ({ start, end }: ITimeBarProps): JSX.Element => {
   );
 };
 
-const RoundTag = ({ isOpen }: IRoundTagProps): JSX.Element => (
-  <div
-    className={clsx(
-      "w-max rounded-md border px-1.5 py-1 text-xs uppercase",
-      isOpen ? "border-[#8aca6c] text-[#8aca6c]" : "border-[#fc6e31] text-[#fc6e31]",
-    )}
-  >
-    {isOpen ? "Voting Open" : "Round Closed"}
-  </div>
-);
+const RoundTag = ({ state }: IRoundTagProps): JSX.Element => {
+  let tagText: string;
+
+  if (state === ERoundState.APPLICATION) {
+    tagText = "Applications Open";
+  } else if (state === ERoundState.VOTING) {
+    tagText = "Voting Open";
+  } else {
+    tagText = "Round Closed";
+  }
+
+  return (
+    <div
+      className={clsx(
+        "w-max rounded-md border px-1.5 py-1 text-xs uppercase",
+        state === ERoundState.APPLICATION || state === ERoundState.VOTING
+          ? "border-[#8aca6c] text-[#8aca6c]"
+          : "border-[#fc6e31] text-[#fc6e31]",
+      )}
+    >
+      {tagText}
+    </div>
+  );
+};
 
 export const RoundItem = ({ round }: IRoundItemProps): JSX.Element => {
   const roundState = useRoundState(round.roundId);
 
   return (
-    <Link href={`/rounds/${round.roundId}`}>
-      <div className="rounded-md border-gray-50 bg-white px-5 py-6 drop-shadow-md">
+    <Link href={`/rounds/${round.roundId}/info`}>
+      <div className="m-2 rounded-md border-gray-50 bg-white px-5 py-6 drop-shadow-md">
         <TimeBar end={new Date(round.votingEndsAt)} start={new Date(round.startsAt)} />
 
         <Heading size="md">{round.roundId}</Heading>
 
         <p className="my-4 text-gray-400">{round.description}</p>
 
-        <RoundTag isOpen={roundState === ERoundState.APPLICATION || roundState === ERoundState.VOTING} />
+        <RoundTag state={roundState} />
       </div>
     </Link>
   );

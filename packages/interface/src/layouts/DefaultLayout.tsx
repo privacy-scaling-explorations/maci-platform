@@ -19,15 +19,17 @@ import { BaseLayout } from "./BaseLayout";
 export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element => {
   const { address } = useAccount();
   const roundState = useRoundState(props.roundId ?? "");
-  const { ballot } = useBallot();
+  const { getBallot } = useBallot();
   const { isRegistered, gatekeeperTrait } = useMaci();
+
+  const ballot = useMemo(() => getBallot(props.pollId!), [props.pollId, getBallot]);
 
   const navLinks = useMemo(() => {
     const links = [];
 
     if (roundState !== ERoundState.DEFAULT) {
       links.push({
-        href: `/rounds/${props.roundId}`,
+        href: `/rounds/${props.roundId}/projects`,
         children: "Projects",
       });
     }
@@ -64,17 +66,6 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
       });
     }
 
-    if (config.admin === address!) {
-      links.push(
-        ...[
-          {
-            href: "/applications",
-            children: "Applications",
-          },
-        ],
-      );
-    }
-
     if (config.admin === address! && gatekeeperTrait === GatekeeperTrait.EAS) {
       links.push(
         ...[
@@ -103,9 +94,12 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
 export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
   const { isRegistered } = useMaci();
   const { address } = useAccount();
-  const { ballot } = useBallot();
+  const { getBallot } = useBallot();
   const roundId = props.roundId ?? "";
+
   const roundState = useRoundState(roundId);
+
+  const ballot = useMemo(() => getBallot(props.pollId!), [props.pollId, getBallot]);
 
   const { showInfo, showBallot, showSubmitButton } = props;
 

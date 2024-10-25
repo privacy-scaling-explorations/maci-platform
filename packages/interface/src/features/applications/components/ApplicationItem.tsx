@@ -1,5 +1,6 @@
 import { ClockIcon } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { Badge } from "~/components/ui/Badge";
@@ -9,42 +10,53 @@ import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { useMetadata } from "~/hooks/useMetadata";
 import { formatDate } from "~/utils/time";
 
-import type { Application } from "~/features/applications/types";
-import type { Attestation } from "~/utils/types";
+import type { TApplicationsToApprove, Application } from "../types";
+import type { IRecipient, IRecipientContract } from "~/utils/types";
 
-export interface IApplicationItemProps extends Attestation {
+export interface IApplicationItemProps {
+  index: string;
+  recipient: IRecipient | IRecipientContract;
   isApproved?: boolean;
   isLoading?: boolean;
+  roundId: string;
 }
 
 export const ApplicationItem = ({
-  id,
+  index,
   recipient,
-  name,
-  metadataPtr,
-  time,
   isApproved = false,
   isLoading = false,
+  roundId,
 }: IApplicationItemProps): JSX.Element => {
-  const metadata = useMetadata<Application>(metadataPtr);
+  const metadata = useMetadata<Application>(recipient.metadataUrl);
 
-  const form = useFormContext();
+  const form = useFormContext<TApplicationsToApprove>();
 
   const { fundingSources = [], profileImageUrl } = metadata.data ?? {};
 
+  useEffect(() => {
+    if (isApproved) {
+      const selected = form.watch("selected");
+      form.setValue(
+        "selected",
+        selected.filter((s) => s !== index),
+      );
+    }
+  }, [isApproved, index]);
+
   return (
-    <Link href={`/projects/${id}`} target="_blank">
+    <Link href={`/rounds/${roundId}/projects/${recipient.id}`} target="_blank">
       <div className="dark:hover:bg-lighterBlack flex cursor-pointer items-center gap-1 py-4 hover:bg-blue-50 sm:gap-2">
         <label className="flex flex-1 cursor-pointer justify-center sm:p-2">
-          <Checkbox disabled={isApproved} value={id} {...form.register(`selected`)} type="checkbox" />
+          <Checkbox disabled={isApproved} value={index} {...form.register(`selected`)} type="checkbox" />
         </label>
 
         <div className="flex flex-[5] items-center gap-4 sm:flex-[8]">
-          <ProjectAvatar isLoading={isLoading} profileId={recipient} size="sm" url={profileImageUrl} />
+          <ProjectAvatar isLoading={isLoading} size="sm" url={profileImageUrl} />
 
           <div className="flex flex-col">
             <Skeleton className="mb-1 min-h-5 min-w-24" isLoading={isLoading}>
-              <span className="uppercase">{name}</span>
+              <span className="uppercase">{metadata.data?.name}</span>
             </Skeleton>
 
             <div className="text-sm text-gray-400">
@@ -57,7 +69,7 @@ export const ApplicationItem = ({
           <ClockIcon className="size-3" />
 
           <Skeleton className="mb-1 min-h-5 min-w-24" isLoading={isLoading}>
-            {formatDate(time * 1000)}
+            {metadata.data?.submittedAt ? formatDate(metadata.data.submittedAt) : "N/A"}
           </Skeleton>
         </div>
 

@@ -8,6 +8,11 @@ export function useMetadata<T>(metadataPtr?: string): UseTRPCQueryResult<T, unkn
   return api.metadata.get.useQuery({ metadataPtr: String(metadataPtr) }, { enabled: Boolean(metadataPtr) });
 }
 
+/**
+ * Upload metadata to Vercel blob storage
+ *
+ * @returns the url of the uploaded metadata file
+ */
 export function useUploadMetadata(): UseMutationResult<{ url: string }, DefaultError, Record<string, unknown> | File> {
   return useMutation({
     mutationFn: async (data: Record<string, unknown> | File) => {
