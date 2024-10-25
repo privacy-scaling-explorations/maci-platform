@@ -83,7 +83,7 @@ const ConfirmProjectPage = ({ roundId }: { roundId: string }): JSX.Element => {
             </div>
           )}
 
-          <Link href={`/rounds/${roundId}/projects/${project.recipient.id}`}>
+          <Link href={`/rounds/${roundId}/${project.recipient.id}`}>
             <ProjectItem isLoading={false} recipient={project.recipient as IRecipient} roundId={roundId} />
           </Link>
         </div>

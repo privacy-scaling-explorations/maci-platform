@@ -64,7 +64,7 @@ export const RoundItem = ({ round }: IRoundItemProps): JSX.Element => {
   const roundState = useRoundState(round.roundId);
 
   return (
-    <Link href={`/rounds/${round.roundId}/info`}>
+    <Link href={`/rounds/${round.roundId}`}>
       <div className="m-2 rounded-md border-gray-50 bg-white px-5 py-6 drop-shadow-md">
         <TimeBar end={new Date(round.votingEndsAt)} start={new Date(round.startsAt)} />
 
