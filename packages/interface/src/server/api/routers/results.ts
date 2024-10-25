@@ -2,22 +2,19 @@ import { TRPCError } from "@trpc/server";
 import { type TallyData } from "maci-cli/sdk";
 import { z } from "zod";
 
-import { eas } from "~/config";
 import { FilterSchema } from "~/features/filter/types";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { fetchAttestations } from "~/utils/fetchAttestations";
-
-import { getAllApprovedProjects } from "./projects";
+import { fetchApprovedProjects, fetchProjects } from "~/utils/fetchProjects";
 
 export const resultsRouter = createTRPCRouter({
   votes: publicProcedure
-    .input(z.object({ roundId: z.string(), tallyFile: z.string().optional() }))
-    .query(async ({ input }) => calculateMaciResults(input.roundId, input.tallyFile)),
+    .input(z.object({ registryAddress: z.string(), tallyFile: z.string().optional() }))
+    .query(async ({ input }) => calculateMaciResults(input.registryAddress, input.tallyFile)),
 
   project: publicProcedure
-    .input(z.object({ id: z.string(), roundId: z.string(), tallyFile: z.string().optional() }))
+    .input(z.object({ id: z.string(), registryAddress: z.string(), tallyFile: z.string().optional() }))
     .query(async ({ input }) => {
-      const { projects } = await calculateMaciResults(input.roundId, input.tallyFile);
+      const { projects } = await calculateMaciResults(input.registryAddress, input.tallyFile);
 
       return {
         amount: projects[input.id]?.votes ?? 0,
@@ -25,29 +22,19 @@ export const resultsRouter = createTRPCRouter({
     }),
 
   projects: publicProcedure
-    .input(FilterSchema.extend({ roundId: z.string(), tallyFile: z.string().optional() }))
-    .query(async ({ input }) => {
-      const { projects } = await calculateMaciResults(input.roundId, input.tallyFile);
-
-      const sortedIDs = Object.entries(projects)
-        .sort((a, b) => b[1].votes - a[1].votes)
-        .map(([id]) => id)
-        .slice(input.cursor * input.limit, input.cursor * input.limit + input.limit);
-
-      return fetchAttestations([eas.schemas.metadata], {
-        where: {
-          id: { in: sortedIDs },
-        },
-      }).then((attestations) =>
-        // Results aren't returned from EAS in the same order as the `where: { in: sortedIDs }`
-        // Sort the attestations based on the sorted array
-        attestations.sort((a, b) => sortedIDs.indexOf(a.id) - sortedIDs.indexOf(b.id)),
-      );
-    }),
+    .input(FilterSchema.extend({ registryAddress: z.string() }))
+    .query(async ({ input }) => fetchProjects(input.registryAddress)),
 });
 
+/**
+ * Calculate the results of the MACI tally
+ *
+ * @param registryAddress - The registry address
+ * @param tallyFile - The tally file URL
+ * @returns The results of the tally
+ */
 export async function calculateMaciResults(
-  roundId: string,
+  registryAddress: string,
   tallyFile?: string,
 ): Promise<{
   averageVotes: number;
@@ -61,7 +48,7 @@ export async function calculateMaciResults(
     fetch(tallyFile)
       .then((res) => res.json() as Promise<TallyData>)
       .catch(() => undefined),
-    getAllApprovedProjects({ roundId }),
+    fetchApprovedProjects(registryAddress),
   ]);
 
   if (!tallyData) {
@@ -88,6 +75,12 @@ export async function calculateMaciResults(
   };
 }
 
+/**
+ * Calculate the average of an array of numbers
+ *
+ * @param votes - An array of numbers
+ * @returns The average of the array
+ */
 function calculateAverage(votes: number[]) {
   if (votes.length === 0) {
     return 0;

@@ -1,35 +1,14 @@
-import { BigNumberish } from "ethers";
-
 import { config } from "~/config";
 
-import type { IPollData } from "./types";
-import type { Hex } from "viem";
+import type { IPollData, Poll } from "./types";
 
 import { createCachedFetch } from "./fetch";
 
 const cachedFetch = createCachedFetch({ ttl: 1000 * 60 * 10 });
 
-interface IRegistry {
-  id: Hex;
-  metadataUrl: string;
-}
-
-interface IPoll {
-  pollId: string;
-  createdAt: string;
-  duration: string;
-  stateRoot: string;
-  messageRoot: string;
-  numSignups: string;
-  id: string;
-  mode: string;
-  registry: IRegistry;
-  initTime: BigNumberish;
-}
-
 export interface GraphQLResponse {
   data?: {
-    polls: IPoll[];
+    polls: Poll[];
   };
 }
 
@@ -45,7 +24,6 @@ const PollQuery = `
       id
       mode
       initTime
-
       registry {
         id
         metadataUrl
@@ -54,7 +32,13 @@ const PollQuery = `
   }
 `;
 
-function mappedPollData(polls: IPoll[]): IPollData[] {
+/**
+ * Maps the poll data to the IPollData interface
+ *
+ * @param polls - The poll data
+ * @returns The mapped poll data
+ */
+function mappedPollData(polls: Poll[]): IPollData[] {
   return polls.map((poll) => ({
     isMerged: !!poll.messageRoot,
     id: poll.pollId,
@@ -69,8 +53,13 @@ function mappedPollData(polls: IPoll[]): IPollData[] {
   }));
 }
 
+/**
+ * Fetches the poll data from the subgraph
+ *
+ * @returns The poll data
+ */
 export async function fetchPolls(): Promise<IPollData[] | undefined> {
-  const polls = await cachedFetch<{ polls: IPoll[] }>(config.maciSubgraphUrl, {
+  const polls = await cachedFetch<{ polls: Poll[] }>(config.maciSubgraphUrl, {
     method: "POST",
     body: JSON.stringify({
       query: PollQuery,

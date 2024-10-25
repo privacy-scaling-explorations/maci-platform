@@ -151,7 +151,6 @@ export const ApplicationButtons = ({
         <IconButton
           disabled={isPending || !address || !isCorrectNetwork}
           icon={isPending ? Spinner : null}
-          isLoading={isPending}
           size="auto"
           type="submit"
           variant="primary"

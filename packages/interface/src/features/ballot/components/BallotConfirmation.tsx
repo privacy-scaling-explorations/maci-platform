@@ -2,22 +2,26 @@ import { format } from "date-fns";
 import Link from "next/link";
 import { useMemo } from "react";
 import { tv } from "tailwind-variants";
+import { Hex } from "viem";
+import { useAccount } from "wagmi";
 
 import { createComponent } from "~/components/ui";
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { Notice } from "~/components/ui/Notice";
 import { config } from "~/config";
-import { useBallot } from "~/contexts/Ballot";
+import { defaultBallot, useBallot } from "~/contexts/Ballot";
 import { useRound } from "~/contexts/Round";
 import { useProjectCount } from "~/features/projects/hooks/useProjects";
 import { formatNumber } from "~/utils/formatNumber";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
+import type { GetServerSideProps } from "next";
+
 import { ProjectAvatarWithName } from "./ProjectAvatarWithName";
 
-const feedbackUrl = process.env.NEXT_PUBLIC_FEEDBACK_URL;
+const feedbackUrl = process.env.NEXT_PUBLIC_FEEDBACK_URL!;
 
 const Card = createComponent(
   "div",
@@ -30,13 +34,30 @@ interface IBallotConfirmationProps {
   roundId: string;
 }
 
+export const getServerSideProps: GetServerSideProps = async ({ query: { roundId } }) =>
+  Promise.resolve({
+    props: { roundId },
+  });
+
 export const BallotConfirmation = ({ roundId }: IBallotConfirmationProps): JSX.Element => {
-  const { ballot, sumBallot } = useBallot();
-  const allocations = ballot.votes;
-  const { data: projectCount } = useProjectCount(roundId);
+  const { getBallot, sumBallot } = useBallot();
   const roundState = useRoundState(roundId);
   const { getRoundByRoundId } = useRound();
-  const round = getRoundByRoundId(roundId);
+  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+
+  const ballot = useMemo(() => {
+    if (round?.pollId) {
+      return getBallot(round.pollId);
+    }
+    return defaultBallot;
+  }, [round?.pollId, getBallot]);
+  const allocations = ballot.votes;
+
+  const { chain } = useAccount();
+  const { data: projectCount } = useProjectCount({
+    registryAddress: round?.registryAddress as Hex,
+    chain: chain!,
+  });
 
   const sum = useMemo(() => formatNumber(sumBallot(ballot.votes)), [ballot, sumBallot]);
 
@@ -64,7 +85,12 @@ export const BallotConfirmation = ({ roundId }: IBallotConfirmationProps): JSX.E
         <div>
           {allocations.map((project) => (
             <div key={project.projectId} className="border-b border-gray-200 py-3">
-              <ProjectAvatarWithName allocation={project.amount} id={project.projectId} />
+              <ProjectAvatarWithName
+                allocation={project.amount}
+                id={project.projectId}
+                registryAddress={round?.registryAddress as Hex}
+                roundId={roundId}
+              />
             </div>
           ))}
         </div>
@@ -93,7 +119,7 @@ export const BallotConfirmation = ({ roundId }: IBallotConfirmationProps): JSX.E
           </div>
 
           <div>
-            <Button as={Link} className="w-80 sm:w-fit" href="/ballot" variant="primary">
+            <Button as={Link} className="w-80 sm:w-fit" href={`/rounds/${roundId}/ballot`} variant="primary">
               Edit my ballot
             </Button>
           </div>

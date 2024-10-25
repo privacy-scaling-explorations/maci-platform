@@ -1,4 +1,3 @@
-import { Transaction } from "@ethereum-attestation-service/eas-sdk";
 import { useRouter } from "next/router";
 import { useState, useCallback } from "react";
 import { useLocalStorage } from "react-use";
@@ -56,13 +55,13 @@ export const ApplicationForm = ({ roundId }: IApplicationFormProps): JSX.Element
   }, [step, setStep]);
 
   const create = useCreateApplication({
-    onSuccess: (data: Transaction<string[]>) => {
+    onSuccess: (id: bigint) => {
       clearDraft();
-      router.push(`/applications/confirmation?txHash=${data.tx.hash}`);
+      router.push(`/rounds/${roundId}/applications/confirmation?id=${id.toString()}`);
     },
-    onError: (err: { reason?: string; data?: { message: string } }) =>
+    onError: (err: { message: string }) =>
       toast.error("Application create error", {
-        description: err.reason ?? err.data?.message,
+        description: err.message,
       }),
     roundId,
   });
@@ -240,7 +239,7 @@ export const ApplicationForm = ({ roundId }: IApplicationFormProps): JSX.Element
 
         <ApplicationButtons
           isPending={create.isPending}
-          isUploading={create.isUploading}
+          isUploading={create.isPending}
           step={step}
           onBackStep={handleBackStep}
           onNextStep={handleNextStep}

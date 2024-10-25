@@ -7,7 +7,6 @@ import { Dialog } from "~/components/ui/Dialog";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
-import { useProjectIdMapping } from "~/features/projects/hooks/useProjects";
 
 interface ISubmitBallotButtonProps {
   roundId: string;
@@ -17,14 +16,8 @@ export const SubmitBallotButton = ({ roundId }: ISubmitBallotButtonProps): JSX.E
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
   const { onVote, isLoading, initialVoiceCredits } = useMaci();
-  const { ballot, publishBallot, sumBallot } = useBallot();
+  const { getBallot, publishBallot, sumBallot } = useBallot();
   const { getRoundByRoundId } = useRound();
-  const projectIndices = useProjectIdMapping(ballot, roundId);
-
-  const ableToSubmit = useMemo(
-    () => sumBallot(ballot.votes) <= initialVoiceCredits,
-    [sumBallot, ballot, initialVoiceCredits],
-  );
 
   const onVotingError = useCallback(() => {
     toast.error("Voting error");
@@ -32,28 +25,28 @@ export const SubmitBallotButton = ({ roundId }: ISubmitBallotButtonProps): JSX.E
 
   const pollId = useMemo(() => getRoundByRoundId(roundId)?.pollId, [roundId, getRoundByRoundId]);
 
-  const handleSubmitBallot = useCallback(async () => {
-    const votes = ballot.votes.map(({ amount, projectId }) => {
-      const index = projectIndices[projectId];
-      if (index === undefined || index === -1) {
-        throw new Error("There are some problems due to project index mapping.");
-      }
+  const ballot = useMemo(() => getBallot(pollId!), [pollId, getBallot]);
+  const ableToSubmit = useMemo(
+    () => sumBallot(ballot.votes) <= initialVoiceCredits,
+    [sumBallot, ballot, initialVoiceCredits],
+  );
 
-      return {
-        voteOptionIndex: BigInt(index),
-        newVoteWeight: BigInt(amount),
-      };
-    });
+  const handleSubmitBallot = useCallback(async () => {
+    const votes = ballot.votes.map(({ amount, projectId, projectIndex }) => ({
+      projectId,
+      voteOptionIndex: BigInt(projectIndex),
+      newVoteWeight: BigInt(amount),
+    }));
 
     if (!pollId) {
       throw new Error("The pollId is undefined.");
     }
 
     await onVote(votes, pollId, onVotingError, () => {
-      publishBallot();
-      router.push("/ballot/confirmation");
+      publishBallot(pollId);
+      router.push(`/rounds/${roundId}/ballot/confirmation`);
     });
-  }, [ballot, router, onVote, publishBallot, onVotingError, projectIndices]);
+  }, [ballot, router, onVote, publishBallot, onVotingError, roundId, pollId]);
 
   const handleOpenDialog = useCallback(() => {
     setOpen(true);

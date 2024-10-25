@@ -10,7 +10,6 @@
 6. All API calls must be called with `Authorization` header, where the value is encrypted with RSA public key you generated before. Header value contains message signature and message digest created by `COORDINATOR_ADDRESSES`. The format is `publicEncrypt({signature}:{digest})`.
    Make sure you set `COORDINATOR_ADDRESSES` env variable and sign any message with the addresses from your application (see [AccountSignatureGuard](./ts/auth/AccountSignatureGuard.service.ts)).
 7. Proofs can be generated with `POST v1/proof/generate` API method or with Websockets (see [dto spec](./ts/proof/dto.ts), [controller](./ts/app.controller.ts) and [wsgateway](./ts/events/events.gateway.ts)).
-8. [Swagger documentation for API methods](https://maci-coordinator.pse.dev/api)
 
 ## Subgraph deployment
 
@@ -39,5 +38,3 @@ After deployment, subgraph url will be available in studio dashboard and you can
 ```
 https://api.studio.thegraph.com/.../{SUBGRAPH_NAME}/version/latest
 ```
-
-API method Details are available [here](https://maci-coordinator.pse.dev/api)

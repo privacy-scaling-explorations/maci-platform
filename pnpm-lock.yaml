@@ -412,6 +412,9 @@ importers:
       maci-domainobjs:
         specifier: ^2.4.0
         version: 2.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      maci-platform-contracts:
+        specifier: workspace:^0.1.0
+        version: link:../contracts
       next:
         specifier: ^14.1.0
         version: 14.2.5(@babel/core@7.25.2)(@playwright/test@1.46.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -20564,7 +20567,7 @@ snapshots:
 
   axe-core@4.10.0: {}
 
-  axios-debug-log@1.0.0(axios@1.7.3):
+  axios-debug-log@1.0.0(axios@1.7.3(debug@4.3.6)):
     dependencies:
       '@types/debug': 4.1.12
       axios: 1.7.3(debug@4.3.6)
@@ -29906,7 +29909,7 @@ snapshots:
       '@aduh95/viz.js': 3.7.0
       '@solidity-parser/parser': 0.16.2
       axios: 1.7.3(debug@4.3.6)
-      axios-debug-log: 1.0.0(axios@1.7.3)
+      axios-debug-log: 1.0.0(axios@1.7.3(debug@4.3.6))
       cli-color: 2.0.4
       commander: 11.1.0
       convert-svg-to-png: 0.6.4(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
