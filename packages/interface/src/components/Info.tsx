@@ -14,7 +14,7 @@ import { VotingInfo } from "./VotingInfo";
 const InfoContainer = createComponent(
   "div",
   tv({
-    base: "flex items-center justify-center gap-2 rounded-lg bg-white p-5 shadow-lg dark:bg-lightBlack",
+    base: "flex justify-center gap-2 rounded-lg bg-white p-5 shadow-lg dark:bg-lightBlack",
     variants: {
       size: {
         sm: "flex-col",
@@ -40,6 +40,7 @@ export const Info = ({
   showBallot = false,
 }: IInfoProps): JSX.Element => {
   const roundState = useRoundState(roundId);
+
   const { getRoundByRoundId } = useRound();
   const round = getRoundByRoundId(roundId);
   const { asPath } = useRouter();
@@ -76,7 +77,13 @@ export const Info = ({
       <InfoContainer size={size}>
         {showRoundInfo && <RoundInfo roundId={roundId} />}
 
-        {showBallot && <BallotOverview roundId={roundId} title={asPath.includes("ballot") ? "Summary" : undefined} />}
+        {showBallot && (
+          <BallotOverview
+            pollId={round?.pollId ?? ""}
+            roundId={roundId}
+            title={asPath.includes("ballot") ? "Summary" : undefined}
+          />
+        )}
 
         {showRoundInfo && roundState === ERoundState.VOTING && <VotingInfo roundId={roundId} />}
 

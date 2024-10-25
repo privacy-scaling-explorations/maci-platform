@@ -30,7 +30,7 @@ const HomePage = (): JSX.Element => {
 
         {!isConnected && <p className="text-gray-400">Connect your wallet to get started.</p>}
 
-        {isConnected && !isAdmin && !isRegistered && <JoinButton />}
+        {isConnected && !isRegistered && <JoinButton />}
 
         {isConnected && isAdmin && (
           <div className="flex flex-col gap-4">

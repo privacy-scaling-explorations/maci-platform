@@ -1,5 +1,5 @@
 import type { IGetPollData } from "maci-cli/sdk";
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 
 export enum ERoundState {
   LOADING = "LOADING",
@@ -91,34 +91,303 @@ export const AttestationsQuery = `
   }
 `;
 
-export interface IPollData extends IGetPollData {
-  registryAddress: string;
+/**
+ * The poll data
+ */
+export interface Poll {
+  /**
+   * The poll id
+   */
+  pollId: string;
+  /**
+   * The poll creation date
+   */
+  createdAt: string;
+  /**
+   * The poll duration
+   */
+  duration: string;
+  /**
+   * MACI's state root
+   */
+  stateRoot: string;
+  /**
+   * The poll message root
+   */
+  messageRoot: string;
+  /**
+   * The poll number of signups
+   */
+  numSignups: string;
+  /**
+   * The poll id
+   */
+  id: string;
+  /**
+   * The poll mode
+   */
+  mode: string;
+  /**
+   * The poll init time
+   */
+  initTime: string;
+  /**
+   * The poll registry address
+   */
+  registry: {
+    /**
+     * The poll registry address
+     */
+    id: string;
+    /**
+     * The poll metadata url
+     */
+    metadataUrl: string;
+  };
+}
+
+/**
+ * The request type
+ */
+export enum ERequestType {
+  /**
+   * Add a new recipient
+   */
+  Add = 0,
+  /**
+   * Change a recipient
+   */
+  Change = 1,
+  /**
+   * Remove a recipient
+   */
+  Remove = 2,
+}
+
+/**
+ * The request status
+ */
+export enum ERequestStatus {
+  /**
+   * The request is pending
+   */
+  Pending = 0,
+  /**
+   * The request is approved
+   */
+  Approved = 1,
+  /**
+   * The request is rejected
+   */
+  Rejected = 2,
+}
+
+/**
+ * The recipient data
+ */
+export interface IRecipient {
+  /**
+   * The recipient id (optional on chain so can use 0)
+   */
+  id: string;
+  /**
+   * The recipient metadata url
+   */
   metadataUrl: string;
+  /**
+   * The recipient address
+   */
+  payout: Hex;
+  /**
+   * The recipient index
+   */
+  index: string;
+  /**
+   * Whether it was approved or not
+   */
+  initialized?: boolean;
+}
+
+/**
+ * The recipient data for the contract
+ */
+export interface IRecipientContract {
+  /**
+   * The recipient id (optional on chain so can use 0)
+   */
+  id: Hex;
+  /**
+   * The recipient metadata url
+   */
+  metadataUrl: string;
+  /**
+   * The recipient address
+   */
+  recipient: Hex;
+  /**
+   * Whether it was approved or not
+   */
+  initialized?: boolean;
+}
+
+/**
+ * An interface describing a request sent to a RegistryManager contract
+ */
+export interface IRequest {
+  /**
+   * The index of the application (optional onchain for Add so can use 0)
+   */
+  index: string;
+  /**
+   * The registry address
+   */
+  registry: Hex;
+  /**
+   * The request type
+   */
+  requestType: ERequestType;
+  /**
+   * The request status
+   */
+  status: ERequestStatus;
+  /**
+   * The recipient data
+   */
+  recipient: IRecipient | IRecipientContract;
+}
+
+/**
+ *
+ */
+export interface IRequestContract {
+  /**
+   * The index of the application (optional onchain for Add so can use 0)
+   */
+  index: bigint;
+  /**
+   * The registry address
+   */
+  registry: Hex;
+  /**
+   * The request type
+   */
+  requestType: ERequestType;
+  /**
+   * The request status
+   */
+  status: ERequestStatus;
+  /**
+   * The recipient data
+   */
+  recipient: IRecipientContract;
+}
+
+/**
+ * An extended interface describing the poll data
+ */
+export interface IPollData extends IGetPollData {
+  /**
+   * The registry address
+   */
+  registryAddress: string;
+  /**
+   * The metadata url
+   */
+  metadataUrl: string;
+  /**
+   * The poll init time
+   */
   initTime: bigint | number | string | null;
 }
 
+/**
+ * An interface describing the metadata of a round
+ */
 export interface IRoundMetadata {
+  /**
+   * The round id
+   */
   roundId: string;
+  /**
+   * The round description
+   */
   description: string;
+  /**
+   * The time the round starts
+   */
   startsAt: string;
+  /**
+   * The time the registration ends
+   */
   registrationEndsAt: string;
+  /**
+   * The time the voting starts
+   */
   votingStartsAt: string;
+  /**
+   * The time the voting ends
+   */
   votingEndsAt: string;
+  /**
+   * The round tally file
+   */
   tallyFile: string;
 }
 
+/**
+ * An interface describing a round (Poll)
+ */
 export interface IRoundData {
+  /**
+   * Whether the round is merged or not
+   */
   isMerged: boolean;
+  /**
+   * The poll id
+   */
   pollId: string;
+  /**
+   * The poll number of signups
+   */
   numSignups: string;
+  /**
+   * The poll address
+   */
   pollAddress: string;
+  /**
+   * The poll mode
+   */
   mode: string;
+  /**
+   * The registry address
+   */
   registryAddress: string;
+  /**
+   * The round id
+   */
   roundId: string;
+  /**
+   * The round description
+   */
   description: string;
+  /**
+   * The round starts at
+   */
   startsAt: Date;
+  /**
+   * The round registration ends at
+   */
   registrationEndsAt: Date;
+  /**
+   * The round voting starts at
+   */
   votingStartsAt: Date;
+  /**
+   * The round voting ends at
+   */
   votingEndsAt: Date;
+  /**
+   * The round tally file
+   */
   tallyFile: string;
 }

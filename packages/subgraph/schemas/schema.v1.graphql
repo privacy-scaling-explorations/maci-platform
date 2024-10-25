@@ -40,7 +40,7 @@ enum Status {
 }
 
 type Request @entity {
-  id: ID!
+  id: String!
   requestType: RequestType!
   index: BigInt
   status: Status!

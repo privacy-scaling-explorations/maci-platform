@@ -28,8 +28,6 @@ export const JoinButton = (): JSX.Element => {
     if (address !== undefined && signer) {
       const zupassGatekeeperData = await getZupassGatekeeperData({ maciAddress: config.maciAddress!, signer });
       const eventId = decStringToBigIntToUuid(zupassGatekeeperData.eventId);
-      console.log(eventId);
-      console.log(zupass);
       const result = await zuAuthPopup({
         fieldsToReveal: {
           revealTicketId: true,

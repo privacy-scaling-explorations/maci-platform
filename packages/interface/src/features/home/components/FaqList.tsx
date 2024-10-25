@@ -30,9 +30,6 @@ export const FAQList = (): JSX.Element => (
       title="What is MACI?"
     />
 
-    <FAQItem
-      description="Join our Telegram group or Discord channel to learn more!"
-      title="Do you have any other questions?"
-    />
+    <FAQItem description="Join our Discord channel to learn more!" title="Do you have any other questions?" />
   </div>
 );

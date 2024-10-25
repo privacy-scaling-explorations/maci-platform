@@ -118,7 +118,7 @@ export const FormControl = ({
 
       {cloneElement(children as ReactElement, {
         id: name,
-        error: Boolean(error),
+        error: String(error),
         ...register(name, { valueAsNumber }),
       })}
 

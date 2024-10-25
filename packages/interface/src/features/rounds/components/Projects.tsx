@@ -2,6 +2,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useCallback, useMemo } from "react";
 import { FiAlertCircle } from "react-icons/fi";
+import { Hex, zeroAddress } from "viem";
 
 import { InfiniteLoading } from "~/components/InfiniteLoading";
 import { SortFilter } from "~/components/SortFilter";
@@ -25,28 +26,33 @@ export interface IProjectsProps {
 
 export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
   const roundState = useRoundState(roundId);
-  const projects = useSearchProjects({ roundId, needApproval: roundState !== ERoundState.APPLICATION });
+
+  const { getRoundByRoundId } = useRound();
+  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+
+  const projects = useSearchProjects({ roundId, search: "", registryAddress: round?.registryAddress ?? zeroAddress });
 
   const { isRegistered } = useMaci();
-  const { addToBallot, removeFromBallot, ballotContains, ballot } = useBallot();
-  const { getRoundByRoundId } = useRound();
+  const { addToBallot, removeFromBallot, ballotContains, getBallot } = useBallot();
 
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
-  const results = useResults(roundId, round?.tallyFile);
+  const results = useResults(roundId, (round?.registryAddress ?? zeroAddress) as Hex, round?.tallyFile);
   const pollId = useMemo(() => round?.pollId, [round]);
 
+  const ballot = useMemo(() => getBallot(pollId!), [pollId, getBallot]);
+
   const handleAction = useCallback(
-    (projectId: string) => (e: Event) => {
+    (projectIndex: number, projectId: string) => (e: Event) => {
       e.preventDefault();
 
       if (!pollId) {
         return;
       }
 
-      if (!ballotContains(projectId)) {
+      if (!ballotContains(projectIndex, pollId)) {
         addToBallot(
           [
             {
+              projectIndex,
               projectId,
               amount: 0,
             },
@@ -54,20 +60,20 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
           pollId,
         );
       } else {
-        removeFromBallot(projectId);
+        removeFromBallot(projectIndex, pollId);
       }
     },
     [ballotContains, addToBallot, removeFromBallot, pollId],
   );
 
-  const defineState = (projectId: string): EProjectState => {
+  const defineState = (projectIndex: number): EProjectState => {
     if (!isRegistered) {
       return EProjectState.UNREGISTERED;
     }
-    if (ballotContains(projectId) && ballot.published && !ballot.edited) {
+    if (ballotContains(projectIndex, pollId!) && ballot.published && !ballot.edited) {
       return EProjectState.SUBMITTED;
     }
-    if (ballotContains(projectId)) {
+    if (ballotContains(projectIndex, pollId!)) {
       return EProjectState.ADDED;
     }
     return EProjectState.DEFAULT;
@@ -132,11 +138,11 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
             ) : null}
 
             <ProjectItem
-              action={handleAction(item.id)}
-              attestation={item}
-              isLoading={isLoading}
+              action={handleAction(Number.parseInt(item.index, 10), item.id)}
+              isLoading={projects.isLoading}
+              recipient={item}
               roundId={roundId}
-              state={defineState(item.id)}
+              state={defineState(Number.parseInt(item.index, 10))}
             />
           </Link>
         )}

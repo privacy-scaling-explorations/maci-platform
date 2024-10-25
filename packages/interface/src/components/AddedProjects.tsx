@@ -1,4 +1,9 @@
+import { useMemo } from "react";
+import { Hex, zeroAddress } from "viem";
+import { useAccount } from "wagmi";
+
 import { useBallot } from "~/contexts/Ballot";
+import { useRound } from "~/contexts/Round";
 import { useProjectCount } from "~/features/projects/hooks/useProjects";
 
 interface IAddedProjectsProps {
@@ -6,9 +11,18 @@ interface IAddedProjectsProps {
 }
 
 export const AddedProjects = ({ roundId }: IAddedProjectsProps): JSX.Element => {
-  const { ballot } = useBallot();
-  const allocations = ballot.votes;
-  const { data: projectCount } = useProjectCount(roundId);
+  const { getBallot } = useBallot();
+  const { chain } = useAccount();
+  const { getRoundByRoundId } = useRound();
+
+  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+
+  const { data: projectCount } = useProjectCount({
+    registryAddress: (round?.registryAddress ?? zeroAddress) as Hex,
+    chain: chain!,
+  });
+
+  const ballot = useMemo(() => getBallot(round?.pollId ?? ""), [round?.pollId, getBallot]);
 
   return (
     <div className="border-b border-gray-200 py-2">
@@ -16,7 +30,7 @@ export const AddedProjects = ({ roundId }: IAddedProjectsProps): JSX.Element => 
 
       <div className="mt-2 flex gap-2 text-2xl">
         <span>
-          <b>{allocations.length}</b>
+          <b>{ballot.votes.length}</b>
         </span>
 
         <span className="text-gray-300">
@@ -24,7 +38,7 @@ export const AddedProjects = ({ roundId }: IAddedProjectsProps): JSX.Element => 
         </span>
 
         <span className="text-gray-300">
-          <b>{projectCount?.count}</b>
+          <b>{projectCount?.count.toString()}</b>
         </span>
       </div>
     </div>

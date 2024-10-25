@@ -57,14 +57,17 @@ interface INavLink {
 interface IHeaderProps {
   navLinks: INavLink[];
   roundId?: string;
+  pollId?: string;
 }
 
-const Header = ({ navLinks, roundId = "" }: IHeaderProps) => {
+const Header = ({ navLinks, roundId = "", pollId = "" }: IHeaderProps) => {
   const { asPath } = useRouter();
   const [isOpen, setOpen] = useState(false);
-  const { ballot } = useBallot();
+  const { getBallot } = useBallot();
   const roundState = useRoundState(roundId);
   const { theme, setTheme } = useTheme();
+
+  const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
 
   const handleChangeTheme = useCallback(() => {
     setTheme(theme === "light" ? "dark" : "light");
