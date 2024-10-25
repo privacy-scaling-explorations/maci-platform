@@ -21,24 +21,23 @@ import { useSearchProjects } from "../../projects/hooks/useProjects";
 import { EProjectState } from "../../projects/types";
 
 export interface IProjectsProps {
-  roundId?: string;
+  pollId?: string;
 }
 
-export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
-  const roundState = useRoundState(roundId);
+export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
+  const roundState = useRoundState(pollId);
 
-  const { getRoundByRoundId } = useRound();
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const { getRoundByPollId } = useRound();
+  const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
 
-  const projects = useSearchProjects({ roundId, search: "", registryAddress: round?.registryAddress ?? zeroAddress });
+  const projects = useSearchProjects({ pollId, search: "", registryAddress: round?.registryAddress ?? zeroAddress });
 
   const { isRegistered } = useMaci();
   const { addToBallot, removeFromBallot, ballotContains, getBallot } = useBallot();
 
-  const results = useResults(roundId, (round?.registryAddress ?? zeroAddress) as Hex, round?.tallyFile);
-  const pollId = useMemo(() => round?.pollId, [round]);
+  const results = useResults(pollId, (round?.registryAddress ?? zeroAddress) as Hex, round?.tallyFile);
 
-  const ballot = useMemo(() => getBallot(pollId!), [pollId, getBallot]);
+  const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
 
   const handleAction = useCallback(
     (projectIndex: number, projectId: string) => (e: Event) => {
@@ -70,10 +69,10 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
     if (!isRegistered) {
       return EProjectState.UNREGISTERED;
     }
-    if (ballotContains(projectIndex, pollId!) && ballot.published && !ballot.edited) {
+    if (ballotContains(projectIndex, pollId) && ballot.published && !ballot.edited) {
       return EProjectState.SUBMITTED;
     }
-    if (ballotContains(projectIndex, pollId!)) {
+    if (ballotContains(projectIndex, pollId)) {
       return EProjectState.ADDED;
     }
     return EProjectState.DEFAULT;
@@ -117,7 +116,7 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
 
       {roundState === ERoundState.APPLICATION && (
         <div className="mb-4 flex w-full justify-end">
-          <Link href={`/rounds/${roundId}/applications/new`}>
+          <Link href={`/rounds/${pollId}/applications/new`}>
             <Button size="auto" variant="primary">
               Create Application
             </Button>
@@ -131,7 +130,7 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
           <Link
             key={item.id}
             className={clsx("relative", { "animate-pulse": isLoading })}
-            href={`/rounds/${roundId}/${item.id}`}
+            href={`/rounds/${pollId}/${item.id}`}
           >
             {!results.isLoading && roundState === ERoundState.RESULTS ? (
               <ProjectItemAwarded amount={results.data?.projects[item.id]?.votes} />
@@ -140,8 +139,8 @@ export const Projects = ({ roundId = "" }: IProjectsProps): JSX.Element => {
             <ProjectItem
               action={handleAction(Number.parseInt(item.index, 10), item.id)}
               isLoading={projects.isLoading}
+              pollId={pollId}
               recipient={item}
-              roundId={roundId}
               state={defineState(Number.parseInt(item.index, 10))}
             />
           </Link>

@@ -8,18 +8,18 @@ import { calculateTimeLeft } from "~/utils/time";
 import { TimeSlot } from "./TimeSlot";
 
 interface IVotingInfoProps {
-  roundId: string;
+  pollId: string;
 }
 
-export const VotingInfo = ({ roundId }: IVotingInfoProps): JSX.Element => {
+export const VotingInfo = ({ pollId }: IVotingInfoProps): JSX.Element => {
   const { isLoading } = useMaci();
-  const { getRoundByRoundId } = useRound();
+  const { getRoundByPollId } = useRound();
   const [timeLeft, setTimeLeft] = useState<[number, number, number, number]>([0, 0, 0, 0]);
 
   const votingEndsAt = useMemo(() => {
-    const round = getRoundByRoundId(roundId);
+    const round = getRoundByPollId(pollId);
     return round?.votingEndsAt ? new Date(round.votingEndsAt) : new Date();
-  }, [getRoundByRoundId, roundId]);
+  }, [getRoundByPollId, pollId]);
 
   useHarmonicIntervalFn(() => {
     setTimeLeft(calculateTimeLeft(votingEndsAt));

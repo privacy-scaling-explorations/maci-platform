@@ -6,26 +6,22 @@ import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
-import { useRound } from "~/contexts/Round";
 
 interface ISubmitBallotButtonProps {
-  roundId: string;
+  pollId: string;
 }
 
-export const SubmitBallotButton = ({ roundId }: ISubmitBallotButtonProps): JSX.Element => {
+export const SubmitBallotButton = ({ pollId }: ISubmitBallotButtonProps): JSX.Element => {
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
   const { onVote, isLoading, initialVoiceCredits } = useMaci();
   const { getBallot, publishBallot, sumBallot } = useBallot();
-  const { getRoundByRoundId } = useRound();
 
   const onVotingError = useCallback(() => {
     toast.error("Voting error");
   }, []);
 
-  const pollId = useMemo(() => getRoundByRoundId(roundId)?.pollId, [roundId, getRoundByRoundId]);
-
-  const ballot = useMemo(() => getBallot(pollId!), [pollId, getBallot]);
+  const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
   const ableToSubmit = useMemo(
     () => sumBallot(ballot.votes) <= initialVoiceCredits,
     [sumBallot, ballot, initialVoiceCredits],
@@ -44,9 +40,9 @@ export const SubmitBallotButton = ({ roundId }: ISubmitBallotButtonProps): JSX.E
 
     await onVote(votes, pollId, onVotingError, () => {
       publishBallot(pollId);
-      router.push(`/rounds/${roundId}/ballot/confirmation`);
+      router.push(`/rounds/${pollId}/ballot/confirmation`);
     });
-  }, [ballot, router, onVote, publishBallot, onVotingError, roundId, pollId]);
+  }, [ballot, router, onVote, publishBallot, onVotingError, pollId, pollId]);
 
   const handleOpenDialog = useCallback(() => {
     setOpen(true);

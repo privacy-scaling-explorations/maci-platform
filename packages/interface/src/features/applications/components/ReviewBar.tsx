@@ -15,21 +15,21 @@ import { useApplicationByProjectId } from "../hooks/useApplications";
 import { useApproveApplication } from "../hooks/useApproveApplication";
 
 interface IReviewBarProps {
-  roundId: string;
+  pollId: string;
   projectId: string;
 }
 
-export const ReviewBar = ({ roundId, projectId }: IReviewBarProps): JSX.Element => {
-  const { getRoundByRoundId } = useRound();
+export const ReviewBar = ({ pollId, projectId }: IReviewBarProps): JSX.Element => {
+  const { getRoundByPollId } = useRound();
 
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
 
   const isAdmin = useIsAdmin();
   const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
 
   const project = useProjectById(projectId, round?.registryAddress ?? zeroAddress);
   const application = useApplicationByProjectId(projectId, round?.registryAddress ?? zeroAddress);
-  const approve = useApproveApplication({ roundId });
+  const approve = useApproveApplication({});
 
   const isApproved = useMemo(() => {
     if (project.data && (project.data as unknown as IRecipient).initialized) {

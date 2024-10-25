@@ -18,7 +18,7 @@ export interface IApplicationItemProps {
   recipient: IRecipient | IRecipientContract;
   isApproved?: boolean;
   isLoading?: boolean;
-  roundId: string;
+  pollId: string;
 }
 
 export const ApplicationItem = ({
@@ -26,7 +26,7 @@ export const ApplicationItem = ({
   recipient,
   isApproved = false,
   isLoading = false,
-  roundId,
+  pollId,
 }: IApplicationItemProps): JSX.Element => {
   const metadata = useMetadata<Application>(recipient.metadataUrl);
 
@@ -45,7 +45,7 @@ export const ApplicationItem = ({
   }, [isApproved, index]);
 
   return (
-    <Link href={`/rounds/${roundId}/${recipient.id}`} target="_blank">
+    <Link href={`/rounds/${pollId}/${recipient.id}`} target="_blank">
       <div className="dark:hover:bg-lighterBlack flex cursor-pointer items-center gap-1 py-4 hover:bg-blue-50 sm:gap-2">
         <label className="flex flex-1 cursor-pointer justify-center sm:p-2">
           <Checkbox disabled={isApproved} value={index} {...form.register(`selected`)} type="checkbox" />

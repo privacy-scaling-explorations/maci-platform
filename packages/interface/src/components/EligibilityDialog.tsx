@@ -20,25 +20,25 @@ import type { EdDSAPublicKey } from "@pcd/eddsa-pcd";
 import { Dialog } from "./ui/Dialog";
 
 interface IEligibilityDialogProps {
-  roundId?: string;
+  pollId?: string;
 }
 
-export const EligibilityDialog = ({ roundId = "" }: IEligibilityDialogProps): JSX.Element | null => {
+export const EligibilityDialog = ({ pollId = "" }: IEligibilityDialogProps): JSX.Element | null => {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
-  const { getRoundByRoundId } = useRound();
+  const { getRoundByPollId } = useRound();
 
   const [openDialog, setOpenDialog] = useState<boolean>(!!address);
   const { onSignup, isEligibleToVote, isRegistered, initialVoiceCredits, gatekeeperTrait, storeZupassProof } =
     useMaci();
   const router = useRouter();
 
-  const roundState = useRoundState(roundId);
+  const roundState = useRoundState(pollId);
 
   const votingEndsAt = useMemo(() => {
-    const round = getRoundByRoundId(roundId);
+    const round = getRoundByPollId(pollId);
     return round?.votingEndsAt ? new Date(round.votingEndsAt) : new Date();
-  }, [roundId, getRoundByRoundId]);
+  }, [pollId, getRoundByPollId]);
 
   const onError = useCallback(() => toast.error("Signup error"), []);
 
@@ -93,8 +93,8 @@ export const EligibilityDialog = ({ roundId = "" }: IEligibilityDialogProps): JS
   }, [disconnect]);
 
   const handleGoToCreateApp = useCallback(() => {
-    router.push(`/rounds/${roundId}/applications/new`);
-  }, [router, roundId]);
+    router.push(`/rounds/${pollId}/applications/new`);
+  }, [router, pollId]);
 
   if (roundState === ERoundState.APPLICATION) {
     return (

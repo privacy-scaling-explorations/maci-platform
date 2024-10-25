@@ -11,7 +11,6 @@ import { useSubmitApproval } from "~/hooks/useRegistry";
  * @returns the result of the mutation
  */
 export function useApproveApplication(opts: {
-  roundId: string;
   onSuccess?: () => void;
 }): UseMutationResult<boolean[], Error | TransactionError, string[]> {
   const approve = useSubmitApproval();

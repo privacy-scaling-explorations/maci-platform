@@ -10,7 +10,7 @@ import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { Notice } from "~/components/ui/Notice";
 import { config } from "~/config";
-import { defaultBallot, useBallot } from "~/contexts/Ballot";
+import { useBallot } from "~/contexts/Ballot";
 import { useRound } from "~/contexts/Round";
 import { useProjectCount } from "~/features/projects/hooks/useProjects";
 import { formatNumber } from "~/utils/formatNumber";
@@ -31,26 +31,21 @@ const Card = createComponent(
 );
 
 interface IBallotConfirmationProps {
-  roundId: string;
+  pollId: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query: { roundId } }) =>
+export const getServerSideProps: GetServerSideProps = async ({ query: { pollId } }) =>
   Promise.resolve({
-    props: { roundId },
+    props: { pollId },
   });
 
-export const BallotConfirmation = ({ roundId }: IBallotConfirmationProps): JSX.Element => {
+export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.Element => {
   const { getBallot, sumBallot } = useBallot();
-  const roundState = useRoundState(roundId);
-  const { getRoundByRoundId } = useRound();
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const roundState = useRoundState(pollId);
+  const { getRoundByPollId } = useRound();
+  const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
 
-  const ballot = useMemo(() => {
-    if (round?.pollId) {
-      return getBallot(round.pollId);
-    }
-    return defaultBallot;
-  }, [round?.pollId, getBallot]);
+  const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
   const allocations = ballot.votes;
 
   const { chain } = useAccount();
@@ -68,14 +63,14 @@ export const BallotConfirmation = ({ roundId }: IBallotConfirmationProps): JSX.E
       </Heading>
 
       <p className="mb-14 mt-4 text-gray-400">
-        {`Thank you for participating in ${config.eventName} ${roundId} round.`}
+        {`Thank you for participating in ${config.eventName} ${round?.roundId} round.`}
       </p>
 
       <div className="mb-7 rounded-lg border border-gray-200 p-5">
         <b className="font-mono text-2xl uppercase">Summary of your ballot</b>
 
         <p className="my-8 text-gray-400">
-          <span>{`Round you voted in: ${roundId}`} </span>
+          <span>{`Round you voted in: ${pollId}`} </span>
 
           <br />
 
@@ -88,8 +83,8 @@ export const BallotConfirmation = ({ roundId }: IBallotConfirmationProps): JSX.E
               <ProjectAvatarWithName
                 allocation={project.amount}
                 id={project.projectId}
+                pollId={pollId}
                 registryAddress={round?.registryAddress as Hex}
-                roundId={roundId}
               />
             </div>
           ))}
@@ -119,7 +114,7 @@ export const BallotConfirmation = ({ roundId }: IBallotConfirmationProps): JSX.E
           </div>
 
           <div>
-            <Button as={Link} className="w-80 sm:w-fit" href={`/rounds/${roundId}/ballot`} variant="primary">
+            <Button as={Link} className="w-80 sm:w-fit" href={`/rounds/${pollId}/ballot`} variant="primary">
               Edit my ballot
             </Button>
           </div>

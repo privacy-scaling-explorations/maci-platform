@@ -18,7 +18,7 @@ import { BaseLayout } from "./BaseLayout";
 
 export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element => {
   const { address } = useAccount();
-  const roundState = useRoundState(props.roundId ?? "");
+  const roundState = useRoundState(props.pollId ?? "");
   const { getBallot } = useBallot();
   const { isRegistered, gatekeeperTrait } = useMaci();
 
@@ -29,14 +29,14 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
 
     if (roundState !== ERoundState.DEFAULT) {
       links.push({
-        href: `/rounds/${props.roundId}`,
+        href: `/rounds/${props.pollId}`,
         children: "Projects",
       });
     }
 
     if (roundState === ERoundState.VOTING && isRegistered) {
       links.push({
-        href: `/rounds/${props.roundId}/ballot`,
+        href: `/rounds/${props.pollId}/ballot`,
         children: "My Ballot",
       });
     }
@@ -47,21 +47,21 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
       isRegistered
     ) {
       links.push({
-        href: `/rounds/${props.roundId}/ballot/confirmation`,
+        href: `/rounds/${props.pollId}/ballot/confirmation`,
         children: "Submitted Ballot",
       });
     }
 
     if (roundState === ERoundState.RESULTS) {
       links.push({
-        href: `/rounds/${props.roundId}/stats`,
+        href: `/rounds/${props.pollId}/stats`,
         children: "Stats",
       });
     }
 
-    if (config.admin === address! && props.roundId) {
+    if (config.admin === address! && props.pollId) {
       links.push({
-        href: `/rounds/${props.roundId}/applications`,
+        href: `/rounds/${props.pollId}/applications`,
         children: "Applications",
       });
     }
@@ -95,9 +95,8 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
   const { isRegistered } = useMaci();
   const { address } = useAccount();
   const { getBallot } = useBallot();
-  const roundId = props.roundId ?? "";
 
-  const roundState = useRoundState(roundId);
+  const roundState = useRoundState(props.pollId ?? "");
 
   const ballot = useMemo(() => getBallot(props.pollId!), [props.pollId, getBallot]);
 
@@ -109,7 +108,7 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
       sidebarComponent={
         <div>
           <Info
-            roundId={roundId}
+            pollId={props.pollId ?? ""}
             showAppState={showInfo}
             showBallot={roundState !== ERoundState.APPLICATION && !!(showBallot && address && isRegistered)}
             showRoundInfo={showInfo}
@@ -118,7 +117,7 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
 
           {showSubmitButton && ballot.votes.length > 0 && (
             <div className="flex flex-col gap-4">
-              <SubmitBallotButton roundId={props.roundId ?? ""} />
+              <SubmitBallotButton pollId={props.pollId ?? ""} />
 
               <Notice
                 italic
