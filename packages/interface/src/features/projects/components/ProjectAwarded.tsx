@@ -6,19 +6,19 @@ import { useProjectResults } from "~/hooks/useResults";
 import { formatNumber } from "~/utils/formatNumber";
 
 export interface IProjectAwardedProps {
-  roundId: string;
+  pollId: string;
   tallyFile?: string;
   registryAddress: string;
   id?: string;
 }
 
 export const ProjectAwarded = ({
-  roundId,
+  pollId,
   tallyFile = undefined,
   registryAddress,
   id = "",
 }: IProjectAwardedProps): JSX.Element | null => {
-  const amount = useProjectResults(id, registryAddress as Hex, roundId, tallyFile);
+  const amount = useProjectResults(id, registryAddress as Hex, pollId, tallyFile);
 
   if (amount.isLoading) {
     return null;

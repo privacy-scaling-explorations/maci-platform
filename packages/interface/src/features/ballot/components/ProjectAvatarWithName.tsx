@@ -10,7 +10,7 @@ interface ProjectAvatarWithNameProps {
   showDescription?: boolean;
   allocation?: number;
   registryAddress: Hex;
-  roundId: string;
+  pollId: string;
 }
 
 export const ProjectAvatarWithName = ({
@@ -19,7 +19,7 @@ export const ProjectAvatarWithName = ({
   showDescription = false,
   allocation = 0,
   registryAddress,
-  roundId,
+  pollId,
 }: ProjectAvatarWithNameProps): JSX.Element => {
   const { data: projects } = useProjectById(id, registryAddress);
 
@@ -28,7 +28,7 @@ export const ProjectAvatarWithName = ({
   const Component = isLink ? Link : "div";
 
   return (
-    <Component className="flex flex-1 items-center gap-4" href={`/rounds/${roundId}/${id}`} tabIndex={-1}>
+    <Component className="flex flex-1 items-center gap-4" href={`/rounds/${pollId}/${id}`} tabIndex={-1}>
       <ProjectAvatar rounded="full" size="sm" url={metadata.data?.bannerImageUrl} />
 
       <div>

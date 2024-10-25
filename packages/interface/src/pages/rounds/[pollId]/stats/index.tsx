@@ -31,22 +31,22 @@ const Stat = ({ title, children = null }: PropsWithChildren<{ title: string }>) 
 );
 
 interface IStatsProps {
-  roundId: string;
+  pollId: string;
 }
 
-const Stats = ({ roundId }: IStatsProps) => {
+const Stats = ({ pollId }: IStatsProps) => {
   const { isLoading } = useMaci();
   const { chain, isConnected } = useAccount();
-  const { getRoundByRoundId } = useRound();
+  const { getRoundByPollId } = useRound();
 
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
-  const results = useResults(roundId, (round?.registryAddress ?? zeroAddress) as Hex, round?.tallyFile);
+  const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
+  const results = useResults(pollId, (round?.registryAddress ?? zeroAddress) as Hex, round?.tallyFile);
   const count = useProjectCount({
     chain: chain!,
     registryAddress: (round?.registryAddress ?? zeroAddress) as Hex,
   });
 
-  const { data: projectsResults } = useProjectsResults(roundId, (round?.registryAddress ?? zeroAddress) as Hex);
+  const { data: projectsResults } = useProjectsResults((round?.registryAddress ?? zeroAddress) as Hex);
 
   const { averageVotes, projects = {} } = results.data ?? {};
 
@@ -99,23 +99,23 @@ const Stats = ({ roundId }: IStatsProps) => {
 };
 
 interface IStatsPageProps {
-  roundId: string;
+  pollId: string;
 }
 
-const StatsPage = ({ roundId }: IStatsPageProps): JSX.Element => {
-  const roundState = useRoundState(roundId);
-  const { getRoundByRoundId } = useRound();
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+const StatsPage = ({ pollId }: IStatsPageProps): JSX.Element => {
+  const roundState = useRoundState(pollId);
+  const { getRoundByPollId } = useRound();
+  const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
   const duration = round?.votingEndsAt && differenceInDays(round.votingEndsAt, new Date());
 
   return (
-    <Layout roundId={roundId}>
+    <Layout pollId={pollId}>
       <Heading as="h1" size="3xl">
         Stats
       </Heading>
 
       {roundState === ERoundState.RESULTS ? (
-        <Stats roundId={roundId} />
+        <Stats pollId={pollId} />
       ) : (
         <Alert className="mx-auto max-w-sm text-center" variant="info">
           The results will be revealed in <div className="text-3xl">{duration && duration > 0 ? duration : 0}</div>
@@ -128,7 +128,7 @@ const StatsPage = ({ roundId }: IStatsPageProps): JSX.Element => {
 
 export default StatsPage;
 
-export const getServerSideProps: GetServerSideProps = async ({ query: { roundId } }) =>
+export const getServerSideProps: GetServerSideProps = async ({ query: { pollId } }) =>
   Promise.resolve({
-    props: { roundId },
+    props: { pollId },
   });

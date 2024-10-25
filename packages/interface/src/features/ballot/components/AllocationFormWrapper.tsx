@@ -16,14 +16,14 @@ import { AllocationInput } from "./AllocationInput";
 import { ProjectAvatarWithName } from "./ProjectAvatarWithName";
 
 interface AllocationFormProps {
-  roundId: string;
+  pollId: string;
   disabled?: boolean;
   projectIsLink?: boolean;
   renderHeader?: () => ReactNode;
 }
 
 export const AllocationFormWrapper = ({
-  roundId,
+  pollId,
   disabled = false,
   projectIsLink = false,
   renderHeader = undefined,
@@ -31,7 +31,7 @@ export const AllocationFormWrapper = ({
   const form = useFormContext<{ votes: Vote[] }>();
   const { initialVoiceCredits } = useMaci();
   const { addToBallot: onSave, removeFromBallot: onRemove } = useBallot();
-  const { getRoundByRoundId } = useRound();
+  const { getRoundByPollId } = useRound();
 
   const { fields, remove } = useFieldArray({
     name: "votes",
@@ -39,7 +39,7 @@ export const AllocationFormWrapper = ({
     control: form.control,
   });
 
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
 
   return (
     <Table>
@@ -53,8 +53,8 @@ export const AllocationFormWrapper = ({
                 showDescription
                 id={project.projectId}
                 isLink={projectIsLink}
+                pollId={pollId}
                 registryAddress={round?.registryAddress as Hex}
-                roundId={roundId}
               />
             </Td>
 

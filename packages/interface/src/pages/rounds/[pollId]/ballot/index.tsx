@@ -9,7 +9,7 @@ import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
 import { Form } from "~/components/ui/Form";
 import { Heading } from "~/components/ui/Heading";
-import { defaultBallot, useBallot } from "~/contexts/Ballot";
+import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
 import { AllocationFormWrapper } from "~/features/ballot/components/AllocationFormWrapper";
@@ -22,11 +22,10 @@ import { ERoundState } from "~/utils/types";
 import type { GetServerSideProps } from "next";
 
 interface IClearBallotProps {
-  roundId: string;
   pollId: string;
 }
 
-const ClearBallot = ({ roundId, pollId }: IClearBallotProps): JSX.Element | null => {
+const ClearBallot = ({ pollId }: IClearBallotProps): JSX.Element | null => {
   const form = useFormContext();
   const [isOpen, setOpen] = useState(false);
   const { deleteBallot } = useBallot();
@@ -35,7 +34,7 @@ const ClearBallot = ({ roundId, pollId }: IClearBallotProps): JSX.Element | null
     setOpen(true);
   }, [setOpen]);
 
-  if ([ERoundState.TALLYING, ERoundState.RESULTS].includes(useRoundState(roundId))) {
+  if ([ERoundState.TALLYING, ERoundState.RESULTS].includes(useRoundState(pollId))) {
     return null;
   }
 
@@ -70,10 +69,10 @@ const ClearBallot = ({ roundId, pollId }: IClearBallotProps): JSX.Element | null
 };
 
 interface IEmptyBallotProps {
-  roundId: string;
+  pollId: string;
 }
 
-const EmptyBallot = ({ roundId }: IEmptyBallotProps): JSX.Element => (
+const EmptyBallot = ({ pollId }: IEmptyBallotProps): JSX.Element => (
   <div className="flex flex-1 items-center justify-center">
     <div className=" max-w-[360px] space-y-4">
       <Heading className="text-center" size="lg">
@@ -85,7 +84,7 @@ const EmptyBallot = ({ roundId }: IEmptyBallotProps): JSX.Element => (
       </p>
 
       <div className="flex items-center justify-center gap-3">
-        <Button as={Link} href={`/rounds/${roundId}`} size="auto" variant="primary">
+        <Button as={Link} href={`/rounds/${pollId}`} size="auto" variant="primary">
           View projects
         </Button>
       </div>
@@ -94,12 +93,11 @@ const EmptyBallot = ({ roundId }: IEmptyBallotProps): JSX.Element => (
 );
 
 interface IBallotAllocationFormProps {
-  roundId: string;
   pollId: string;
 }
 
-const BallotAllocationForm = ({ roundId, pollId }: IBallotAllocationFormProps): JSX.Element => {
-  const roundState = useRoundState(roundId);
+const BallotAllocationForm = ({ pollId }: IBallotAllocationFormProps): JSX.Element => {
+  const roundState = useRoundState(pollId);
   const { getBallot, sumBallot } = useBallot();
   const { initialVoiceCredits } = useMaci();
 
@@ -115,21 +113,19 @@ const BallotAllocationForm = ({ roundId, pollId }: IBallotAllocationFormProps): 
       <p className="my-4 text-gray-400">Once you have reviewed your vote allocation, you can submit your ballot.</p>
 
       {ballot.published && (
-        <Link className="text-blue-400 hover:underline" href={`/rounds/${roundId}/ballot/confirmation`}>
+        <Link className="text-blue-400 hover:underline" href={`/rounds/${pollId}/ballot/confirmation`}>
           Check your submitted ballot
         </Link>
       )}
 
-      <div className="mb-4 justify-end sm:flex">
-        {ballot.votes.length ? <ClearBallot pollId={pollId} roundId={roundId} /> : null}
-      </div>
+      <div className="mb-4 justify-end sm:flex">{ballot.votes.length ? <ClearBallot pollId={pollId} /> : null}</div>
 
       <div className="border-t border-gray-300">
         <div className="px-0 sm:p-8">
           {ballot.votes.length ? (
-            <AllocationFormWrapper projectIsLink disabled={roundState === ERoundState.RESULTS} roundId={roundId} />
+            <AllocationFormWrapper projectIsLink disabled={roundState === ERoundState.RESULTS} pollId={pollId} />
           ) : (
-            <EmptyBallot roundId={roundId} />
+            <EmptyBallot pollId={pollId} />
           )}
         </div>
 
@@ -144,23 +140,18 @@ const BallotAllocationForm = ({ roundId, pollId }: IBallotAllocationFormProps): 
 };
 
 interface IBallotPageProps {
-  roundId: string;
+  pollId: string;
 }
 
-const BallotPage = ({ roundId }: IBallotPageProps): JSX.Element => {
+const BallotPage = ({ pollId }: IBallotPageProps): JSX.Element => {
   const { address, isConnecting } = useAccount();
   const { getBallot, sumBallot } = useBallot();
-  const { getRoundByRoundId } = useRound();
+  const { getRoundByPollId } = useRound();
   const router = useRouter();
-  const roundState = useRoundState(roundId);
+  const roundState = useRoundState(pollId);
 
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
-  const ballot = useMemo(() => {
-    if (round?.pollId) {
-      return getBallot(round.pollId);
-    }
-    return defaultBallot;
-  }, [round?.pollId, getBallot]);
+  const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
+  const ballot = useMemo(() => getBallot(pollId), [round?.pollId, getBallot]);
 
   useEffect(() => {
     if (!address && !isConnecting) {
@@ -173,18 +164,10 @@ const BallotPage = ({ roundId }: IBallotPageProps): JSX.Element => {
   }, [sumBallot]);
 
   return (
-    <LayoutWithSidebar
-      requireAuth
-      requireRegistration
-      showBallot
-      showSubmitButton
-      pollId={round?.pollId ?? ""}
-      roundId={roundId}
-      sidebar="right"
-    >
+    <LayoutWithSidebar requireAuth requireRegistration showBallot showSubmitButton pollId={pollId} sidebar="right">
       {roundState === ERoundState.VOTING && (
         <Form defaultValues={ballot} schema={BallotSchema} values={ballot} onSubmit={handleSubmit}>
-          <BallotAllocationForm pollId={round?.pollId ?? ""} roundId={roundId} />
+          <BallotAllocationForm pollId={pollId} />
         </Form>
       )}
 
@@ -197,7 +180,7 @@ const BallotPage = ({ roundId }: IBallotPageProps): JSX.Element => {
 
 export default BallotPage;
 
-export const getServerSideProps: GetServerSideProps = async ({ query: { roundId } }) =>
+export const getServerSideProps: GetServerSideProps = async ({ query: { pollId } }) =>
   Promise.resolve({
-    props: { roundId },
+    props: { pollId },
   });

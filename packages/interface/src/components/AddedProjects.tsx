@@ -7,22 +7,22 @@ import { useRound } from "~/contexts/Round";
 import { useProjectCount } from "~/features/projects/hooks/useProjects";
 
 interface IAddedProjectsProps {
-  roundId: string;
+  pollId: string;
 }
 
-export const AddedProjects = ({ roundId }: IAddedProjectsProps): JSX.Element => {
+export const AddedProjects = ({ pollId }: IAddedProjectsProps): JSX.Element => {
   const { getBallot } = useBallot();
   const { chain } = useAccount();
-  const { getRoundByRoundId } = useRound();
+  const { getRoundByPollId } = useRound();
 
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
 
   const { data: projectCount } = useProjectCount({
     registryAddress: (round?.registryAddress ?? zeroAddress) as Hex,
     chain: chain!,
   });
 
-  const ballot = useMemo(() => getBallot(round?.pollId ?? ""), [round?.pollId, getBallot]);
+  const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
 
   return (
     <div className="border-b border-gray-200 py-2">

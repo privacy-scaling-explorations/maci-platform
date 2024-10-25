@@ -56,15 +56,14 @@ interface INavLink {
 
 interface IHeaderProps {
   navLinks: INavLink[];
-  roundId?: string;
   pollId?: string;
 }
 
-const Header = ({ navLinks, roundId = "", pollId = "" }: IHeaderProps) => {
+const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
   const { asPath } = useRouter();
   const [isOpen, setOpen] = useState(false);
   const { getBallot } = useBallot();
-  const roundState = useRoundState(roundId);
+  const roundState = useRoundState(pollId);
   const { theme, setTheme } = useTheme();
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
@@ -73,7 +72,7 @@ const Header = ({ navLinks, roundId = "", pollId = "" }: IHeaderProps) => {
     setTheme(theme === "light" ? "dark" : "light");
   }, [theme, setTheme]);
 
-  // the URI of round index page looks like: /rounds/:roundId, without anything else, which is the reason why the length is 3
+  // the URI of round index page looks like: /rounds/:pollId, without anything else, which is the reason why the length is 3
   const isRoundIndexPage = useMemo(() => asPath.includes("rounds") && asPath.split("/").length === 3, [asPath]);
 
   return (

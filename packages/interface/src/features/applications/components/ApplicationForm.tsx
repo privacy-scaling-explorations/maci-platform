@@ -18,10 +18,10 @@ import { ImpactTags } from "./ImpactTags";
 import { ReviewApplicationDetails } from "./ReviewApplicationDetails";
 
 interface IApplicationFormProps {
-  roundId: string;
+  pollId: string;
 }
 
-export const ApplicationForm = ({ roundId }: IApplicationFormProps): JSX.Element => {
+export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element => {
   const clearDraft = useLocalStorage("application-draft")[2];
 
   const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
@@ -57,13 +57,13 @@ export const ApplicationForm = ({ roundId }: IApplicationFormProps): JSX.Element
   const create = useCreateApplication({
     onSuccess: (id: bigint) => {
       clearDraft();
-      router.push(`/rounds/${roundId}/applications/confirmation?id=${id.toString()}`);
+      router.push(`/rounds/${pollId}/applications/confirmation?id=${id.toString()}`);
     },
     onError: (err: { message: string }) =>
       toast.error("Application create error", {
         description: err.message,
       }),
-    roundId,
+    pollId,
   });
 
   const handleSubmit = useCallback(

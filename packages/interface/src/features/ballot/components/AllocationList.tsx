@@ -10,17 +10,17 @@ import { ProjectAvatarWithName } from "./ProjectAvatarWithName";
 
 interface IAllocationListProps {
   votes: Vote[];
-  roundId: string;
+  pollId: string;
   registryAddress: Hex;
 }
 
-export const AllocationList = ({ votes, roundId, registryAddress }: IAllocationListProps): JSX.Element => (
+export const AllocationList = ({ votes, pollId, registryAddress }: IAllocationListProps): JSX.Element => (
   <Table>
     <Tbody>
       {votes.map((project) => (
         <Tr key={project.projectId}>
           <Td className="w-full">
-            <ProjectAvatarWithName isLink id={project.projectId} registryAddress={registryAddress} roundId={roundId} />
+            <ProjectAvatarWithName isLink id={project.projectId} pollId={pollId} registryAddress={registryAddress} />
           </Td>
 
           <Td className="whitespace-nowrap text-right">{`${formatNumber(project.amount)} ${config.tokenName}`}</Td>

@@ -12,38 +12,31 @@ import { ERoundState, IRecipient } from "~/utils/types";
 import type { GetServerSideProps } from "next";
 
 export interface IProjectDetailsProps {
-  roundId: string;
+  pollId: string;
   projectId?: string;
 }
 
-const ProjectDetailsPage = ({ projectId = "", roundId }: IProjectDetailsProps): JSX.Element => {
-  const { getRoundByRoundId } = useRound();
+const ProjectDetailsPage = ({ projectId = "", pollId }: IProjectDetailsProps): JSX.Element => {
+  const { getRoundByPollId } = useRound();
 
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
 
   const projects = useProjectById(projectId, round?.registryAddress ?? zeroAddress);
 
-  const appState = useRoundState(roundId);
+  const appState = useRoundState(pollId);
 
   return (
-    <LayoutWithSidebar
-      eligibilityCheck
-      showBallot
-      showInfo
-      pollId={round?.pollId ?? ""}
-      roundId={roundId}
-      sidebar="left"
-    >
-      {appState === ERoundState.APPLICATION && <ReviewBar projectId={projectId} roundId={roundId} />}
+    <LayoutWithSidebar eligibilityCheck showBallot showInfo pollId={pollId} sidebar="left">
+      {appState === ERoundState.APPLICATION && <ReviewBar pollId={pollId} projectId={projectId} />}
 
-      {projects.data && <ProjectDetails project={projects.data as unknown as IRecipient} roundId={roundId} />}
+      {projects.data && <ProjectDetails pollId={pollId} project={projects.data as unknown as IRecipient} />}
     </LayoutWithSidebar>
   );
 };
 
 export default ProjectDetailsPage;
 
-export const getServerSideProps: GetServerSideProps = async ({ query: { projectId, roundId } }) =>
+export const getServerSideProps: GetServerSideProps = async ({ query: { projectId, pollId } }) =>
   Promise.resolve({
-    props: { projectId, roundId },
+    props: { projectId, pollId },
   });

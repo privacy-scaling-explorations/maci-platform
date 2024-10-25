@@ -4,10 +4,10 @@ import { useRound } from "~/contexts/Round";
 
 import { ERoundState } from "./types";
 
-export const useRoundState = (roundId: string): ERoundState => {
+export const useRoundState = (pollId: string): ERoundState => {
   const now = new Date();
-  const { getRoundByRoundId } = useRound();
-  const round = getRoundByRoundId(roundId);
+  const { getRoundByPollId } = useRound();
+  const round = getRoundByPollId(pollId);
 
   if (!round) {
     return ERoundState.DEFAULT;

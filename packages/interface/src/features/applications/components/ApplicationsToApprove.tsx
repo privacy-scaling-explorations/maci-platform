@@ -19,19 +19,19 @@ import { ApplicationItem } from "./ApplicationItem";
 import { ApproveButton } from "./ApproveButton";
 
 interface IApplicationsToApproveProps {
-  roundId: string;
+  pollId: string;
 }
 
 /**
  * Displays the applications that are pending approval.
  */
-export const ApplicationsToApprove = ({ roundId }: IApplicationsToApproveProps): JSX.Element => {
-  const { getRoundByRoundId } = useRound();
+export const ApplicationsToApprove = ({ pollId }: IApplicationsToApproveProps): JSX.Element => {
+  const { getRoundByPollId } = useRound();
 
-  const round = useMemo(() => getRoundByRoundId(roundId), [roundId, getRoundByRoundId]);
+  const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
   const approved = useApprovedApplications(round?.registryAddress ?? zeroAddress);
   const pending = usePendingApplications(round?.registryAddress ?? zeroAddress);
-  const approve = useApproveApplication({ roundId });
+  const approve = useApproveApplication({});
 
   useEffect(() => {
     approved.refetch().catch();
@@ -73,7 +73,7 @@ export const ApplicationsToApprove = ({ roundId }: IApplicationsToApproveProps):
 
           {!pending.isLoading && !pending.data?.length ? (
             <EmptyState title="No pending applications">
-              <Button as={Link} href={`/rounds/${roundId}/applications/new`} variant="primary">
+              <Button as={Link} href={`/rounds/${pollId}/applications/new`} variant="primary">
                 Go to create application
               </Button>
             </EmptyState>
@@ -91,12 +91,12 @@ export const ApplicationsToApprove = ({ roundId }: IApplicationsToApproveProps):
               {...item}
               isApproved={false}
               isLoading={pending.isLoading}
-              roundId={roundId}
+              pollId={pollId}
             />
           ))}
 
           {approved.data?.map((item) => (
-            <ApplicationItem key={item.index} {...item} isApproved isLoading={approved.isLoading} roundId={roundId} />
+            <ApplicationItem key={item.index} {...item} isApproved isLoading={approved.isLoading} pollId={pollId} />
           ))}
         </Form>
       </div>
