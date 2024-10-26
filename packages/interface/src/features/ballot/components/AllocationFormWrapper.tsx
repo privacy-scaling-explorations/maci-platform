@@ -72,6 +72,7 @@ export const AllocationFormWrapper = ({
 
             <Td className="pl-0" variant="last">
               <IconButton
+                className="dark:text-white"
                 disabled={disabled}
                 icon={HiOutlineTrash}
                 tabIndex={-1}

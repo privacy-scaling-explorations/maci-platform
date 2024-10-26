@@ -1,6 +1,5 @@
 import { type ComponentPropsWithRef } from "react";
 import { useFormContext, Controller } from "react-hook-form";
-import { NumericFormat } from "react-number-format";
 
 import { Input, InputAddon, InputWrapper } from "~/components/ui/Input";
 import { config } from "~/config";
@@ -28,26 +27,27 @@ export const AllocationInput = ({
         name={name!}
         {...props}
         render={({ field }) => (
-          <NumericFormat
+          <Input
             allowNegative={false}
             aria-label="allocation-input"
-            customInput={Input}
-            decimalScale={0}
             error={props.error}
             {...field}
             autoComplete="off"
-            className="pr-16"
             defaultValue={props.defaultValue as string}
             disabled={props.disabled}
-            isAllowed={({ floatValue }) =>
-              votingMaxProject !== undefined ? (floatValue ?? 0) <= votingMaxProject : (floatValue ?? 0) >= 0
-            }
-            thousandSeparator=","
+            max={votingMaxProject}
+            min="0"
+            type="number"
             onBlur={onBlur}
-            onChange={(v) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               // Parse decimal string to number to adhere to AllocationSchema
               {
-                field.onChange(parseFloat(v.target.value.replace(/,/g, "")));
+                let value = parseFloat(e.target.value.replace(/[,.]/g, ""));
+                if (votingMaxProject !== undefined && value > votingMaxProject) {
+                  value = votingMaxProject;
+                  e.target.value = value.toString();
+                }
+                field.onChange(value);
               }
             }
           />

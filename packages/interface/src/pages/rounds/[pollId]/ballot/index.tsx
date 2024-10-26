@@ -9,6 +9,7 @@ import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
 import { Form } from "~/components/ui/Form";
 import { Heading } from "~/components/ui/Heading";
+import { Notice } from "~/components/ui/Notice";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
@@ -47,7 +48,7 @@ const ClearBallot = ({ pollId }: IClearBallotProps): JSX.Element | null => {
   return (
     <>
       <button
-        className="cursor-pointer text-gray-400 underline hover:text-black"
+        className="mt-4 cursor-pointer text-gray-400 underline hover:text-black"
         type="button"
         onClick={handleOpenDialog}
       >
@@ -94,9 +95,10 @@ const EmptyBallot = ({ pollId }: IEmptyBallotProps): JSX.Element => (
 
 interface IBallotAllocationFormProps {
   pollId: string;
+  mode: string;
 }
 
-const BallotAllocationForm = ({ pollId }: IBallotAllocationFormProps): JSX.Element => {
+const BallotAllocationForm = ({ pollId, mode }: IBallotAllocationFormProps): JSX.Element => {
   const roundState = useRoundState(pollId);
   const { getBallot, sumBallot } = useBallot();
   const { initialVoiceCredits } = useMaci();
@@ -111,6 +113,14 @@ const BallotAllocationForm = ({ pollId }: IBallotAllocationFormProps): JSX.Eleme
       </Heading>
 
       <p className="my-4 text-gray-400">Once you have reviewed your vote allocation, you can submit your ballot.</p>
+
+      {mode.toString() === "0" && (
+        <Notice
+          italic
+          content="This round uses Quadratic Voting to encourage supporting diverse projects. The cost to vote = (number of votes)². Therefore we encourage to distribute your votes across more projects to maximize your impact."
+          variant="note"
+        />
+      )}
 
       {ballot.published && (
         <Link className="text-blue-400 hover:underline" href={`/rounds/${pollId}/ballot/confirmation`}>
@@ -132,7 +142,7 @@ const BallotAllocationForm = ({ pollId }: IBallotAllocationFormProps): JSX.Eleme
         <div className={clsx("flex h-16 items-center justify-end gap-2", sum > initialVoiceCredits && "text-red")}>
           <h4>Total votes:</h4>
 
-          <p>{formatNumber(sum)}</p>
+          <p className="dark:text-white">{formatNumber(sum)}</p>
         </div>
       </div>
     </div>
@@ -167,7 +177,7 @@ const BallotPage = ({ pollId }: IBallotPageProps): JSX.Element => {
     <LayoutWithSidebar requireAuth requireRegistration showBallot showSubmitButton pollId={pollId} sidebar="right">
       {roundState === ERoundState.VOTING && (
         <Form defaultValues={ballot} schema={BallotSchema} values={ballot} onSubmit={handleSubmit}>
-          <BallotAllocationForm pollId={pollId} />
+          <BallotAllocationForm mode={round!.mode} pollId={pollId} />
         </Form>
       )}
 

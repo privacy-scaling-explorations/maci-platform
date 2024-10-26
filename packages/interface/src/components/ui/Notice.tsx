@@ -5,11 +5,12 @@ import { tv } from "tailwind-variants";
 import { createComponent } from ".";
 
 const notice = tv({
-  base: "w-full flex items-start text-sm justify-center gap-1 text-base",
+  base: "w-full flex items-start text-sm gap-1 text-base",
   variants: {
     variant: {
-      default: "text-blue-400",
+      default: "text-blue-400 justify-center",
       block: "text-blue-700 bg-blue-400 border border-blue-700 rounded-lg p-4",
+      note: "text-blue-400 justify-left",
     },
   },
   defaultVariants: {
