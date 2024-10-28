@@ -32,7 +32,7 @@ export const ProjectAvatarWithName = ({
       <ProjectAvatar rounded="full" size="sm" url={metadata.data?.bannerImageUrl} />
 
       <div>
-        <div className="font-bold uppercase">{metadata.data?.name}</div>
+        <div className="font-bold uppercase dark:text-white">{metadata.data?.name}</div>
 
         <div className="text-sm text-gray-400">
           <p>{showDescription && (metadata.data?.bio ?? null)}</p>
