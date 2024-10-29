@@ -60,7 +60,7 @@
     "ethers": "^6.13.2",
     "hardhat": "^2.22.8",
     "lowdb": "^1.0.0",
-    "maci-contracts": "0.0.0-ci.e9b4b32",
+    "maci-contracts": "0.0.0-ci.8e76436",
     "maci-core": "^2.4.0",
     "maci-crypto": "^2.4.0",
     "maci-domainobjs": "^2.4.0",
