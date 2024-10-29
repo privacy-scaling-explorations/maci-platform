@@ -69,7 +69,7 @@
     "hardhat-artifactor": "^0.2.0",
     "hardhat-contract-sizer": "^2.10.0",
     "sol2uml": "^2.5.20",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@types/chai": "^4.3.11",
