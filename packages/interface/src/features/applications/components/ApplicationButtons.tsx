@@ -8,7 +8,6 @@ import { Spinner } from "~/components/ui/Spinner";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
 import type { Application } from "../types";
-import type { ImpactMetrix, ContributionLink, FundingSource } from "~/features/projects/types";
 
 export enum EApplicationStep {
   PROFILE,
@@ -48,9 +47,6 @@ export const ApplicationButtons = ({
     bannerImageUrl,
     contributionDescription,
     impactDescription,
-    impactCategory,
-    contributionLinks,
-    fundingSources,
   ] = useMemo(
     () =>
       form.watch([
@@ -62,17 +58,9 @@ export const ApplicationButtons = ({
         "bannerImageUrl",
         "contributionDescription",
         "impactDescription",
-        "impactCategory",
-        "contributionLinks",
-        "fundingSources",
       ]),
     [form],
   );
-
-  const checkLinks = (
-    links: Pick<ContributionLink | ImpactMetrix | FundingSource, "description">[] | undefined,
-  ): boolean =>
-    links === undefined || links.every((link) => link.description !== undefined && link.description.length > 0);
 
   const checkStepComplete = (): boolean => {
     if (step === EApplicationStep.PROFILE) {
@@ -87,14 +75,7 @@ export const ApplicationButtons = ({
     }
 
     if (step === EApplicationStep.ADVANCED) {
-      return (
-        impactCategory !== undefined &&
-        impactCategory.length > 0 &&
-        contributionDescription.length > 0 &&
-        impactDescription.length > 0 &&
-        checkLinks(contributionLinks) &&
-        checkLinks(fundingSources)
-      );
+      return contributionDescription.length > 0 && impactDescription.length > 0;
     }
 
     return true;

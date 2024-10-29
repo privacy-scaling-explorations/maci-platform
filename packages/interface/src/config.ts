@@ -1,8 +1,8 @@
 import * as wagmiChains from "wagmi/chains";
 
 export const metadata = {
-  title: "MACI PLATFORM",
-  description: "Open-source Retro Public Goods Funding platform with MACI for private on chain voting/",
+  title: "Devcon SEA Grants",
+  description: "Open-source Retro Public Goods Funding platform with MACI for private on chain voting",
   url: "https://maci-platform.vercel.app",
   image: "/api/og",
 };
@@ -71,6 +71,7 @@ export const getRPCURL = (): string | undefined => {
 
 export const config = {
   logoUrl: "/Logo.svg",
+  logoDarkUrl: "/Logo_dark.svg",
   pageSize: 3 * 4,
   // TODO: temp solution until we come up with solid one
   // https://github.com/privacy-scaling-explorations/maci-platform/issues/31
@@ -83,7 +84,8 @@ export const config = {
   maciStartBlock: Number(process.env.NEXT_PUBLIC_MACI_START_BLOCK ?? 0),
   maciSubgraphUrl: process.env.NEXT_PUBLIC_MACI_SUBGRAPH_URL ?? "",
   roundOrganizer: process.env.NEXT_PUBLIC_ROUND_ORGANIZER ?? "PSE",
-  roundLogo: process.env.NEXT_PUBLIC_ROUND_LOGO,
+  roundLogo: "/round-logo.svg",
+  roundLogoDark: "/round-logo-dark.svg",
   semaphoreSubgraphUrl: process.env.NEXT_PUBLIC_SEMAPHORE_SUBGRAPH,
   treeUrl: process.env.NEXT_PUBLIC_TREE_URL,
 };

@@ -5,16 +5,15 @@ import { toast } from "sonner";
 import { useAccount } from "wagmi";
 
 import { ImageUpload } from "~/components/ImageUpload";
-import { FieldArray, Form, FormControl, FormSection, Select, Textarea } from "~/components/ui/Form";
+import { Form, FormControl, FormSection, Textarea } from "~/components/ui/Form";
 import { Input } from "~/components/ui/Input";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
 import { useCreateApplication } from "../hooks/useCreateApplication";
-import { ApplicationSchema, contributionTypes, fundingSourceTypes, type Application } from "../types";
+import { ApplicationSchema, type Application } from "../types";
 
 import { ApplicationButtons, EApplicationStep } from "./ApplicationButtons";
 import { ApplicationSteps } from "./ApplicationSteps";
-import { ImpactTags } from "./ImpactTags";
 import { ReviewApplicationDetails } from "./ReviewApplicationDetails";
 
 interface IApplicationFormProps {
@@ -128,7 +127,7 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
           <div className="mb-4 flex flex-col gap-4 sm:flex-row">
             <FormControl
               required
-              hint="The size should be smaller than 1MB."
+              hint="The size should be smaller than 2MB."
               label="Project avatar"
               name="profileImageUrl"
             >
@@ -138,7 +137,7 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
             <FormControl
               required
               className="flex-1"
-              hint="The size should be smaller than 1MB."
+              hint="The size should be smaller than 2MB."
               label="Project background image"
               name="bannerImageUrl"
             >
@@ -159,66 +158,6 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
           <FormControl required label="Impact description" name="impactDescription">
             <Textarea placeholder="What impact has your project had?" rows={4} />
           </FormControl>
-
-          <ImpactTags />
-
-          <FieldArray
-            description="Where can we find your contributions?"
-            name="contributionLinks"
-            renderField={(field, i) => (
-              <div className="mb-4 flex flex-wrap gap-2">
-                <FormControl required className="min-w-96" name={`contributionLinks.${i}.description`}>
-                  <Input placeholder="Type the description of your contribution" />
-                </FormControl>
-
-                <FormControl required className="min-w-72" name={`contributionLinks.${i}.url`}>
-                  <Input placeholder="https://" />
-                </FormControl>
-
-                <FormControl required name={`contributionLinks.${i}.type`}>
-                  <Select>
-                    {Object.entries(contributionTypes).map(([value, label]) => (
-                      <option key={value} value={value}>
-                        {label}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-            )}
-            title="Contribution links"
-          />
-
-          <FieldArray
-            description="From what sources have you received funding?"
-            name="fundingSources"
-            renderField={(field, i) => (
-              <div className="mb-4 flex flex-wrap gap-2">
-                <FormControl required className="min-w-96" name={`fundingSources.${i}.description`}>
-                  <Input placeholder="Type the name of your funding source" />
-                </FormControl>
-
-                <FormControl required valueAsNumber className="w-32" name={`fundingSources.${i}.amount`}>
-                  <Input placeholder="Amount" type="number" />
-                </FormControl>
-
-                <FormControl required className="w-32" name={`fundingSources.${i}.currency`}>
-                  <Input placeholder="e.g. USD" />
-                </FormControl>
-
-                <FormControl required name={`fundingSources.${i}.type`}>
-                  <Select>
-                    {Object.entries(fundingSourceTypes).map(([value, label]) => (
-                      <option key={value} value={value}>
-                        {label}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-            )}
-            title="Funding sources"
-          />
         </FormSection>
 
         {step === EApplicationStep.REVIEW && <ReviewApplicationDetails />}

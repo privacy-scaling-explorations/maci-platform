@@ -59,7 +59,7 @@ export const JoinButton = (): JSX.Element => {
     return (
       <div>
         <Button variant={isRegistered === undefined || isLoading ? "disabled" : "primary"} onClick={handleZupassVerify}>
-          Generate Zupass Proof
+          Prove you can join with Zupass
         </Button>
       </div>
     );
@@ -69,7 +69,7 @@ export const JoinButton = (): JSX.Element => {
     return (
       <div>
         <Button variant={isRegistered === undefined || isLoading ? "disabled" : "primary"} onClick={handleSignup}>
-          Voter sign up
+          Sign up to vote
         </Button>
       </div>
     );

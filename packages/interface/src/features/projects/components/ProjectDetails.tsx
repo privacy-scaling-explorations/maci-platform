@@ -58,10 +58,6 @@ const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetails
       <p className="px-2 text-gray-400">{bio}</p>
 
       <div className="my-8 flex flex-col gap-8 px-2">
-        <p className="text-xl uppercase">
-          <b>Impact statements</b>
-        </p>
-
         <ProjectDescriptionSection
           contributions={metadata.data?.contributionLinks}
           description={metadata.data?.contributionDescription}
@@ -71,7 +67,7 @@ const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetails
         <ProjectDescriptionSection
           description={metadata.data?.impactDescription}
           fundings={fundingSources}
-          title="past grants and funding"
+          title="Impact"
         />
 
         {action}
