@@ -5,6 +5,7 @@ import { Pausable } from "@openzeppelin/contracts/utils/Pausable.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { Tally as TallyBase } from "maci-contracts/contracts/Tally.sol";
+import { ITally as ITallyBase } from "maci-contracts/contracts/interfaces/ITally.sol";
 
 import { IPoll } from "../interfaces/IPoll.sol";
 import { IPayoutStrategy } from "../interfaces/IPayoutStrategy.sol";
@@ -174,7 +175,7 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
   }
 
   /// @inheritdoc TallyBase
-  function addTallyResults(TallyBase.AddTallyResultsArgs calldata args) public override isInitialized onlyOwner {
+  function addTallyResults(ITallyBase.AddTallyResultsArgs calldata args) public override isInitialized onlyOwner {
     if (recipientCount == 0) {
       recipientCount = registry.recipientCount();
     }
