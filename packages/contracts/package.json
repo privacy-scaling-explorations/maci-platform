@@ -64,7 +64,12 @@
     "maci-core": "^2.4.0",
     "maci-crypto": "^2.4.0",
     "maci-domainobjs": "^2.4.0",
-    "solidity-docgen": "^0.6.0-beta.36"
+    "solidity-docgen": "^0.6.0-beta.36",
+    "dotenv": "^16.4.5",
+    "hardhat-artifactor": "^0.2.0",
+    "hardhat-contract-sizer": "^2.10.0",
+    "sol2uml": "^2.5.20",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@types/chai": "^4.3.11",
@@ -75,11 +80,6 @@
     "@types/snarkjs": "^0.7.8",
     "@types/uuid": "^10.0.0",
     "chai": "^4.3.10",
-    "dotenv": "^16.4.5",
-    "hardhat-artifactor": "^0.2.0",
-    "hardhat-contract-sizer": "^2.10.0",
-    "sol2uml": "^2.5.20",
-    "ts-node": "^10.9.1",
     "typescript": "^5.5.4"
   }
 }
