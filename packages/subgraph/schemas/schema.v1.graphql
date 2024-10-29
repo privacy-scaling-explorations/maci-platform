@@ -42,7 +42,8 @@ enum Status {
 type Request @entity {
   id: String!
   requestType: RequestType!
-  index: BigInt
+  index: BigInt!
+  recipientIndex: BigInt!
   status: Status!
 
   "relations"
@@ -84,7 +85,7 @@ type Poll @entity {
   maxMessages: BigInt!
   maxVoteOption: BigInt!
   messageProcessor: Bytes! # address
-  tally: Bytes! # address
+  tally: Tally!
   initTime: BigInt
   createdAt: BigInt!
   updatedAt: BigInt!
@@ -102,6 +103,41 @@ type Poll @entity {
   maci: MACI!
   registry: Registry
   votes: [Vote!]! @derivedFrom(field: "poll")
+}
+
+type Tally @entity {
+  id: Bytes! # tally address
+  results: [TallyResult!]! @derivedFrom(field: "tally")
+  claims: [Claim!]! @derivedFrom(field: "tally")
+  deposits: [Deposit!]! @derivedFrom(field: "tally")
+
+  "relations"
+  poll: Poll!
+}
+
+type TallyResult @entity(immutable: true) {
+  id: ID! # index
+  result: BigInt!
+
+  "relations"
+  tally: Tally!
+}
+
+type Claim @entity(immutable: true) {
+  id: ID!
+  amount: BigInt!
+
+  "relations"
+  tally: Tally!
+  recipient: Recipient!
+}
+
+type Deposit @entity(immutable: true) {
+  id: Bytes! # address
+  amount: BigInt!
+
+  "relations"
+  tally: Tally!
 }
 
 type Vote @entity(immutable: true) {

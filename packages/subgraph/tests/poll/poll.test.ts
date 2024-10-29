@@ -12,7 +12,13 @@ import {
   handleSetRegistry,
   handleInitPoll,
 } from "../../src/poll";
-import { DEFAULT_POLL_ADDRESS, DEFAULT_REGISTRY_ADDRESS, mockMaciContract, mockPollContract } from "../common";
+import {
+  DEFAULT_POLL_ADDRESS,
+  DEFAULT_REGISTRY_ADDRESS,
+  mockMaciContract,
+  mockPollContract,
+  mockRegistryContract,
+} from "../common";
 import { createDeployPollEvent } from "../maci/utils";
 
 import {
@@ -37,6 +43,7 @@ describe("Poll", () => {
   beforeEach(() => {
     mockMaciContract();
     mockPollContract();
+    mockRegistryContract();
 
     // mock the deploy poll event with non qv mode set
     const event = createDeployPollEvent(BigInt.fromI32(1), BigInt.fromI32(1), BigInt.fromI32(1), BigInt.fromI32(1));

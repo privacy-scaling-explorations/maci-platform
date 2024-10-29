@@ -33,6 +33,7 @@ describe("RegistryManager", () => {
         BigInt.fromI32(requestType),
         Bytes.fromUTF8("id"),
         BigInt.fromI32(0),
+        BigInt.fromI32(0),
         DEFAULT_PAYOUT_ADDRESS,
         "metadataUrl",
       );
@@ -45,6 +46,7 @@ describe("RegistryManager", () => {
       assert.fieldEquals("RegistryManager", registryManager.id.toHex(), "id", DEFAULT_REGISTRY_MANAGER_ADDRESS.toHex());
       assert.fieldEquals("Request", request.id, "requestType", ["Add", "Change", "Remove"][requestType].toString());
       assert.fieldEquals("Request", request.id, "index", sentEvent.params.index.toString());
+      assert.fieldEquals("Request", request.id, "recipientIndex", sentEvent.params.recipientIndex.toString());
       assert.fieldEquals("Request", request.id, "status", "Pending");
       assert.fieldEquals("Request", request.id, "recipient", sentEvent.params.recipient.toHex());
       assert.fieldEquals("Request", request.id, "registry", sentEvent.params.registry.toHex());
@@ -56,6 +58,7 @@ describe("RegistryManager", () => {
         BigInt.fromI32(requestType),
         Bytes.fromUTF8("id"),
         BigInt.fromI32(0),
+        BigInt.fromI32(0),
         DEFAULT_PAYOUT_ADDRESS,
         "metadataUrl",
       );
@@ -65,6 +68,7 @@ describe("RegistryManager", () => {
       assert.fieldEquals("RegistryManager", registryManager.id.toHex(), "id", DEFAULT_REGISTRY_MANAGER_ADDRESS.toHex());
       assert.fieldEquals("Request", request.id, "requestType", ["Add", "Change", "Remove"][requestType].toString());
       assert.fieldEquals("Request", request.id, "index", approveEvent.params.index.toString());
+      assert.fieldEquals("Request", request.id, "recipientIndex", approveEvent.params.recipientIndex.toString());
       assert.fieldEquals("Request", request.id, "status", "Approved");
       assert.fieldEquals("Request", request.id, "recipient", approveEvent.params.recipient.toHex());
       assert.fieldEquals("Request", request.id, "registry", approveEvent.params.registry.toHex());
@@ -80,6 +84,7 @@ describe("RegistryManager", () => {
         BigInt.fromI32(requestType),
         Bytes.fromUTF8("id"),
         BigInt.fromI32(0),
+        BigInt.fromI32(0),
         DEFAULT_PAYOUT_ADDRESS,
         "metadataUrl",
       );
@@ -92,6 +97,7 @@ describe("RegistryManager", () => {
       assert.fieldEquals("RegistryManager", registryManager.id.toHex(), "id", DEFAULT_REGISTRY_MANAGER_ADDRESS.toHex());
       assert.fieldEquals("Request", request.id, "requestType", ["Add", "Change", "Remove"][requestType].toString());
       assert.fieldEquals("Request", request.id, "index", sentEvent.params.index.toString());
+      assert.fieldEquals("Request", request.id, "recipientIndex", sentEvent.params.index.toString());
       assert.fieldEquals("Request", request.id, "status", "Pending");
       assert.fieldEquals("Request", request.id, "recipient", sentEvent.params.recipient.toHex());
       assert.fieldEquals("Request", request.id, "registry", sentEvent.params.registry.toHex());
@@ -103,6 +109,7 @@ describe("RegistryManager", () => {
         BigInt.fromI32(requestType),
         Bytes.fromUTF8("id"),
         BigInt.fromI32(0),
+        BigInt.fromI32(0),
         DEFAULT_PAYOUT_ADDRESS,
         "metadataUrl",
       );
@@ -112,6 +119,7 @@ describe("RegistryManager", () => {
       assert.fieldEquals("RegistryManager", registryManager.id.toHex(), "id", DEFAULT_REGISTRY_MANAGER_ADDRESS.toHex());
       assert.fieldEquals("Request", request.id, "requestType", ["Add", "Change", "Remove"][requestType].toString());
       assert.fieldEquals("Request", request.id, "index", rejectEvent.params.index.toString());
+      assert.fieldEquals("Request", request.id, "recipientIndex", rejectEvent.params.index.toString());
       assert.fieldEquals("Request", request.id, "status", "Rejected");
       assert.fieldEquals("Request", request.id, "recipient", rejectEvent.params.recipient.toHex());
       assert.fieldEquals("Request", request.id, "registry", rejectEvent.params.registry.toHex());
