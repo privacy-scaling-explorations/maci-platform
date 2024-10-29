@@ -37,9 +37,9 @@ const button = tv({
 export const Button = createComponent("button", button);
 
 export interface IIconButtonProps extends ComponentPropsWithRef<typeof Button> {
+  children: ReactNode;
   icon: LucideIcon;
   size: string;
-  children: ReactNode;
 }
 
 export const IconButton = forwardRef<unknown, IIconButtonProps>(({ children, icon, size, ...props }, ref) => (
