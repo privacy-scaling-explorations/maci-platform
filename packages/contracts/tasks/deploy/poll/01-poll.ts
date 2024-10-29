@@ -1,9 +1,17 @@
 /* eslint-disable no-console */
-import { ContractStorage, Deployment, EMode } from "maci-contracts";
+import { ZeroAddress } from "ethers";
+import { ContractStorage, Deployment, EMode, MockERC20__factory as MockERC20Factory } from "maci-contracts";
 import { PubKey } from "maci-domainobjs";
 
-import { type Poll, type MACI } from "../../../typechain-types";
-import { EContracts, EDeploySteps, REGISTRY_TYPES, TRegistryManager, TRegistry } from "../../helpers/constants";
+import { type Poll, type MACI, type Tally } from "../../../typechain-types";
+import {
+  EContracts,
+  EDeploySteps,
+  REGISTRY_TYPES,
+  TRegistryManager,
+  TRegistry,
+  ONE_WEEK_IN_SECONDS,
+} from "../../helpers/constants";
 
 const deployment = Deployment.getInstance();
 const storage = ContractStorage.getInstance();
@@ -31,7 +39,11 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
       throw new Error("Need to deploy VkRegistry contract first");
     }
 
-    const { MACI__factory: MACIFactory, Poll__factory: PollFactory } = await import("../../../typechain-types");
+    const {
+      MACI__factory: MACIFactory,
+      Poll__factory: PollFactory,
+      Tally__factory: TallyFactory,
+    } = await import("../../../typechain-types");
 
     const maciContract = await deployment.getContract<MACI>({ name: EContracts.MACI, abi: MACIFactory.abi });
     const pollId = await maciContract.nextPollId();
@@ -72,21 +84,21 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
       ...registryArgs,
     );
 
-    const tx = await maciContract.deployPoll(
-      pollDuration,
-      {
-        intStateTreeDepth,
-        messageTreeSubDepth,
-        messageTreeDepth,
-        voteOptionTreeDepth,
-      },
-      unserializedKey.asContractParam(),
-      verifierContractAddress,
-      vkRegistryContractAddress,
-      mode,
-    );
-
-    const deployPollReceipt = await tx.wait();
+    const deployPollReceipt = await maciContract
+      .deployPoll(
+        pollDuration,
+        {
+          intStateTreeDepth,
+          messageTreeSubDepth,
+          messageTreeDepth,
+          voteOptionTreeDepth,
+        },
+        unserializedKey.asContractParam(),
+        verifierContractAddress,
+        vkRegistryContractAddress,
+        mode,
+      )
+      .then((tx) => tx.wait());
 
     if (deployPollReceipt?.status !== 1) {
       throw new Error("Deploy poll transaction is failed");
@@ -113,8 +125,9 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
       address: messageProcessorContractAddress,
     });
 
-    const tallyContract = await deployment.getContract({
+    const tallyContract = await deployment.getContract<Tally>({
       name: EContracts.Tally,
+      abi: TallyFactory.abi,
       address: tallyContractAddress,
     });
 
@@ -125,6 +138,47 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
 
     // get the empty ballot root
     const emptyBallotRoot = await pollContract.emptyBallotRoot();
+
+    const cooldownTime =
+      deployment.getDeployConfigField<string | null>(EContracts.Tally, "cooldownTime") ?? ONE_WEEK_IN_SECONDS * 8;
+    const maxContribution = deployment.getDeployConfigField<string>(EContracts.Tally, "maxContribution", true);
+    const withPause = deployment.getDeployConfigField<boolean | null>(EContracts.Tally, "withPause") ?? true;
+    let payoutToken = deployment.getDeployConfigField<string>(EContracts.Tally, "payoutToken", true);
+
+    if (hre.network.name === "localhost") {
+      const mockERC20 = await deployment.deployContract(
+        { name: EContracts.MockERC20, abi: MockERC20Factory.abi },
+        "Token",
+        "TEST",
+      );
+      payoutToken = await mockERC20.getAddress();
+
+      await storage.register({
+        id: EContracts.MockERC20,
+        key: `poll-${pollId}`,
+        contract: mockERC20,
+        args: ["Token", "TEST"],
+        network: hre.network.name,
+      });
+    }
+
+    if (payoutToken === ZeroAddress) {
+      throw new Error("Payout token is a zero address");
+    }
+
+    await tallyContract
+      .init({
+        cooldownTime,
+        maxContribution,
+        payoutToken,
+      })
+      .then((tx) => tx.wait());
+
+    // Need to pause deposits/withdrawals/claims for now
+    // When feature is ready, this code can be removed
+    if (withPause) {
+      await tallyContract.pause().then((tx) => tx.wait());
+    }
 
     await Promise.all([
       storage.register({

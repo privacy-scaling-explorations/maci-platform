@@ -23,6 +23,7 @@ export enum EPlatformContracts {
   RegistryManager = "RegistryManager",
   EASRegistry = "EASRegistry",
   SimpleRegistry = "SimpleRegistry",
+  MockERC20 = "MockERC20",
 }
 
 /**
@@ -129,3 +130,5 @@ export const getEtherscanApiKeys = (): Record<ESupportedChains, string | undefin
   [ESupportedChains.Coverage]: undefined,
   [ESupportedChains.Hardhat]: undefined,
 });
+
+export const ONE_WEEK_IN_SECONDS = 604800;
