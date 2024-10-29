@@ -20,11 +20,14 @@ dataSources:
       entities:
         - MACI
         - Poll
+        - Tally
       abis:
         - name: MACI
           file: ./node_modules/maci-platform-contracts/build/artifacts/contracts/maci/MACI.sol/MACI.json
         - name: Poll
           file: ./node_modules/maci-platform-contracts/build/artifacts/contracts/maci/Poll.sol/Poll.json
+        - name: Tally
+          file: ./abi/Tally.json
       eventHandlers:
         - event: DeployPoll(uint256,indexed uint256,indexed uint256,uint8)
           handler: handleDeployPoll
@@ -112,3 +115,27 @@ templates:
         - event: RecipientRemoved(indexed uint256,bytes32,indexed address)
           handler: handleRemoveRecipient
       file: ./src/registry.ts
+
+  - kind: ethereum
+    name: Tally
+    network: {{ network }}
+    source:
+      abi: Tally
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - Tally
+      abis:
+        - name: Tally
+          file: ./abi/Tally.json
+      eventHandlers:
+        - event: Deposited(indexed address,indexed uint256)
+          handler: handleAddDeposit
+        - event: Claimed(indexed uint256,indexed address,indexed uint256)
+          handler: handleAddClaim
+        - event: ResultAdded(indexed uint256,indexed uint256)
+          handler: handleAddResult
+      file: ./src/tally.ts
+

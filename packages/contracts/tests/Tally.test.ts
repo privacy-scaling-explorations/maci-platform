@@ -50,6 +50,7 @@ describe("Tally", () => {
   let project: Signer;
 
   let ownerAddress: string;
+  let userAddress: string;
   let projectAddress: string;
 
   const maxRecipients = TALLY_RESULTS.tally.length;
@@ -74,7 +75,11 @@ describe("Tally", () => {
 
   before(async () => {
     [owner, user, project] = await getSigners();
-    [ownerAddress, , projectAddress] = await Promise.all([owner.getAddress(), user.getAddress(), project.getAddress()]);
+    [ownerAddress, userAddress, projectAddress] = await Promise.all([
+      owner.getAddress(),
+      user.getAddress(),
+      project.getAddress(),
+    ]);
 
     payoutToken = await deployContract("MockERC20", owner, true, "Payout token", "PT");
 
@@ -351,7 +356,7 @@ describe("Tally", () => {
       "NoProjectHasMoreThanOneVote",
     );
 
-    const firstReceipt = await tally
+    const promise = await tally
       .addTallyResults({
         voteOptionIndices: indices.slice(1),
         tallyResults: tallyResults.slice(1),
@@ -365,7 +370,10 @@ describe("Tally", () => {
       })
       .then((tx) => tx.wait());
 
-    expect(firstReceipt?.status).to.equal(1);
+    for (let index = 1; index < indices.length; index += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await expect(promise).to.emit(tally, "ResultAdded").withArgs(index, tallyResults[index]);
+    }
 
     const voiceCreditFactor = await tally.voiceCreditFactor();
 
@@ -389,8 +397,8 @@ describe("Tally", () => {
       }),
     ).to.be.revertedWithCustomError(tally, "TooManyResults");
 
-    const lastReceipt = await tally
-      .addTallyResults({
+    await expect(
+      tally.addTallyResults({
         voteOptionIndices: indices.slice(0, 1),
         tallyResults: tallyResults.slice(0, 1),
         tallyResultProofs: tallyResultProofs.slice(0, 1),
@@ -400,10 +408,10 @@ describe("Tally", () => {
         newResultsCommitment: TALLY_RESULTS.commitment,
         spentVoiceCreditsHash: TOTAL_SPENT_VOICE_CREDITS.commitment,
         perVOSpentVoiceCreditsHash: PER_VO_SPENT_VOICE_CREDITS.commitment,
-      })
-      .then((tx) => tx.wait());
-
-    expect(lastReceipt?.status).to.equal(1);
+      }),
+    )
+      .to.emit(tally, "ResultAdded")
+      .withArgs(0, tallyResults[0]);
   });
 
   it("should deposit funds properly", async () => {
@@ -415,16 +423,13 @@ describe("Tally", () => {
     await payoutToken.transfer(user, userAmount);
 
     await payoutToken.approve(tally, ownerAmount).then((tx) => tx.wait());
-    await tally.deposit(ownerAmount).then((tx) => tx.wait());
+    await expect(tally.deposit(ownerAmount)).to.emit(tally, "Deposited").withArgs(ownerAddress, ownerAmount);
 
     await payoutToken
       .connect(user)
       .approve(tally, userAmount)
       .then((tx) => tx.wait());
-    await tally
-      .connect(user)
-      .deposit(userAmount)
-      .then((tx) => tx.wait());
+    await expect(tally.connect(user).deposit(userAmount)).to.emit(tally, "Deposited").withArgs(userAddress, userAmount);
 
     const [tokenBalance, totalAmount] = await Promise.all([payoutToken.balanceOf(tally), tally.totalAmount()]);
 
@@ -538,7 +543,15 @@ describe("Tally", () => {
       };
 
       // eslint-disable-next-line no-await-in-loop
-      await tally.claim(params).then((tx) => tx.wait());
+      const promise = await tally.claim(params);
+      // eslint-disable-next-line no-await-in-loop
+      const receipt = await promise.wait();
+      // eslint-disable-next-line no-await-in-loop
+      const amount = await tally.getAllocatedAmount(params.index, params.voiceCreditsPerOption);
+
+      expect(receipt?.status).to.equal(1);
+      // eslint-disable-next-line no-await-in-loop
+      await expect(promise).to.emit(tally, "Claimed").withArgs(index, projectAddress, amount);
     }
   });
 

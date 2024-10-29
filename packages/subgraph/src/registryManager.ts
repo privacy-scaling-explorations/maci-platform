@@ -42,6 +42,7 @@ export function handleRequestSent(event: RequestSent): void {
 
   request.status = "Pending";
   request.index = event.params.index;
+  request.recipientIndex = event.params.recipientIndex;
   request.recipient = recipient.id;
   request.registryManager = registryManager.id;
   request.registry = event.params.registry;
