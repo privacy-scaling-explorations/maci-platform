@@ -76,6 +76,7 @@ describe("SessionKeysService", () => {
       const sessionKeyAddress = sessionKeysService.generateSessionKey();
       const approval = await mockSessionKeyApproval(sessionKeyAddress.sessionKeyAddress);
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const client = await sessionKeysService.generateClientFromSessionKey(
         sessionKeyAddress.sessionKeyAddress,
         approval,

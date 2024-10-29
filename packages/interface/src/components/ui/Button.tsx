@@ -42,18 +42,16 @@ export interface IIconButtonProps extends ComponentPropsWithRef<typeof Button> {
   children: ReactNode;
 }
 
-export const IconButton = forwardRef(
-  ({ children, icon, size, ...props }: IIconButtonProps, ref): JSX.Element => (
-    <Button ref={ref} {...props} size={(children as ReactNode | undefined) ? size : "icon"}>
-      {(icon as IIconButtonProps["icon"] | undefined)
-        ? createElement(icon, {
-            className: `w-4 h-4 ${children ? "mr-2" : ""}`,
-          })
-        : null}
+export const IconButton = forwardRef<unknown, IIconButtonProps>(({ children, icon, size, ...props }, ref) => (
+  <Button ref={ref} {...props} size={(children as ReactNode) ? (size as string) : "icon"}>
+    {icon
+      ? createElement(icon, {
+          className: `w-4 h-4 ${children ? "mr-2" : ""}`,
+        })
+      : null}
 
-      {children}
-    </Button>
-  ),
-);
+    {children as ReactNode}
+  </Button>
+));
 
 IconButton.displayName = "IconButton";

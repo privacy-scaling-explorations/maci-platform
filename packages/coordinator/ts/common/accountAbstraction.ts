@@ -100,12 +100,11 @@ export const getKernelClient = async (
     sessionKeySigner,
   );
 
-  const kernelClient = createKernelAccountClient({
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return
+  return createKernelAccountClient({
     bundlerTransport: http(bundlerUrl),
     entryPoint: ENTRYPOINT_ADDRESS_V07,
     account: sessionKeyAccount,
     chain: viemChain(chain),
   });
-
-  return kernelClient;
 };

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Logger, Injectable } from "@nestjs/common";
 import { ZeroAddress } from "ethers";
 import hre from "hardhat";
@@ -283,7 +286,6 @@ export class ProofGeneratorService {
     } else {
       // merge it
       const { request } = await publicClient.simulateContract({
-        // @ts-expect-error type error between permissionless.js and viem
         account: kernelClient.account,
         address: pollAddress,
         abi: PollFactory.abi,
@@ -329,7 +331,6 @@ export class ProofGeneratorService {
       this.logger.debug(`Message tree is not merged yet`);
 
       const { request } = await publicClient.simulateContract({
-        // @ts-expect-error type error between permissionless.js and viem
         account: kernelClient.account,
         address: pollAddress,
         abi: PollFactory.abi,

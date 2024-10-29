@@ -104,6 +104,7 @@ export class SessionKeysService {
         sessionKeySigner,
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return createKernelAccountClient({
         bundlerTransport: http(process.env.ZERODEV_BUNDLER_RPC),
         entryPoint: ENTRYPOINT_ADDRESS_V07,
