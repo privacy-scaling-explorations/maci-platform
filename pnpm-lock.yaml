@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@nestjs/cli':
+        specifier: ^10.4.5
+        version: 10.4.5
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@22.8.2)(typescript@5.6.3)
     devDependencies:
       '@commitlint/cli':
         specifier: ^19.3.0
@@ -20362,7 +20369,7 @@ snapshots:
 
   axe-core@4.10.2: {}
 
-  axios-debug-log@1.0.0(axios@1.7.7(debug@4.3.7)):
+  axios-debug-log@1.0.0(axios@1.7.7):
     dependencies:
       '@types/debug': 4.1.12
       axios: 1.7.7(debug@4.3.7)
@@ -29548,7 +29555,7 @@ snapshots:
       '@aduh95/viz.js': 3.7.0
       '@solidity-parser/parser': 0.16.2
       axios: 1.7.7(debug@4.3.7)
-      axios-debug-log: 1.0.0(axios@1.7.7(debug@4.3.7))
+      axios-debug-log: 1.0.0(axios@1.7.7)
       cli-color: 2.0.4
       commander: 11.1.0
       convert-svg-to-png: 0.6.4(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
