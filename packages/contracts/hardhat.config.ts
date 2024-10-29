@@ -98,8 +98,8 @@ const config: HardhatUserConfig = {
   },
   contractSizer: {
     alphaSort: true,
-    runOnCompile: true,
     disambiguatePaths: false,
+    runOnCompile: true,
   },
   etherscan: {
     apiKey: {
