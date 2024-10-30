@@ -10,6 +10,8 @@ interface IPayoutStrategy {
     uint256 cooldownTime;
     /// @notice The max contribution amount
     uint256 maxContribution;
+    /// @notice The max cap
+    uint256 maxCap;
     /// @notice The payout token
     address payoutToken;
   }

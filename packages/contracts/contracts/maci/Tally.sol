@@ -32,6 +32,9 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
   /// @notice The max contribution amount
   uint256 public maxContributionAmount;
 
+  /// @notice The max cap
+  uint256 public maxCap;
+
   /// @notice The voice credit factor (needed for allocated amount calculation)
   uint256 public voiceCreditFactor;
 
@@ -127,6 +130,7 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
     registry = IPoll(address(poll)).getRegistry();
     token = IERC20(params.payoutToken);
     maxContributionAmount = params.maxContribution;
+    maxCap = params.maxCap;
     voiceCreditFactor = params.maxContribution / MAX_VOICE_CREDITS;
     voiceCreditFactor = voiceCreditFactor > 0 ? voiceCreditFactor : 1;
   }
@@ -291,7 +295,9 @@ contract Tally is TallyBase, IPayoutStrategy, Pausable {
     uint256 linearPrecision = ALPHA_PRECISION * totalSpentCredits;
     uint256 linearAlpha = alpha * totalSpentCredits;
 
-    return ((quadratic + linearPrecision) - linearAlpha) / ALPHA_PRECISION;
+    uint256 amount = ((quadratic + linearPrecision) - linearAlpha) / ALPHA_PRECISION;
+
+    return amount > maxCap ? maxCap : amount;
   }
 
   /// @notice Calculate the alpha for the capital constrained quadratic formula

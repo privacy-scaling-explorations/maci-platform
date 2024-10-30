@@ -78,6 +78,7 @@
     "Tally": {
       "withPause": true,
       "cooldownTime": "4838400",
+      "maxCap": "10000000000000000000",
       "maxContribution": "5000000000000000000",
       "payoutToken": "0x0000000000000000000000000000000000000000"
     }
@@ -160,6 +161,7 @@
     "Tally": {
       "withPause": true,
       "cooldownTime": "4838400",
+      "maxCap": "10000000000000000000",
       "maxContribution": "5000000000000000000",
       "payoutToken": "0x0000000000000000000000000000000000000000"
     }
@@ -243,6 +245,7 @@
     "Tally": {
       "withPause": true,
       "cooldownTime": "4838400",
+      "maxCap": "10000000000000000000",
       "maxContribution": "5000000000000000000",
       "payoutToken": "0x0000000000000000000000000000000000000000"
     }
@@ -326,6 +329,7 @@
     "Tally": {
       "withPause": true,
       "cooldownTime": "4838400",
+      "maxCap": "10000000000000000000",
       "maxContribution": "5000000000000000000",
       "payoutToken": "0x0000000000000000000000000000000000000000"
     }
@@ -409,6 +413,7 @@
     "Tally": {
       "withPause": true,
       "cooldownTime": "4838400",
+      "maxCap": "10000000000000000000",
       "maxContribution": "5000000000000000000",
       "payoutToken": "0x0000000000000000000000000000000000000000"
     }
@@ -492,6 +497,7 @@
     "Tally": {
       "withPause": true,
       "cooldownTime": "4838400",
+      "maxCap": "10000000000000000000",
       "maxContribution": "5000000000000000000",
       "payoutToken": "0x0000000000000000000000000000000000000000"
     }
@@ -580,6 +586,7 @@
     "Tally": {
       "withPause": true,
       "cooldownTime": "4838400",
+      "maxCap": "10000000000000000000",
       "maxContribution": "5000000000000000000",
       "payoutToken": "0x0000000000000000000000000000000000000000"
     }
