@@ -1,31 +1,16 @@
 {
-<<<<<<< HEAD
-    "maci": "0x3E1013D8B959a02C8b2c1EE13ACC8629F43E254b",
-    "pollId": "0",
-    "network": "optimism_sepolia",
-    "chainId": "11155420",
-    "isQuadratic": true,
-    "tallyAddress": "0x834166649eFeBB8a64E2bF00aa39C205B5D2ee60",
-    "newTallyCommitment": "0x288defddb4fdb3bc1c77dc4315fc72242f9e18a592ffe7161cdae9d683ebcaa1",
-    "results": {
-        "tally": [
-            "12",
-            "25",
-            "13",
-=======
     "maci": "0xfe727c524175369FDC1CE3E2f5c1c7948eDd1dBa",
     "pollId": "2",
     "network": "optimism_sepolia",
     "chainId": "11155420",
     "isQuadratic": true,
     "tallyAddress": "0x367dD74b4E476Ae6FCCC0a2309183cbfE9621b0c",
-    "newTallyCommitment": "0x140b1643c8495a0640c4b19143c401ff795387e349a8fea177e068b3af046957",
+    "newTallyCommitment": "0xc51d441d79accb41b743c1074fa5b9f6df56c600049c7e1b23b7a85b18d651c",
     "results": {
         "tally": [
             "10",
             "0",
             "0",
->>>>>>> ba1b1ad (fixed sizes)
             "0",
             "0",
             "0",
@@ -149,35 +134,19 @@
             "0",
             "0"
         ],
-<<<<<<< HEAD
-        "salt": "0x260d8700a7cbbf7d5c92eef3811a2ed0263ed365e6c6004476ea4f3cde1b2b21",
-        "commitment": "0x2daf516ab29e31ddda1de696712e3602f3a539cd9e4f8b4309e1985e6d79cf90"
-    },
-    "totalSpentVoiceCredits": {
-        "spent": "938",
-        "salt": "0x214a210e9c1e8c507aab403d400960259ce5b8c004b62a9bf91df4baf2cb954e",
-        "commitment": "0x160650e82be01882d5281ce6cbad7df71d8895ba9e9c439da26cead97fd9b27"
-    },
-    "perVOSpentVoiceCredits": {
-        "tally": [
-            "144",
-            "625",
-            "169",
-=======
-        "salt": "0x202c34e166efd8baa6b1c1f6cd2b55d92d6b85a5693fc72355ad1a3198c42ed8",
-        "commitment": "0xda6fc34e81b6e87d094a3b704347c9822bd42c02c4f3443b1ec04bc1a826ded"
+        "salt": "0xec542c3b8e1382441a11a8e11f59020124aae59a92e0e6700881547c1cd27d6",
+        "commitment": "0x3beb56de2abc038ae28a5c2ffb4445f6dbc0e2a24fc85c24722af925c62dab5"
     },
     "totalSpentVoiceCredits": {
         "spent": "100",
-        "salt": "0x23bff7da720c6b03129da131e33f6731ecc59640c2a166540828bb29b77b2bf7",
-        "commitment": "0x119f8a346d08940863ea181881df18d393d386e191b241ed51007f47afaa62af"
+        "salt": "0x1b03cf1039b67d29f482745d923420a4f801d2b691dfedab58048065f9dc3a4d",
+        "commitment": "0xfabbe344a162a77f614bb275702ebb379dd4a7d2a6f996ae9ba1f33b3e99ea4"
     },
     "perVOSpentVoiceCredits": {
         "tally": [
             "100",
             "0",
             "0",
->>>>>>> ba1b1ad (fixed sizes)
             "0",
             "0",
             "0",
@@ -301,12 +270,7 @@
             "0",
             "0"
         ],
-<<<<<<< HEAD
-        "salt": "0x1140eba960c215c785d4c5a3bc66edc7e15dea5b2e7857b50515ae985f764887",
-        "commitment": "0x1eb7ddf383d740745b6e796f4e46067539a1f07eaba49f5210f036aa17d2a5e5"
-=======
-        "salt": "0x2c7be7ddd98d7adc6b4d94407214f73ae7782d2703d5b0b9d96e780e6478a7e2",
-        "commitment": "0x3b6c4f8c75c1970dcfc91b7005d295a2a90f776cd4ccb9f3d3aca4eae620288"
->>>>>>> ba1b1ad (fixed sizes)
+        "salt": "0x1bcd3e684b9b2c5abb5a7a04d1a932acd51c061b762a474d3a0338abdcc206d9",
+        "commitment": "0x19e1f72a26662b49e08fd51ca26aace75f61de851095174f399363477c9130e4"
     }
 }

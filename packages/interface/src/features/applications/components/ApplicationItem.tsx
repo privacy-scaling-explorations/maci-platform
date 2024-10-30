@@ -34,8 +34,8 @@ export const ApplicationItem = ({
 
   const { profileImageUrl } = metadata.data ?? {};
   const description =
-    metadata.data?.bio && metadata.data.bio.length > 280
-      ? `${metadata.data.bio.substring(0, 280)}...`
+    metadata.data?.bio && metadata.data.bio.length > 140
+      ? `${metadata.data.bio.substring(0, 140)}...`
       : metadata.data?.bio;
 
   useEffect(() => {
