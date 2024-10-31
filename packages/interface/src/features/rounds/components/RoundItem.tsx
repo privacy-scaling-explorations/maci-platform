@@ -51,8 +51,8 @@ const RoundTag = ({ state }: IRoundTagProps): JSX.Element => {
       className={clsx(
         "w-max rounded-md border px-1.5 py-1 text-xs uppercase",
         state === ERoundState.APPLICATION || state === ERoundState.VOTING
-          ? "border-[#8aca6c] text-[#8aca6c]"
-          : "border-[#fc6e31] text-[#fc6e31]",
+          ? "border-lightGreen text-lightGreen"
+          : "border-error-600 text-error-600",
       )}
     >
       {tagText}
