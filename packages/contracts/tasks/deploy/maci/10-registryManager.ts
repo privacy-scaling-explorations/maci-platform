@@ -1,10 +1,9 @@
 import { ContractStorage, Deployment, type IDeployParams } from "maci-contracts";
 
-import type { MACI } from "../../../typechain-types";
-
+import { type MACI } from "../../../typechain-types";
 import { EDeploySteps, EContracts } from "../../helpers/constants";
 
-const deployment = Deployment.getInstance();
+const deployment = Deployment.getInstance({ contractNames: EContracts });
 const storage = ContractStorage.getInstance();
 
 /**
@@ -13,6 +12,7 @@ const storage = ContractStorage.getInstance();
 deployment.deployTask(EDeploySteps.RegistryManager, "Deploy registry manager").then((task) =>
   task.setAction(async ({ incremental }: IDeployParams, hre) => {
     deployment.setHre(hre);
+    deployment.setContractNames(EContracts);
     const deployer = await deployment.getDeployer();
 
     const registryManagerType =
@@ -42,8 +42,11 @@ deployment.deployTask(EDeploySteps.RegistryManager, "Deploy registry manager").t
 
     const maciContractAddress = storage.mustGetAddress(EContracts.MACI, hre.network.name);
 
+    const { MACI__factory: MACIFactory } = await import("../../../typechain-types");
+
     const maciContract = await deployment.getContract<MACI>({
-      name: "contracts/maci/MACI.sol:MACI" as Parameters<typeof deployment.getContract>[0]["name"],
+      name: EContracts.MACI,
+      abi: MACIFactory.abi,
       address: maciContractAddress,
     });
 

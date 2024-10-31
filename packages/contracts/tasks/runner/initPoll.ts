@@ -22,10 +22,11 @@ interface IInitPollParams {
 task("initPoll", "Initialize poll")
   .addParam("poll", "The poll id", undefined, types.string)
   .setAction(async ({ poll }: IInitPollParams, hre) => {
-    const deployment = Deployment.getInstance(hre);
+    const deployment = Deployment.getInstance({ contractNames: EContracts, hre });
     const { MACI__factory: MACIFactory } = await import("../../typechain-types");
 
     deployment.setHre(hre);
+    deployment.setContractNames(EContracts);
 
     const deployer = await deployment.getDeployer();
 

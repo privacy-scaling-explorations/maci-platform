@@ -2,7 +2,7 @@ import { ContractStorage, Deployment, type IDeployParams } from "maci-contracts"
 
 import { EDeploySteps, EContracts } from "../../helpers/constants";
 
-const deployment = Deployment.getInstance();
+const deployment = Deployment.getInstance({ contractNames: EContracts });
 const storage = ContractStorage.getInstance();
 
 /**
@@ -11,6 +11,7 @@ const storage = ContractStorage.getInstance();
 deployment.deployTask(EDeploySteps.PollFactory, "Deploy poll factory").then((task) =>
   task.setAction(async ({ incremental }: IDeployParams, hre) => {
     deployment.setHre(hre);
+    deployment.setContractNames(EContracts);
     const deployer = await deployment.getDeployer();
 
     const pollFactoryContractAddress = storage.getAddress(EContracts.PollFactory, hre.network.name);

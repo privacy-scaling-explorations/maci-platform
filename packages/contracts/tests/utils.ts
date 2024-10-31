@@ -17,6 +17,7 @@ import type { ContractFactory, Signer, JsonRpcProvider } from "ethers";
 import type { TreeDepths } from "maci-core";
 import type { PubKey } from "maci-domainobjs";
 
+import { EContracts } from "../tasks/helpers/constants";
 import { Poll, PollFactory as PollFactoryContract, Poll__factory as PollFactory, type MACI } from "../typechain-types";
 
 /**
@@ -170,7 +171,9 @@ export const deployTestPoll = async ({
     },
   });
 
-  const deployment = Deployment.getInstance();
+  const deployment = Deployment.getInstance({ contractNames: EContracts });
+  deployment.setContractNames(EContracts);
+
   const pollFactory = await deployment.deployContractWithLinkedLibraries<PollFactoryContract>({
     contractFactory,
     signer,
