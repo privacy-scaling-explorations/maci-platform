@@ -24,6 +24,10 @@ export const ProjectAvatarWithName = ({
   const { data: projects } = useProjectById(id, registryAddress);
 
   const metadata = useProjectMetadata(projects?.metadataUrl);
+  const description =
+    metadata.data?.bio && metadata.data.bio.length > 140
+      ? `${metadata.data.bio.substring(0, 140)}...`
+      : metadata.data?.bio;
 
   const Component = isLink ? Link : "div";
 
@@ -35,7 +39,7 @@ export const ProjectAvatarWithName = ({
         <div className="font-bold uppercase dark:text-white">{metadata.data?.name}</div>
 
         <div className="text-sm text-gray-400">
-          <p>{showDescription && (metadata.data?.bio ?? null)}</p>
+          <p>{showDescription && (description ?? null)}</p>
 
           <p>{allocation > 0 && `Votes you have allocated: ${allocation}`}</p>
         </div>

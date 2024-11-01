@@ -5,7 +5,7 @@ interface TimeSlotProps {
 
 export const TimeSlot = ({ num, unit }: TimeSlotProps): JSX.Element => (
   <div className="flex flex-1 flex-col items-center">
-    <p className="text-2xl">
+    <p className="text-2xl dark:text-white">
       <b>{num}</b>
     </p>
 

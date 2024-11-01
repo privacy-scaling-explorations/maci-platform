@@ -116,7 +116,7 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
           />
 
           {showSubmitButton && ballot.votes.length > 0 && (
-            <div className="flex flex-col gap-4">
+            <div className="mt-4 flex flex-col gap-4">
               <SubmitBallotButton pollId={props.pollId ?? ""} />
 
               <Notice
