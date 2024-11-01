@@ -1,10 +1,15 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "maci": "0x3E1013D8B959a02C8b2c1EE13ACC8629F43E254b",
+=======
+    "maci": "0x1978182721cE29Eb9bf1a52c1f94847798D599D5",
+>>>>>>> 312546c (fixes)
     "pollId": "0",
     "network": "optimism_sepolia",
     "chainId": "11155420",
     "isQuadratic": true,
+<<<<<<< HEAD
     "tallyAddress": "0x834166649eFeBB8a64E2bF00aa39C205B5D2ee60",
     "newTallyCommitment": "0x288defddb4fdb3bc1c77dc4315fc72242f9e18a592ffe7161cdae9d683ebcaa1",
     "results": {
@@ -26,6 +31,15 @@
             "0",
             "0",
 >>>>>>> ba1b1ad (fixed sizes)
+=======
+    "tallyAddress": "0x399b2bB7596e0E208ad991154fC4c5636686F867",
+    "newTallyCommitment": "0x34c214a091bb10fdb72f327da685b7c4de60b971eaf66d5fa89a18a20d51faf",
+    "results": {
+        "tally": [
+            "15",
+            "24",
+            "14",
+>>>>>>> 312546c (fixes)
             "0",
             "0",
             "0",
@@ -149,6 +163,7 @@
             "0",
             "0"
         ],
+<<<<<<< HEAD
 <<<<<<< HEAD
         "salt": "0x260d8700a7cbbf7d5c92eef3811a2ed0263ed365e6c6004476ea4f3cde1b2b21",
         "commitment": "0x2daf516ab29e31ddda1de696712e3602f3a539cd9e4f8b4309e1985e6d79cf90"
@@ -178,6 +193,21 @@
             "0",
             "0",
 >>>>>>> ba1b1ad (fixed sizes)
+=======
+        "salt": "0x88d72b96a967d7257f963ed819dda66d0cf93e3773fbcb73ff5ef16187ba68e",
+        "commitment": "0x11bab35bc6500b2e525612f92355df178fe2eb261ece7cef105929f7740c449"
+    },
+    "totalSpentVoiceCredits": {
+        "spent": "997",
+        "salt": "0x5e5f0d88c9a7d516281d19b66cf9140dda2f20d3000aa05983c3ef4a2db09f",
+        "commitment": "0x56ef99503f833ddcc3553ea79fbef1d47633ba3e47024eb7c2bf2ee452664cc"
+    },
+    "perVOSpentVoiceCredits": {
+        "tally": [
+            "225",
+            "576",
+            "196",
+>>>>>>> 312546c (fixes)
             "0",
             "0",
             "0",
@@ -302,11 +332,16 @@
             "0"
         ],
 <<<<<<< HEAD
+<<<<<<< HEAD
         "salt": "0x1140eba960c215c785d4c5a3bc66edc7e15dea5b2e7857b50515ae985f764887",
         "commitment": "0x1eb7ddf383d740745b6e796f4e46067539a1f07eaba49f5210f036aa17d2a5e5"
 =======
         "salt": "0x2c7be7ddd98d7adc6b4d94407214f73ae7782d2703d5b0b9d96e780e6478a7e2",
         "commitment": "0x3b6c4f8c75c1970dcfc91b7005d295a2a90f776cd4ccb9f3d3aca4eae620288"
 >>>>>>> ba1b1ad (fixed sizes)
+=======
+        "salt": "0x2aa9640076103f254fdf01b9de821b6d542bf8838b5134951cb8ac67c29890d7",
+        "commitment": "0xe68a13e89381335bc7f333cf3f7a3139e71316ecf05884c40a1f7151ffe213a"
+>>>>>>> 312546c (fixes)
     }
 }
