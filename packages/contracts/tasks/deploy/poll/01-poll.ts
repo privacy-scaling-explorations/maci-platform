@@ -142,6 +142,7 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
     const cooldownTime =
       deployment.getDeployConfigField<string | null>(EContracts.Tally, "cooldownTime") ?? ONE_WEEK_IN_SECONDS * 8;
     const maxContribution = deployment.getDeployConfigField<string>(EContracts.Tally, "maxContribution", true);
+    const maxCap = deployment.getDeployConfigField<string>(EContracts.Tally, "maxCap", true);
     const withPause = deployment.getDeployConfigField<boolean | null>(EContracts.Tally, "withPause") ?? true;
     let payoutToken = deployment.getDeployConfigField<string>(EContracts.Tally, "payoutToken", true);
 
@@ -171,6 +172,7 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
         cooldownTime,
         maxContribution,
         payoutToken,
+        maxCap,
       })
       .then((tx) => tx.wait());
 

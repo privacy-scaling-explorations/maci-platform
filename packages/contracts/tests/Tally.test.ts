@@ -157,6 +157,7 @@ describe("Tally", () => {
       .init({
         cooldownTime,
         maxContribution: 1,
+        maxCap: 1,
         payoutToken,
       })
       .then((tx) => tx.wait());
@@ -189,6 +190,7 @@ describe("Tally", () => {
       tally.connect(user).init({
         cooldownTime,
         maxContribution: parseUnits("5", await payoutToken.decimals()),
+        maxCap: parseUnits("10", await payoutToken.decimals()),
         payoutToken,
       }),
     ).to.be.revertedWithCustomError(tally, "OwnableUnauthorizedAccount");
@@ -199,6 +201,7 @@ describe("Tally", () => {
       .init({
         cooldownTime,
         maxContribution: parseUnits("5", await payoutToken.decimals()),
+        maxCap: parseUnits("10", await payoutToken.decimals()),
         payoutToken,
       })
       .then((tx) => tx.wait());
@@ -211,6 +214,7 @@ describe("Tally", () => {
       tally.init({
         cooldownTime,
         maxContribution: parseUnits("5", await payoutToken.decimals()),
+        maxCap: parseUnits("10", await payoutToken.decimals()),
         payoutToken,
       }),
     ).to.be.revertedWithCustomError(tally, "AlreadyInitialized");
