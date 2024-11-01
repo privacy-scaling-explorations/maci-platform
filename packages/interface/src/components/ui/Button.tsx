@@ -5,10 +5,10 @@ import { tv } from "tailwind-variants";
 import { createComponent } from ".";
 
 const button = tv({
-  base: "inline-flex items-center justify-center font-semibold uppercase rounded-lg text-center transition-colors duration-150 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  base: "inline-flex items-center justify-center font-semibold uppercase rounded-full text-center transition-colors duration-150 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   variants: {
     variant: {
-      primary: "bg-black text-white hover:bg-blue-950 dark:bg-white dark:text-black dark:hover:bg-blue-100",
+      primary: "bg-[#8c72ae] text-white hover:bg-[#695583] dark:bg-[#8c72ae]  dark:text-white dark:hover:bg-[#695583]",
       inverted:
         "text-black border border-black hover:text-blue-500 hover:border-blue-500 dark:border-white dark:text-white",
       tertiary: "bg-blue-50 text-blue-500 border border-blue-500 hover:bg-blue-100",

@@ -5,7 +5,7 @@ import { createComponent } from ".";
 export const Card = createComponent(
   "div",
   tv({
-    base: "cursor-pointer rounded-[20px] border p-2 transition-colors hover:border-gray-400",
+    base: "cursor-pointer rounded-[20px] border p-2 transition-colors hover:border-gray-400 bg-[#f8f9fe]",
   }),
 );
 

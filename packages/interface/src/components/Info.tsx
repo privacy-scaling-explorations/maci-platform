@@ -14,7 +14,7 @@ import { VotingInfo } from "./VotingInfo";
 const InfoContainer = createComponent(
   "div",
   tv({
-    base: "flex justify-center gap-2 rounded-lg bg-white p-5 shadow-lg dark:bg-lightBlack",
+    base: "flex justify-center gap-2 rounded-lg bg-[white] p-5 shadow-lg dark:bg-lightBlack",
     variants: {
       size: {
         sm: "flex-col",

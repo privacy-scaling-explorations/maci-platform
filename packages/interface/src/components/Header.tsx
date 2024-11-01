@@ -22,7 +22,7 @@ const NavLink = ({ isActive, ...props }: INavLinkProps) => (
   <Link
     className={clsx(
       "flex h-full items-center p-4 font-sans hover:font-extrabold",
-      isActive && "border-error-600 border-b-2",
+      isActive && "border-b-2 border-blue-400",
     )}
     {...props}
   />

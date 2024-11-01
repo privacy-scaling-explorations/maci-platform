@@ -6,10 +6,10 @@ import { createComponent } from "~/components/ui";
 const StatusBarContainer = createComponent(
   "div",
   tv({
-    base: "flex rounded-md border p-4 justify-center mb-4",
+    base: "flex rounded-md border p-4 justify-center mb-4 text-white border-[#FFEDD5]",
     variants: {
       status: {
-        default: "text-blue-600 border-blue-600 bg-blue-400",
+        default: "text-white border-[#695583] bg-blue-400",
         pending:
           "text-[#4E1D0D] border-[#4E1D0D] bg-[#FFEDD5] dark:text-[#F1B37A] dark:bg-[#4E1D0D] dark:border-[#F1B37A]",
         approved:

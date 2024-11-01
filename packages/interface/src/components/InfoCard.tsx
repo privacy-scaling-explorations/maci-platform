@@ -8,13 +8,13 @@ import { EInfoCardState } from "~/utils/types";
 const InfoCardContainer = createComponent(
   "div",
   tv({
-    base: "rounded-md p-2 max-lg:w-full lg:w-64",
+    base: "rounded-md p-2 max-lg:w-full lg:w-64 bg-[#f8f9fe]",
     variants: {
       state: {
-        [EInfoCardState.PASSED]: "border border-blue-500 bg-blue-50 text-blue-500 dark:bg-darkBlue dark:text-blue-800",
-        [EInfoCardState.ONGOING]: "border border-blue-500 bg-blue-500 text-white",
+        [EInfoCardState.PASSED]: "border border-blue-500 bg-blue-50 text-blue-500 dark:bg-darkBlue dark:text-white",
+        [EInfoCardState.ONGOING]: "border border-blue-500 bg-blue-500 text-white ",
         [EInfoCardState.UPCOMING]:
-          "border border-gray-200 bg-transparent text-gray-200 dark:border-lighterBlack dark:text-gray-800",
+          "border border-gray-200 bg-transparent text-gray-200 dark:border-lighterBlack dark:text-gray-800 dark:bg-inherit",
       },
     },
   }),
