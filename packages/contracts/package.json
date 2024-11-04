@@ -50,7 +50,10 @@
     "merge:optimism-sepolia": "pnpm run merge --network optimism_sepolia",
     "prove": "hardhat prove",
     "prove:localhost": "pnpm run prove",
-    "prove:optimism-sepolia": "pnpm run prove --network optimism_sepolia"
+    "prove:optimism-sepolia": "pnpm run prove --network optimism_sepolia",
+    "submitOnChain": "hardhat submitOnChain",
+    "submitOnChain:localhost": "pnpm run submitOnChain",
+    "submitOnChain:optimism-sepolia": "pnpm run submitOnChain --network optimism_sepolia"
   },
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
@@ -60,7 +63,7 @@
     "ethers": "^6.13.2",
     "hardhat": "^2.22.15",
     "lowdb": "^1.0.0",
-    "maci-contracts": "0.0.0-ci.8986875",
+    "maci-contracts": "0.0.0-ci.6007edf",
     "maci-core": "^2.4.0",
     "maci-crypto": "^2.4.0",
     "maci-domainobjs": "^2.4.0",

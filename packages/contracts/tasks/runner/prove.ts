@@ -1,26 +1,18 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-console */
 import { task, types } from "hardhat/config";
-import { ContractStorage, Deployment, IProveParams, Proof, ProofGenerator, Prover } from "maci-contracts";
+import { ContractStorage, Deployment, IProveParams, ProofGenerator } from "maci-contracts";
 import { Keypair, PrivKey } from "maci-domainobjs";
 
 import fs from "fs";
 
-import {
-  type VkRegistry,
-  type Verifier,
-  type MACI,
-  type Poll,
-  type AccQueue,
-  type MessageProcessor,
-  type Tally,
-} from "../../typechain-types";
+import { type MACI, type Poll, type AccQueue } from "../../typechain-types";
 import { EContracts } from "../helpers/constants";
 
 /**
  * Prove hardhat task for generating off-chain proofs and sending them on-chain
  */
-task("prove", "Command to generate proof and prove the result of a poll on-chain")
+task("prove", "Command to generate proofs")
   .addParam("poll", "The poll id", undefined, types.string)
   .addParam("outputDir", "Output directory for proofs", undefined, types.string)
   .addParam("coordinatorPrivateKey", "Coordinator maci private key", undefined, types.string)
@@ -55,8 +47,8 @@ task("prove", "Command to generate proof and prove the result of a poll on-chain
 
       deployment.setHre(hre);
       deployment.setContractNames(EContracts);
-
       const storage = ContractStorage.getInstance();
+
       // if we do not have the output directory just create it
       const isOutputDirExists = fs.existsSync(outputDir);
 
@@ -75,26 +67,20 @@ task("prove", "Command to generate proof and prove the result of a poll on-chain
 
       console.log("Start balance: ", Number(startBalance / 10n ** 12n) / 1e6);
 
-      const {
-        MACI__factory: MACIFactory,
-        Poll__factory: PollFactory,
-        Tally__factory: TallyFactory,
-      } = await import("../../typechain-types");
+      const { MACI__factory: MACIFactory, Poll__factory: PollFactory } = await import("../../typechain-types");
 
       const maciContractAddress = storage.mustGetAddress(EContracts.MACI, network.name);
       const maciContract = await deployment.getContract<MACI>({
         name: EContracts.MACI,
-        abi: MACIFactory.abi,
         address: maciContractAddress,
+        abi: MACIFactory.abi,
       });
-      const vkRegistryContract = await deployment.getContract<VkRegistry>({ name: EContracts.VkRegistry });
-      const verifierContract = await deployment.getContract<Verifier>({ name: EContracts.Verifier });
 
       const pollContracts = await maciContract.polls(poll);
       const pollContract = await deployment.getContract<Poll>({
         name: EContracts.Poll,
-        abi: PollFactory.abi,
         address: pollContracts.poll,
+        abi: PollFactory.abi,
       });
       const messageAqAddress = await pollContract.extContracts().then((contracts) => contracts.messageAq);
       const messageAq = await deployment.getContract<AccQueue>({
@@ -147,17 +133,6 @@ task("prove", "Command to generate proof and prove the result of a poll on-chain
         throw new Error(`Poll ${poll} not found`);
       }
 
-      const mpContract = await deployment.getContract<MessageProcessor>({
-        name: EContracts.MessageProcessor,
-        address: pollContracts.messageProcessor,
-      });
-
-      // get the tally contract based on the useQuadraticVoting flag
-      const tallyContract = await deployment.getContract<Tally>({
-        name: EContracts.Tally,
-        abi: TallyFactory.abi,
-        address: pollContracts.tally,
-      });
       const useQuadraticVoting =
         deployment.getDeployConfigField<boolean | null>(EContracts.Poll, "useQuadraticVoting") ?? false;
       const mode = useQuadraticVoting ? "qv" : "nonQv";
@@ -197,31 +172,16 @@ task("prove", "Command to generate proof and prove the result of a poll on-chain
         useQuadraticVoting,
       });
 
-      const data = {
-        processProofs: [] as Proof[],
-        tallyProofs: [] as Proof[],
-      };
-
-      const prover = new Prover({
-        maciContract,
-        messageAqContract,
-        mpContract,
-        pollContract,
-        vkRegistryContract,
-        verifierContract,
-        tallyContract,
-      });
-
-      data.processProofs = await proofGenerator.generateMpProofs();
-      await prover.proveMessageProcessing(data.processProofs);
-
-      const { proofs: tallyProofs, tallyData } = await proofGenerator.generateTallyProofs(network);
-      data.tallyProofs = tallyProofs;
-      await prover.proveTally(data.tallyProofs, tallyData);
+      await proofGenerator.generateMpProofs();
+      await proofGenerator.generateTallyProofs(network);
 
       const endBalance = await signer.provider.getBalance(signer);
 
       console.log("End balance: ", Number(endBalance / 10n ** 12n) / 1e6);
       console.log("Prove expenses: ", Number((startBalance - endBalance) / 10n ** 12n) / 1e6);
+
+      console.log(
+        "Please make sure that you do not delete the proofs from the proof directory until they are all submitted on-chain.\nRegenerating proofs will result in overwriting the existing proofs and commitments which will be different due to the use of random salts.",
+      );
     },
   );
