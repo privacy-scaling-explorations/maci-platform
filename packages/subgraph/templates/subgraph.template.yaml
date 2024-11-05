@@ -127,6 +127,9 @@ templates:
       language: wasm/assemblyscript
       entities:
         - Tally
+        - TallyResult
+        - Claim
+        - Deposit
       abis:
         - name: Tally
           file: ./abi/Tally.json
