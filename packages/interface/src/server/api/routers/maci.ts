@@ -4,6 +4,7 @@ import { z, ZodType } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { fetchMetadata } from "~/utils/fetchMetadata";
 import { fetchPolls } from "~/utils/fetchPoll";
+import { fetchTally } from "~/utils/fetchTally";
 import { fetchUser } from "~/utils/fetchUser";
 
 import type { IPollData, IRoundMetadata, IRoundData } from "~/utils/types";
@@ -26,6 +27,7 @@ export const maciRouter = createTRPCRouter({
     .input(z.object({ publicKey: z.string() }))
     .query(async ({ input }) => fetchUser(PubKey.deserialize(input.publicKey).rawPubKey)),
   poll: publicProcedure.query(async () => fetchPolls()),
+  tally: publicProcedure.input(z.object({ id: z.string() })).query(async ({ input }) => fetchTally(input.id)),
   round: publicProcedure.input(z.object({ polls: z.array(PollSchema) })).query(async ({ input }) =>
     Promise.all(
       input.polls.map((poll) =>
@@ -52,7 +54,6 @@ export const maciRouter = createTRPCRouter({
             registrationEndsAt: new Date(data.registrationEndsAt),
             votingStartsAt,
             votingEndsAt,
-            tallyFile: data.tallyFile,
           } as IRoundData;
         }),
       ),

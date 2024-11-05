@@ -75,6 +75,11 @@ export interface Metadata {
   type: string;
 }
 
+export interface TallyResult {
+  id: string;
+  result: string;
+}
+
 export const AttestationsQuery = `
   query Attestations($where: AttestationWhereInput, $orderBy: [AttestationOrderByWithRelationInput!], $take: Int, $skip: Int) {
     attestations(take: $take, skip: $skip, orderBy: $orderBy, where: $where) {
@@ -144,6 +149,20 @@ export interface Poll {
      */
     metadataUrl: string;
   };
+}
+
+/**
+ * The tally data
+ */
+export interface Tally {
+  /**
+   * The tally address
+   */
+  id: string;
+  /**
+   * an array with the results
+   */
+  results: TallyResult[];
 }
 
 /**
