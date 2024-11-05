@@ -3,7 +3,7 @@ import { Address, BigInt as GraphBN } from "@graphprotocol/graph-ts";
 
 import { DeployPoll as DeployPollEvent, SignUp as SignUpEvent, MACI as MaciContract } from "../generated/MACI/MACI";
 import { Poll } from "../generated/schema";
-import { Poll as PollTemplate } from "../generated/templates";
+import { Poll as PollTemplate, Tally as TallyTemplate } from "../generated/templates";
 import { Poll as PollContract } from "../generated/templates/Poll/Poll";
 
 import { ONE_BIG_INT, MESSAGE_TREE_ARITY } from "./utils/constants";
@@ -49,6 +49,9 @@ export function handleDeployPoll(event: DeployPollEvent): void {
   PollTemplate.create(Address.fromBytes(poll.id));
 
   createOrLoadTally(contracts.tally, poll.id);
+
+  // Start indexing the tally
+  TallyTemplate.create(Address.fromBytes(contracts.tally));
 }
 
 export function handleSignUp(event: SignUpEvent): void {
