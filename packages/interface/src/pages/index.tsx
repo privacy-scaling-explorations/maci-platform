@@ -1,3 +1,5 @@
+import clsx from "clsx";
+import Image from "next/image";
 import { useAccount } from "wagmi";
 
 import { JoinButton } from "~/components/JoinButton";
@@ -7,7 +9,6 @@ import { config } from "~/config";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
 import { FAQList } from "~/features/home/components/FaqList";
-import { RoundsList } from "~/features/rounds/components/RoundsList";
 import { useIsAdmin } from "~/hooks/useIsAdmin";
 import { Layout } from "~/layouts/DefaultLayout";
 
@@ -32,21 +33,23 @@ const HomePage = (): JSX.Element => {
 
         {isConnected && !isRegistered && <JoinButton />}
 
-        {isConnected && isAdmin && (
-          <div className="flex flex-col gap-4">
-            <p className="text-gray-400">Configure and deploy your contracts to get started.</p>
-
-            <Button size="auto" variant="primary">
-              <a href="/coordinator">Get Started</a>
-            </Button>
-          </div>
-        )}
-
         {isConnected && !isAdmin && rounds && rounds.length === 0 && (
           <p className="text-gray-400">There are no rounds deployed.</p>
         )}
 
-        {rounds && rounds.length > 0 && <RoundsList />}
+        {isConnected && isRegistered && (
+          <Button className="mb-4 sm:mb-0" size="auto" variant="primary">
+            <a href="/rounds/0">Go to Projects Page</a>
+          </Button>
+        )}
+
+        <Image
+          alt="arrow-down"
+          className={clsx("absolute bottom-5 hidden sm:block dark:invert")}
+          height="24"
+          src="/arrow-down.svg"
+          width="24"
+        />
       </div>
 
       <FAQList />
