@@ -13,7 +13,7 @@ import {
 import { MACI } from "../../../typechain-types";
 import { EDeploySteps, EContracts } from "../../helpers/constants";
 
-const deployment = Deployment.getInstance();
+const deployment = Deployment.getInstance({ contractNames: EContracts });
 const storage = ContractStorage.getInstance();
 
 const DEFAULT_STATE_TREE_DEPTH = 10;
@@ -24,6 +24,7 @@ const DEFAULT_STATE_TREE_DEPTH = 10;
 deployment.deployTask(EDeploySteps.Maci, "Deploy MACI contract").then((task) =>
   task.setAction(async ({ incremental }: IDeployParams, hre) => {
     deployment.setHre(hre);
+    deployment.setContractNames(EContracts);
     const deployer = await deployment.getDeployer();
 
     const maciContractAddress = storage.getAddress(EContracts.MACI, hre.network.name);

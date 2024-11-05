@@ -13,7 +13,7 @@ import {
   ONE_WEEK_IN_SECONDS,
 } from "../../helpers/constants";
 
-const deployment = Deployment.getInstance();
+const deployment = Deployment.getInstance({ contractNames: EContracts });
 const storage = ContractStorage.getInstance();
 
 /**
@@ -22,6 +22,7 @@ const storage = ContractStorage.getInstance();
 deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
   task.setAction(async (_, hre) => {
     deployment.setHre(hre);
+    deployment.setContractNames(EContracts);
 
     const maciContractAddress = storage.getAddress(EContracts.MACI, hre.network.name);
     const verifierContractAddress = storage.getAddress(EContracts.Verifier, hre.network.name);

@@ -1,5 +1,7 @@
 import { EDeploySteps as EMaciDeploySteps, EContracts as EMaciContracts } from "maci-contracts";
 
+import type { BigNumberish } from "ethers";
+
 /**
  * Deploy steps for maci-platform related constacts
  */
@@ -132,3 +134,23 @@ export const getEtherscanApiKeys = (): Record<ESupportedChains, string | undefin
 });
 
 export const ONE_WEEK_IN_SECONDS = 604800;
+
+/**
+ * Interface that represents task submitOnChain params
+ */
+export interface ISubmitOnChainParams {
+  /**
+   * The poll id
+   */
+  poll: BigNumberish;
+
+  /**
+   * The directory where proofs are stored
+   */
+  outputDir: string;
+
+  /**
+   * The file to store the tally proof
+   */
+  tallyFile: string;
+}

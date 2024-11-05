@@ -3,11 +3,10 @@ import "@nomicfoundation/hardhat-toolbox";
 import dotenv from "dotenv";
 import "hardhat-artifactor";
 import "hardhat-contract-sizer";
+import { Deployment } from "maci-contracts";
 import "maci-contracts/tasks/deploy";
 import "maci-contracts/tasks/runner/deployFull";
 import "maci-contracts/tasks/runner/deployPoll";
-import "maci-contracts/tasks/runner/merge";
-import "maci-contracts/tasks/runner/prove";
 import "maci-contracts/tasks/runner/verifyFull";
 import "solidity-docgen";
 
@@ -15,10 +14,22 @@ import type { HardhatUserConfig } from "hardhat/config";
 
 // Don't forget to import new tasks here
 import "./tasks/deploy";
-import { EChainId, ESupportedChains, getEtherscanApiKeys, getNetworkRpcUrls } from "./tasks/helpers/constants";
+import {
+  EContracts,
+  EChainId,
+  ESupportedChains,
+  getEtherscanApiKeys,
+  getNetworkRpcUrls,
+} from "./tasks/helpers/constants";
 import "./tasks/runner/initPoll";
+import "./tasks/runner/merge";
+import "./tasks/runner/prove";
+import "./tasks/runner/submitOnChain";
 
 dotenv.config();
+
+const deployment = Deployment.getInstance({ contractNames: EContracts });
+deployment.setContractNames(EContracts);
 
 const DEFAULT_BLOCK_GAS_LIMIT = process.env.BLOCK_GAS_LIMIT ? Number(process.env.BLOCK_GAS_LIMIT) : 30_000_000;
 const DEFAULT_GAS_MUL = 2;
