@@ -7,7 +7,7 @@ import { Poll as PollTemplate } from "../generated/templates";
 import { Poll as PollContract } from "../generated/templates/Poll/Poll";
 
 import { ONE_BIG_INT, MESSAGE_TREE_ARITY } from "./utils/constants";
-import { createOrLoadMACI, createOrLoadUser, createOrLoadAccount } from "./utils/entity";
+import { createOrLoadMACI, createOrLoadUser, createOrLoadAccount, createOrLoadTally } from "./utils/entity";
 
 export function handleDeployPoll(event: DeployPollEvent): void {
   const maci = createOrLoadMACI(event);
@@ -47,6 +47,8 @@ export function handleDeployPoll(event: DeployPollEvent): void {
   // Start indexing the poll; `event.params.pollAddr.poll` is the
   // address of the new poll contract
   PollTemplate.create(Address.fromBytes(poll.id));
+
+  createOrLoadTally(contracts.tally, poll.id);
 }
 
 export function handleSignUp(event: SignUpEvent): void {

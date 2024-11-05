@@ -18,6 +18,7 @@ import {
   mockMaciContract,
   mockPollContract,
   mockRegistryContract,
+  mockTallyContract,
 } from "../common";
 import { createDeployPollEvent } from "../maci/utils";
 
@@ -44,6 +45,7 @@ describe("Poll", () => {
     mockMaciContract();
     mockPollContract();
     mockRegistryContract();
+    mockTallyContract();
 
     // mock the deploy poll event with non qv mode set
     const event = createDeployPollEvent(BigInt.fromI32(1), BigInt.fromI32(1), BigInt.fromI32(1), BigInt.fromI32(1));

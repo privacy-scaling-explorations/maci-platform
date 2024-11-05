@@ -58,3 +58,9 @@ export function mockRegistryManager(): void {
     ethereum.Value.fromI32(1),
   ]);
 }
+
+export function mockTallyContract(): void {
+  createMockedFunction(DEFAULT_TALLY_ADDRESS, "poll", "poll():(address)").returns([
+    ethereum.Value.fromAddress(DEFAULT_POLL_ADDRESS),
+  ]);
+}

@@ -48,6 +48,7 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
 
     const maciContract = await deployment.getContract<MACI>({ name: EContracts.MACI, abi: MACIFactory.abi });
     const pollId = await maciContract.nextPollId();
+    const deployerAddress = await deployment.getDeployer().then((deployer) => deployer.getAddress());
 
     const coordinatorPubkey = deployment.getDeployConfigField<string>(EContracts.Poll, "coordinatorPubkey");
     const pollDuration = deployment.getDeployConfigField<number>(EContracts.Poll, "pollDuration");
@@ -186,6 +187,7 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
     await Promise.all([
       storage.register({
         id: EContracts.Poll,
+        name: "contracts/maci/Poll.sol:Poll",
         key: `poll-${pollId}`,
         contract: pollContract,
         args: [
@@ -215,19 +217,21 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
         id: EContracts.MessageProcessor,
         key: `poll-${pollId}`,
         contract: messageProcessorContract,
-        args: [verifierContractAddress, vkRegistryContractAddress, pollContractAddress, mode],
+        args: [verifierContractAddress, vkRegistryContractAddress, pollContractAddress, deployerAddress, mode],
         network: hre.network.name,
       }),
 
       storage.register({
         id: EContracts.Tally,
         key: `poll-${pollId}`,
+        name: "contracts/maci/Tally.sol:Tally",
         contract: tallyContract,
         args: [
           verifierContractAddress,
           vkRegistryContractAddress,
           pollContractAddress,
           messageProcessorContractAddress,
+          deployerAddress,
           mode,
         ],
         network: hre.network.name,
@@ -236,7 +240,7 @@ deployment.deployTask(EDeploySteps.Poll, "Deploy poll").then((task) =>
       storage.register({
         id: EContracts.AccQueueQuinaryMaci,
         key: `poll-${pollId}`,
-        name: "contracts/trees/AccQueueQuinaryMaci.sol:AccQueueQuinaryMaci",
+        name: "maci-contracts/contracts/trees/AccQueueQuinaryMaci.sol:AccQueueQuinaryMaci",
         contract: messageAccQueueContract,
         args: [messageTreeSubDepth],
         network: hre.network.name,
