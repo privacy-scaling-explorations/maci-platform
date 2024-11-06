@@ -24,6 +24,7 @@ export const fundingSourceTypes = {
 
 export const ApplicationSchema = z.object({
   name: z.string().min(3),
+  author: z.string().min(3),
   bio: z.string().min(3),
   profileImageUrl: z.string().optional(),
   bannerImageUrl: z.string().optional(),
@@ -38,7 +39,8 @@ export const ApplicationSchema = z.object({
   payoutAddress: EthAddressSchema,
   github: z.string().optional(),
   twitter: z.string().optional(),
-  contributionDescription: z.string().min(3),
+  farcaster: z.string().optional(),
+  contributionDescription: z.string().optional(),
   impactDescription: z.string().min(3),
   impactCategory: z.array(z.string()).min(1).optional(),
   contributionLinks: z

@@ -46,18 +46,22 @@ export const ReviewApplicationDetails = (): JSX.Element => {
       </div>
 
       <div className="flex flex-col gap-6 dark:text-white">
-        <b className="text-lg">Project Profile</b>
+        <b className="text-lg">Dashboard Profile</b>
 
-        <ValueField required body={application.name} title="Project name" />
+        <ValueField required body={application.name} title="Dashboard name" />
 
-        <ValueField required body={application.bio} title="Project description" />
+        <ValueField required body={application.author} title="Author name" />
+
+        <ValueField required body={application.bio} title="Dashboard description" />
+
+        <ValueField required body={application.payoutAddress} title="Payout address" />
 
         <div className="grid grid-flow-row gap-4 sm:grid-cols-2">
           <ValueField required body={application.websiteUrl} title="Website" />
 
-          <ValueField required body={application.payoutAddress} title="Payout address" />
-
           <ValueField body={application.twitter} title="X(Twitter)" />
+
+          <ValueField body={application.farcaster} title="Farcaster" />
 
           <ValueField body={application.github} title="Github" />
         </div>
@@ -88,11 +92,9 @@ export const ReviewApplicationDetails = (): JSX.Element => {
       </div>
 
       <div className="flex flex-col gap-6 dark:text-white">
-        <b className="text-lg">Contribution & Impact</b>
+        <b className="text-lg">Relevance</b>
 
-        <ValueField required body={application.contributionDescription} title="Contribution description" />
-
-        <ValueField required body={application.impactDescription} title="Impact description" />
+        <ValueField required body={application.impactDescription} title="Why is it relevant for Ethereum?" />
       </div>
     </div>
   );

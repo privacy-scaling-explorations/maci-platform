@@ -40,7 +40,7 @@ export const ApplicationSteps = ({ step }: IApplicationStepsProps): JSX.Element 
 
     <Interline />
 
-    <StepCategory progress={step - 1} title="Contribution & Impact" />
+    <StepCategory progress={step - 1} title="Relevance" />
 
     <Interline />
 

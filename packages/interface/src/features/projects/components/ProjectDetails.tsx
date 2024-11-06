@@ -13,7 +13,6 @@ import type { IRecipient } from "~/utils/types";
 import { useProjectMetadata } from "../hooks/useProjects";
 
 import { ProjectContacts } from "./ProjectContacts";
-import { ProjectDescriptionSection } from "./ProjectDescriptionSection";
 
 export interface IProjectDetailsProps {
   pollId: string;
@@ -24,15 +23,25 @@ export interface IProjectDetailsProps {
 const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetailsProps): JSX.Element => {
   const metadata = useProjectMetadata(project.metadataUrl);
 
-  const { bio, websiteUrl, payoutAddress, github, twitter, fundingSources, profileImageUrl, bannerImageUrl } =
-    metadata.data ?? {};
+  const {
+    bio,
+    author,
+    websiteUrl,
+    payoutAddress,
+    github,
+    twitter,
+    farcaster,
+    impactDescription,
+    profileImageUrl,
+    bannerImageUrl,
+  } = metadata.data ?? {};
 
   const roundState = useRoundState(pollId);
 
   return (
     <div className="relative dark:text-white">
       <div className="mb-7 px-2">
-        <Navigation pollId={pollId} projectName={metadata.data?.name ?? "project name"} />
+        <Navigation pollId={pollId} projectName={metadata.data?.name ?? "dashboard name"} />
       </div>
 
       <div className="overflow-hidden rounded-3xl">
@@ -53,25 +62,33 @@ const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetails
         )}
       </div>
 
-      <ProjectContacts author={payoutAddress} github={github} twitter={twitter} website={websiteUrl} />
+      <ProjectContacts
+        farcaster={farcaster}
+        github={github}
+        payoutAddress={payoutAddress}
+        twitter={twitter}
+        website={websiteUrl}
+      />
+
+      <Heading as="h4" className="px-2" size="xl">
+        Author
+      </Heading>
+
+      <p className="px-2 text-gray-400">{author}</p>
+
+      <Heading as="h4" className="mt-4 px-2" size="xl">
+        Description
+      </Heading>
 
       <p className="px-2 text-gray-400">{bio}</p>
 
-      <div className="my-8 flex flex-col gap-8 px-2">
-        <ProjectDescriptionSection
-          contributions={metadata.data?.contributionLinks}
-          description={metadata.data?.contributionDescription}
-          title="contributions"
-        />
+      <Heading as="h4" className="mt-4 px-2" size="xl">
+        Why is it relevant for Ethereum?
+      </Heading>
 
-        <ProjectDescriptionSection
-          description={metadata.data?.impactDescription}
-          fundings={fundingSources}
-          title="Impact"
-        />
+      <p className="px-2 text-gray-400">{impactDescription}</p>
 
-        {action}
-      </div>
+      {action}
     </div>
   );
 };

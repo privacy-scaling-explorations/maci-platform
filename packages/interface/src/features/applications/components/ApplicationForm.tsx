@@ -90,12 +90,19 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
           description="Please provide information about your project."
           title="Project Profile"
         >
-          <FormControl required hint="This is the name of your project" label="Project name" name="name">
-            <Input placeholder="Type your project name" />
+          <FormControl required hint="This is the name of your project" label="Dashboard name" name="name">
+            <Input placeholder="Type your dashboard name" />
+          </FormControl>
+
+          <FormControl required hint="This is the name of the author" label="Author name" name="author">
+            <Input placeholder="Type the author name" />
           </FormControl>
 
           <FormControl required label="Description" name="bio">
-            <Textarea placeholder="Type project description" rows={4} />
+            <Textarea
+              placeholder="What does your dashboard show? What does it help others to understand and how?"
+              rows={4}
+            />
           </FormControl>
 
           <div className="gap-4 md:flex">
@@ -111,6 +118,10 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
           <div className="gap-4 md:flex">
             <FormControl className="flex-1" label="X(Twitter)" name="twitter" required={false}>
               <Input placeholder="Type your twitter username" />
+            </FormControl>
+
+            <FormControl className="flex-1" label="Farcaster" name="farcaster" required={false}>
+              <Input placeholder="Type your farcaster username" />
             </FormControl>
 
             <FormControl
@@ -148,15 +159,11 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
 
         <FormSection
           className={step === EApplicationStep.ADVANCED ? "block" : "hidden"}
-          description="Describe the contribution and impact of your project."
-          title="Contribution & Impact"
+          description="Describe why is it relevant for Ethereum?."
+          title="Relevance"
         >
-          <FormControl required label="Contribution description" name="contributionDescription">
-            <Textarea placeholder="What have your project contributed to?" rows={4} />
-          </FormControl>
-
-          <FormControl required label="Impact description" name="impactDescription">
-            <Textarea placeholder="What impact has your project had?" rows={4} />
+          <FormControl required label="Why is it relevant for Ethereum?" name="impactDescription">
+            <Textarea placeholder="Why is it relevant for Ethereum?" rows={4} />
           </FormControl>
         </FormSection>
 

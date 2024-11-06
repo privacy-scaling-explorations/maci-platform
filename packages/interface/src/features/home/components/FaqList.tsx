@@ -8,13 +8,12 @@ export const FAQList = (): JSX.Element => (
 
     <FAQItem
       description="(Please enter the main focus and description of this round.)"
-      title="what is the focus of this round?"
+      title="What is this voting round about?"
     />
 
-    <FAQItem
-      description="(This is related to what gatekeeper is used.)"
-      title="What are the requirements for participation?"
-    />
+    <FAQItem description="(This is related to what gatekeeper is used.)" title="What are the projects?" />
+
+    <FAQItem description="(This is related to what gatekeeper is used.)" title="Who can vote and how?" />
 
     <FAQItem
       description={

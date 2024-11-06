@@ -38,25 +38,16 @@ export const ApplicationButtons = ({
 
   const form = useFormContext<Application>();
 
-  const [
-    name,
-    bio,
-    payoutAddress,
-    websiteUrl,
-    profileImageUrl,
-    bannerImageUrl,
-    contributionDescription,
-    impactDescription,
-  ] = useMemo(
+  const [name, author, bio, payoutAddress, websiteUrl, profileImageUrl, bannerImageUrl, impactDescription] = useMemo(
     () =>
       form.watch([
         "name",
+        "author",
         "bio",
         "payoutAddress",
         "websiteUrl",
         "profileImageUrl",
         "bannerImageUrl",
-        "contributionDescription",
         "impactDescription",
       ]),
     [form],
@@ -69,13 +60,14 @@ export const ApplicationButtons = ({
         profileImageUrl !== undefined &&
         bio.length > 0 &&
         name.length > 0 &&
+        author.length > 0 &&
         payoutAddress.length > 0 &&
         websiteUrl.length > 0
       );
     }
 
     if (step === EApplicationStep.ADVANCED) {
-      return contributionDescription.length > 0 && impactDescription.length > 0;
+      return impactDescription.length > 0;
     }
 
     return true;
