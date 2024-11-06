@@ -45,7 +45,7 @@ open localhost:3000
 
 ## Documentation
 
-MACI-Platform uses EAS as backbone to run Retroactive Public Goods Funding to reward contributors ([As used by the Optimism Collective](https://community.optimism.io/docs/governance/citizens-house/#how-retro-funding-works)) while adding a privacy layer to reduce bribery and collusion using MACI.
+MACI-Platform uses EAS as backbone to run Retroactive Public Goods Funding to reward contributors ([As used by the Optimism Collective](https://community.optimism.io/citizens-house/how-retro-funding-works)) while adding a privacy layer to reduce bribery and collusion using MACI.
 
 ## Video Tutorial
 
