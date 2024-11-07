@@ -7,7 +7,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = {
   root: true,
-  extends: ["../../.eslintrc.js", "plugin:react/recommended", "plugin:playwright/playwright-test"],
+  extends: ["../../.eslintrc.js", "plugin:react/recommended"],
   plugins: ["json", "prettier", "unused-imports", "import", "@typescript-eslint", "react-hooks"],
   parser: "@typescript-eslint/parser",
   env: {
@@ -26,7 +26,7 @@ module.exports = {
       },
       node: {
         extensions: [".ts", ".js", ".tsx", ".jsx"],
-        moduleDirectory: ["node_modules", "src", "playwright"],
+        moduleDirectory: ["node_modules", "src"],
       },
     },
   },
@@ -52,10 +52,9 @@ module.exports = {
       {
         devDependencies: [
           "**/*.test.ts",
+          "**/*.setup.ts",
           "./src/test-setup.ts",
           "./src/lib/eas/*.ts",
-          "./playwright/**/*.ts",
-          "./playwright.config.ts",
           "./vitest.config.ts",
         ],
       },
@@ -167,18 +166,5 @@ module.exports = {
     ],
     "react/no-unused-prop-types": "error",
     "react/function-component-definition": ["error", { namedComponents: ["arrow-function"] }],
-
-    "playwright/prefer-lowercase-title": "error",
-    "playwright/prefer-to-be": "error",
-    "playwright/prefer-to-have-length": "error",
-    "playwright/prefer-strict-equal": "error",
-    "playwright/max-nested-describe": ["error", { max: 1 }],
-    "playwright/no-restricted-matchers": [
-      "error",
-      {
-        toBeFalsy: "Use `toBe(false)` instead.",
-        not: null,
-      },
-    ],
   },
 };

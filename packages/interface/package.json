@@ -11,9 +11,7 @@
     "prettier": "prettier -c .",
     "prettier:fix": "prettier -w .",
     "types": "tsc -p tsconfig.json --noEmit",
-    "eas:registerSchemas": "npx tsx src/lib/eas/registerSchemas",
-    "install:chromium": "playwright install chromium",
-    "test:e2e": "playwright test --project=chromium"
+    "eas:registerSchemas": "npx tsx src/lib/eas/registerSchemas"
   },
   "dependencies": {
     "@ethereum-attestation-service/eas-sdk": "^1.5.0",
@@ -72,8 +70,6 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.3",
-    "@playwright/test": "^1.45.0",
-    "@synthetixio/synpress": "^3.7.3",
     "@tailwindcss/typography": "^0.5.10",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
@@ -100,7 +96,6 @@
     "eslint-plugin-import": "^2.30.0",
     "eslint-plugin-json": "^4.0.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
-    "eslint-plugin-playwright": "^1.6.2",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.37.1",
     "eslint-plugin-react-hooks": "^4.6.2",
