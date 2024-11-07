@@ -3,8 +3,8 @@ import {
   SchemaRegistry,
   type SchemaValue,
   type AttestationRequest,
+  type TransactionSigner,
 } from "@ethereum-attestation-service/eas-sdk";
-import { type TransactionSigner } from "@ethereum-attestation-service/eas-sdk/dist/transaction";
 import { type JsonRpcSigner } from "ethers";
 
 import * as config from "~/config";

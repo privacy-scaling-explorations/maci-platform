@@ -1,5 +1,4 @@
-import { EAS } from "@ethereum-attestation-service/eas-sdk";
-import { type TransactionSigner } from "@ethereum-attestation-service/eas-sdk/dist/transaction";
+import { EAS, type TransactionSigner } from "@ethereum-attestation-service/eas-sdk";
 import { type JsonRpcSigner } from "ethers";
 
 import * as config from "~/config";
