@@ -1,11 +1,9 @@
 /* eslint-disable no-console */
-import { SchemaRegistry, ZERO_ADDRESS, getSchemaUID } from "@ethereum-attestation-service/eas-sdk";
+import { SchemaRegistry, type TransactionSigner, ZERO_ADDRESS } from "@ethereum-attestation-service/eas-sdk";
 import "dotenv/config";
 import { ethers } from "ethers";
 
 import { eas, config } from "~/config";
-
-import type { TransactionSigner } from "@ethereum-attestation-service/eas-sdk/dist/transaction";
 
 /*
 This file defines and registers the EAS schemas. 
@@ -39,7 +37,7 @@ export async function registerSchemas(): Promise<{ name: string; uid: string }[]
     schemas.map(async ({ name, schema }) => {
       const exists = await schemaRegistry
         .getSchema({
-          uid: getSchemaUID(schema, ZERO_ADDRESS, true),
+          uid: SchemaRegistry.getSchemaUID(schema, ZERO_ADDRESS, true),
         })
         .catch(console.error);
 
