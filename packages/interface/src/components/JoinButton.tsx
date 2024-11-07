@@ -17,12 +17,28 @@ import type { EdDSAPublicKey } from "@pcd/eddsa-pcd";
 import { Button } from "./ui/Button";
 
 export const JoinButton = (): JSX.Element => {
-  const { isLoading, isRegistered, isEligibleToVote, onSignup, gatekeeperTrait, storeZupassProof } = useMaci();
+  const { isLoading, isRegistered, isEligibleToVote, onSignup, gatekeeperTrait, storeZupassProof, zupassProof } =
+    useMaci();
   const signer = useEthersSigner();
   const { address } = useAccount();
 
   const onError = useCallback(() => toast.error("Signup error"), []);
-  const handleSignup = useCallback(() => onSignup(onError), [onSignup, onError]);
+  const handleSignup = useCallback(async () => {
+    // first we call the faucet to get funds
+    const response = await fetch("/api/faucet", {
+      method: "POST",
+      body: JSON.stringify({ address, pcd: zupassProof }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status !== 204 && response.status !== 200) {
+      toast.error("Could not verify your Zupass ticket, please try again");
+    }
+
+    onSignup(onError);
+  }, [onSignup, onError]);
 
   const handleZupassVerify = useCallback(async () => {
     if (address !== undefined && signer) {

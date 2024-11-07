@@ -44,3 +44,6 @@ packages/interface/metamask/
 # typescript
 *.tsbuildinfo
 zkeys
+
+db.db 
+proofs 
