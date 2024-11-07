@@ -1,0 +1,9 @@
+{
+  "roundId": "Round-ID",
+  "description": "This is the test round.",
+  "startsAt": "2024-11-05T17:00:00.000Z",
+  "registrationEndsAt": "2024-11-06T10:00:00.000Z",
+  "votingStartsAt": "2024-11-06T10:00:00.000Z",
+  "votingEndsAt": "2024-11-06T17:00:00.000Z",
+  "tallyFile": "[storage url]/[roundId].json"
+}
