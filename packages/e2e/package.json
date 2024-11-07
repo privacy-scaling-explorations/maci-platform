@@ -1,0 +1,28 @@
+{
+  "name": "maci-platform-interface-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:cache": "synpress",
+    "build:cache:force": "synpress --force",
+    "build:cache:headless": "synpress --headless",
+    "types": "tsc -p tsconfig.json --noEmit",
+    "install:deps": "playwright install-deps",
+    "install:chromium": "playwright install chromium",
+    "test:playwright:headful": "playwright test --headed",
+    "test:playwright:headless": "HEADLESS=true playwright test",
+    "test:playwright:headless:ui": "HEADLESS=true playwright test --ui"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.48.2",
+    "@synthetixio/synpress": "^4.0.3",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@synthetixio/synpress-tsconfig": "^0.0.4",
+    "eslint-plugin-playwright": "^2.0.1",
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3"
+  }
+}

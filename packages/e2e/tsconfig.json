@@ -1,0 +1,9 @@
+{
+  "extends": "@synthetixio/synpress-tsconfig/base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "esModuleInterop": true,
+    "sourceMap": false
+  },
+  "include": ["test"]
+}

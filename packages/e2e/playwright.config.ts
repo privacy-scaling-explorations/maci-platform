@@ -1,5 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 import dotenv from "dotenv";
+import path from "path";
 
 dotenv.config();
 
@@ -7,7 +8,7 @@ dotenv.config();
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: "./e2e",
+  testDir: "./test",
   timeout: process.env.CI ? 120_000 : 60_000,
   expect: {
     timeout: 15_000,
@@ -22,7 +23,6 @@ export default defineConfig({
     baseURL: process.env.DEMO_URL || "http://localhost:3000",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
-    headless: false,
   },
 
   projects: [
@@ -35,9 +35,10 @@ export default defineConfig({
     ? [
         {
           command: "pnpm run start",
+          cwd: path.resolve("../interface"),
           url: "http://localhost:3000",
           timeout: 120 * 1000,
-          reuseExistingServer: !process.env.CI,
+          reuseExistingServer: true,
         },
       ]
     : [],
