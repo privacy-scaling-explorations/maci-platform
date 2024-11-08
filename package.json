@@ -23,7 +23,6 @@
     "start:coordinator": "lerna run start --scope=maci-coordinator",
     "dev:interface": "lerna run dev --scope=maci-platform-interface",
     "test:coordinator": "lerna run test --scope=maci-coordinator",
-    "test:interface:e2e": "lerna run test:e2e --scope=maci-platform-interface",
     "hardhat": "lerna run hardhat --scope=maci-platform-interface"
   },
   "author": "PSE",

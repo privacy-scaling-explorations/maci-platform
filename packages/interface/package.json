@@ -79,7 +79,7 @@
     "@types/lowdb": "^1.0.15",
     "@types/node": "^20.11.10",
     "@types/node-fetch-cache": "^3.0.5",
-    "@types/papaparse": "^5.3.14",
+    "@types/papaparse": "^5.3.15",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "@types/snarkjs": "^0.7.8",
