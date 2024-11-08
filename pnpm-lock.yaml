@@ -477,8 +477,8 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1(@types/react@18.3.3)(react@18.2.0)
       react-number-format:
-        specifier: ^5.3.1
-        version: 5.4.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: ^5.4.2
+        version: 5.4.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-use:
         specifier: ^17.5.0
         version: 17.5.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -11153,8 +11153,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-number-format@5.4.0:
-    resolution: {integrity: sha512-NWdICrqLhI7rAS8yUeLVd6Wr4cN7UjJ9IBTS0f/a9i7UB4x4Ti70kGnksBtZ7o4Z7YRbvCMMR/jQmkoOBa/4fg==}
+  react-number-format@5.4.2:
+    resolution: {integrity: sha512-cg//jVdS49PYDgmcYoBnMMHl4XNTMuV723ZnHD2aXYtWWWqbVF3hjQ8iB+UZEuXapLbeA8P8H+1o6ZB1lcw3vg==}
     peerDependencies:
       react: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
@@ -28014,9 +28014,8 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  react-number-format@5.4.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  react-number-format@5.4.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
-      prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
