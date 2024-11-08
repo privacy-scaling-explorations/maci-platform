@@ -58,8 +58,6 @@ jobs:
           path: |
             ~/.pnpm-store
             node_modules
-            /home/runner/.cache/Cypress
-            packages/e2e/.cache-synpress
           key: ${{ runner.os }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-node-
