@@ -50,6 +50,7 @@ export const Providers = ({ children }: PropsWithChildren): JSX.Element => {
                 logo: "/round-logo.svg",
                 loginMessage: "Welcome to MACI Platform",
                 landingHeader: "MACI Platform",
+                walletList: ["metamask"],
               },
               // Create embedded wallets for users who don't have a wallet
               embeddedWallets: {
