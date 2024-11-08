@@ -438,8 +438,8 @@ importers:
         specifier: ^6.13.1
         version: 6.13.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       graphql-request:
-        specifier: ^6.1.0
-        version: 6.1.0(encoding@0.1.13)(graphql@16.9.0)
+        specifier: ^7.1.2
+        version: 7.1.2(graphql@16.9.0)
       js-sha256:
         specifier: ^0.11.0
         version: 0.11.0
@@ -8263,6 +8263,11 @@ packages:
 
   graphql-request@6.1.0:
     resolution: {integrity: sha512-p+XPfS4q7aIpKVcgmnZKhMNqhltk20hfXtkaIkTfjjmiKMJ5xrt5c743cL03y/K7y1rg3WrIC49xGiEQ4mxdNw==}
+    peerDependencies:
+      graphql: 14 - 16
+
+  graphql-request@7.1.2:
+    resolution: {integrity: sha512-+XE3iuC55C2di5ZUrB4pjgwe+nIQBuXVIK9J98wrVwojzDW3GMdSBZfxUk8l4j9TieIpjpggclxhNEU9ebGF8w==}
     peerDependencies:
       graphql: 14 - 16
 
@@ -24687,6 +24692,11 @@ snapshots:
       graphql: 16.9.0
     transitivePeerDependencies:
       - encoding
+
+  graphql-request@7.1.2(graphql@16.9.0):
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.9.0)
+      graphql: 16.9.0
 
   graphql@15.5.0: {}
 
