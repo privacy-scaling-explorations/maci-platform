@@ -232,8 +232,8 @@ importers:
         specifier: ^2.22.15
         version: 2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4))(typescript@5.5.4)(utf-8-validate@5.0.10)
       helmet:
-        specifier: ^7.1.0
-        version: 7.2.0
+        specifier: ^8.0.0
+        version: 8.0.0
       lowdb:
         specifier: ^1.0.0
         version: 1.0.0
@@ -8473,9 +8473,9 @@ packages:
   heap@0.2.7:
     resolution: {integrity: sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg==}
 
-  helmet@7.2.0:
-    resolution: {integrity: sha512-ZRiwvN089JfMXokizgqEPXsl2Guk094yExfoDXR0cBYWxtBbaSww/w+vT4WEJsBW2iTUi1GgZ6swmoug3Oy4Xw==}
-    engines: {node: '>=16.0.0'}
+  helmet@8.0.0:
+    resolution: {integrity: sha512-VyusHLEIIO5mjQPUI1wpOAEu+wl6Q0998jzTxqUYGE45xCIcAxy3MsbEK/yyJUJ3ADeMoB6MornPH6GMWAf+Pw==}
+    engines: {node: '>=18.0.0'}
 
   help-me@5.0.0:
     resolution: {integrity: sha512-7xgomUX6ADmcYzFik0HzAxh/73YlKR9bmFzf51CZwR+b6YtzU2m0u49hQCqV6SvlqIqsaxovfwdvbnsw3b/zpg==}
@@ -25053,9 +25053,7 @@ snapshots:
 
   heap@0.2.7: {}
 
-  helmet@7.2.0: {}
-
-  help-me@5.0.0: {}
+  helmet@8.0.0: {}
 
   hermes-estree@0.19.1: {}
 
