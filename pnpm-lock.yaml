@@ -495,7 +495,7 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1(@types/react@18.3.3)(react@18.2.0)
       react-number-format:
-        specifier: ^5.3.1
+        specifier: ^5.4.2
         version: 5.4.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-use:
         specifier: ^17.5.0
