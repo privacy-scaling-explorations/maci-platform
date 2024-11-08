@@ -402,8 +402,8 @@ importers:
         specifier: 11.0.0-next-beta.294
         version: 11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294)
       '@trpc/next':
-        specifier: 11.0.0-next-beta.294
-        version: 11.0.0-next-beta.294(@tanstack/react-query@5.51.21(react@18.2.0))(@trpc/client@11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294))(@trpc/react-query@11.0.0-next-beta.294(@tanstack/react-query@5.51.21(react@18.2.0))(@trpc/client@11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294))(@trpc/server@11.0.0-next-beta.294)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@trpc/server@11.0.0-next-beta.294)(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: 11.0.0-rc.608
+        version: 11.0.0-rc.608(@tanstack/react-query@5.51.21(react@18.2.0))(@trpc/client@11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294))(@trpc/react-query@11.0.0-next-beta.294(@tanstack/react-query@5.51.21(react@18.2.0))(@trpc/client@11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294))(@trpc/server@11.0.0-next-beta.294)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@trpc/server@11.0.0-next-beta.294)(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@trpc/react-query':
         specifier: 11.0.0-next-beta.294
         version: 11.0.0-next-beta.294(@tanstack/react-query@5.51.21(react@18.2.0))(@trpc/client@11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294))(@trpc/server@11.0.0-next-beta.294)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -4228,14 +4228,14 @@ packages:
     peerDependencies:
       '@trpc/server': 11.0.0-next-beta.294+1e32ff91b
 
-  '@trpc/next@11.0.0-next-beta.294':
-    resolution: {integrity: sha512-wQ9bh3QnPSD1e8EfWTt3iSj3OT4KjncO4RkPMuZM89FPD4AjWWW3jqkkibcQ+92q4MZ1J5zJmwzdY/Hn+9B/AA==}
+  '@trpc/next@11.0.0-rc.608':
+    resolution: {integrity: sha512-dL+ifSaJIl+21P3LZ1JEl1uzqDD7pZ3iCs9uEnf3tjyZhbCuavnTL7faRDV6wZ6+L6opzKxIzeVNC4e490Ys0Q==}
     peerDependencies:
-      '@tanstack/react-query': ^5.0.0
-      '@trpc/client': 11.0.0-next-beta.294+1e32ff91b
-      '@trpc/react-query': 11.0.0-next-beta.294+1e32ff91b
-      '@trpc/server': 11.0.0-next-beta.294+1e32ff91b
-      next: '*'
+      '@tanstack/react-query': ^5.59.15
+      '@trpc/client': 11.0.0-rc.608+f75de97b3
+      '@trpc/react-query': 11.0.0-rc.608+f75de97b3
+      '@trpc/server': 11.0.0-rc.608+f75de97b3
+      next: 15.0.2
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     peerDependenciesMeta:
@@ -18618,7 +18618,7 @@ snapshots:
     dependencies:
       '@trpc/server': 11.0.0-next-beta.294
 
-  '@trpc/next@11.0.0-next-beta.294(@tanstack/react-query@5.51.21(react@18.2.0))(@trpc/client@11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294))(@trpc/react-query@11.0.0-next-beta.294(@tanstack/react-query@5.51.21(react@18.2.0))(@trpc/client@11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294))(@trpc/server@11.0.0-next-beta.294)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@trpc/server@11.0.0-next-beta.294)(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@trpc/next@11.0.0-rc.608(@tanstack/react-query@5.51.21(react@18.2.0))(@trpc/client@11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294))(@trpc/react-query@11.0.0-next-beta.294(@tanstack/react-query@5.51.21(react@18.2.0))(@trpc/client@11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294))(@trpc/server@11.0.0-next-beta.294)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@trpc/server@11.0.0-next-beta.294)(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@trpc/client': 11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294)
       '@trpc/server': 11.0.0-next-beta.294
