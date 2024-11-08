@@ -423,3 +423,12 @@ export interface IRoundData {
 export interface IRecipientWithVotes extends IRecipient {
   votes: number;
 }
+
+/**
+ * Top 3 Rank of the result
+ */
+export enum EMedal {
+  Gold,
+  Silver,
+  Bronze,
+}

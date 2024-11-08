@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import Image from "next/image";
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useCallback } from "react";
 import { Hex, zeroAddress } from "viem";
 
 import { Heading } from "~/components/ui/Heading";
@@ -9,7 +9,7 @@ import { ResultItem } from "~/features/results/components/ResultItem";
 import { useProjectsResults } from "~/hooks/useResults";
 import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
 import { useRoundState } from "~/utils/state";
-import { ERoundState } from "~/utils/types";
+import { ERoundState, EMedal } from "~/utils/types";
 
 import type { GetServerSideProps } from "next";
 
@@ -37,6 +37,11 @@ const ResultPage = ({ pollId }: IResultPageProps): JSX.Element => {
     projectsResults.refetch().catch(console.error);
   }, [projectsResults, round]);
 
+  const decideMedal = useCallback(
+    (rank: number) => (rank <= (EMedal.Bronze as number) ? (rank as EMedal) : undefined),
+    [],
+  );
+
   return (
     <LayoutWithSidebar showInfo pollId={pollId} sidebar="left">
       {roundState === ERoundState.RESULTS && (
@@ -55,7 +60,7 @@ const ResultPage = ({ pollId }: IResultPageProps): JSX.Element => {
 
           <div className="rounded-md border border-gray-200 p-5">
             {projectsResults.data?.map((item, i) => (
-              <ResultItem key={item.index} pollId={pollId} project={item} rank={i + 1} />
+              <ResultItem key={item.index} medal={decideMedal(i)} pollId={pollId} project={item} rank={i + 1} />
             ))}
           </div>
         </div>

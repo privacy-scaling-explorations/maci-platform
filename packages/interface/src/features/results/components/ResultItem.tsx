@@ -3,16 +3,16 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 import { useProjectMetadata } from "~/features/projects/hooks/useProjects";
-
-import type { IRecipientWithVotes } from "~/utils/types";
+import { EMedal, type IRecipientWithVotes } from "~/utils/types";
 
 export interface IResultItemProps {
   pollId: string;
   rank: number;
   project: IRecipientWithVotes;
+  medal?: EMedal;
 }
 
-export const ResultItem = ({ pollId, rank, project }: IResultItemProps): JSX.Element => {
+export const ResultItem = ({ pollId, rank, project, medal = undefined }: IResultItemProps): JSX.Element => {
   const metadata = useProjectMetadata(project.metadataUrl);
 
   useEffect(() => {
@@ -28,11 +28,11 @@ export const ResultItem = ({ pollId, rank, project }: IResultItemProps): JSX.Ele
     <Link href={`/rounds/${pollId}/${project.id}`}>
       <div className="flex cursor-pointer leading-8 hover:bg-blue-50">
         <div className="my-1 w-8 flex-none justify-center">
-          {rank === 1 && <Image alt="gold" height="26" src="/gold.svg" width="26" />}
+          {medal === EMedal.Gold && <Image alt="gold" height="26" src="/gold.svg" width="26" />}
 
-          {rank === 2 && <Image alt="silver" height="26" src="/silver.svg" width="26" />}
+          {medal === EMedal.Silver && <Image alt="silver" height="26" src="/silver.svg" width="26" />}
 
-          {rank === 3 && <Image alt="bronze" height="26" src="/bronze.svg" width="26" />}
+          {medal === EMedal.Bronze && <Image alt="bronze" height="26" src="/bronze.svg" width="26" />}
         </div>
 
         <div className="w-6 flex-none text-center">{rank}</div>
