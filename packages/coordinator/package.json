@@ -49,7 +49,7 @@
     "dotenv": "^16.4.5",
     "ethers": "^6.13.1",
     "hardhat": "^2.22.15",
-    "helmet": "^7.1.0",
+    "helmet": "^8.0.0",
     "lowdb": "^1.0.0",
     "maci-circuits": "^2.4.0",
     "maci-cli": "^2.3.0",
