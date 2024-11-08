@@ -601,8 +601,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.1(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)
       happy-dom:
-        specifier: ^13.3.2
-        version: 13.10.1
+        specifier: ^15.11.0
+        version: 15.11.0
       hardhat:
         specifier: ^2.22.15
         version: 2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4))(typescript@5.5.4)(utf-8-validate@5.0.10)
@@ -8035,9 +8035,9 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
 
-  happy-dom@13.10.1:
-    resolution: {integrity: sha512-9GZLEFvQL5EgfJX2zcBgu1nsPUn98JF/EiJnSfQbdxI6YEQGqpd09lXXxOmYonRBIEFz9JlGCOiPflDzgS1p8w==}
-    engines: {node: '>=16.0.0'}
+  happy-dom@15.11.0:
+    resolution: {integrity: sha512-/zyxHbXriYJ8b9Urh43ILk/jd9tC07djURnJuAimJ3tJCOLOzOUp7dEHDwJOZyzROlrrooUhr/0INZIDBj1Bjw==}
+    engines: {node: '>=18.0.0'}
 
   hard-rejection@2.1.0:
     resolution: {integrity: sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==}
@@ -23595,7 +23595,7 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.1
 
-  happy-dom@13.10.1:
+  happy-dom@15.11.0:
     dependencies:
       entities: 4.5.0
       webidl-conversions: 7.0.0
