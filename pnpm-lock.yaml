@@ -355,7 +355,7 @@ importers:
         version: 0.10.0(encoding@0.1.13)(viem@2.19.1(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
       '@hookform/resolvers':
         specifier: ^3.3.4
-        version: 3.9.0(react-hook-form@7.52.2(react@18.2.0))
+        version: 3.9.0(react-hook-form@7.53.1(react@18.2.0))
       '@nivo/line':
         specifier: ^0.84.0
         version: 0.84.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -468,8 +468,8 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       react-hook-form:
-        specifier: ^7.49.3
-        version: 7.52.2(react@18.2.0)
+        specifier: ^7.53.1
+        version: 7.53.1(react@18.2.0)
       react-icons:
         specifier: ^5.0.1
         version: 5.2.1(react@18.2.0)
@@ -11038,8 +11038,8 @@ packages:
     peerDependencies:
       react: ^18.2.0
 
-  react-hook-form@7.52.2:
-    resolution: {integrity: sha512-pqfPEbERnxxiNMPd0bzmt1tuaPcVccywFDpyk2uV5xCIBphHV5T8SVnX9/o3kplPE1zzKt77+YIoq+EMwJp56A==}
+  react-hook-form@7.53.1:
+    resolution: {integrity: sha512-6aiQeBda4zjcuaugWvim9WsGqisoUk+etmFEsSUMm451/Ic8L/UAb7sRtMj3V+Hdzm6mMjU1VhiSzYUZeBm0Vg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -15203,9 +15203,9 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@hookform/resolvers@3.9.0(react-hook-form@7.52.2(react@18.2.0))':
+  '@hookform/resolvers@3.9.0(react-hook-form@7.53.1(react@18.2.0))':
     dependencies:
-      react-hook-form: 7.52.2(react@18.2.0)
+      react-hook-form: 7.53.1(react@18.2.0)
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
@@ -27786,7 +27786,7 @@ snapshots:
       react: 18.2.0
       scheduler: 0.23.2
 
-  react-hook-form@7.52.2(react@18.2.0):
+  react-hook-form@7.53.1(react@18.2.0):
     dependencies:
       react: 18.2.0
 
