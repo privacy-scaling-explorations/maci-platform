@@ -43,7 +43,7 @@
     "graphql-request": "^7.1.2",
     "js-sha256": "^0.11.0",
     "lowdb": "^1.0.0",
-    "lucide-react": "^0.316.0",
+    "lucide-react": "^0.454.0",
     "maci-cli": "^2.4.0",
     "maci-domainobjs": "^2.4.0",
     "maci-platform-contracts": "workspace:^0.1.0",
