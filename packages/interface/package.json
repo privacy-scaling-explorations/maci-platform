@@ -31,7 +31,7 @@
     "@semaphore-protocol/data": "4.0.3",
     "@t3-oss/env-nextjs": "^0.8.0",
     "@tanstack/react-query": "^5.24.1",
-    "@trpc/client": "11.0.0-next-beta.294",
+    "@trpc/client": "11.0.0-rc.608",
     "@trpc/next": "11.0.0-next-beta.294",
     "@trpc/react-query": "11.0.0-next-beta.294",
     "@trpc/server": "11.0.0-next-beta.294",
