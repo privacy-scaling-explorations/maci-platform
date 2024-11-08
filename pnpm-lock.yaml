@@ -327,7 +327,7 @@ importers:
         version: 1.48.2
       '@synthetixio/synpress':
         specifier: ^4.0.3
-        version: 4.0.3(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.48.2)(bufferutil@4.0.8)(ethers@6.13.2(bufferutil@4.0.8)(utf-8-validate@5.0.10))(playwright-core@1.48.2)(postcss@8.4.41)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+        version: 4.0.3(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.48.2)(bufferutil@4.0.8)(ethers@6.13.2(bufferutil@4.0.8)(utf-8-validate@5.0.10))(playwright-core@1.48.2)(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -560,7 +560,7 @@ importers:
         version: 4.3.1(vite@5.3.5(@types/node@20.14.14)(terser@5.31.3))
       autoprefixer:
         specifier: ^10.4.17
-        version: 10.4.20(postcss@8.4.41)
+        version: 10.4.20(postcss@8.4.47)
       decompress:
         specifier: ^4.2.1
         version: 4.2.1
@@ -616,8 +616,8 @@ importers:
         specifier: ^0.9.11
         version: 0.9.13(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)
       postcss:
-        specifier: ^8.4.33
-        version: 8.4.41
+        specifier: ^8.4.47
+        version: 8.4.47
       prettier:
         specifier: ^3.3.2
         version: 3.3.3
@@ -10640,6 +10640,9 @@ packages:
   picocolors@1.0.1:
     resolution: {integrity: sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==}
 
+  picocolors@1.1.1:
+    resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
+
   picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
@@ -10785,8 +10788,8 @@ packages:
     resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
     engines: {node: ^10 || ^12 || >=14}
 
-  postcss@8.4.41:
-    resolution: {integrity: sha512-TesUflQ0WKZqAvg52PWL6kHgLKP6xB6heTOdoYM0Wt2UHyxNa4K25EZZMgKns3BH1RLVbZCREPpLY0rhnNoHVQ==}
+  postcss@8.4.47:
+    resolution: {integrity: sha512-56rxCq7G/XfB4EkXq9Egn5GCqugWvDFjafDOThIdMBsI15iqPqR5r15TfSr1YPYeEI19YeaXMCbY6u88Y76GLQ==}
     engines: {node: ^10 || ^12 || >=14}
 
   preact-render-to-string@5.2.6:
@@ -11773,8 +11776,8 @@ packages:
     resolution: {integrity: sha512-/dPCrG1s3ePpWm6yBbxZq5Be1dXGLyLn9Z791chDC3NFrpkVbWGzkBwPN1knaciexFXgRJ7hzdnwZ4stHSDmjg==}
     engines: {node: '>=4'}
 
-  source-map-js@1.2.0:
-    resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
+  source-map-js@1.2.1:
+    resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
 
   source-map-support@0.5.13:
@@ -13383,7 +13386,7 @@ snapshots:
   '@babel/code-frame@7.24.7':
     dependencies:
       '@babel/highlight': 7.24.7
-      picocolors: 1.0.1
+      picocolors: 1.1.1
 
   '@babel/compat-data@7.25.2': {}
 
@@ -13554,7 +13557,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       chalk: 2.4.2
       js-tokens: 4.0.0
-      picocolors: 1.0.1
+      picocolors: 1.1.1
 
   '@babel/parser@7.25.3':
     dependencies:
@@ -18479,7 +18482,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@synthetixio/synpress-cache@0.0.4(playwright-core@1.48.2)(postcss@8.4.41)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)':
+  '@synthetixio/synpress-cache@0.0.4(playwright-core@1.48.2)(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)':
     dependencies:
       axios: 1.6.7
       chalk: 5.3.0
@@ -18490,7 +18493,7 @@ snapshots:
       gradient-string: 2.0.2
       playwright-core: 1.48.2
       progress: 2.0.3
-      tsup: 8.0.2(postcss@8.4.41)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)
+      tsup: 8.0.2(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)
       unzipper: 0.10.14
       zod: 3.22.4
     transitivePeerDependencies:
@@ -18506,10 +18509,10 @@ snapshots:
     dependencies:
       '@playwright/test': 1.48.2
 
-  '@synthetixio/synpress-metamask@0.0.4(@playwright/test@1.48.2)(bufferutil@4.0.8)(playwright-core@1.48.2)(postcss@8.4.41)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)(utf-8-validate@5.0.10)':
+  '@synthetixio/synpress-metamask@0.0.4(@playwright/test@1.48.2)(bufferutil@4.0.8)(playwright-core@1.48.2)(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@playwright/test': 1.48.2
-      '@synthetixio/synpress-cache': 0.0.4(playwright-core@1.48.2)(postcss@8.4.41)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)
+      '@synthetixio/synpress-cache': 0.0.4(playwright-core@1.48.2)(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)
       '@synthetixio/synpress-core': 0.0.4(@playwright/test@1.48.2)
       '@viem/anvil': 0.0.7(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       fs-extra: 11.2.0
@@ -18528,13 +18531,13 @@ snapshots:
 
   '@synthetixio/synpress-tsconfig@0.0.4': {}
 
-  '@synthetixio/synpress@4.0.3(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.48.2)(bufferutil@4.0.8)(ethers@6.13.2(bufferutil@4.0.8)(utf-8-validate@5.0.10))(playwright-core@1.48.2)(postcss@8.4.41)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.22.4)':
+  '@synthetixio/synpress@4.0.3(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.48.2)(bufferutil@4.0.8)(ethers@6.13.2(bufferutil@4.0.8)(utf-8-validate@5.0.10))(playwright-core@1.48.2)(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.22.4)':
     dependencies:
       '@playwright/test': 1.48.2
       '@synthetixio/ethereum-wallet-mock': 0.0.4(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.48.2)(bufferutil@4.0.8)(ethers@6.13.2(bufferutil@4.0.8)(utf-8-validate@5.0.10))(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.22.4)
-      '@synthetixio/synpress-cache': 0.0.4(playwright-core@1.48.2)(postcss@8.4.41)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)
+      '@synthetixio/synpress-cache': 0.0.4(playwright-core@1.48.2)(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)
       '@synthetixio/synpress-core': 0.0.4(@playwright/test@1.48.2)
-      '@synthetixio/synpress-metamask': 0.0.4(@playwright/test@1.48.2)(bufferutil@4.0.8)(playwright-core@1.48.2)(postcss@8.4.41)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)(utf-8-validate@5.0.10)
+      '@synthetixio/synpress-metamask': 0.0.4(@playwright/test@1.48.2)(bufferutil@4.0.8)(playwright-core@1.48.2)(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - '@depay/solana-web3.js'
       - '@depay/web3-blockchains'
@@ -20192,14 +20195,14 @@ snapshots:
 
   atomic-sleep@1.0.0: {}
 
-  autoprefixer@10.4.20(postcss@8.4.41):
+  autoprefixer@10.4.20(postcss@8.4.47):
     dependencies:
       browserslist: 4.23.3
       caniuse-lite: 1.0.30001650
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.1
-      postcss: 8.4.41
+      postcss: 8.4.47
       postcss-value-parser: 4.2.0
 
   available-typed-arrays@1.0.7:
@@ -27667,6 +27670,8 @@ snapshots:
 
   picocolors@1.0.1: {}
 
+  picocolors@1.1.1: {}
+
   picomatch@2.3.1: {}
 
   picomatch@4.0.1: {}
@@ -27748,37 +27753,37 @@ snapshots:
 
   possible-typed-array-names@1.0.0: {}
 
-  postcss-import@15.1.0(postcss@8.4.41):
+  postcss-import@15.1.0(postcss@8.4.47):
     dependencies:
-      postcss: 8.4.41
+      postcss: 8.4.47
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.8
 
-  postcss-js@4.0.1(postcss@8.4.41):
+  postcss-js@4.0.1(postcss@8.4.47):
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.41
+      postcss: 8.4.47
 
-  postcss-load-config@4.0.2(postcss@8.4.41)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4)):
+  postcss-load-config@4.0.2(postcss@8.4.47)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4)):
     dependencies:
       lilconfig: 3.1.2
       yaml: 2.5.0
     optionalDependencies:
-      postcss: 8.4.41
+      postcss: 8.4.47
       ts-node: 10.9.2(@types/node@20.14.14)(typescript@5.5.4)
 
-  postcss-load-config@4.0.2(postcss@8.4.41)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3)):
+  postcss-load-config@4.0.2(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3)):
     dependencies:
       lilconfig: 3.1.2
       yaml: 2.5.0
     optionalDependencies:
-      postcss: 8.4.41
+      postcss: 8.4.47
       ts-node: 10.9.2(@types/node@22.9.0)(typescript@5.6.3)
 
-  postcss-nested@6.2.0(postcss@8.4.41):
+  postcss-nested@6.2.0(postcss@8.4.47):
     dependencies:
-      postcss: 8.4.41
+      postcss: 8.4.47
       postcss-selector-parser: 6.1.1
 
   postcss-selector-parser@6.0.10:
@@ -27796,14 +27801,14 @@ snapshots:
   postcss@8.4.31:
     dependencies:
       nanoid: 3.3.7
-      picocolors: 1.0.1
-      source-map-js: 1.2.0
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
 
-  postcss@8.4.41:
+  postcss@8.4.47:
     dependencies:
       nanoid: 3.3.7
-      picocolors: 1.0.1
-      source-map-js: 1.2.0
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
 
   preact-render-to-string@5.2.6(preact@10.23.1):
     dependencies:
@@ -29066,7 +29071,7 @@ snapshots:
     dependencies:
       is-plain-obj: 1.1.0
 
-  source-map-js@1.2.0: {}
+  source-map-js@1.2.1: {}
 
   source-map-support@0.5.13:
     dependencies:
@@ -29467,11 +29472,11 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.0.1
-      postcss: 8.4.41
-      postcss-import: 15.1.0(postcss@8.4.41)
-      postcss-js: 4.0.1(postcss@8.4.41)
-      postcss-load-config: 4.0.2(postcss@8.4.41)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4))
-      postcss-nested: 6.2.0(postcss@8.4.41)
+      postcss: 8.4.47
+      postcss-import: 15.1.0(postcss@8.4.47)
+      postcss-js: 4.0.1(postcss@8.4.47)
+      postcss-load-config: 4.0.2(postcss@8.4.47)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4))
+      postcss-nested: 6.2.0(postcss@8.4.47)
       postcss-selector-parser: 6.1.1
       resolve: 1.22.8
       sucrase: 3.35.0
@@ -29822,7 +29827,7 @@ snapshots:
 
   tsort@0.0.1: {}
 
-  tsup@8.0.2(postcss@8.4.41)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3):
+  tsup@8.0.2(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))(typescript@5.6.3):
     dependencies:
       bundle-require: 4.2.1(esbuild@0.19.12)
       cac: 6.7.14
@@ -29832,14 +29837,14 @@ snapshots:
       execa: 5.1.1
       globby: 11.1.0
       joycon: 3.1.1
-      postcss-load-config: 4.0.2(postcss@8.4.41)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))
+      postcss-load-config: 4.0.2(postcss@8.4.47)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.6.3))
       resolve-from: 5.0.0
       rollup: 4.20.0
       source-map: 0.8.0-beta.0
       sucrase: 3.35.0
       tree-kill: 1.2.2
     optionalDependencies:
-      postcss: 8.4.41
+      postcss: 8.4.47
       typescript: 5.6.3
     transitivePeerDependencies:
       - supports-color
@@ -30118,7 +30123,7 @@ snapshots:
     dependencies:
       browserslist: 4.23.3
       escalade: 3.1.2
-      picocolors: 1.0.1
+      picocolors: 1.1.1
 
   uqr@0.1.2: {}
 
@@ -30274,7 +30279,7 @@ snapshots:
   vite@5.3.5(@types/node@20.14.14)(terser@5.31.3):
     dependencies:
       esbuild: 0.21.5
-      postcss: 8.4.41
+      postcss: 8.4.47
       rollup: 4.20.0
     optionalDependencies:
       '@types/node': 20.14.14
