@@ -238,7 +238,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
 
     const signature = await smartAccount.signMessage({ message: signatureMessage });
     const newSemaphoreIdentity = new Identity(signature);
-    const userKeyPair = genKeyPair({ seed: BigInt(signature) });
+    const userKeyPair = genKeyPair({ seed: BigInt(signature ?? "") });
     localStorage.setItem("maciPrivKey", userKeyPair.privateKey);
     localStorage.setItem("maciPubKey", userKeyPair.publicKey);
     localStorage.setItem("semaphoreIdentity", newSemaphoreIdentity.privateKey.toString());
