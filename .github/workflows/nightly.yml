@@ -70,3 +70,4 @@ jobs:
       - name: E2E tests
         run: |
           pnpm run test:e2e
+        working-directory: packages/coordinator
