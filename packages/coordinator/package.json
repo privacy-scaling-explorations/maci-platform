@@ -51,7 +51,7 @@
     "hardhat": "^2.22.15",
     "helmet": "^7.1.0",
     "lowdb": "^1.0.0",
-    "maci-circuits": "^2.3.0",
+    "maci-circuits": "^2.4.0",
     "maci-cli": "^2.3.0",
     "maci-contracts": "^2.3.0",
     "maci-domainobjs": "^2.0.0",
