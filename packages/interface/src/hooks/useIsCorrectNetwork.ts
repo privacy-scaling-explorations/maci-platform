@@ -1,4 +1,5 @@
-import { useAccount, useChainId } from "wagmi";
+import { usePrivy } from "@privy-io/react-auth";
+import { useChainId } from "wagmi";
 
 import { config } from "~/config";
 
@@ -8,10 +9,10 @@ export interface IUseIsCorrectNetworkReturn {
 }
 
 export function useIsCorrectNetwork(): IUseIsCorrectNetworkReturn {
-  const { isConnected } = useAccount();
+  const { authenticated } = usePrivy();
   const chainId = useChainId();
 
-  const isCorrectNetwork = isConnected && chainId === config.network.id;
+  const isCorrectNetwork = authenticated && chainId === config.network.id;
 
   return {
     isCorrectNetwork,

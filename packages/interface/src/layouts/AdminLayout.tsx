@@ -6,6 +6,7 @@ import { IAdminLayoutProps } from "./types";
 
 export const AdminLayout = ({ children = null, ...props }: IAdminLayoutProps): JSX.Element => {
   const isAdmin = useIsAdmin();
+
   if (isAdmin) {
     return <Layout {...props}>{children}</Layout>;
   }

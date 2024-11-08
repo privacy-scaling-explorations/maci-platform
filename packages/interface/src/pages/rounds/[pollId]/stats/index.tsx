@@ -1,3 +1,4 @@
+import { usePrivy } from "@privy-io/react-auth";
 import { differenceInDays } from "date-fns";
 import dynamic from "next/dynamic";
 import { useMemo, type PropsWithChildren } from "react";
@@ -36,7 +37,8 @@ interface IStatsProps {
 
 const Stats = ({ pollId }: IStatsProps) => {
   const { isLoading } = useMaci();
-  const { chain, isConnected } = useAccount();
+  const { chain } = useAccount();
+  const { authenticated } = usePrivy();
   const { getRoundByPollId } = useRound();
 
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
@@ -65,10 +67,10 @@ const Stats = ({ pollId }: IStatsProps) => {
     return <div>Loading...</div>;
   }
 
-  if (!isConnected) {
+  if (!authenticated) {
     return (
       <Alert className="mx-auto max-w-sm text-center" variant="info">
-        <Heading size="lg">Connect your wallet to see results</Heading>
+        <Heading size="lg">Connect to see results</Heading>
 
         <div className="mt-4">
           <ConnectButton />

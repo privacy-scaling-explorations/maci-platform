@@ -13,7 +13,16 @@ export const FAQList = (): JSX.Element => (
 
     <FAQItem description="(This is related to what gatekeeper is used.)" title="What are the projects?" />
 
-    <FAQItem description="(This is related to what gatekeeper is used.)" title="Who can vote and how?" />
+    <FAQItem
+      description={
+        <div className="flex flex-col gap-4">
+          <p>
+            Everyone participating to Devcon SEA 2024 can vote, you will only need your Zupass as proof of attendance.
+          </p>
+        </div>
+      }
+      title="Who can vote and how?"
+    />
 
     <FAQItem
       description={
@@ -29,6 +38,9 @@ export const FAQList = (): JSX.Element => (
       title="What is MACI?"
     />
 
-    <FAQItem description="Join our Discord channel to learn more!" title="Do you have any other questions?" />
+    <FAQItem
+      description="Join our Discord channel (https://discord.gg/Bj9PWNVu) to learn more, or come over to PSE's booth in the Impact Space!"
+      title="Do you have any other questions?"
+    />
   </div>
 );

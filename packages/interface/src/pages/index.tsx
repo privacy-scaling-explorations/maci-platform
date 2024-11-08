@@ -1,6 +1,6 @@
+import { usePrivy } from "@privy-io/react-auth";
 import clsx from "clsx";
 import Image from "next/image";
-import { useAccount } from "wagmi";
 
 import { JoinButton } from "~/components/JoinButton";
 import { Button } from "~/components/ui/Button";
@@ -13,7 +13,7 @@ import { useIsAdmin } from "~/hooks/useIsAdmin";
 import { Layout } from "~/layouts/DefaultLayout";
 
 const HomePage = (): JSX.Element => {
-  const { isConnected } = useAccount();
+  const { authenticated } = usePrivy();
   const { isRegistered } = useMaci();
   const isAdmin = useIsAdmin();
   const { rounds } = useRound();
@@ -29,17 +29,17 @@ const HomePage = (): JSX.Element => {
           {config.eventDescription}
         </Heading>
 
-        {!isConnected && <p className="text-gray-400">Connect your wallet to get started.</p>}
+        {!authenticated && <p className="text-gray-400">Login to get started.</p>}
 
-        {isConnected && !isRegistered && <JoinButton />}
+        {authenticated && !isRegistered && <JoinButton />}
 
-        {isConnected && !isAdmin && rounds && rounds.length === 0 && (
+        {authenticated && !isAdmin && rounds && rounds.length === 0 && (
           <p className="text-gray-400">There are no rounds deployed.</p>
         )}
 
-        {isConnected && isRegistered && (
+        {authenticated && isRegistered && (
           <Button className="mb-4 sm:mb-0" size="auto" variant="primary">
-            <a href="/rounds/0">Go to Projects Page</a>
+            <a href="/rounds/0">View the Projects</a>
           </Button>
         )}
 

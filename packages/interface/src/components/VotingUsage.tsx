@@ -16,7 +16,7 @@ export const VotingUsage = ({ pollId }: IVotingUsageProps): JSX.Element => {
   const sum = useMemo(() => sumBallot(ballot.votes), [sumBallot, ballot]);
 
   return (
-    <div className="mt-4 flex flex-col gap-2">
+    <div className="flex flex-col gap-2">
       <h4>Voting Power</h4>
 
       <div>

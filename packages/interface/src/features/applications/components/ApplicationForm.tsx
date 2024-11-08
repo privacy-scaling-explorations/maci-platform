@@ -2,12 +2,12 @@ import { useRouter } from "next/router";
 import { useState, useCallback } from "react";
 import { useLocalStorage } from "react-use";
 import { toast } from "sonner";
-import { useAccount } from "wagmi";
 
 import { ImageUpload } from "~/components/ImageUpload";
 import { Form, FormControl, FormSection, Textarea } from "~/components/ui/Form";
 import { Input } from "~/components/ui/Input";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
+import { useSmartAccount } from "~/utils/accountAbstraction";
 
 import { useCreateApplication } from "../hooks/useCreateApplication";
 import { ApplicationSchema, type Application } from "../types";
@@ -25,7 +25,7 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
 
   const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
 
-  const { address } = useAccount();
+  const { address } = useSmartAccount();
 
   const router = useRouter();
 

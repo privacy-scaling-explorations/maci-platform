@@ -38,7 +38,7 @@ export const AddedProjects = ({ pollId }: IAddedProjectsProps): JSX.Element => {
         </span>
 
         <span className="text-gray-300">
-          <b>{projectCount?.count.toString()}</b>
+          <b>{projectCount ? projectCount.count.toString() : "Loading"}</b>
         </span>
       </div>
     </div>

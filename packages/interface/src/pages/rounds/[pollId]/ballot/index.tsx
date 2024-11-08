@@ -1,9 +1,7 @@
 import clsx from "clsx";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
-import { useAccount } from "wagmi";
 
 import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
@@ -154,27 +152,19 @@ interface IBallotPageProps {
 }
 
 const BallotPage = ({ pollId }: IBallotPageProps): JSX.Element => {
-  const { address, isConnecting } = useAccount();
   const { getBallot, sumBallot } = useBallot();
   const { getRoundByPollId } = useRound();
-  const router = useRouter();
   const roundState = useRoundState(pollId);
 
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
   const ballot = useMemo(() => getBallot(pollId), [round?.pollId, getBallot]);
-
-  useEffect(() => {
-    if (!address && !isConnecting) {
-      router.push("/");
-    }
-  }, [address, isConnecting, router]);
 
   const handleSubmit = useCallback(() => {
     sumBallot();
   }, [sumBallot]);
 
   return (
-    <LayoutWithSidebar requireAuth requireRegistration showBallot showSubmitButton pollId={pollId} sidebar="right">
+    <LayoutWithSidebar showBallot showSubmitButton pollId={pollId} sidebar="right">
       {roundState === ERoundState.VOTING && (
         <Form defaultValues={ballot} schema={BallotSchema} values={ballot} onSubmit={handleSubmit}>
           <BallotAllocationForm mode={round!.mode} pollId={pollId} />
