@@ -238,8 +238,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       maci-circuits:
-        specifier: ^2.3.0
-        version: 2.3.0(@types/snarkjs@0.7.8)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+        specifier: ^2.4.0
+        version: 2.4.0(@types/snarkjs@0.7.8)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-cli:
         specifier: ^2.3.0
         version: 2.3.0(wl7cpub6o46bb3fuuvhfrz27gu)
@@ -9463,9 +9463,6 @@ packages:
   maci-circuits@0.0.0-ci.6007edf:
     resolution: {integrity: sha512-geiDG4xDX/f9WFoWBzaFwBZ+FJVt0OPEFmu3iFZFjNgFiUiZCtDlhJn8Sk4JKSkyDitaI5QSRz9tbcCpMlw0Kg==}
 
-  maci-circuits@2.3.0:
-    resolution: {integrity: sha512-dq7pwfK9b8+VPbJ++ytLnMoZIZZYQ2ENRBC5rHEAlcyViEhNhj44k3/MmcfGBNbKYsu8y9GG+esdN8hyLt4jAw==}
-
   maci-circuits@2.4.0:
     resolution: {integrity: sha512-5Vx1sUR+mtWMWrYu5Kkb76y+a257G8FRCyqcafngGbWolgpydtsRjZX4ltaPL5USr1sWdZXhZ73V3eAeGu316A==}
 
@@ -15270,7 +15267,7 @@ snapshots:
   '@iden3/binfileutils@0.0.12':
     dependencies:
       fastfile: 0.0.20
-      ffjavascript: 0.3.0
+      ffjavascript: 0.3.1
 
   '@ipld/dag-cbor@7.0.3':
     dependencies:
@@ -20828,13 +20825,13 @@ snapshots:
       tmp-promise: 3.0.3
       util: 0.12.5
 
-  circomkit@0.2.1(@types/snarkjs@0.7.8)(snarkjs@0.7.4):
+  circomkit@0.2.1(@types/snarkjs@0.7.8)(snarkjs@0.7.5):
     dependencies:
       '@types/snarkjs': 0.7.8
       circom_tester: 0.0.19
       commander: 12.1.0
       loglevel: 1.9.1
-      snarkjs: 0.7.4
+      snarkjs: 0.7.5
 
   circomkit@0.3.1(@types/snarkjs@0.7.8)(snarkjs@0.7.5):
     dependencies:
@@ -25832,29 +25829,15 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  maci-circuits@2.3.0(@types/snarkjs@0.7.8)(bufferutil@4.0.8)(utf-8-validate@5.0.10):
-    dependencies:
-      '@zk-kit/circuits': 0.4.0
-      circomkit: 0.2.1(@types/snarkjs@0.7.8)(snarkjs@0.7.4)
-      circomlib: 2.0.5
-      maci-core: 2.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      maci-crypto: 2.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      maci-domainobjs: 2.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      snarkjs: 0.7.4
-    transitivePeerDependencies:
-      - '@types/snarkjs'
-      - bufferutil
-      - utf-8-validate
-
   maci-circuits@2.4.0(@types/snarkjs@0.7.8)(bufferutil@4.0.8)(utf-8-validate@5.0.10):
     dependencies:
       '@zk-kit/circuits': 0.4.0
-      circomkit: 0.2.1(@types/snarkjs@0.7.8)(snarkjs@0.7.4)
+      circomkit: 0.2.1(@types/snarkjs@0.7.8)(snarkjs@0.7.5)
       circomlib: 2.0.5
       maci-core: 2.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-crypto: 2.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-domainobjs: 2.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      snarkjs: 0.7.4
+      snarkjs: 0.7.5
     transitivePeerDependencies:
       - '@types/snarkjs'
       - bufferutil
@@ -25868,7 +25851,7 @@ snapshots:
       dotenv: 16.4.5
       ethers: 6.13.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       hardhat: 2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4))(typescript@5.5.4)(utf-8-validate@5.0.10)
-      maci-circuits: 2.3.0(@types/snarkjs@0.7.8)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      maci-circuits: 2.4.0(@types/snarkjs@0.7.8)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-contracts: 2.4.0(5lzeznpmj6umthpxvhbbqb4d4m)
       maci-core: 2.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-crypto: 2.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -25981,7 +25964,7 @@ snapshots:
       ethers: 6.13.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       hardhat: 2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4))(typescript@5.5.4)(utf-8-validate@5.0.10)
       lowdb: 1.0.0
-      maci-circuits: 2.3.0(@types/snarkjs@0.7.8)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      maci-circuits: 2.4.0(@types/snarkjs@0.7.8)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-core: 2.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-crypto: 2.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-domainobjs: 2.4.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
