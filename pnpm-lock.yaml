@@ -622,7 +622,7 @@ importers:
         specifier: ^13.3.2
         version: 13.10.1
       hardhat:
-        specifier: ^2.22.3
+        specifier: ^2.22.15
         version: 2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.5.4))(typescript@5.5.4)(utf-8-validate@5.0.10)
       jsdom:
         specifier: ^24.0.0

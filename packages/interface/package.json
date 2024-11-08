@@ -107,7 +107,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-unused-imports": "^4.0.0",
     "happy-dom": "^13.3.2",
-    "hardhat": "^2.22.3",
+    "hardhat": "^2.22.15",
     "jsdom": "^24.0.0",
     "lint-staged": "^15.2.7",
     "next-router-mock": "^0.9.11",
