@@ -1,4 +1,5 @@
 import { applicationsRouter } from "~/server/api/routers/applications";
+import { faucetRouter } from "~/server/api/routers/faucet";
 import { maciRouter } from "~/server/api/routers/maci";
 import { metadataRouter } from "~/server/api/routers/metadata";
 import { projectsRouter } from "~/server/api/routers/projects";
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   metadata: metadataRouter,
   projects: projectsRouter,
   maci: maciRouter,
+  faucet: faucetRouter,
 });
 
 // export type definition of API
