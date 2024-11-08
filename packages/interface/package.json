@@ -16,7 +16,7 @@
   "dependencies": {
     "@ethereum-attestation-service/eas-sdk": "^2.7.0",
     "@hatsprotocol/sdk-v1-core": "^0.10.0",
-    "@hookform/resolvers": "^3.3.4",
+    "@hookform/resolvers": "^3.9.1",
     "@nivo/line": "^0.87.0",
     "@openzeppelin/merkle-tree": "^1.0.7",
     "@pcd/eddsa-pcd": "^0.6.5",
