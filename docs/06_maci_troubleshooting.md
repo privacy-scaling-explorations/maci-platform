@@ -9,7 +9,7 @@ Below are error codes and their related contract errors.
 | `0xf5ee9a14` | MACI: PoseidonHashLibrariesNotLinked() | The poseidon contracts are not linked to the MACI deployment factory, or the linked poseidon contracts are not working correctly.                                                                                              |
 | `0x79fae7af` | MACI: InvalidPubKey()                  | The generated MACI keypair is not on the curve, try to update the dependencies and re-generate one.                                                                                                                            |
 | `0xcd74a32b` | EASGatekeeper: AttesterNotTrusted()    | The attestation submitted to the contract is not given by the trusted address registered to the contract. Make sure you deploy the EASGatekeeper contract with correct attester, or ask for an attestation from that attester. |
-| `0xbff3c451` | EASGatekeeper: AlreadyRegistered()     | The provided attestation is already used to registered before.                                                                                                                                                                 |
+| `0xbff3c451` | EASGatekeeper: AlreadyRegistered()     | The provided attestation is already used to register before.                                                                                                                                                                 |
 
 ## Sign up revert
 
