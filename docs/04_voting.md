@@ -4,7 +4,7 @@ Once applications have been approved and the voters' addresses have been added, 
 
 - Navigate to https://maci-platform.vercel.app/signup
 - Click `Join` button to signup and wait for transaction confirmation
-- After signing up, you could navigate to https://maci-platform.vercel.app/projects and click the `Add` button on the project card or add your vote amount in the project details page (https://maci-platform.vercel.app/projects/:projectId)
+- After signing up, you can navigate to https://maci-platform.vercel.app/projects and click the `Add` button on the project card or add your vote amount in the project details page (https://maci-platform.vercel.app/projects/:projectId)
 - Click `Ballot` on the navbar to navigate to the ballot page (https://maci-platform.vercel.app/ballot)
 - Adjust the allocation
 - Click `Submit` and send the transaction
