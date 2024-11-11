@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Heading } from "~/components/ui/Heading";
 
 import { FAQItem } from "./FaqItem";
@@ -7,11 +9,26 @@ export const FAQList = (): JSX.Element => (
     <Heading size="6xl">FAQ</Heading>
 
     <FAQItem
-      description="(Please enter the main focus and description of this round.)"
+      description={
+        <div className="flex flex-col gap-4">
+          <p>
+            At Devcon, we’re hosting a quadratic voting round to support key Ethereum dashboards that help the community
+            learn about and understand relevant Ethereum data.
+          </p>
+
+          <p>
+            Every Devcon attendee can participate in voting to decide how funds will be allocated to the most valuable
+            dashboards, supporting these educational contributions to the ecosystem.
+          </p>
+        </div>
+      }
       title="What is this voting round about?"
     />
 
-    <FAQItem description="(This is related to what gatekeeper is used.)" title="What are the projects?" />
+    <FAQItem
+      description="The projects in this round are authors of educational Ethereum dashboards. You can view the projects and vote for those you find most useful."
+      title="What are the projects?"
+    />
 
     <FAQItem
       description={
@@ -39,7 +56,18 @@ export const FAQList = (): JSX.Element => (
     />
 
     <FAQItem
-      description="Join our Discord channel (https://discord.gg/Bj9PWNVu) to learn more, or come over to PSE's booth in the Impact Space!"
+      description={
+        <div className="flex flex-col gap-4">
+          <p>
+            Join our{" "}
+
+            <Link className="font-bold underline" href="https://discord.gg/Bj9PWNVu" rel="noreferrer" target="_blank">
+              Discord channel
+            </Link>{" "}
+            to learn more, or come over to PSE's booth in the Impact Space!
+          </p>
+        </div>
+      }
       title="Do you have any other questions?"
     />
   </div>

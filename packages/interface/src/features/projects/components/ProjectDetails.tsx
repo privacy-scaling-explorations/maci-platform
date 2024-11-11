@@ -4,9 +4,6 @@ import { Heading } from "~/components/ui/Heading";
 import { Navigation } from "~/components/ui/Navigation";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { ProjectBanner } from "~/features/projects/components/ProjectBanner";
-import { VotingWidget } from "~/features/projects/components/VotingWidget";
-import { useRoundState } from "~/utils/state";
-import { ERoundState } from "~/utils/types";
 
 import type { IRecipient } from "~/utils/types";
 
@@ -23,20 +20,8 @@ export interface IProjectDetailsProps {
 const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetailsProps): JSX.Element => {
   const metadata = useProjectMetadata(project.metadataUrl);
 
-  const {
-    bio,
-    author,
-    websiteUrl,
-    payoutAddress,
-    github,
-    twitter,
-    farcaster,
-    impactDescription,
-    profileImageUrl,
-    bannerImageUrl,
-  } = metadata.data ?? {};
-
-  const roundState = useRoundState(pollId);
+  const { bio, author, websiteUrl, payoutAddress, github, twitter, farcaster, profileImageUrl, bannerImageUrl } =
+    metadata.data ?? {};
 
   return (
     <div className="relative dark:text-white">
@@ -56,10 +41,6 @@ const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetails
         <Heading as="h3" size="3xl">
           {metadata.data?.name}
         </Heading>
-
-        {roundState === ERoundState.VOTING && (
-          <VotingWidget pollId={pollId} projectId={project.id} projectIndex={Number.parseInt(project.index, 10)} />
-        )}
       </div>
 
       <ProjectContacts
@@ -77,16 +58,10 @@ const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetails
       <p className="px-2 text-gray-400">{author}</p>
 
       <Heading as="h4" className="mt-4 px-2" size="xl">
-        Description
+        What does your dashboard show? What does it help others to understand and how? Why is it relevant for Ethereum?
       </Heading>
 
       <p className="px-2 text-gray-400">{bio}</p>
-
-      <Heading as="h4" className="mt-4 px-2" size="xl">
-        Why is it relevant for Ethereum?
-      </Heading>
-
-      <p className="px-2 text-gray-400">{impactDescription}</p>
 
       {action}
     </div>
