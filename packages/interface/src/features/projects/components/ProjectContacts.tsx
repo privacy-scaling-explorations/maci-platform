@@ -58,7 +58,7 @@ export const ProjectContacts = ({
       )}
 
       {github && (
-        <Link href="https://github.com" target="_blank">
+        <Link href={`https://github.com/${github}`} target="_blank">
           <FaGithub />
 
           {github}
