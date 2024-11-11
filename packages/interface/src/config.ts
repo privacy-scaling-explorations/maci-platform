@@ -7,6 +7,21 @@ export const metadata = {
   image: "/api/og",
 };
 
+/**
+ * Get the PIMLICO RPC URL based on the network we are connected to
+ * @returns the PIMLICO RPC URL
+ */
+export const getPimlicoRPCURL = (): string | undefined => {
+  switch (process.env.NEXT_PUBLIC_CHAIN_NAME) {
+    case "optimism":
+      return `https://api.pimlico.io/v2/optimism/rpc?apikey=${process.env.NEXT_PUBLIC_PIMLICO_API_KEY}`;
+    case "optimismSepolia":
+      return `https://api.pimlico.io/v2/optimism-sepolia/rpc?apikey=${process.env.NEXT_PUBLIC_PIMLICO_API_KEY}`;
+    default:
+      return undefined;
+  }
+};
+
 // URLs for the EAS GraphQL endpoint for each chain
 const easScanUrl = {
   ethereum: "https://easscan.org/graphql",

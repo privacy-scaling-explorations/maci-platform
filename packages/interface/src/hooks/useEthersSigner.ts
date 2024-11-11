@@ -1,18 +1,29 @@
+import { KernelAccountClient } from "@zerodev/sdk";
 import { BrowserProvider, JsonRpcSigner } from "ethers";
+import { ENTRYPOINT_ADDRESS_V07_TYPE } from "permissionless/types";
 import { useMemo } from "react";
+import { HttpTransport, Chain, createWalletClient, http, Client } from "viem";
 import { useConnectorClient } from "wagmi";
 
-import type { Account, Chain, Client, Transport } from "viem";
+import { getRPCURL } from "~/config";
 
-function clientToSigner(client: Client<Transport, Chain, Account>): JsonRpcSigner | undefined {
-  const { account, chain, transport } = client;
+function clientToSigner(
+  client: KernelAccountClient<ENTRYPOINT_ADDRESS_V07_TYPE, HttpTransport, Chain> | Client,
+): JsonRpcSigner | undefined {
+  const { account, chain } = client;
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!chain) {
+  if (!chain || !account) {
     return undefined;
   }
 
-  const provider = new BrowserProvider(transport, {
+  const walletClient = createWalletClient({
+    account,
+    chain,
+    transport: http(getRPCURL()),
+  });
+
+  const provider = new BrowserProvider(walletClient.transport, {
     chainId: chain.id,
     name: chain.name,
     ensAddress: chain.contracts?.ensRegistry?.address,
@@ -22,8 +33,14 @@ function clientToSigner(client: Client<Transport, Chain, Account>): JsonRpcSigne
 }
 
 /** Hook to convert a viem Wallet Client to an ethers.js Signer. */
-export function useEthersSigner({ chainId }: { chainId?: number } = {}): JsonRpcSigner | undefined {
-  const { data: client } = useConnectorClient({ chainId });
+export function useEthersSigner({
+  chainId,
+  client,
+}: { chainId?: number; client?: KernelAccountClient<ENTRYPOINT_ADDRESS_V07_TYPE, HttpTransport, Chain> } = {}):
+  | JsonRpcSigner
+  | undefined {
+  const { data: connectorClient } = useConnectorClient({ chainId });
+  const resolvedClient = client ?? connectorClient;
 
-  return useMemo(() => (client ? clientToSigner(client) : undefined), [client]);
+  return useMemo(() => (resolvedClient ? clientToSigner(resolvedClient) : undefined), [resolvedClient]);
 }

@@ -6,12 +6,13 @@ import { GatekeeperTrait, getZupassGatekeeperData } from "maci-cli/sdk";
 import { useRouter } from "next/router";
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { toast } from "sonner";
-import { useAccount, useDisconnect } from "wagmi";
+import { useDisconnect } from "wagmi";
 
 import { zupass, config } from "~/config";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
+import { useSmartAccount } from "~/utils/accountAbstraction";
 import { useRoundState } from "~/utils/state";
 import { ERoundState, jsonPCD } from "~/utils/types";
 
@@ -24,7 +25,7 @@ interface IEligibilityDialogProps {
 }
 
 export const EligibilityDialog = ({ pollId = "" }: IEligibilityDialogProps): JSX.Element | null => {
-  const { address } = useAccount();
+  const { address } = useSmartAccount();
   const { disconnect } = useDisconnect();
   const { getRoundByPollId } = useRound();
 

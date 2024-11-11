@@ -1,11 +1,11 @@
 import { useMemo, useCallback, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { useAccount } from "wagmi";
 
 import { Button, IconButton } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
 import { Spinner } from "~/components/ui/Spinner";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
+import { useSmartAccount } from "~/utils/accountAbstraction";
 
 import type { Application } from "../types";
 
@@ -32,7 +32,7 @@ export const ApplicationButtons = ({
 }: IApplicationButtonsProps): JSX.Element => {
   const { isCorrectNetwork } = useIsCorrectNetwork();
 
-  const { address } = useAccount();
+  const { address } = useSmartAccount();
 
   const [showDialog, setShowDialog] = useState<boolean>(false);
 

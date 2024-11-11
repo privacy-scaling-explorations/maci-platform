@@ -6,7 +6,6 @@ import { useBallot } from "~/contexts/Ballot";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
-import { AddedProjects } from "./AddedProjects";
 import { VotingUsage } from "./VotingUsage";
 
 interface IBallotOverviewProps {
@@ -33,8 +32,6 @@ export const BallotOverview = ({ title = undefined, pollId }: IBallotOverviewPro
         <Heading as="h3" size="3xl">
           {title}
         </Heading>
-
-        <AddedProjects pollId={pollId} />
 
         <VotingUsage pollId={pollId} />
       </div>

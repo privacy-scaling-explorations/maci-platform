@@ -2,22 +2,21 @@
 import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 import { type StandardMerkleTreeData } from "@openzeppelin/merkle-tree/dist/standard";
 import { type ZKEdDSAEventTicketPCD } from "@pcd/zk-eddsa-event-ticket-pcd/ZKEdDSAEventTicketPCD";
+import { usePrivy } from "@privy-io/react-auth";
 import { Identity } from "@semaphore-protocol/core";
 import { type Signer, AbiCoder } from "ethers";
 import {
-  signup,
   isRegisteredUser,
-  publishBatch,
   genKeyPair,
   GatekeeperTrait,
   getGatekeeperTrait,
   getHatsSingleGatekeeperData,
 } from "maci-cli/sdk";
 import React, { createContext, useContext, useCallback, useEffect, useMemo, useState } from "react";
-import { useAccount, useSignMessage } from "wagmi";
 
 import { config } from "~/config";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
+import { useSmartAccount, signup, publishBatch } from "~/utils/accountAbstraction";
 import { api } from "~/utils/api";
 import { getHatsClient } from "~/utils/hatsProtocol";
 import { generateWitness } from "~/utils/pcd";
@@ -35,10 +34,13 @@ export const MaciContext = createContext<MaciContextType | undefined>(undefined)
  * @returns The Context data (variables and functions)
  */
 export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProviderProps) => {
-  const signer = useEthersSigner();
-  const { address, isConnected, isDisconnected } = useAccount();
+  const { address, smartAccount, smartAccountClient, isConnected } = useSmartAccount();
 
-  const [isRegistered, setIsRegistered] = useState<boolean>();
+  const { authenticated, ready } = usePrivy();
+
+  const signer = useEthersSigner({ client: smartAccountClient });
+
+  const [isRegistered, setIsRegistered] = useState<boolean>(false);
   const [stateIndex, setStateIndex] = useState<string>();
   const [initialVoiceCredits, setInitialVoiceCredits] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -55,7 +57,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   const [gatekeeperTrait, setGatekeeperTrait] = useState<GatekeeperTrait | undefined>();
   const [sgData, setSgData] = useState<string | undefined>();
 
-  const { signMessageAsync } = useSignMessage();
   const user = api.maci.user.useQuery(
     { publicKey: maciPubKey ?? "" },
     { enabled: Boolean(maciPubKey && config.maciSubgraphUrl) },
@@ -188,14 +189,27 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     }
   }, [gatekeeperTrait, attestationId, semaphoreIdentity, signer, zupassProof]);
 
+  useEffect(() => {
+    if (ready && !authenticated) {
+      setMaciPrivKey(undefined);
+      setMaciPubKey(undefined);
+      setSemaphoreIdentity(undefined);
+      localStorage.removeItem("maciPrivKey");
+      localStorage.removeItem("maciPubKey");
+      localStorage.removeItem("semaphoreIdentity");
+      localStorage.removeItem("zupassProof");
+    }
+  }, [ready, authenticated]);
+
   // a user is eligible to vote if they pass certain conditions
   // with gatekeepers like EAS it is possible to determine whether you are allowed
   // just by fetching the attestation. On the other hand, with other
   // gatekeepers it might be more difficult to determine it
   // for instance with semaphore
   const isEligibleToVote = useMemo(
-    () => gatekeeperTrait && (gatekeeperTrait === GatekeeperTrait.FreeForAll || Boolean(sgData)) && Boolean(address),
-    [sgData, address, gatekeeperTrait],
+    () =>
+      gatekeeperTrait && (gatekeeperTrait === GatekeeperTrait.FreeForAll || Boolean(sgData)) && Boolean(smartAccount),
+    [sgData, smartAccount, gatekeeperTrait],
   );
 
   // on load get the key pair from local storage and set the signature message
@@ -222,16 +236,17 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       return;
     }
 
-    const signature = await signMessageAsync({ message: signatureMessage });
+    const signature = await smartAccount?.signMessage({ message: signatureMessage });
     const newSemaphoreIdentity = new Identity(signature);
-    const userKeyPair = genKeyPair({ seed: BigInt(signature) });
+    const userKeyPair = genKeyPair({ seed: BigInt(signature ?? "") });
     localStorage.setItem("maciPrivKey", userKeyPair.privateKey);
     localStorage.setItem("maciPubKey", userKeyPair.publicKey);
     localStorage.setItem("semaphoreIdentity", newSemaphoreIdentity.privateKey.toString());
+
     setMaciPrivKey(userKeyPair.privateKey);
     setMaciPubKey(userKeyPair.publicKey);
     setSemaphoreIdentity(newSemaphoreIdentity);
-  }, [address, signatureMessage, signMessageAsync, setMaciPrivKey, setMaciPubKey, setSemaphoreIdentity]);
+  }, [address, signatureMessage, smartAccount, setMaciPrivKey, setMaciPubKey, setSemaphoreIdentity]);
 
   // callback to be called from external component to store the zupass proof
   const storeZupassProof = useCallback(
@@ -244,24 +259,25 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   // function to be used to signup to MACI
   const onSignup = useCallback(
     async (onError: () => void) => {
-      if (!signer || !maciPubKey || (gatekeeperTrait && gatekeeperTrait !== GatekeeperTrait.FreeForAll && !sgData)) {
+      if (
+        !signer ||
+        !maciPubKey ||
+        (gatekeeperTrait && gatekeeperTrait !== GatekeeperTrait.FreeForAll && !sgData) ||
+        !smartAccount
+      ) {
         return;
       }
 
       setIsLoading(true);
 
       try {
-        const { stateIndex: index, voiceCredits } = await signup({
-          maciPubKey,
-          maciAddress: config.maciAddress!,
-          sgDataArg: sgData,
-          signer,
-        });
+        // @ts-expect-error type mismatch
+        const { stateIndex: index, voiceCredits } = await signup(smartAccount, smartAccountClient, maciPubKey, sgData);
 
         if (index) {
           setIsRegistered(true);
-          setStateIndex(index);
-          setInitialVoiceCredits(voiceCredits);
+          setStateIndex(index.toString());
+          setInitialVoiceCredits(Number.parseInt(voiceCredits.toString(), 10));
         }
       } catch (e) {
         onError();
@@ -276,7 +292,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   // function to be used to vote on a poll
   const onVote = useCallback(
     async (votes: IVoteArgs[], pollId: string, onError: () => Promise<void>, onSuccess: () => Promise<void>) => {
-      if (!signer || !stateIndex) {
+      if (!signer || !stateIndex || !smartAccount) {
         return;
       }
 
@@ -303,6 +319,9 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         privateKey: maciPrivKey!,
         pollId: BigInt(pollId),
         signer,
+        smartAccount,
+        // @ts-expect-error type mismatch
+        smartAccountClient,
       })
         .then(() => onSuccess())
         .catch((err: Error) => {
@@ -315,18 +334,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     },
     [stateIndex, maciPubKey, maciPrivKey, signer, setIsLoading, setError],
   );
-
-  useEffect(() => {
-    if (isDisconnected) {
-      setMaciPrivKey(undefined);
-      setMaciPubKey(undefined);
-      setSemaphoreIdentity(undefined);
-      localStorage.removeItem("maciPrivKey");
-      localStorage.removeItem("maciPubKey");
-      localStorage.removeItem("semaphoreIdentity");
-      localStorage.removeItem("zupassProof");
-    }
-  }, [isDisconnected]);
 
   useEffect(() => {
     if (!localStorage.getItem("maciPrivKey") || !localStorage.getItem("maciPubKey")) {
@@ -344,7 +351,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
 
   // check if the user already registered
   useEffect(() => {
-    if (!isConnected || !signer || !maciPubKey || !address || isLoading) {
+    if (!ready || !isConnected || !signer || !maciPubKey || isLoading) {
       return;
     }
 
@@ -382,6 +389,8 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     setIsRegistered,
     setStateIndex,
     setInitialVoiceCredits,
+    smartAccount,
+    ready,
   ]);
 
   /// check the tree data
@@ -406,7 +415,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       isEligibleToVote,
       initialVoiceCredits,
       stateIndex,
-      isRegistered: isRegistered ?? false,
+      isRegistered,
       error,
       maciPubKey,
       onSignup,

@@ -1,10 +1,10 @@
+import { usePrivy } from "@privy-io/react-auth";
 import clsx from "clsx";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
 import { type PropsWithChildren, createContext, useContext, useEffect, useCallback, useMemo } from "react";
 import { tv } from "tailwind-variants";
-import { useAccount } from "wagmi";
 
 import { Footer } from "~/components/Footer";
 import { createComponent } from "~/components/ui";
@@ -58,14 +58,14 @@ export const BaseLayout = ({
 }: IBaseLayoutProps): JSX.Element => {
   const { theme } = useTheme();
   const router = useRouter();
-  const { address, isConnecting } = useAccount();
+  const { authenticated } = usePrivy();
   const { isRegistered } = useMaci();
 
   const manageDisplay = useCallback(() => {
-    if ((requireAuth && !address && !isConnecting) || (requireRegistration && !isRegistered)) {
+    if ((requireAuth && !authenticated) || (requireRegistration && !isRegistered)) {
       router.push("/");
     }
-  }, [requireAuth, address, isConnecting, requireRegistration, isRegistered, router]);
+  }, [requireAuth, authenticated, requireRegistration, isRegistered, router]);
 
   useEffect(() => {
     manageDisplay();

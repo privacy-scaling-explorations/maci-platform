@@ -38,9 +38,7 @@ const BallotConfirmationPage = ({ pollId }: { pollId: string }): JSX.Element | n
     manageDisplay();
   }, [manageDisplay]);
 
-  return (
-    <Layout requireAuth>{isLoading ? <Spinner className="h-6 w-6" /> : <BallotConfirmation pollId={pollId} />}</Layout>
-  );
+  return <Layout>{isLoading ? <Spinner className="h-6 w-6" /> : <BallotConfirmation pollId={pollId} />}</Layout>;
 };
 
 export default BallotConfirmationPage;

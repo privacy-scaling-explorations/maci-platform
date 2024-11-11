@@ -27,9 +27,7 @@ export const VotingInfo = ({ pollId }: IVotingInfoProps): JSX.Element => {
 
   return (
     <div className="w-full py-4">
-      <h4 className="mb-2">Voting Ends In</h4>
-
-      {isLoading && <p>Loading...</p>}
+      {!isLoading && <h4 className="mb-2">Voting Ends In</h4>}
 
       {!isLoading && timeLeft[3] < 0 && <p>Voting has ended</p>}
 

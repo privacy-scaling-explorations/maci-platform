@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { tv } from "tailwind-variants";
 import { Hex } from "viem";
-import { useAccount } from "wagmi";
 
 import { createComponent } from "~/components/ui";
 import { Button } from "~/components/ui/Button";
@@ -12,7 +11,6 @@ import { Notice } from "~/components/ui/Notice";
 import { config } from "~/config";
 import { useBallot } from "~/contexts/Ballot";
 import { useRound } from "~/contexts/Round";
-import { useProjectCount } from "~/features/projects/hooks/useProjects";
 import { formatNumber } from "~/utils/formatNumber";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
@@ -48,12 +46,6 @@ export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.El
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
   const allocations = ballot.votes;
 
-  const { chain } = useAccount();
-  const { data: projectCount } = useProjectCount({
-    registryAddress: round?.registryAddress as Hex,
-    chain: chain!,
-  });
-
   const sum = useMemo(() => formatNumber(sumBallot(ballot.votes)), [ballot, sumBallot]);
 
   return (
@@ -62,20 +54,10 @@ export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.El
         Your ballot has been successfully submitted 🥳
       </Heading>
 
-      <p className="mb-14 mt-4 text-gray-400">
-        {`Thank you for participating in ${config.eventName} ${round?.roundId} round.`}
-      </p>
+      <p className="mb-14 mt-4 text-gray-400">{`Thank you for participating in ${config.eventName} round.`}</p>
 
       <div className="mb-7 rounded-lg border border-gray-200 p-5">
         <b className="font-mono text-2xl uppercase">Summary of your ballot</b>
-
-        <p className="my-8 text-gray-400">
-          <span>{`Round you voted in: ${pollId}`} </span>
-
-          <br />
-
-          <span>{`Number of projects you voted for: ${allocations.length} of ${projectCount?.count}`}</span>
-        </p>
 
         <div>
           {allocations.map((project) => (

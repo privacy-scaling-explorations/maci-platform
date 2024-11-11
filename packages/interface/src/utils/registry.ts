@@ -164,7 +164,7 @@ export const submitApplication = async (
   });
 
   const walletClient = createWalletClient({
-    account: account!,
+    account,
     chain,
     transport: custom(window.ethereum!),
   });

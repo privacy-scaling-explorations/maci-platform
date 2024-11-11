@@ -1,8 +1,8 @@
 import { type UseMutationResult, useMutation } from "@tanstack/react-query";
 import { RegistryManager__factory as RegistryManagerFactory } from "maci-platform-contracts/typechain-types";
 import { createPublicClient, custom, Hex } from "viem";
-import { useAccount } from "wagmi";
 
+import { config } from "~/config";
 import { useRound } from "~/contexts/Round";
 import { type TransactionError } from "~/features/voters/hooks/useApproveVoters";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
@@ -34,7 +34,6 @@ export function useCreateApplication(options: {
 }): TUseCreateApplicationReturn {
   const upload = useUploadMetadata();
 
-  const { chain } = useAccount();
   const { getRoundByPollId } = useRound();
 
   const roundData = getRoundByPollId(options.pollId);
@@ -44,7 +43,7 @@ export function useCreateApplication(options: {
 
   const mutation = useMutation({
     mutationFn: async (values: Application) => {
-      if (!signer || !chain) {
+      if (!signer) {
         throw new Error("Please connect your wallet first");
       }
 
@@ -91,10 +90,10 @@ export function useCreateApplication(options: {
       // get the last application id
       const publicClient = createPublicClient({
         transport: custom(window.ethereum!),
-        chain,
+        chain: config.network,
       });
 
-      const registryManagerAddress = await getRegistryManagerContract(chain);
+      const registryManagerAddress = await getRegistryManagerContract(config.network);
 
       const requestCount = await publicClient.readContract({
         address: registryManagerAddress,

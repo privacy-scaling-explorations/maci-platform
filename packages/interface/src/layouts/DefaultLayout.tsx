@@ -1,6 +1,6 @@
+import { useWallets, usePrivy } from "@privy-io/react-auth";
 import { GatekeeperTrait } from "maci-cli/sdk";
 import { useMemo } from "react";
-import { useAccount } from "wagmi";
 
 import Header from "~/components/Header";
 import { Info } from "~/components/Info";
@@ -17,7 +17,13 @@ import type { ILayoutProps } from "./types";
 import { BaseLayout } from "./BaseLayout";
 
 export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element => {
-  const { address } = useAccount();
+  const { wallets } = useWallets();
+
+  const wallet = useMemo(
+    () => wallets.find((w) => w.walletClientType === "privy" || w.walletClientType === "metamask"),
+    [wallets],
+  );
+
   const roundState = useRoundState(props.pollId ?? "");
   const { getBallot } = useBallot();
   const { isRegistered, gatekeeperTrait } = useMaci();
@@ -59,14 +65,14 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
       });
     }
 
-    if (config.admin === address! && props.pollId) {
+    if (wallet && config.admin === wallet.address && props.pollId) {
       links.push({
         href: `/rounds/${props.pollId}/applications`,
         children: "Applications",
       });
     }
 
-    if (config.admin === address! && gatekeeperTrait === GatekeeperTrait.EAS) {
+    if (wallet && config.admin === wallet.address && gatekeeperTrait === GatekeeperTrait.EAS) {
       links.push(
         ...[
           {
@@ -82,7 +88,7 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
     }
 
     return links;
-  }, [ballot.published, roundState, isRegistered, address]);
+  }, [ballot.published, roundState, isRegistered, wallets]);
 
   return (
     <BaseLayout {...props} header={<Header navLinks={navLinks} />}>
@@ -93,7 +99,7 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
 
 export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
   const { isRegistered } = useMaci();
-  const { address } = useAccount();
+  const { authenticated } = usePrivy();
   const { getBallot } = useBallot();
 
   const roundState = useRoundState(props.pollId ?? "");
@@ -110,7 +116,7 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
           <Info
             pollId={props.pollId ?? ""}
             showAppState={showInfo}
-            showBallot={roundState !== ERoundState.APPLICATION && !!(showBallot && address && isRegistered)}
+            showBallot={roundState !== ERoundState.APPLICATION && !!(showBallot && authenticated && isRegistered)}
             showRoundInfo={showInfo}
             size="sm"
           />
