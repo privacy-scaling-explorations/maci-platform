@@ -214,7 +214,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
 
   // on load get the key pair from local storage and set the signature message
   useEffect(() => {
-    setSignatureMessage(`Generate your EdDSA Key Pair at ${window.location.origin}`);
+    setSignatureMessage(`Generate your EdDSA Key Pair`);
     const storedMaciPrivKey = localStorage.getItem("maciPrivKey");
     const storedMaciPubKey = localStorage.getItem("maciPubKey");
     const storedSemaphoreIdentity = localStorage.getItem("semaphoreIdentity");
@@ -274,7 +274,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         // @ts-expect-error type mismatch
         const { stateIndex: index, voiceCredits } = await signup(smartAccount, smartAccountClient, maciPubKey, sgData);
 
-        if (index) {
+        if (index >= 0n) {
           setIsRegistered(true);
           setStateIndex(index.toString());
           setInitialVoiceCredits(Number.parseInt(voiceCredits.toString(), 10));
