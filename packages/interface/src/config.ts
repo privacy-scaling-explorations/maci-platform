@@ -1,10 +1,12 @@
 import * as wagmiChains from "wagmi/chains";
 
+import og from "../public/dc7-og.png";
+
 export const metadata = {
-  title: "Devcon SEA Grants",
-  description: "Open-source Retro Public Goods Funding platform with MACI for private on chain voting",
-  url: "https://maci-platform.vercel.app",
-  image: "/api/og",
+  title: "Devcon SEA quadratic voting round",
+  description: "Devcon SEA quadratic voting round - Support the Ethereum dashboards that matter to you.",
+  url: "https://vote.devcon.org",
+  image: og,
 };
 
 /**
