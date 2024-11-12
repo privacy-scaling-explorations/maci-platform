@@ -6,7 +6,7 @@ export const metadata = {
   title: "Devcon SEA quadratic voting round",
   description: "Devcon SEA quadratic voting round - Support the Ethereum dashboards that matter to you.",
   url: "https://vote.devcon.org",
-  image: og,
+  image: og.src,
 };
 
 /**
