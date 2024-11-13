@@ -232,13 +232,13 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   // generate the maci keypair using a ECDSA signature
   const generateKeypair = useCallback(async () => {
     // if we are not connected then do not generate the key pair
-    if (!address) {
+    if (!smartAccount) {
       return;
     }
 
-    const signature = await smartAccount?.signMessage({ message: signatureMessage });
+    const signature = await smartAccount.signMessage({ message: signatureMessage });
     const newSemaphoreIdentity = new Identity(signature);
-    const userKeyPair = genKeyPair({ seed: BigInt(signature ?? "") });
+    const userKeyPair = genKeyPair({ seed: BigInt(signature) });
     localStorage.setItem("maciPrivKey", userKeyPair.privateKey);
     localStorage.setItem("maciPubKey", userKeyPair.publicKey);
     localStorage.setItem("semaphoreIdentity", newSemaphoreIdentity.privateKey.toString());
@@ -246,7 +246,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     setMaciPrivKey(userKeyPair.privateKey);
     setMaciPubKey(userKeyPair.publicKey);
     setSemaphoreIdentity(newSemaphoreIdentity);
-  }, [address, signatureMessage, smartAccount, setMaciPrivKey, setMaciPubKey, setSemaphoreIdentity]);
+  }, [signatureMessage, smartAccount, setMaciPrivKey, setMaciPubKey, setSemaphoreIdentity]);
 
   // callback to be called from external component to store the zupass proof
   const storeZupassProof = useCallback(
