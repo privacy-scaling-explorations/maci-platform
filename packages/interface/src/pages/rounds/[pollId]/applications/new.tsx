@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query: { pollId }
   });
 
 const NewProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
-  const state = useRoundState(pollId);
+  const state = useRoundState({ pollId });
 
   return (
     <Layout>

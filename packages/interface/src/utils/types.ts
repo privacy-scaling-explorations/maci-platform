@@ -137,7 +137,7 @@ export interface Poll {
    */
   initTime: string;
   /**
-   * The poll registry address
+   * The poll registry data
    */
   registry: {
     /**
@@ -148,6 +148,15 @@ export interface Poll {
      * The poll metadata url
      */
     metadataUrl: string;
+  };
+  /**
+   * The poll tally data
+   */
+  tally: {
+    /**
+     * The poll tally address
+     */
+    id: string;
   };
 }
 
@@ -317,6 +326,10 @@ export interface IPollData extends IGetPollData {
    * The poll init time
    */
   initTime: bigint | number | string | null;
+  /**
+   * The tally address
+   */
+  tallyAddress: string;
 }
 
 /**
@@ -347,10 +360,6 @@ export interface IRoundMetadata {
    * The time the voting ends
    */
   votingEndsAt: string;
-  /**
-   * The round tally file
-   */
-  tallyFile: string;
 }
 
 /**
@@ -406,7 +415,11 @@ export interface IRoundData {
    */
   votingEndsAt: Date;
   /**
-   * The round tally file
+   * The round tally address
    */
-  tallyFile: string;
+  tallyAddress: string;
+}
+
+export interface IRecipientWithVotes extends IRecipient {
+  votes: number;
 }

@@ -33,7 +33,7 @@ export const ProjectItem = ({
   action = undefined,
 }: IProjectItemProps): JSX.Element => {
   const metadata = useProjectMetadata(recipient.metadataUrl);
-  const roundState = useRoundState(pollId);
+  const roundState = useRoundState({ pollId });
 
   return (
     <article

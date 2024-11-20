@@ -6,7 +6,8 @@ import { type Hex, zeroAddress } from "viem";
 
 import { InfiniteLoading } from "~/components/InfiniteLoading";
 import { useRound } from "~/contexts/Round";
-import { useResults, useProjectsResults } from "~/hooks/useResults";
+import { useProjects } from "~/hooks/useProjects";
+import { useResults } from "~/hooks/useResults";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
@@ -22,9 +23,13 @@ export const ProjectsResults = ({ pollId }: IProjectsResultsProps): JSX.Element 
   const router = useRouter();
   const { getRoundByPollId } = useRound();
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
-  const projects = useProjectsResults((round?.registryAddress ?? zeroAddress) as Hex);
-  const results = useResults(pollId, (round?.registryAddress ?? zeroAddress) as Hex, round?.tallyFile);
-  const roundState = useRoundState(pollId);
+  const projects = useProjects((round?.registryAddress ?? zeroAddress) as Hex);
+  const results = useResults(
+    pollId,
+    (round?.registryAddress ?? zeroAddress) as Hex,
+    (round?.tallyAddress ?? zeroAddress) as Hex,
+  );
+  const roundState = useRoundState({ pollId });
 
   const handleAction = useCallback(
     (projectId: string) => (e: Event) => {

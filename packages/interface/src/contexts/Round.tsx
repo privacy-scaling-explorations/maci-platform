@@ -4,15 +4,16 @@ import { config } from "~/config";
 import { api } from "~/utils/api";
 
 import type { RoundContextType, RoundProviderProps } from "./types";
-import type { IRoundData } from "~/utils/types";
+import type { IRoundData, Tally } from "~/utils/types";
 
 export const RoundContext = createContext<RoundContextType | undefined>(undefined);
 
 export const RoundProvider: React.FC<RoundProviderProps> = ({ children }: RoundProviderProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const polls = api.maci.poll.useQuery(undefined, { enabled: Boolean(config.maciSubgraphUrl) });
-  const rounds = api.maci.round.useQuery({ polls: polls.data ?? [] }, { enabled: Boolean(polls.data) });
+  const polls = api.maci.polls.useQuery(undefined, { enabled: Boolean(config.maciSubgraphUrl) });
+  const rounds = api.maci.rounds.useQuery({ polls: polls.data ?? [] }, { enabled: Boolean(polls.data) });
+  const tallies = api.maci.tallies.useQuery(undefined, { enabled: Boolean(config.maciSubgraphUrl) });
 
   // on load we fetch the data from the poll
   useEffect(() => {
@@ -28,6 +29,15 @@ export const RoundProvider: React.FC<RoundProviderProps> = ({ children }: RoundP
     rounds.refetch().catch(console.error);
   }, [polls, rounds]);
 
+  useEffect(() => {
+    if (tallies.data) {
+      return;
+    }
+
+    // eslint-disable-next-line no-console
+    tallies.refetch().catch(console.error);
+  }, [tallies]);
+
   const getRoundByRoundId = useCallback(
     (roundId: string): IRoundData | undefined => rounds.data?.find((round) => round.roundId === roundId),
     [rounds],
@@ -38,14 +48,23 @@ export const RoundProvider: React.FC<RoundProviderProps> = ({ children }: RoundP
     [rounds],
   );
 
+  const isRoundTallied = useCallback(
+    (tallyAddress: string): boolean => {
+      const t = tallies.data?.find((tally: Tally) => tally.id === tallyAddress);
+      return !!t && t.results.length > 0;
+    },
+    [tallies],
+  );
+
   const value = useMemo(
     () => ({
       rounds: rounds.data,
       getRoundByRoundId,
       getRoundByPollId,
       isLoading,
+      isRoundTallied,
     }),
-    [rounds, getRoundByRoundId, getRoundByPollId, isLoading],
+    [rounds, getRoundByRoundId, getRoundByPollId, isLoading, isRoundTallied],
   );
 
   return <RoundContext.Provider value={value as RoundContextType}>{children}</RoundContext.Provider>;

@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query: { pollId }
   });
 
 const ConfirmProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
-  const state = useRoundState(pollId);
+  const state = useRoundState({ pollId });
 
   const { getRoundByPollId } = useRound();
 
