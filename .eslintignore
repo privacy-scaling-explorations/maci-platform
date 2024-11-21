@@ -14,4 +14,5 @@ packages/interface/playwright-report
 packages/interface/test-results
 packages/interface/next.config.js
 packages/interface/public/mockServiceWorker.js
+.env
 
