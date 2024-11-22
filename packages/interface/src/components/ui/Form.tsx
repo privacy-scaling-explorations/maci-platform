@@ -9,6 +9,9 @@ import {
   type ComponentProps,
   forwardRef,
   cloneElement,
+  useState,
+  useCallback,
+  useEffect,
 } from "react";
 import {
   FormProvider,
@@ -29,6 +32,8 @@ import { inputBase, Input, InputWrapper, InputIcon } from "./Input";
 import { Tooltip } from "./Tooltip";
 
 import { createComponent } from ".";
+
+const TIMEOUT_DURATION = 7000;
 
 export const Select = createComponent(
   "select",
@@ -62,7 +67,7 @@ export const Label = createComponent(
   }),
 );
 
-export const ErrorMessage = createComponent("div", tv({ base: "pt-1 text-xs text-red-500" }));
+export const ErrorMessage = createComponent("div", tv({ base: "pt-1 text-xs text-red" }));
 
 export const Textarea = createComponent("textarea", tv({ base: [...inputBase, "w-full"] }));
 
@@ -227,16 +232,41 @@ export const Form = <S extends z.Schema>({
     resolver: zodResolver(schema),
     mode: "onBlur",
   });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const onSubmitForm = useCallback(
+    form.handleSubmit(
+      (data) => {
+        setErrorMessage(null);
+        onSubmit(data, form);
+      },
+      () => {
+        setErrorMessage("There are errors in the form. Please go back and check the warnings.");
+      },
+    ),
+    [setErrorMessage, onSubmit, form],
+  );
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    if (errorMessage) {
+      timeout = setTimeout(() => {
+        setErrorMessage(null);
+      }, TIMEOUT_DURATION);
+    }
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [errorMessage]);
 
   // Pass the form methods to a FormProvider. This lets us access the form from components with useFormContext
   return (
     <FormProvider {...form}>
-      <form
-        onSubmit={form.handleSubmit((data) => {
-          onSubmit(data, form);
-        })}
-      >
+      <form onSubmit={onSubmitForm}>
         {children}
+
+        {errorMessage && <ErrorMessage style={{ textAlign: "end" }}>{errorMessage}</ErrorMessage>}
       </form>
     </FormProvider>
   );
