@@ -391,3 +391,8 @@ export interface IRoundData {
    */
   tallyFile: string;
 }
+
+export interface IFetchFaucetReturn {
+  amountToSend: bigint;
+  error?: Error;
+}

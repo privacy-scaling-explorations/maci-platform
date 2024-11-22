@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { decStringToBigIntToUuid } from "@pcd/util";
-import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd";
+import { ZKEdDSAEventTicketPCDPackage, ZKEdDSAEventTicketPCDClaim } from "@pcd/zk-eddsa-event-ticket-pcd";
 import { zuAuthPopup } from "@pcd/zuauth";
 import { GatekeeperTrait, getZupassGatekeeperData } from "maci-cli/sdk";
 import { useCallback } from "react";
@@ -9,10 +9,13 @@ import { useAccount } from "wagmi";
 
 import { zupass, config } from "~/config";
 import { useMaci } from "~/contexts/Maci";
+import { useClaimFunds } from "~/features/home/hooks/useFetchFaucet";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { jsonPCD } from "~/utils/types";
 
 import type { EdDSAPublicKey } from "@pcd/eddsa-pcd";
+import type { PCD } from "@pcd/pcd-types";
+import type { Groth16Proof } from "snarkjs";
 
 import { Button } from "./ui/Button";
 
@@ -22,19 +25,18 @@ export const JoinButton = (): JSX.Element => {
   const signer = useEthersSigner();
   const { address } = useAccount();
 
-  const onError = useCallback(() => toast.error("Signup error"), []);
-  const handleSignup = useCallback(async () => {
-    // first we call the faucet to get funds
-    const response = await fetch("/api/faucet", {
-      method: "POST",
-      body: JSON.stringify({ address, pcd: zupassProof }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  const onError = useCallback((error?: Error | string) => toast.error(`Signup error: ${error?.toString() ?? ""}`), []);
+  const claimFund = useClaimFunds(address ?? "", zupassProof as PCD<ZKEdDSAEventTicketPCDClaim, Groth16Proof>);
 
-    if (response.status !== 204 && response.status !== 200) {
-      toast.error("Could not verify your Zupass ticket, please try again");
+  const handleSignup = useCallback(() => {
+    if (claimFund.data === undefined) {
+      claimFund.refetch();
+      return;
+    }
+
+    if (claimFund.data.error) {
+      onError(claimFund.data.error);
+      return;
     }
 
     onSignup(onError);
