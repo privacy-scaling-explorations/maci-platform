@@ -25,7 +25,7 @@ export interface IProjectsProps {
 }
 
 export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
-  const roundState = useRoundState(pollId);
+  const roundState = useRoundState({ pollId });
 
   const { getRoundByPollId } = useRound();
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
@@ -35,7 +35,11 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
   const { isRegistered } = useMaci();
   const { addToBallot, removeFromBallot, ballotContains, getBallot } = useBallot();
 
-  const results = useResults(pollId, (round?.registryAddress ?? zeroAddress) as Hex, round?.tallyFile);
+  const results = useResults(
+    pollId,
+    (round?.registryAddress ?? zeroAddress) as Hex,
+    (round?.tallyAddress ?? zeroAddress) as Hex,
+  );
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
 

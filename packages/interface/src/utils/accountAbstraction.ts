@@ -271,8 +271,8 @@ export default async function sendUserOperation(
     callGasLimit: 0n,
     verificationGasLimit: 0n,
     preVerificationGas: 0n,
-    maxFeePerGas: estimateGasFees.maxFeePerGas ?? 0n,
-    maxPriorityFeePerGas: estimateGasFees.maxPriorityFeePerGas ?? 0n,
+    maxFeePerGas: estimateGasFees.maxFeePerGas,
+    maxPriorityFeePerGas: estimateGasFees.maxPriorityFeePerGas,
     signature: "0x",
   };
 

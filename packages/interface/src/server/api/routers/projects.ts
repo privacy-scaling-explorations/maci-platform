@@ -35,6 +35,10 @@ export const projectsRouter = createTRPCRouter({
       fetchApprovedProjects(input.registryAddress),
     ),
 
+  projects: publicProcedure
+    .input(FilterSchema.extend({ registryAddress: z.string() }))
+    .query(async ({ input }) => fetchProjects(input.registryAddress)),
+
   // Used for distribution to get the projects' payoutAddress
   // To get this data we need to fetch all projects and their metadata
   // payoutAddresses: publicProcedure.input(z.object({ ids: z.array(z.string()) })).query(async ({ input }) =>

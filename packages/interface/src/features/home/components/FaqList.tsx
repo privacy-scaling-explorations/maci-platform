@@ -59,12 +59,13 @@ export const FAQList = (): JSX.Element => (
       description={
         <div className="flex flex-col gap-4">
           <p>
-            Join our{" "}
+            <span>Join our </span>
 
             <Link className="font-bold underline" href="https://discord.gg/Bj9PWNVu" rel="noreferrer" target="_blank">
               Discord channel
-            </Link>{" "}
-            to learn more, or come over to PSE's booth in the Impact Space!
+            </Link>
+
+            <span>to learn more, or come over to PSE booth in the Impact Space!</span>
           </p>
         </div>
       }

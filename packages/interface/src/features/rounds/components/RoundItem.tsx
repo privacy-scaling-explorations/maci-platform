@@ -61,7 +61,7 @@ const RoundTag = ({ state }: IRoundTagProps): JSX.Element => {
 };
 
 export const RoundItem = ({ round }: IRoundItemProps): JSX.Element => {
-  const roundState = useRoundState(round.pollId);
+  const roundState = useRoundState({ pollId: round.pollId });
 
   return (
     <Link href={`/rounds/${round.pollId}`}>

@@ -17,7 +17,7 @@ interface IInitPollParams {
 }
 
 /**
- * Command to merge signup and message queues of a MACI contract
+ * Command to initialize poll
  */
 task("initPoll", "Initialize poll")
   .addParam("poll", "The poll id", undefined, types.string)

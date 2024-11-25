@@ -18,7 +18,7 @@ export const BallotOverview = ({ title = undefined, pollId }: IBallotOverviewPro
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
 
-  const roundState = useRoundState(pollId);
+  const roundState = useRoundState({ pollId });
 
   return (
     <Link

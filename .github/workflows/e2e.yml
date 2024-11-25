@@ -58,8 +58,6 @@ jobs:
           path: |
             ~/.pnpm-store
             node_modules
-            /home/runner/.cache/Cypress
-            packages/e2e/.cache-synpress
           key: ${{ runner.os }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-node-
@@ -84,10 +82,15 @@ jobs:
           sudo apt-get install --no-install-recommends -y \
           xvfb
 
-      - name: Copy .env.example to .env
+      - name: Copy .env.example to .env (interface)
         run: |
           cp .env.example .env
         working-directory: packages/interface
+
+      - name: Copy .env.example to .env (e2e)
+        run: |
+          cp .env.example .env
+        working-directory: packages/e2e
 
       - name: Build
         run: pnpm run build
@@ -99,10 +102,14 @@ jobs:
       - name: Build cache
         run: xvfb-run pnpm run build:cache
         working-directory: packages/e2e
+        env:
+          NEXT_PUBLIC_ALCHEMY_ID: ${{ secrets.NEXT_PUBLIC_ALCHEMY_ID }}
 
       - name: Run Playwright tests
         run: xvfb-run pnpm run test:playwright:headful
         working-directory: packages/e2e
+        env:
+          NEXT_PUBLIC_ALCHEMY_ID: ${{ secrets.NEXT_PUBLIC_ALCHEMY_ID }}
 
       - uses: actions/upload-artifact@v4
         if: always()

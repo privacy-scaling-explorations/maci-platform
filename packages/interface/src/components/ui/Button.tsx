@@ -44,7 +44,7 @@ export interface IIconButtonProps extends ComponentPropsWithRef<typeof Button> {
 
 export const IconButton = forwardRef(
   ({ children, icon, size, ...props }: IIconButtonProps, ref): JSX.Element => (
-    <Button ref={ref} {...props} size={(children as ReactNode | undefined) ? size : "icon"}>
+    <Button ref={ref} {...props} size={children ? size : "icon"}>
       {(icon as IIconButtonProps["icon"] | undefined)
         ? createElement(icon, {
             className: `w-4 h-4 ${children ? "mr-2" : ""}`,

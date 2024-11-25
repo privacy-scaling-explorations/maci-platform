@@ -75,6 +75,11 @@ export interface Metadata {
   type: string;
 }
 
+export interface TallyResult {
+  id: string;
+  result: string;
+}
+
 export const AttestationsQuery = `
   query Attestations($where: AttestationWhereInput, $orderBy: [AttestationOrderByWithRelationInput!], $take: Int, $skip: Int) {
     attestations(take: $take, skip: $skip, orderBy: $orderBy, where: $where) {
@@ -132,7 +137,7 @@ export interface Poll {
    */
   initTime: string;
   /**
-   * The poll registry address
+   * The poll registry data
    */
   registry: {
     /**
@@ -144,6 +149,29 @@ export interface Poll {
      */
     metadataUrl: string;
   };
+  /**
+   * The poll tally data
+   */
+  tally: {
+    /**
+     * The poll tally address
+     */
+    id: string;
+  };
+}
+
+/**
+ * The tally data
+ */
+export interface Tally {
+  /**
+   * The tally address
+   */
+  id: string;
+  /**
+   * an array with the results
+   */
+  results: TallyResult[];
 }
 
 /**
@@ -298,6 +326,10 @@ export interface IPollData extends IGetPollData {
    * The poll init time
    */
   initTime: bigint | number | string | null;
+  /**
+   * The tally address
+   */
+  tallyAddress: string;
 }
 
 /**
@@ -328,10 +360,6 @@ export interface IRoundMetadata {
    * The time the voting ends
    */
   votingEndsAt: string;
-  /**
-   * The round tally file
-   */
-  tallyFile: string;
 }
 
 /**
@@ -387,7 +415,20 @@ export interface IRoundData {
    */
   votingEndsAt: Date;
   /**
-   * The round tally file
+   * The round tally address
    */
-  tallyFile: string;
+  tallyAddress: string;
+}
+
+export interface IRecipientWithVotes extends IRecipient {
+  votes: number;
+}
+
+/**
+ * Top 3 Rank of the result
+ */
+export enum EMedal {
+  Gold,
+  Silver,
+  Bronze,
 }
