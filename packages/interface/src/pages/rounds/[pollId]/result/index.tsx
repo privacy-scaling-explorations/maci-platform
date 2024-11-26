@@ -42,6 +42,11 @@ const ResultPage = ({ pollId }: IResultPageProps): JSX.Element => {
     [],
   );
 
+  const totalVotes = useMemo(
+    () => projectsResults.data?.reduce((acc, curr) => acc + curr.votes, 0),
+    [projectsResults.data],
+  );
+
   return (
     <LayoutWithSidebar showInfo pollId={pollId} sidebar="left">
       {roundState === ERoundState.RESULTS && (
@@ -60,7 +65,14 @@ const ResultPage = ({ pollId }: IResultPageProps): JSX.Element => {
 
           <div className="rounded-md border border-gray-200 p-5">
             {projectsResults.data?.map((item, i) => (
-              <ResultItem key={item.index} medal={decideMedal(i)} pollId={pollId} project={item} rank={i + 1} />
+              <ResultItem
+                key={item.index}
+                medal={decideMedal(i)}
+                pollId={pollId}
+                project={item}
+                rank={i + 1}
+                totalVotes={totalVotes}
+              />
             ))}
           </div>
         </div>

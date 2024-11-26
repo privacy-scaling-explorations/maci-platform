@@ -18,6 +18,7 @@ function clientToSigner(
   }
 
   const walletClient = createWalletClient({
+    // @ts-expect-error type mismatch
     account,
     chain,
     transport: http(getRPCURL()),

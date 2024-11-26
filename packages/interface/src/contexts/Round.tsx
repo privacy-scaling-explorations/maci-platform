@@ -51,7 +51,7 @@ export const RoundProvider: React.FC<RoundProviderProps> = ({ children }: RoundP
   const isRoundTallied = useCallback(
     (tallyAddress: string): boolean => {
       const found = tallies.data?.find((tally: Tally) => tally.id === tallyAddress);
-      return found?.results.length > 0;
+      return (found?.results && found.results.length > 0) ?? false;
     },
     [tallies],
   );

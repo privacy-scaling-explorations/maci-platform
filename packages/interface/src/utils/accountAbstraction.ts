@@ -81,6 +81,7 @@ export const signup = async (
 ): Promise<{ stateIndex: bigint; voiceCredits: bigint }> => {
   const pubKey = PubKey.deserialize(maciPubKey);
   const { request } = await publicClient.simulateContract({
+    // @ts-expect-error type mismatch
     account: smartAccount,
     address: config.maciAddress! as Address,
     abi: MACIFactory.abi,
@@ -94,6 +95,7 @@ export const signup = async (
       "0x0000000000000000000000000000000000000000000000000000000000000000",
     ],
   });
+  // @ts-expect-error type mismatch
   const txHash = await smartAccountClient.writeContract(request);
   const txReceipt = await publicClient.getTransactionReceipt({
     hash: txHash,
