@@ -423,6 +423,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       gatekeeperTrait,
       storeZupassProof,
       treeData,
+      zupassProof,
     }),
     [
       isLoading,
@@ -437,6 +438,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       gatekeeperTrait,
       storeZupassProof,
       treeData,
+      zupassProof,
     ],
   );
 

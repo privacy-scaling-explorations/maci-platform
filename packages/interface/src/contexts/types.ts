@@ -29,6 +29,7 @@ export interface MaciContextType {
     onError: () => void | Promise<void>,
     onSuccess: () => void | Promise<void>,
   ) => Promise<void>;
+  zupassProof?: PCD;
 }
 
 export interface MaciProviderProps {

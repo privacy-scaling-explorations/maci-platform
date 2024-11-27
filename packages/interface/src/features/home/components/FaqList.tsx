@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { Heading } from "~/components/ui/Heading";
 
 import { FAQItem } from "./FaqItem";
@@ -59,13 +57,11 @@ export const FAQList = (): JSX.Element => (
       description={
         <div className="flex flex-col gap-4">
           <p>
-            <span>Join our </span>
-
-            <Link className="font-bold underline" href="https://discord.gg/Bj9PWNVu" rel="noreferrer" target="_blank">
+            Join our
+            <a className="font-bold underline" href="https://discord.gg/Bj9PWNVu" rel="noreferrer" target="_blank">
               Discord channel
-            </Link>
-
-            <span>to learn more, or come over to PSE booth in the Impact Space!</span>
+            </a>
+            to learn more, or come over to PSE&apos;s booth in the Impact Space!
           </p>
         </div>
       }

@@ -93,8 +93,8 @@ export const config = {
   // TODO: temp solution until we come up with solid one
   // https://github.com/privacy-scaling-explorations/maci-platform/issues/31
   tokenName: process.env.NEXT_PUBLIC_TOKEN_NAME!,
-  eventName: process.env.NEXT_PUBLIC_EVENT_NAME ?? "Add your event name",
-  eventDescription: process.env.NEXT_PUBLIC_EVENT_DESCRIPTION ?? "Add your event description",
+  eventName: "Thanks for your support!",
+  eventDescription: "Claim your voter POAP.",
   admin: (process.env.NEXT_PUBLIC_ADMIN_ADDRESS ?? "") as `0x${string}`,
   network: wagmiChains[process.env.NEXT_PUBLIC_CHAIN_NAME as keyof typeof wagmiChains],
   maciAddress: process.env.NEXT_PUBLIC_MACI_ADDRESS,
@@ -134,6 +134,7 @@ export const zupass = {
     "2b259329f0adf98c9b6cf2a11db7225fdcaa4f8796c61864e86154477da10663",
   ],
   eventName: process.env.NEXT_PUBLIC_ZUPASS_EVENT_NAME!,
+  eventId: "5074edf5-f079-4099-b036-22223c0c6995",
 } as const;
 
 export const impactCategories = {
@@ -145,3 +146,5 @@ export const impactCategories = {
   DEVELOPER_ECOSYSTEM: { label: "Developer Ecosystem" },
   END_USER_EXPERIENCE_AND_ADOPTION: { label: "End user UX" },
 } as const;
+
+export const gatekeeperAddress = "0x6520BB469D42C0A56Dc114EE364440388d74A629";

@@ -66,6 +66,8 @@
     "react-number-format": "^5.4.2",
     "react-use": "^17.5.0",
     "sonner": "^1.4.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.2.1",
     "tailwind-variants": "^0.1.20",
