@@ -9,6 +9,7 @@ module.exports = createEnv({
    */
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+    POAPS_LINKS: z.string().url().optional(),
   },
 
   /**
@@ -60,6 +61,7 @@ module.exports = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
+    POAPS_LINKS: process.env.POAPS_LINKS,
 
     NEXT_PUBLIC_CHAIN_NAME: process.env.NEXT_PUBLIC_CHAIN_NAME,
 
