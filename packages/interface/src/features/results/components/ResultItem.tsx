@@ -10,9 +10,19 @@ export interface IResultItemProps {
   rank: number;
   project: IRecipientWithVotes;
   medal?: EMedal;
+  totalVotes?: number;
 }
 
-export const ResultItem = ({ pollId, rank, project, medal = undefined }: IResultItemProps): JSX.Element => {
+// devcon round budget
+const budget = 250000;
+
+export const ResultItem = ({
+  pollId,
+  rank,
+  project,
+  medal = undefined,
+  totalVotes = undefined,
+}: IResultItemProps): JSX.Element => {
   const metadata = useProjectMetadata(project.metadataUrl);
 
   useEffect(() => {
@@ -39,7 +49,11 @@ export const ResultItem = ({ pollId, rank, project, medal = undefined }: IResult
 
         <div className="mx-2 flex-1">{metadata.data?.name}</div>
 
-        <div className="w-24 flex-none text-end">{`${project.votes} votes`}</div>
+        {totalVotes ? (
+          <div className="w-24 flex-none text-end">{`${((budget * project.votes) / totalVotes).toFixed(2)} $`}</div>
+        ) : (
+          <div className="w-24 flex-none text-end">{`${project.votes} votes`}</div>
+        )}
       </div>
     </Link>
   );
