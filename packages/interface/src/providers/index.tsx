@@ -63,7 +63,7 @@ function createWagmiConfig() {
   const config = getDefaultConfig({
     appName,
     projectId,
-    ssr: false,
+    ssr: true,
     chains: activeChains as unknown as readonly [Chain, ...Chain[]],
     transports: {
       [appConfig.config.network.id]: http(appConfig.getRPCURL()),

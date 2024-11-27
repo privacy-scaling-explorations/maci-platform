@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useAccount } from "wagmi";
 
 import ConnectButton from "~/components/ConnectButton";
@@ -28,8 +29,13 @@ export const SingleRoundHome = ({ round }: ISingleRoundHomeProps): JSX.Element =
 
       <p className="text-gray-400">{round.description}</p>
 
-      <Button size="auto" variant={roundState === ERoundState.RESULTS ? "tertiary" : "secondary"}>
-        <a href={`/rounds/${round.pollId}`}>View Projects</a>
+      <Button
+        as={Link}
+        href={`/rounds/${round.pollId}`}
+        size="auto"
+        variant={roundState === ERoundState.RESULTS ? "tertiary" : "secondary"}
+      >
+        View Projects
       </Button>
 
       {roundState === ERoundState.RESULTS && (

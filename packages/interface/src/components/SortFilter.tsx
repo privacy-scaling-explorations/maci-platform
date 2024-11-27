@@ -8,31 +8,42 @@ import type { OrderBy, SortOrder } from "~/features/filter/types";
 import { SortByDropdown } from "./SortByDropdown";
 import { SearchInput } from "./ui/Form";
 
-export const SortFilter = (): JSX.Element => {
+export interface ISortFilterProps {
+  onSearchChange: (search: string) => void;
+}
+
+export const SortFilter = ({ onSearchChange }: ISortFilterProps): JSX.Element => {
   const { orderBy, sortOrder, setFilter } = useFilter();
 
   const [search, setSearch] = useState("");
   useDebounce(() => setFilter({ search }), 500, [search]);
 
-  const onChange = useCallback(
+  const onChangeSearchInput = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setSearch(e.target.value);
+      const term = e.target.value;
+      setSearch(term);
+      onSearchChange(term);
     },
-    [setSearch],
+    [setSearch, onSearchChange],
+  );
+
+  const onChangeSortByDropdown = useCallback(
+    async (sort: string) => {
+      const [order, sorting] = sort.split("_") as [OrderBy, SortOrder];
+
+      await setFilter({ orderBy: order, sortOrder: sorting }).catch();
+    },
+    [setFilter],
   );
 
   return (
     <div className="mb-2 flex flex-1 gap-2">
-      <SearchInput className="w-full" placeholder="Search project..." value={search} onChange={onChange} />
+      <SearchInput className="w-full" placeholder="Search project..." value={search} onChange={onChangeSearchInput} />
 
       <SortByDropdown
         options={["name_asc", "name_desc"]}
         value={`${orderBy}_${sortOrder}`}
-        onChange={async (sort) => {
-          const [order, sorting] = sort.split("_") as [OrderBy, SortOrder];
-
-          await setFilter({ orderBy: order, sortOrder: sorting }).catch();
-        }}
+        onChange={onChangeSortByDropdown}
       />
     </div>
   );
