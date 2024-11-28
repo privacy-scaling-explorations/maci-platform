@@ -5,7 +5,6 @@ import { useCallback, useState } from "react";
 import { toast } from "sonner";
 
 import { zupass } from "~/config";
-import { useMaci } from "~/contexts/Maci";
 import { jsonPCD } from "~/utils/types";
 
 import type { EdDSAPublicKey } from "@pcd/eddsa-pcd";
@@ -13,7 +12,6 @@ import type { EdDSAPublicKey } from "@pcd/eddsa-pcd";
 import { Button } from "./ui/Button";
 
 export const JoinButton = (): JSX.Element => {
-  const { isLoading, isRegistered } = useMaci();
   const [poapLink, setPoapLink] = useState("");
 
   const onOpenPoap = () => {
@@ -233,8 +231,6 @@ export const JoinButton = (): JSX.Element => {
             "Content-Type": "application/json",
           },
         });
-
-        console.log("response", response);
 
         if (!response.ok) {
           toast.error("Could not verify your Zupass ticket, please try again");

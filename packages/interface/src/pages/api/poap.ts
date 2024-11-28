@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 import { uuidToBigInt } from "@pcd/util";
 import { ZKEdDSAEventTicketPCDClaim, ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd";
+import { db, sql } from "@vercel/postgres";
 import { ZupassGatekeeper__factory as ZupassGatekeeper } from "maci-platform-contracts/typechain-types";
 import { NextApiRequest, NextApiResponse } from "next";
 import { createPublicClient, http } from "viem";
 import { optimism } from "viem/chains";
 
 import { gatekeeperAddress } from "~/config";
-import { getDb } from "~/utils/db";
 
 import type { PCD } from "@pcd/pcd-types";
 import type { Groth16Proof } from "snarkjs";
@@ -19,7 +19,7 @@ import type { Groth16Proof } from "snarkjs";
  * @returns - The response object.
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-  const db = await getDb();
+  const client = await db.connect();
 
   const publicClient = createPublicClient({
     chain: optimism,
@@ -53,27 +53,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
-    const alreadyRegistered: { id: number; pcd: string } | undefined = await db.get(
-      "SELECT id, pcd FROM users WHERE pcd = ?",
-      pcd.claim.partialTicket.ticketId,
-    );
+    await client.sql`CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, pcd TEXT UNIQUE);`;
 
+    const alreadyRegistered = await sql`SELECT id FROM users WHERE pcd = ${pcd.claim.partialTicket.ticketId}`;
+    let id;
     // if not in db, we save it so they can retrieve the poap with the same link
-    if (!alreadyRegistered) {
-      await db.run("INSERT INTO users (id, pcd) VALUES (null, ?)", pcd.claim.partialTicket.ticketId);
+    if (alreadyRegistered.rows.length === 0) {
+      const x = await client.sql`INSERT INTO users (pcd) VALUES (${pcd.claim.partialTicket.ticketId}) RETURNING id;`;
+      id = x.rows[0]!.id as number;
+    } else {
+      id = alreadyRegistered.rows[0]!.id as number;
     }
-
-    const result: { id: number } | undefined = await db.get(
-      "SELECT id FROM users WHERE pcd = ?",
-      pcd.claim.partialTicket.ticketId,
-    );
 
     if (!process.env.POAPS_LINKS) {
       throw new Error("POAPS_LINKS environment variable is not defined");
     }
     const response = await fetch(process.env.POAPS_LINKS);
     const poapLinks = (await response.json()) as { links: string[] };
-    const poapLink = result ? poapLinks.links[result.id - 1] : undefined;
+    const poapLink = id ? poapLinks.links[id - 1] : undefined;
 
     if (!poapLink) {
       res.status(500).json("No POAP link found");
@@ -83,8 +80,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } catch (err) {
     console.error(err);
     res.status(500).json("Internal server error");
-    return;
-  } finally {
-    await db.close();
   }
 }
