@@ -1,6 +1,9 @@
+import { useMemo } from "react";
 import { useAccount } from "wagmi";
 
+import ConnectButton from "~/components/ConnectButton";
 import { JoinButton } from "~/components/JoinButton";
+import { SingleRoundHome } from "~/components/SingleRoundHome";
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { config } from "~/config";
@@ -16,38 +19,45 @@ const HomePage = (): JSX.Element => {
   const { isRegistered } = useMaci();
   const isAdmin = useIsAdmin();
   const { rounds } = useRound();
+  const singleRound = useMemo(() => rounds?.[0], [rounds]);
 
   return (
-    <Layout type="home">
-      <div className="flex h-auto w-screen flex-col items-center justify-center gap-4 bg-blue-50 px-2 sm:h-[90vh] dark:bg-black">
-        <Heading className="mt-4 max-w-screen-lg text-center sm:mt-0" size="6xl">
-          {config.eventName}
-        </Heading>
+    <Layout pollId={singleRound ? singleRound.pollId : ""} type="home">
+      {singleRound && <SingleRoundHome round={singleRound} />}
 
-        <Heading className="max-w-screen-lg text-center" size="3xl">
-          {config.eventDescription}
-        </Heading>
+      {!singleRound && (
+        <div className="flex h-auto w-screen flex-col items-center justify-center gap-4 bg-blue-50 px-2 pb-4 sm:h-[90vh] dark:bg-black">
+          <Heading className="mt-4 max-w-screen-lg text-center sm:mt-0" size="6xl">
+            {config.eventName}
+          </Heading>
 
-        {!isConnected && <p className="text-gray-400">Connect your wallet to get started.</p>}
+          <Heading className="max-w-screen-lg text-center" size="3xl">
+            {config.eventDescription}
+          </Heading>
 
-        {isConnected && !isRegistered && <JoinButton />}
+          {!isConnected && <p className="text-gray-400">Connect your wallet to get started.</p>}
 
-        {isConnected && isAdmin && (
-          <div className="flex flex-col gap-4">
-            <p className="text-gray-400">Configure and deploy your contracts to get started.</p>
+          <ConnectButton showMobile />
 
-            <Button size="auto" variant="primary">
-              <a href="/coordinator">Get Started</a>
-            </Button>
-          </div>
-        )}
+          {isConnected && !isRegistered && <JoinButton />}
 
-        {isConnected && !isAdmin && rounds && rounds.length === 0 && (
-          <p className="text-gray-400">There are no rounds deployed.</p>
-        )}
+          {isConnected && isAdmin && (
+            <div className="flex flex-col gap-4">
+              <p className="text-center text-gray-400">Configure and deploy your contracts to get started.</p>
 
-        {rounds && rounds.length > 0 && <RoundsList />}
-      </div>
+              <Button size="auto" variant="primary">
+                <a href="/coordinator">Get Started</a>
+              </Button>
+            </div>
+          )}
+
+          {isConnected && !isAdmin && rounds && rounds.length === 0 && (
+            <p className="text-gray-400">There are no rounds deployed.</p>
+          )}
+
+          {rounds && rounds.length > 1 && <RoundsList />}
+        </div>
+      )}
 
       <FAQList />
     </Layout>

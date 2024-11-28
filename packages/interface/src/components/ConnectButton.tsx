@@ -1,13 +1,13 @@
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { createBreakpoint } from "react-use";
+import { useMemo } from "react";
 
 import { config } from "~/config";
+import { useIsMobile } from "~/hooks/useIsMobile";
 
 import { Button } from "./ui/Button";
 import { Chip } from "./ui/Chip";
-
-const useBreakpoint = createBreakpoint({ XL: 1280, L: 768, S: 350 });
 
 interface IConnectedDetailsProps {
   account: { address: string; displayName: string; ensName?: string };
@@ -31,11 +31,16 @@ const ConnectedDetails = ({ openAccountModal, account, isMobile }: IConnectedDet
   );
 };
 
-export const ConnectButton = (): JSX.Element => {
-  const breakpoint = useBreakpoint();
-  const isMobile = breakpoint === "S";
+interface IConnectButtonProps {
+  showMobile: boolean;
+}
 
-  return (
+const ConnectButton = ({ showMobile }: IConnectButtonProps): JSX.Element | null => {
+  const isMobile = useIsMobile();
+
+  const isShow = useMemo(() => showMobile === isMobile, [isMobile, showMobile]);
+
+  return isShow ? (
     <RainbowConnectButton.Custom>
       {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted, authenticationStatus }) => {
         const ready = mounted && authenticationStatus !== "loading";
@@ -57,7 +62,7 @@ export const ConnectButton = (): JSX.Element => {
               if (!connected) {
                 return (
                   <Button suppressHydrationWarning variant="secondary" onClick={openConnectModal}>
-                    {isMobile ? "Connect" : "Connect wallet"}
+                    <p>Connect wallet</p>
                   </Button>
                 );
               }
@@ -70,11 +75,13 @@ export const ConnectButton = (): JSX.Element => {
                 );
               }
 
-              return <ConnectedDetails account={account} isMobile={isMobile} openAccountModal={openAccountModal} />;
+              return <ConnectedDetails account={account} isMobile={false} openAccountModal={openAccountModal} />;
             })()}
           </div>
         );
       }}
     </RainbowConnectButton.Custom>
-  );
+  ) : null;
 };
+
+export default dynamic(async () => Promise.resolve(ConnectButton), { ssr: false });

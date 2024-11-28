@@ -16,6 +16,13 @@ export enum EInfoCardState {
   UPCOMING = "UPCOMING",
 }
 
+export enum EBreakpointSizes {
+  S = 320,
+  M = 480,
+  L = 768,
+  XL = 1280,
+}
+
 export interface AttestationWithMetadata {
   id: string;
   refUID: string;

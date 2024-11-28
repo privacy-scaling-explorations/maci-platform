@@ -18,7 +18,7 @@ const InfoContainer = createComponent(
     variants: {
       size: {
         sm: "flex-col",
-        default: "flex-col max-lg:w-full lg:flex-row",
+        default: "flex-col max-lg:w-full xl:flex-row xl:w-fit",
       },
     },
   }),
@@ -73,7 +73,7 @@ export const Info = ({
   ];
 
   return (
-    <div className="w-full">
+    <div className="flex w-full justify-center">
       <InfoContainer size={size}>
         {showRoundInfo && <RoundInfo roundId={round?.roundId ?? ""} />}
 
