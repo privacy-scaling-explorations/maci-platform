@@ -10,22 +10,26 @@ import { Chip } from "./ui/Chip";
 const useBreakpoint = createBreakpoint({ XL: 1280, L: 768, S: 350 });
 
 interface IConnectedDetailsProps {
-  account: { address: string; displayName: string };
+  account: { address: string; displayName: string; ensName?: string };
   openAccountModal: () => void;
   isMobile: boolean;
 }
 
-const ConnectedDetails = ({ openAccountModal, account, isMobile }: IConnectedDetailsProps) => (
-  <div>
-    <div className="flex gap-2 text-white">
-      <Chip color="neutral" onClick={openAccountModal}>
-        {isMobile ? null : account.displayName}
+const ConnectedDetails = ({ openAccountModal, account, isMobile }: IConnectedDetailsProps) => {
+  const displayName = isMobile ? null : account.ensName || account.displayName;
 
-        <Image alt="dropdown" height="18" src="/dropdown.svg" width="18" />
-      </Chip>
+  return (
+    <div>
+      <div className="flex gap-2 text-white">
+        <Chip color="neutral" onClick={openAccountModal}>
+          {displayName}
+
+          <Image alt="dropdown" height="18" src="/dropdown.svg" width="18" />
+        </Chip>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const ConnectButton = (): JSX.Element => {
   const breakpoint = useBreakpoint();
