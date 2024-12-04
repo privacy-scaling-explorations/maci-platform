@@ -22,7 +22,7 @@ const StepCategory = ({ title, progress }: IStepCategoryProps): JSX.Element => (
       <Image alt="circle-check-blue" height="22" src="/circle-check-blue.svg" width="22" />
     )}
 
-    {progress === EStepState.DONE && (
+    {progress >= EStepState.DONE && (
       <Image alt="circle-check-blue-filled" height="22" src="/circle-check-blue-filled.svg" width="22" />
     )}
 
