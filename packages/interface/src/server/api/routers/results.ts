@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { fetchApprovedProjects, fetchProjects } from "~/utils/fetchProjects";
+import { fetchApprovedProjects } from "~/utils/fetchProjects";
 import { fetchTally } from "~/utils/fetchTally";
 
 import type { IRecipient } from "~/utils/types";
@@ -26,7 +26,7 @@ export const resultsRouter = createTRPCRouter({
     .input(z.object({ registryAddress: z.string(), tallyAddress: z.string() }))
     .query(async ({ input }) => {
       const { projects: results } = await calculateMaciResults(input.registryAddress, input.tallyAddress);
-      const projects = await fetchProjects(input.registryAddress);
+      const projects = await fetchApprovedProjects(input.registryAddress);
 
       return mappedProjectsResults(results, projects);
     }),
