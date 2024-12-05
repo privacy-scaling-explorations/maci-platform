@@ -4,6 +4,7 @@ import { useFormContext } from "react-hook-form";
 
 import { Heading } from "~/components/ui/Heading";
 import { Tag } from "~/components/ui/Tag";
+import { impactCategories } from "~/config";
 
 import type { Application } from "../types";
 
@@ -22,7 +23,7 @@ const ValueField = ({ title, body = undefined, required = false }: IValueFieldPr
     <div className="flex flex-col gap-2 text-xs sm:text-sm">
       <b className={clsx(required && "after:text-blue-400 after:content-['*']")}>{title}</b>
 
-      <div className="text-light flex flex-wrap gap-2 text-gray-400">
+      <div className="text-light flex flex-wrap gap-2 break-all text-gray-400">
         {body === undefined && emptyPlaceholder}
 
         {Array.isArray(body) && body.length === 0 && emptyPlaceholder}
@@ -101,7 +102,9 @@ export const ReviewApplicationDetails = (): JSX.Element => {
           required
           body={application.impactCategory?.map((tag) => (
             <Tag key={tag} selected size="sm">
-              {tag}
+              {Object.keys(impactCategories).includes(tag) && (
+                <span>{impactCategories[tag as keyof typeof impactCategories].label}</span>
+              )}
             </Tag>
           ))}
           title="Impact categories"
