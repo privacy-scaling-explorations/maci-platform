@@ -73,7 +73,7 @@ export const Info = ({
   ];
 
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex w-full justify-center pb-3">
       <InfoContainer size={size}>
         {showRoundInfo && <RoundInfo roundId={round?.roundId ?? ""} />}
 

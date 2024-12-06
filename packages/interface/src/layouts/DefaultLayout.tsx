@@ -104,7 +104,6 @@ export const LayoutWithSidebar = ({ ...props }: ILayoutProps): JSX.Element => {
 
   return (
     <Layout
-      sidebar="left"
       sidebarComponent={
         <div>
           <Info

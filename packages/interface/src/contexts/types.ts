@@ -26,7 +26,7 @@ export interface MaciContextType {
   onVote: (
     args: IVoteArgs[],
     pollId: string,
-    onError: () => void | Promise<void>,
+    onError: (err: string) => void | Promise<void>,
     onSuccess: () => void | Promise<void>,
   ) => Promise<void>;
 }
