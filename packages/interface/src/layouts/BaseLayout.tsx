@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
-import { type PropsWithChildren, createContext, useContext, useEffect, useCallback, useMemo } from "react";
+import { type PropsWithChildren, createContext, useContext, useEffect, useCallback, useMemo, useState } from "react";
 import { tv } from "tailwind-variants";
 import { useAccount } from "wagmi";
 
@@ -56,7 +56,8 @@ export const BaseLayout = ({
   type = undefined,
   children = null,
 }: IBaseLayoutProps): JSX.Element => {
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
+  const [clientTheme, setClientTheme] = useState("");
   const router = useRouter();
   const { address, isConnecting } = useAccount();
   const { isRegistered } = useMaci();
@@ -70,6 +71,11 @@ export const BaseLayout = ({
   useEffect(() => {
     manageDisplay();
   }, [manageDisplay]);
+
+  useEffect(() => {
+    // Ensure the theme is consistent on the client side
+    setClientTheme(theme || resolvedTheme || "");
+  }, [theme, resolvedTheme]);
 
   const wrappedSidebar = <Sidebar side={sidebar}>{sidebarComponent}</Sidebar>;
 
@@ -107,7 +113,7 @@ export const BaseLayout = ({
         <meta content={metadata.image} name="twitter:image" />
       </Head>
 
-      <div className={clsx("flex h-full min-h-screen flex-1 flex-col bg-white dark:bg-black", theme)}>
+      <div className={clsx("flex h-full min-h-screen flex-1 flex-col bg-white dark:bg-black", clientTheme)}>
         {header}
 
         <MainContainer type={type}>
