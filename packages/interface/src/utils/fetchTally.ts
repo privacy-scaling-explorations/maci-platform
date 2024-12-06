@@ -48,7 +48,9 @@ export async function fetchTally(id: string): Promise<Tally | undefined> {
     body: JSON.stringify({
       query: tallyQuery.replace("id: $id", `id: "${id}"`),
     }),
-  }).then((response: GraphQLResponse) => response.data?.tally);
+  })
+    .then((response: GraphQLResponse) => response.data?.tally)
+    .catch(() => undefined);
 }
 
 /**
@@ -62,5 +64,7 @@ export async function fetchTallies(): Promise<Tally[] | undefined> {
     body: JSON.stringify({
       query: talliesQuery,
     }),
-  }).then((r) => r.data.tallies);
+  })
+    .then((r) => r.data.tallies)
+    .catch(() => []);
 }
