@@ -29,4 +29,4 @@ As long as you belong to a specific semaphore group can register.
 
 ## Hats
 
-Those who are wearing hat with certain id could register.
+Those who are wearing a hat with a certain ID could register.
