@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
-import { useState, useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 
 import { Button } from "~/components/ui/Button";
-import { Dialog } from "~/components/ui/Dialog";
+import { Spinner } from "~/components/ui/Spinner";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 
@@ -13,12 +13,11 @@ interface ISubmitBallotButtonProps {
 
 export const SubmitBallotButton = ({ pollId }: ISubmitBallotButtonProps): JSX.Element => {
   const router = useRouter();
-  const [isOpen, setOpen] = useState(false);
   const { onVote, isLoading, initialVoiceCredits } = useMaci();
   const { getBallot, publishBallot, sumBallot } = useBallot();
 
-  const onVotingError = useCallback(() => {
-    toast.error("Voting error");
+  const onVotingError = useCallback((err: string) => {
+    toast.error(`Voting error: ${err}`);
   }, []);
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
@@ -28,6 +27,10 @@ export const SubmitBallotButton = ({ pollId }: ISubmitBallotButtonProps): JSX.El
   );
 
   const handleSubmitBallot = useCallback(async () => {
+    if (isLoading) {
+      return;
+    }
+
     const votes = ballot.votes.map(({ amount, projectId, projectIndex }) => ({
       projectId,
       voteOptionIndex: BigInt(projectIndex),
@@ -44,36 +47,11 @@ export const SubmitBallotButton = ({ pollId }: ISubmitBallotButtonProps): JSX.El
     });
   }, [ballot, router, onVote, publishBallot, onVotingError, pollId, pollId]);
 
-  const handleOpenDialog = useCallback(() => {
-    setOpen(true);
-  }, [setOpen]);
-
   return (
-    <>
-      <Button variant={ableToSubmit ? "primary" : "disabled"} onClick={handleOpenDialog}>
-        {ableToSubmit ? "submit your ballot" : "Exceed initial voice credits"}
-      </Button>
+    <Button variant={ableToSubmit ? "primary" : "disabled"} onClick={handleSubmitBallot}>
+      {ableToSubmit && !isLoading ? "submit your ballot" : "Exceed initial voice credits"}
 
-      <Dialog
-        button="primary"
-        buttonAction={handleSubmitBallot}
-        buttonName="submit"
-        description="This is not the final submission. Once you submit your ballot, you can change it during the voting period."
-        isLoading={isLoading}
-        isOpen={ableToSubmit && isOpen}
-        size="sm"
-        title="submit your ballot"
-        onOpenChange={setOpen}
-      />
-
-      <Dialog
-        description="You cannot submit this ballot, since the sum of votes exceeds the initial voice credits. Please edit your ballot."
-        isLoading={isLoading}
-        isOpen={!ableToSubmit && isOpen}
-        size="sm"
-        title="exceed initial voice credits"
-        onOpenChange={setOpen}
-      />
-    </>
+      {isLoading && <Spinner />}
+    </Button>
   );
 };
