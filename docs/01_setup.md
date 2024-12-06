@@ -2,15 +2,17 @@
 
 Follow these instructions to deploy your own instance of MACI-PLATFORM.
 
-## Video Tutorials
+## Requirements
 
-Complete installation tutorials can be seen here:
+You need the following to use MACI-PLATFORM:
 
-- [Deploying Contracts and Subgraph](https://www.youtube.com/watch?v=-QA0VB9EUMk)
-- [Frontend Deployment](https://www.youtube.com/watch?v=q0yS8RfwDcw)
-- [Finalizing a MACI Round](https://www.youtube.com/watch?v=nlS3hOC0ljw)
+- Node.js: use a JS toolchain manager like [`nvm`](https://github.com/nvm-sh/nvm) or [`volta`](https://volta.sh/) to install Node.js. We recommend using Node 20 or above.
+- [pnpm](https://pnpm.io/installation): Fast, disk space efficient package manager.
 
-## 1. Fork Repo
+> [!IMPORTANT]
+> If you encounter an error saying that the pnpm version is incompatible, install the compatible version by running `pnpm i -g pnpm@<target_version>`, replacing <target_version> with the version specified in the error.
+
+## Fork the Repo
 
 [Fork MACI-PLATFORM](https://github.com/privacy-scaling-explorations/maci-platform/tree/main)
 
@@ -27,70 +29,86 @@ cd maci-platform
 cp packages/interface/.env.example packages/interface/.env
 ```
 
-## 2. Deploy MACI
+## Deploy MACI Contracts
 
-As a coordinator you need to deploy a MACI instance and poll.
+As a coordinator you need to deploy a MACI instance and poll. Before deploying the contracts you need to:
 
-### Install MACI
+1. Generate the MACI Keys.
+2. Download the zero knowledge artifacts.
+3. Configure the round metadata.
+4. Set the contract .envs
+5. Configure the deployment file.
 
-> [!IMPORTANT]
-> If you encounter an error saying that the pnpm version is incompatible, install the compatible version by running `pnpm i -g pnpm@<target_version>`, replacing <target_version> with the version specified in the error.
+### Generate MACI Keys
 
-You can read about the [MACI requirements here](https://maci.pse.dev/docs/quick-start/installation). To install MACI run the following commands:
+In order to run MACI polls, a coordinator is required to publish their MACI public key. You will need to generate a MACI keypair, and treat the private key just as your Ethereum private keys. Please store them in a safe place as you won't be able to finish a round if you lose access, or if compromised a bad actor could decrypt the vote and publish them online. You can generate a new key pair by running the following commands:
 
 ```bash
-git clone https://github.com/privacy-scaling-explorations/maci.git && \
-cd maci && \
-git checkout v2.4.0 && \
-pnpm i && \
-pnpm run build
+cd packages/coordinator
+pnpm generate-maci-keypair
 ```
 
-> [!IMPORTANT]
-> The circuits of MACI version ^2.0.0 are audited, and the zKeys have undergone a trusted setup ceremony.
-
-### Download .zkey files
+### Download the zero knowledge artifacts
 
 Download ceremony artifacts for production:
 
 ```bash
-pnpm download:ceremony-zkeys
+pnpm download-zkeys:prod
 ```
 
 or the test keys for testnet only:
 
 ```bash
-pnpm download:test-zkeys
+pnpm download-zkeys:test
 ```
 
-Note the locations of the zkey files as the CLI requires them as command-line flags.
+The files are stored on the zkeys folder. Note the locations of the .zkey files cause you will need it when deploying contracts.
 
-### Set .env Files
+### Set the coordinator .env files
 
-Head to the `packages/contracts` folder and copy the `.env.example` file. Make sure to include a mnemonic and RPC url. Make sure to specify the env variable for your desired network.
+Copy the `.env.example` file. For this version only make sure to include the `BLOB_READ_WRITE_TOKEN` variable from vercel to storage the metadata.
+
+```bash
+cp .env.example .env
+```
+
+### Generate the round metadata
+
+For the frontend to know what metadata has each Poll we need to generate and upload a JSON file that then is stored on-chain. The best way to do it is using the following command:
+
+```bash
+pnpm upload-round-metadata
+```
+
+Here you need to set:
+
+1. Name of the round
+2. Brief description of the round
+3. Start time of the round, and how long will last the application and voting periods.
+
+This command will upload the JSON file to your configured vercel account and will print a link which you need to add in the Set the configuration file section.
+
+> [!IMPORTANT]
+> Current version of MACI-PLATFORM supports multiple Polls, for each Poll you should configure new round metadata.
+
+### Set the contract .env files
+
+Head back to the `packages/contracts` folder and copy the `.env.example` file.
+
+```bash
+cd ../../packages/contracts/
+cp .env.example .env
+```
+
+Make sure to include a mnemonic and RPC url. Make sure to specify the env variable for your desired network.
 
 ```
 MNEMONIC="your_ethereum_secret_key"
-ETH_PROVIDER="the_eth_provider_url"
+OP_SEPOLIA_RPC_URL="the_rpc_url"
 ETHERSCAN_API_KEY="etherscan api key"
 ```
 
-### Generate MACI Keys
-
-Generate a new key pair and save it in a secure place.
-
-```bash
-cd packages/cli && \
-node build/ts/index.js genMaciKeyPair
-```
-
 ### Set the configuration file
-
-Head back to the contracts folder.
-
-```bash
-cd ../contracts
-```
 
 Copy the config example and update the fields as necessary:
 
@@ -105,7 +123,7 @@ cp default-deployed-contracts.json deployed-contracts.json
 ```
 
 > [!IMPORTANT]
-> Ensure that you replace the `coordinatorPubKey` generated in the [previous step](#Generate-MACI-Keys) and set the `pollDuration` to the correct time in **seconds**.
+> Ensure that you replace the `coordinatorPubKey` generated in the [previous step](#Generate-MACI-Keys), set the `pollDuration` to the correct time in **seconds** and add the poll metadata in the metadataUrl in the SimpleRegistry.
 
 ### Deploy MACI Contracts
 
@@ -128,7 +146,11 @@ To deploy your first Poll (you need to specify the same network as the MACI cont
 pnpm deploy-poll:NETWORK
 ```
 
-See [MACI docs](https://maci.pse.dev/docs/quick-start/deployment#deployment-using-maci-contracts-hardhat-tasks) for more information.
+Now you need to init the deployed Poll (starts with 0).
+
+```sh
+pnpm initPoll:NETWORK --poll [poll-id]
+```
 
 ## 3. Configuration
 
@@ -138,23 +160,25 @@ At the very minimum you need to configure a **subgraph**, **admin address**, **M
 
 ### Subgraph
 
-In the **MACI** repo and head to the subgraph folder.
+Head to the subgraph folder.
 
 ```bash
-cd apps/subgraph
+cd ../../packages/subgraph/
 ```
 
 1. Make sure you have `{network}.json` file in `config` folder, where network is a CLI name supported for subgraph network [https://thegraph.com/docs/en/developing/supported-networks/](https://thegraph.com/docs/en/developing/supported-networks/).
 
 2. Create a subgraph in [the graph studio](https://thegraph.com/studio/). Note down the name of the subgraph
 
-3. Add network, maci contract address and maci contract deployed block.
+3. Add network, maci contract address, registry manager address, maci contract deployed block and registry manager contract deployed block.
 
 ```json
 {
   "network": "optimism-sepolia",
-  "maciContractAddress": "0xD18Ca45b6cC1f409380731C40551BD66932046c3",
-  "maciContractStartBlock": 11052407
+  "maciContractAddress": "0xca941B064D28276D7f125324ad2a41ec4c7F784e",
+  "maciContractStartBlock": 19755066,
+  "registryManagerContractAddress": "0xBc014791f00621AD08733043F788AB4ecAe3BAAd",
+  "registryManagerContractStartBlock": 19755080
 }
 ```
 
@@ -188,7 +212,6 @@ To create your own round you need to do the following:
 - Set `NEXT_PUBLIC_MACI_ADDRESS` - your deployed maci contract
 - Set `NEXT_PUBLIC_MACI_SUBGRAPH_URL` - maci subgraph url. You can set it up using [maci-subgraph](https://github.com/privacy-scaling-explorations/maci/tree/dev/subgraph).
 - Set `NEXT_PUBLIC_MACI_START_BLOCK` - block where your maci contract is deployed - optional but very much recommended (as it's a fallback to subgraph not setup/working)
-- Set `NEXT_PUBLIC_TALLY_URL` - your endpoint for vote results, where you host `tally-{pollId}.json` files.
 
 #### EAS
 
@@ -217,27 +240,31 @@ https://vercel.com/new
 Once the voting time has ended, as a coordinator, first you need to merge signups and messages (votes). Head to **MACI** repository and run the merge command with the deployed poll:
 
 ```bash
-cd packages/contracts  && \
+cd packages/contracts
 pnpm merge:[network] --poll [poll-id]
 ```
-
-> [!IMPORTANT]
-> For version 1.2 you need to deploy a new MACI contract for a new round.
 
 Then the coordinator generates proofs for the message processing, and tally calculations. This allows to publish the poll results on-chain and then everyone can verify the results when the poll is over:
 
 ```bash
 pnpm run prove:[network] --poll [poll-id] \
     --coordinator-private-key [coordinator-maci-private-key] \
-    --tally-file ../cli/tally.json \
-    --output-dir ../cli/proofs/ \
-    --start-block 12946802
+    --tally-file ../results/tally.json \
+    --output-dir ../results/proofs/ \
+    --start-block [block-number]
+    --blocks-per-batch [number-of-blocks]
 ```
 
 > [!IMPORTANT]
-> We suggest including the --start-block flag, proving requires fetching all events from the smart contracts and by default starts from block zero, this would take a lot of time and is error-prone due to RPC provider limitations.
+> You can reduce the time of the proving by including more blocks per batch, you can try with 500.
 
-Once you have the `tally.json` file you can rename it (`tally-{pollId}.json`), upload it and add it as an environment variable `NEXT_PUBLIC_TALLY_URL` to show the results.
+Now it's time to submit the poll results on-chain so that everyone can verify the results:
+
+```bash
+pnpm submitOnChain:[network] --poll [poll-id] \
+    --output-dir proofs/ \
+    --tally-file proofs/tally.json
+```
 
 ## Additional configuration
 
