@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
-import { useState, useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 
 import { Button } from "~/components/ui/Button";
-import { Dialog } from "~/components/ui/Dialog";
+import { Spinner } from "~/components/ui/Spinner";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 
@@ -13,21 +13,22 @@ interface ISubmitBallotButtonProps {
 
 export const SubmitBallotButton = ({ pollId }: ISubmitBallotButtonProps): JSX.Element => {
   const router = useRouter();
-  const [isOpen, setOpen] = useState(false);
   const { onVote, isLoading, initialVoiceCredits } = useMaci();
   const { getBallot, publishBallot, sumBallot } = useBallot();
 
-  const onVotingError = useCallback(() => {
-    toast.error("Voting error");
+  const onVotingError = useCallback((err: string) => {
+    toast.error(`Voting error: ${err}`);
   }, []);
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
-  const ableToSubmit = useMemo(
-    () => sumBallot(ballot.votes) <= initialVoiceCredits,
-    [sumBallot, ballot, initialVoiceCredits],
-  );
+  const sum = useMemo(() => sumBallot(ballot.votes), [ballot, sumBallot]);
+  const ableToSubmit = useMemo(() => sum <= initialVoiceCredits && sum > 0, [sum, initialVoiceCredits]);
 
   const handleSubmitBallot = useCallback(async () => {
+    if (isLoading || !ableToSubmit) {
+      return;
+    }
+
     const votes = ballot.votes.map(({ amount, projectId, projectIndex }) => ({
       projectId,
       voteOptionIndex: BigInt(projectIndex),
@@ -42,38 +43,17 @@ export const SubmitBallotButton = ({ pollId }: ISubmitBallotButtonProps): JSX.El
       publishBallot(pollId);
       router.push(`/rounds/${pollId}/ballot/confirmation`);
     });
-  }, [ballot, router, onVote, publishBallot, onVotingError, pollId, pollId]);
-
-  const handleOpenDialog = useCallback(() => {
-    setOpen(true);
-  }, [setOpen]);
+  }, [ballot, router, onVote, publishBallot, onVotingError, pollId, isLoading, ableToSubmit]);
 
   return (
-    <>
-      <Button variant={ableToSubmit ? "primary" : "disabled"} onClick={handleOpenDialog}>
-        {ableToSubmit ? "submit your ballot" : "Exceed initial voice credits"}
-      </Button>
+    <Button variant={ableToSubmit && !isLoading ? "primary" : "disabled"} onClick={handleSubmitBallot}>
+      {ableToSubmit && !isLoading && "submit your ballot"}
 
-      <Dialog
-        button="primary"
-        buttonAction={handleSubmitBallot}
-        buttonName="submit"
-        description="This is not the final submission. Once you submit your ballot, you can change it during the voting period."
-        isLoading={isLoading}
-        isOpen={ableToSubmit && isOpen}
-        size="sm"
-        title="submit your ballot"
-        onOpenChange={setOpen}
-      />
+      {sum > initialVoiceCredits && !isLoading && "Exceed initial voice credits"}
 
-      <Dialog
-        description="You cannot submit this ballot, since the sum of votes exceeds the initial voice credits. Please edit your ballot."
-        isLoading={isLoading}
-        isOpen={!ableToSubmit && isOpen}
-        size="sm"
-        title="exceed initial voice credits"
-        onOpenChange={setOpen}
-      />
-    </>
+      {sum <= 0 && !isLoading && "Add you vote first"}
+
+      {isLoading && <Spinner className="h-4 w-4" />}
+    </Button>
   );
 };

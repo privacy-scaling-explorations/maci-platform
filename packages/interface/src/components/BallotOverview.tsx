@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useMemo } from "react";
 
+import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
 import { useRoundState } from "~/utils/state";
@@ -21,6 +23,10 @@ export const BallotOverview = ({ title = undefined, pollId }: IBallotOverviewPro
 
   const roundState = useRoundState({ pollId });
 
+  const { asPath } = useRouter();
+
+  const showButton = useMemo(() => !asPath.includes("ballot"), [asPath]);
+
   return (
     <Link
       href={
@@ -29,7 +35,7 @@ export const BallotOverview = ({ title = undefined, pollId }: IBallotOverviewPro
           : `/rounds/${pollId}/ballot`
       }
     >
-      <div className="dark:bg-lightBlack my-8 flex-col items-center gap-2 rounded-lg bg-white p-5 uppercase shadow-lg dark:text-white">
+      <div className="dark:bg-lightBlack w-64 flex-col items-center gap-2 bg-white uppercase dark:text-white">
         <Heading as="h3" size="3xl">
           {title}
         </Heading>
@@ -37,6 +43,12 @@ export const BallotOverview = ({ title = undefined, pollId }: IBallotOverviewPro
         <AddedProjects pollId={pollId} />
 
         <VotingUsage pollId={pollId} />
+
+        {showButton && (
+          <Button className="mt-2" variant="secondary">
+            Check My Ballot
+          </Button>
+        )}
       </div>
     </Link>
   );
