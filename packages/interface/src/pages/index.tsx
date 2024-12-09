@@ -23,9 +23,9 @@ const HomePage = (): JSX.Element => {
 
   return (
     <Layout pollId={singleRound ? singleRound.pollId : ""} type="home">
-      {singleRound && <SingleRoundHome round={singleRound} />}
+      {singleRound && rounds!.length === 1 && <SingleRoundHome round={singleRound} />}
 
-      {!singleRound && (
+      {rounds && rounds.length > 1 && (
         <div className="flex h-auto w-screen flex-col items-center justify-center gap-4 bg-blue-50 px-2 pb-4 sm:h-[90vh] dark:bg-black">
           <Heading className="mt-4 max-w-screen-lg text-center sm:mt-0" size="6xl">
             {config.eventName}
@@ -51,11 +51,11 @@ const HomePage = (): JSX.Element => {
             </div>
           )}
 
-          {isConnected && !isAdmin && rounds && rounds.length === 0 && (
+          {isConnected && !isAdmin && rounds.length === 0 && (
             <p className="text-gray-400">There are no rounds deployed.</p>
           )}
 
-          {rounds && rounds.length > 1 && <RoundsList />}
+          <RoundsList />
         </div>
       )}
 
