@@ -57,109 +57,113 @@ export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.El
   const sum = useMemo(() => formatNumber(sumBallot(ballot.votes)), [ballot, sumBallot]);
 
   return (
-    <section>
-      <Heading as="h2" className="tracking-tighter" size="4xl">
-        Your ballot has been successfully submitted 🥳
-      </Heading>
+    <div className="flex w-full justify-center dark:text-white">
+      <section className="md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
+        <Heading as="h2" className="tracking-tighter" size="4xl">
+          Your ballot has been successfully submitted 🥳
+        </Heading>
 
-      <p className="mb-14 mt-4 text-gray-400">
-        {`Thank you for participating in ${config.eventName} ${round?.roundId} round.`}
-      </p>
-
-      <div className="mb-7 rounded-lg border border-gray-200 p-5">
-        <b className="font-mono text-2xl uppercase">Summary of your ballot</b>
-
-        <p className="my-8 text-gray-400">
-          <span>{`Round you voted in: ${pollId}`} </span>
-
-          <br />
-
-          <span>{`Number of projects you voted for: ${allocations.length} of ${projectCount?.count}`}</span>
+        <p className="mb-14 mt-4 text-gray-400">
+          {`Thank you for participating in ${config.eventName} ${round?.roundId} round.`}
         </p>
 
-        <div>
-          {allocations.map((project) => (
-            <div key={project.projectId} className="border-b border-gray-200 py-3">
-              <ProjectAvatarWithName
-                allocation={project.amount}
-                id={project.projectId}
-                pollId={pollId}
-                registryAddress={round?.registryAddress as Hex}
-              />
+        <div className="mb-7 rounded-lg border border-gray-200 p-5">
+          <b className="font-mono text-2xl uppercase">Summary of your ballot</b>
+
+          <p className="my-8 text-gray-400">
+            <span>{`Round you voted in: ${pollId}`} </span>
+
+            <br />
+
+            <span>{`Number of projects you voted for: ${allocations.length} of ${projectCount?.count}`}</span>
+          </p>
+
+          <div>
+            {allocations.map((project) => (
+              <div key={project.projectId} className="border-b border-gray-200 py-3">
+                <ProjectAvatarWithName
+                  allocation={project.amount}
+                  id={project.projectId}
+                  pollId={pollId}
+                  registryAddress={round?.registryAddress as Hex}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-4 flex w-full justify-end">
+            <h4>Total votes allocated:</h4>
+
+            <p className="ml-1">{sum}</p>
+          </div>
+        </div>
+
+        <Notice
+          content={
+            round?.votingEndsAt ? format(round.votingEndsAt, "d MMM yyyy hh:mm") : "The date would be announced soon."
+          }
+          title="Results will be available after tallying."
+          variant="block"
+        />
+
+        {roundState === ERoundState.VOTING && (
+          <Card className="flex-col sm:flex-row">
+            <div className="flex-3 flex flex-col gap-4">
+              <b className="font-mono text-2xl uppercase">Changed your mind?</b>
+
+              <p className="text-gray-400">
+                Your can edit your ballot and resubmit it anytime during the voting period.
+              </p>
             </div>
-          ))}
-        </div>
 
-        <div className="mt-4 flex w-full justify-end">
-          <h4>Total votes allocated:</h4>
+            <div>
+              <Button as={Link} className="w-80 sm:w-fit" href={`/rounds/${pollId}/ballot`} variant="primary">
+                Edit my ballot
+              </Button>
+            </div>
+          </Card>
+        )}
 
-          <p className="ml-1">{sum}</p>
-        </div>
-      </div>
-
-      <Notice
-        content={
-          round?.votingEndsAt ? format(round.votingEndsAt, "d MMM yyyy hh:mm") : "The date would be announced soon."
-        }
-        title="Results will be available after tallying."
-        variant="block"
-      />
-
-      {roundState === ERoundState.VOTING && (
         <Card className="flex-col sm:flex-row">
           <div className="flex-3 flex flex-col gap-4">
-            <b className="font-mono text-2xl uppercase">Changed your mind?</b>
+            <b className="font-mono text-2xl uppercase">{`Help us improve our next round of ${config.eventName}`}</b>
 
-            <p className="text-gray-400">Your can edit your ballot and resubmit it anytime during the voting period.</p>
+            <p className="text-gray-400">
+              {`Your feedback will be influential to help us iterate on
+            ${config.eventName} process.`}
+            </p>
           </div>
 
           <div>
-            <Button as={Link} className="w-80 sm:w-fit" href={`/rounds/${pollId}/ballot`} variant="primary">
-              Edit my ballot
+            <Button as={Link} className="w-80 sm:w-fit" href={feedbackUrl} target="_blank" variant="primary">
+              Share your feedback
             </Button>
           </div>
         </Card>
-      )}
 
-      <Card className="flex-col sm:flex-row">
-        <div className="flex-3 flex flex-col gap-4">
-          <b className="font-mono text-2xl uppercase">{`Help us improve our next round of ${config.eventName}`}</b>
+        <Card className="flex-col sm:flex-row">
+          <div className="flex-3 flex flex-col gap-4">
+            <b className="font-mono text-2xl uppercase">Want to run a round?</b>
 
-          <p className="text-gray-400">
-            {`Your feedback will be influential to help us iterate on
-            ${config.eventName} process.`}
-          </p>
-        </div>
+            <p className="text-gray-400">
+              Our code is open source so you can fork it and run a round anytime. If you need any assistance or want to
+              share with us your awesomeness, find us at #🗳️-maci channel in PSE Discord.
+            </p>
+          </div>
 
-        <div>
-          <Button as={Link} className="w-80 sm:w-fit" href={feedbackUrl} target="_blank" variant="primary">
-            Share your feedback
-          </Button>
-        </div>
-      </Card>
-
-      <Card className="flex-col sm:flex-row">
-        <div className="flex-3 flex flex-col gap-4">
-          <b className="font-mono text-2xl uppercase">Want to run a round?</b>
-
-          <p className="text-gray-400">
-            Our code is open source so you can fork it and run a round anytime. If you need any assistance or want to
-            share with us your awesomeness, find us at #🗳️-maci channel in PSE Discord.
-          </p>
-        </div>
-
-        <div>
-          <Button
-            as={Link}
-            className="w-80 sm:w-fit"
-            href="https://discord.com/invite/sF5CT5rzrR"
-            target="_blank"
-            variant="primary"
-          >
-            Contact us
-          </Button>
-        </div>
-      </Card>
-    </section>
+          <div>
+            <Button
+              as={Link}
+              className="w-80 sm:w-fit"
+              href="https://discord.com/invite/sF5CT5rzrR"
+              target="_blank"
+              variant="primary"
+            >
+              Contact us
+            </Button>
+          </div>
+        </Card>
+      </section>
+    </div>
   );
 };

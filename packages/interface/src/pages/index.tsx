@@ -19,13 +19,13 @@ const HomePage = (): JSX.Element => {
   const { isRegistered } = useMaci();
   const isAdmin = useIsAdmin();
   const { rounds } = useRound();
-  const singleRound = useMemo(() => rounds?.[0], [rounds]);
+  const singleRound = useMemo(() => (rounds && rounds.length === 1 ? rounds[0] : undefined), [rounds]);
 
   return (
     <Layout pollId={singleRound ? singleRound.pollId : ""} type="home">
-      {singleRound && rounds!.length === 1 && <SingleRoundHome round={singleRound} />}
+      {singleRound && <SingleRoundHome round={singleRound} />}
 
-      {rounds && rounds.length > 1 && (
+      {!singleRound && (
         <div className="flex h-auto w-screen flex-col items-center justify-center gap-4 bg-blue-50 px-2 pb-4 sm:h-[90vh] dark:bg-black">
           <Heading className="mt-4 max-w-screen-lg text-center sm:mt-0" size="6xl">
             {config.eventName}
@@ -51,11 +51,11 @@ const HomePage = (): JSX.Element => {
             </div>
           )}
 
-          {isConnected && !isAdmin && rounds.length === 0 && (
+          {isConnected && !isAdmin && rounds && rounds.length === 0 && (
             <p className="text-gray-400">There are no rounds deployed.</p>
           )}
 
-          <RoundsList />
+          {rounds && rounds.length > 1 && <RoundsList />}
         </div>
       )}
 

@@ -27,5 +27,5 @@ export interface ILayoutProps extends PropsWithChildren<LayoutProps> {
 export interface IAdminLayoutProps extends PropsWithChildren<LayoutProps> {
   sidebar?: "left" | "right";
   sidebarComponent?: ReactNode;
-  roundId?: string;
+  pollId?: string;
 }
