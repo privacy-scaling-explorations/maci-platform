@@ -18,7 +18,7 @@ const NewProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
   const state = useRoundState({ pollId });
 
   return (
-    <Layout>
+    <Layout pollId={pollId}>
       <div className="flex w-full justify-center">
         <div className="flex flex-col gap-4 md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
           <Heading as="h3" size="3xl">

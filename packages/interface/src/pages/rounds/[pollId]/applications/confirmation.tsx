@@ -41,7 +41,7 @@ const ConfirmProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
 
   if (project === undefined) {
     return (
-      <Layout>
+      <Layout pollId={pollId}>
         <div className="flex w-full justify-center">
           <div className="flex flex-col items-center gap-4 md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
             <Heading as="h2" size="4xl">
@@ -54,7 +54,7 @@ const ConfirmProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
   }
 
   return (
-    <Layout>
+    <Layout pollId={pollId}>
       <div className="flex w-fit justify-center sm:w-full">
         <div className="flex flex-col items-center gap-4 md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
           {project.recipient.initialized === false ? (

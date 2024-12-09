@@ -8,7 +8,7 @@ interface IApplicationsPageProps {
 }
 
 const ApplicationsPage = ({ pollId }: IApplicationsPageProps): JSX.Element => (
-  <AdminLayout roundId={pollId} title="Review applications">
+  <AdminLayout pollId={pollId} title="Review applications">
     <ApplicationsToApprove pollId={pollId} />
   </AdminLayout>
 );
