@@ -18,6 +18,9 @@ export const applicationsRouter = createTRPCRouter({
   getById: publicProcedure
     .input(z.object({ registryAddress: z.string(), id: z.string() }))
     .query(async ({ input }) => fetchApplicationById(input.registryAddress, input.id)),
+  getByIds: publicProcedure
+    .input(z.object({ registryAddress: z.string(), ids: z.array(z.string()) }))
+    .query(async ({ input }) => Promise.all(input.ids.map((id) => fetchApplicationById(input.registryAddress, id)))),
   getByProjectId: publicProcedure
     .input(z.object({ registryAddress: z.string(), projectId: z.string() }))
     .query(async ({ input }) => fetchApplicationByProjectId(input.projectId, input.registryAddress)),

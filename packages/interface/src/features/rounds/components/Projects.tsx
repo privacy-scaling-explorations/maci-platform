@@ -2,6 +2,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useCallback, useMemo } from "react";
 import { FiAlertCircle } from "react-icons/fi";
+import { useLocalStorage } from "react-use";
 import { Hex, zeroAddress } from "viem";
 
 import { InfiniteLoading } from "~/components/InfiniteLoading";
@@ -12,9 +13,10 @@ import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
+import { useApplicationsByIds } from "~/features/applications/hooks/useApplicationById";
 import { useResults } from "~/hooks/useResults";
 import { useRoundState } from "~/utils/state";
-import { ERoundState } from "~/utils/types";
+import { ERoundState, MY_APPS_KEY, type IRecipient } from "~/utils/types";
 
 import { ProjectItem, ProjectItemAwarded } from "../../projects/components/ProjectItem";
 import { useSearchProjects } from "../../projects/hooks/useProjects";
@@ -42,6 +44,12 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
   );
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
+
+  const [myApps] = useLocalStorage<string[]>(MY_APPS_KEY);
+
+  const applications = useApplicationsByIds(round?.registryAddress ?? zeroAddress, myApps ?? []);
+
+  const myApplications = useMemo(() => applications.data, [applications]);
 
   const handleAction = useCallback(
     (projectIndex: number, projectId: string) => (e: Event) => {
@@ -119,12 +127,24 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
       </div>
 
       {roundState === ERoundState.APPLICATION && (
-        <div className="mb-4 flex w-full justify-end">
-          <Link href={`/rounds/${pollId}/applications/new`}>
-            <Button size="auto" variant="primary">
-              Create Application
-            </Button>
-          </Link>
+        <div className="mb-4 rounded-md border border-black p-4 dark:border-white">
+          <div className="flex justify-between">
+            <Heading size="xl">My Projects</Heading>
+
+            <Link href={`/rounds/${pollId}/applications/new`}>
+              <Button size="auto" variant="primary">
+                Create Application
+              </Button>
+            </Link>
+          </div>
+
+          <div className="my-4 gap-4 md:grid md:grid-cols-2 lg:grid lg:grid-cols-3">
+            {myApplications?.map((project) => (
+              <Link key={project.recipient.id} href={`/rounds/${pollId}/${project.recipient.id}`}>
+                <ProjectItem isLoading={false} pollId={pollId} recipient={project.recipient as IRecipient} />
+              </Link>
+            ))}
+          </div>
         </div>
       )}
 
