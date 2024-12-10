@@ -88,7 +88,7 @@ export const BaseLayout = ({
 
         <meta content={metadata.description} name="description" />
 
-        <link href="favicon.svg" rel="icon" />
+        <link href="/favicon.svg" rel="icon" />
 
         <meta content={metadata.url} property="og:url" />
 
