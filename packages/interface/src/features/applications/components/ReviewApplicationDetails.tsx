@@ -3,6 +3,7 @@ import { useMemo, type ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
 import Markdown from "react-markdown";
 import { Hex } from "viem";
+import { useAccount } from "wagmi";
 
 import { Heading } from "~/components/ui/Heading";
 import { Tag } from "~/components/ui/Tag";
@@ -64,6 +65,8 @@ export const ReviewApplicationDetails = (): JSX.Element => {
 
   const application = useMemo(() => form.getValues(), [form]);
 
+  const { address } = useAccount();
+
   return (
     <div className="markdown-support flex flex-col gap-8">
       <div>
@@ -76,6 +79,8 @@ export const ReviewApplicationDetails = (): JSX.Element => {
         <b className="text-lg">Project Profile</b>
 
         <ValueField required body={application.name} title="Project name" />
+
+        <ValueField required body={address} title="Created By" />
 
         <MarkdownField required body={<Markdown>{application.bio}</Markdown>} title="Project description" />
 

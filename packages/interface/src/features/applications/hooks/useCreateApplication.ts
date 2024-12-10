@@ -34,7 +34,7 @@ export function useCreateApplication(options: {
 }): TUseCreateApplicationReturn {
   const upload = useUploadMetadata();
 
-  const { chain } = useAccount();
+  const { chain, address } = useAccount();
   const { getRoundByPollId } = useRound();
 
   const roundData = getRoundByPollId(options.pollId);
@@ -44,7 +44,7 @@ export function useCreateApplication(options: {
 
   const mutation = useMutation({
     mutationFn: async (values: Application) => {
-      if (!signer || !chain) {
+      if (!signer || !chain || !address) {
         throw new Error("Please connect your wallet first");
       }
 
@@ -71,6 +71,7 @@ export function useCreateApplication(options: {
         profileImageUrl: profileImageUrl.url,
         bannerImageUrl: bannerImageUrl.url,
         submittedAt: Date.now().valueOf(),
+        creator: address,
       };
 
       const uploadRes = await upload.mutateAsync(metadataValues);

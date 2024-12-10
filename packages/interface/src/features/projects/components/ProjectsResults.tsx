@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 import { type Hex, zeroAddress } from "viem";
@@ -43,11 +42,7 @@ export const ProjectsResults = ({ pollId }: IProjectsResultsProps): JSX.Element 
     <InfiniteLoading
       {...projects}
       renderItem={(item, { isLoading }) => (
-        <Link
-          key={item.id}
-          className={clsx("relative", { "animate-pulse": isLoading })}
-          href={`/rounds/${pollId}/${item.id}`}
-        >
+        <div key={item.id} className={clsx("relative", { "animate-pulse": isLoading })}>
           {!results.isLoading && roundState === ERoundState.RESULTS ? (
             <ProjectItemAwarded amount={results.data?.projects[item.id]?.votes} />
           ) : null}
@@ -59,7 +54,7 @@ export const ProjectsResults = ({ pollId }: IProjectsResultsProps): JSX.Element 
             recipient={item}
             state={EProjectState.SUBMITTED}
           />
-        </Link>
+        </div>
       )}
     />
   );

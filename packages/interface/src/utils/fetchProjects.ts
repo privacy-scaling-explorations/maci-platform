@@ -40,6 +40,21 @@ const Projects = `
     }
   }`;
 
+const ProjectsByAddress = `
+  query ApplicationsByAddress($registryAddress: String!, $address: String!) {
+    recipients(where: { registry: $registryAddress, payout: $address  }) {
+      id
+      metadataUrl
+      index
+      initialized
+      payout
+      registry {
+        id
+      }
+    }
+  }
+`;
+
 /**
  * Fetch all projects
  *
@@ -88,4 +103,25 @@ export async function fetchApprovedProjects(registryAddress: string): Promise<IR
   }));
 
   return recipients ?? [];
+}
+
+export async function fetchProjectsByAddress(registryAddress: string, address: string): Promise<IRecipient[]> {
+  const response = await fetch(config.maciSubgraphUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: ProjectsByAddress,
+      variables: { registryAddress, address },
+    }),
+  });
+
+  const result = (await response.json()) as GraphQLResponse;
+
+  if (!result.data) {
+    throw new Error("No data returned from GraphQL query");
+  }
+
+  return result.data.recipients;
 }
