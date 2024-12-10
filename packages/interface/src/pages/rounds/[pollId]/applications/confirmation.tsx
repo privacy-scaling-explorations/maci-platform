@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { FiAlertCircle } from "react-icons/fi";
@@ -83,9 +82,7 @@ const ConfirmProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
             </div>
           )}
 
-          <Link href={`/rounds/${pollId}/${project.recipient.id}`}>
-            <ProjectItem isLoading={false} pollId={pollId} recipient={project.recipient as IRecipient} />
-          </Link>
+          <ProjectItem isLoading={false} pollId={pollId} recipient={project.recipient as IRecipient} />
         </div>
       </div>
     </Layout>

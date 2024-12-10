@@ -65,6 +65,25 @@ const ApprovedRequests = `
   }
 `;
 
+// Fetch all add requests
+const AllRequests = `
+  query AllRequests($registryAddress: String!) {
+    requests(where: { requestType: "Add", recipient_: { registry: $registryAddress } }) {
+      index
+      recipient {
+        id
+        metadataUrl
+        index
+        initialized
+        payout
+        registry {
+          id
+        }
+      }
+    }
+  }
+`;
+
 const IndividualRequest = `
   query PendingAddRequests($registryAddress: String!, $recipientId: String!) {
     requests(where: { requestType: "Add", status: "Pending", recipient_: { 
@@ -226,7 +245,7 @@ export async function fetchApplications(registryAddress: string): Promise<IReque
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      query: ApprovedRequests,
+      query: AllRequests,
       variables: { registryAddress },
     }),
   });
