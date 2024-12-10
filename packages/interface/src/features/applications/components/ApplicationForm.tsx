@@ -8,6 +8,7 @@ import { ImageUpload } from "~/components/ImageUpload";
 import { FieldArray, Form, FormControl, FormSection, Select, Textarea } from "~/components/ui/Form";
 import { Input } from "~/components/ui/Input";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
+import { MY_APPS_KEY } from "~/utils/types";
 
 import { useCreateApplication } from "../hooks/useCreateApplication";
 import { ApplicationSchema, contributionTypes, fundingSourceTypes, type Application } from "../types";
@@ -22,7 +23,7 @@ interface IApplicationFormProps {
 }
 
 export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element => {
-  const clearDraft = useLocalStorage("application-draft")[2];
+  const [myApps, setMyApps] = useLocalStorage<string[]>(MY_APPS_KEY);
 
   const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
 
@@ -56,7 +57,9 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
 
   const create = useCreateApplication({
     onSuccess: (id: bigint) => {
-      clearDraft();
+      myApps!.push(id.toString());
+      setMyApps(myApps);
+
       router.push(`/rounds/${pollId}/applications/confirmation?id=${id.toString()}`);
     },
     onError: (err: { message: string }) =>
