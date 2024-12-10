@@ -52,7 +52,7 @@ export const ImageUpload = ({
           <div
             className={clsx("h-full rounded-xl bg-gray-200 bg-cover bg-center bg-no-repeat")}
             style={{
-              backgroundImage: `url("${select.data ?? value}")`,
+              backgroundImage: select.data ? `url("${value}")` : "none",
             }}
           />
 
