@@ -13,7 +13,6 @@ import {
   signup,
   publish,
   timeTravel,
-  mergeMessages,
   mergeSignups,
 } from "maci-cli";
 import { type Proof, type TallyData, Poll__factory as PollFactory } from "maci-contracts";
@@ -35,9 +34,8 @@ import { ESubgraphEvents, type IDeploySubgraphArgs } from "../ts/subgraph/types"
 
 const STATE_TREE_DEPTH = 10;
 const INT_STATE_TREE_DEPTH = 1;
-const MSG_TREE_DEPTH = 2;
 const VOTE_OPTION_TREE_DEPTH = 2;
-const MSG_BATCH_DEPTH = 1;
+const MSG_BATCH_SIZE = 20;
 
 describe("e2e", () => {
   const coordinatorKeypair = new Keypair();
@@ -61,22 +59,23 @@ describe("e2e", () => {
 
     process.env.COORDINATOR_ADDRESSES = await signer.getAddress();
 
-    await deployVkRegistryContract({ signer });
+    const vkRegistry = await deployVkRegistryContract({ signer });
     await setVerifyingKeys({
       quiet: true,
+      vkRegistry,
       stateTreeDepth: STATE_TREE_DEPTH,
       intStateTreeDepth: INT_STATE_TREE_DEPTH,
-      messageTreeDepth: MSG_TREE_DEPTH,
       voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,
-      messageBatchDepth: MSG_BATCH_DEPTH,
+      messageBatchSize: MSG_BATCH_SIZE,
       processMessagesZkeyPathNonQv: path.resolve(
         __dirname,
-        "../zkeys/ProcessMessagesNonQv_10-2-1-2_test/ProcessMessagesNonQv_10-2-1-2_test.0.zkey",
+        "../zkeys/ProcessMessagesNonQv_10-20-2_test/ProcessMessagesNonQv_10-20-2_test.0.zkey",
       ),
       tallyVotesZkeyPathNonQv: path.resolve(
         __dirname,
         "../zkeys/TallyVotesNonQv_10-1-2_test/TallyVotesNonQv_10-1-2_test.0.zkey",
       ),
+      pollJoiningZkeyPath: path.resolve(__dirname, "../zkeys/PollJoining_10_test/PollJoining_10_test.0.zkey"),
       useQuadraticVoting: false,
       signer,
     });
@@ -86,8 +85,7 @@ describe("e2e", () => {
     pollContracts = await deployPoll({
       pollDuration: 30,
       intStateTreeDepth: INT_STATE_TREE_DEPTH,
-      messageTreeSubDepth: MSG_BATCH_DEPTH,
-      messageTreeDepth: MSG_TREE_DEPTH,
+      messageBatchSize: MSG_BATCH_SIZE,
       voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,
       coordinatorPubkey: coordinatorKeypair.pubKey.serialize(),
       useQuadraticVoting: false,
@@ -561,7 +559,7 @@ describe("e2e", () => {
 
       expect(result.body).toStrictEqual({
         statusCode: HttpStatus.BAD_REQUEST,
-        message: ErrorCodes.NOT_MERGED_STATE_TREE,
+        message: ErrorCodes.NOT_MERGED_STATE_TREE.toString(),
       });
     });
 
@@ -583,7 +581,7 @@ describe("e2e", () => {
         });
       });
 
-      expect(result.message).toBe(ErrorCodes.NOT_MERGED_STATE_TREE);
+      expect(result.message).toBe(ErrorCodes.NOT_MERGED_STATE_TREE.toString());
     });
 
     test("should throw an error if signups are not merged", async () => {
@@ -605,7 +603,7 @@ describe("e2e", () => {
 
       expect(result.body).toStrictEqual({
         statusCode: HttpStatus.BAD_REQUEST,
-        message: ErrorCodes.NOT_MERGED_STATE_TREE,
+        message: ErrorCodes.NOT_MERGED_STATE_TREE.toString(),
       });
     });
 
@@ -627,71 +625,17 @@ describe("e2e", () => {
         });
       });
 
-      expect(result.message).toBe(ErrorCodes.NOT_MERGED_STATE_TREE);
-    });
-
-    test("should throw an error if messages are not merged", async () => {
-      const pollContract = PollFactory.connect(pollContracts.poll, signer);
-      const isStateMerged = await pollContract.stateMerged();
-
-      if (!isStateMerged) {
-        await timeTravel({ seconds: 30, signer });
-        await mergeSignups({ pollId: 0n, signer });
-      }
-
-      const publicKey = await fs.promises.readFile(process.env.COORDINATOR_PUBLIC_KEY_PATH!);
-      const encryptedCoordinatorPrivateKey = cryptoService.encrypt(publicKey, coordinatorKeypair.privKey.serialize());
-      const encryptedHeader = await getAuthorizationHeader();
-
-      const result = await request(app.getHttpServer() as App)
-        .post("/v1/proof/generate")
-        .set("Authorization", encryptedHeader)
-        .send({
-          poll: 0,
-          encryptedCoordinatorPrivateKey,
-          maciContractAddress: maciAddresses.maciAddress,
-          tallyContractAddress: pollContracts.tally,
-          useQuadraticVoting: false,
-        })
-        .expect(400);
-
-      expect(result.body).toStrictEqual({
-        statusCode: HttpStatus.BAD_REQUEST,
-        message: ErrorCodes.NOT_MERGED_MESSAGE_TREE,
-      });
-    });
-
-    test("should throw an error if messages are not merged (ws)", async () => {
-      const pollContract = PollFactory.connect(pollContracts.poll, signer);
-      const isStateMerged = await pollContract.stateMerged();
-
-      if (!isStateMerged) {
-        await timeTravel({ seconds: 30, signer });
-        await mergeSignups({ pollId: 0n, signer });
-      }
-
-      const publicKey = await fs.promises.readFile(process.env.COORDINATOR_PUBLIC_KEY_PATH!);
-      const encryptedCoordinatorPrivateKey = cryptoService.encrypt(publicKey, coordinatorKeypair.privKey.serialize());
-
-      const args: IGenerateArgs = {
-        poll: 0,
-        maciContractAddress: maciAddresses.maciAddress,
-        tallyContractAddress: pollContracts.tally,
-        useQuadraticVoting: false,
-        encryptedCoordinatorPrivateKey,
-      };
-
-      const result = await new Promise<Error>((resolve) => {
-        socket.emit(EProofGenerationEvents.START, args).on(EProofGenerationEvents.ERROR, (error: Error) => {
-          resolve(error);
-        });
-      });
-
-      expect(result.message).toBe(ErrorCodes.NOT_MERGED_MESSAGE_TREE);
+      expect(result.message).toBe(ErrorCodes.NOT_MERGED_STATE_TREE.toString());
     });
 
     test("should throw an error if coordinator key decryption is failed", async () => {
-      await mergeMessages({ pollId: 0n, signer });
+      const pollContract = PollFactory.connect(pollContracts.poll, signer);
+      const isStateMerged = await pollContract.stateMerged();
+
+      if (!isStateMerged) {
+        await timeTravel({ seconds: 30, signer });
+        await mergeSignups({ pollId: 0n, signer });
+      }
 
       const encryptedHeader = await getAuthorizationHeader();
 
@@ -709,12 +653,18 @@ describe("e2e", () => {
 
       expect(result.body).toStrictEqual({
         statusCode: HttpStatus.BAD_REQUEST,
-        message: ErrorCodes.DECRYPTION,
+        message: ErrorCodes.DECRYPTION.toString(),
       });
     });
 
     test("should throw an error if coordinator key decryption is failed (ws)", async () => {
-      await mergeMessages({ pollId: 0n, signer });
+      const pollContract = PollFactory.connect(pollContracts.poll, signer);
+      const isStateMerged = await pollContract.stateMerged();
+
+      if (!isStateMerged) {
+        await timeTravel({ seconds: 30, signer });
+        await mergeSignups({ pollId: 0n, signer });
+      }
 
       const args: IGenerateArgs = {
         poll: 0,
@@ -730,7 +680,7 @@ describe("e2e", () => {
         });
       });
 
-      expect(result.message).toBe(ErrorCodes.DECRYPTION);
+      expect(result.message).toBe(ErrorCodes.DECRYPTION.toString());
     });
 
     test("should throw an error if there is no such poll", async () => {
@@ -750,7 +700,7 @@ describe("e2e", () => {
 
       expect(result.body).toStrictEqual({
         statusCode: HttpStatus.BAD_REQUEST,
-        message: ErrorCodes.POLL_NOT_FOUND,
+        message: ErrorCodes.POLL_NOT_FOUND.toString(),
       });
     });
 
@@ -769,7 +719,7 @@ describe("e2e", () => {
         });
       });
 
-      expect(result.message).toBe(ErrorCodes.POLL_NOT_FOUND);
+      expect(result.message).toBe(ErrorCodes.POLL_NOT_FOUND.toString());
     });
 
     test("should throw an error if there is no authorization header", async () => {
@@ -828,7 +778,7 @@ describe("e2e", () => {
 
       expect(result.body).toStrictEqual({
         statusCode: HttpStatus.BAD_REQUEST,
-        message: ErrorCodes.DECRYPTION,
+        message: ErrorCodes.DECRYPTION.toString(),
       });
     });
 
@@ -847,7 +797,7 @@ describe("e2e", () => {
         });
       });
 
-      expect(result.message).toBe(ErrorCodes.DECRYPTION);
+      expect(result.message).toBe(ErrorCodes.DECRYPTION.toString());
     });
 
     test("should generate proofs properly", async () => {

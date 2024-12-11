@@ -52,7 +52,7 @@ describe("SubgraphService", () => {
 
     const service = new SubgraphService();
 
-    await expect(service.deploy(defaultArgs)).rejects.toThrow(ErrorCodes.SUBGRAPH_DEPLOY);
+    await expect(service.deploy(defaultArgs)).rejects.toThrow(ErrorCodes.SUBGRAPH_DEPLOY.toString());
   });
 
   test("should throw error if network is invalid", async () => {
@@ -61,7 +61,7 @@ describe("SubgraphService", () => {
     const service = new SubgraphService();
 
     await expect(service.deploy({ ...defaultArgs, network: "unknown" as ESupportedNetworks })).rejects.toThrow(
-      ErrorCodes.SUBGRAPH_DEPLOY,
+      ErrorCodes.SUBGRAPH_DEPLOY.toString(),
     );
   });
 
@@ -70,7 +70,7 @@ describe("SubgraphService", () => {
 
     const service = new SubgraphService();
 
-    await expect(service.deploy(defaultArgs)).rejects.toThrow(ErrorCodes.SUBGRAPH_DEPLOY);
+    await expect(service.deploy(defaultArgs)).rejects.toThrow(ErrorCodes.SUBGRAPH_DEPLOY.toString());
   });
 
   test("should return deployed subgraph url properly", async () => {

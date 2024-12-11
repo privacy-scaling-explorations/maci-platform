@@ -95,6 +95,6 @@ describe("E2E Account Abstraction Tests", () => {
         approval,
         chain: ESupportedNetworks.OPTIMISM_SEPOLIA,
       }),
-    ).rejects.toThrow(ErrorCodes.POLL_NOT_FOUND);
+    ).rejects.toThrow(ErrorCodes.POLL_NOT_FOUND.toString());
   });
 });

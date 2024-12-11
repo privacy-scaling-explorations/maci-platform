@@ -6,6 +6,7 @@ import path from "path";
 
 const ZKEY_PATH = path.resolve(process.argv.slice(3)[0]);
 const ZKEYS_URLS = {
+  latest: "https://maci-develop-fra.s3.eu-central-1.amazonaws.com/v3.0.0/maci_artifacts_v3.0.0_test.tar.gz",
   test: "https://maci-develop-fra.s3.eu-central-1.amazonaws.com/v2.0.0/maci_artifacts_10-2-1-2_test.tar.gz",
   prod: "https://maci-develop-fra.s3.eu-central-1.amazonaws.com/v2.0.0/maci_artifacts_14-9-2-3_prod.tar.gz",
 };

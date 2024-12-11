@@ -83,7 +83,7 @@ export class SessionKeysService {
 
     if (!sessionKey) {
       this.logger.error(`Session key not found: ${sessionKeyAddress}`);
-      throw new Error(ErrorCodes.SESSION_KEY_NOT_FOUND);
+      throw new Error(ErrorCodes.SESSION_KEY_NOT_FOUND.toString());
     }
 
     // create a public client
@@ -112,7 +112,7 @@ export class SessionKeysService {
       });
     } catch (error) {
       this.logger.error(`Error: ${ErrorCodes.INVALID_APPROVAL}`, error);
-      throw new Error(ErrorCodes.INVALID_APPROVAL);
+      throw new Error(ErrorCodes.INVALID_APPROVAL.toString());
     }
   }
 

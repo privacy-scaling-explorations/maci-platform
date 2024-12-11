@@ -99,7 +99,7 @@ describe("FileService", () => {
   test("should throw an error if there are no zkey filepaths", () => {
     const service = new FileService();
 
-    expect(() => service.getZkeyFilePaths("unknown", false)).toThrow(ErrorCodes.FILE_NOT_FOUND);
+    expect(() => service.getZkeyFilePaths("unknown", false)).toThrow(ErrorCodes.FILE_NOT_FOUND.toString());
   });
 
   test("should throw an error if there are no wasm and witgen filepaths", () => {
@@ -109,7 +109,7 @@ describe("FileService", () => {
     const service = new FileService();
 
     expect(() => service.getZkeyFilePaths(process.env.COORDINATOR_MESSAGE_PROCESS_ZKEY_NAME!, false)).toThrow(
-      ErrorCodes.FILE_NOT_FOUND,
+      ErrorCodes.FILE_NOT_FOUND.toString(),
     );
   });
 });

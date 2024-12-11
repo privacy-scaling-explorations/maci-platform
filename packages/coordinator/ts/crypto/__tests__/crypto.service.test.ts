@@ -9,13 +9,13 @@ describe("CryptoService", () => {
   test("should throw encryption error if key is invalid", () => {
     const service = new CryptoService();
 
-    expect(() => service.encrypt("", "")).toThrow(ErrorCodes.ENCRYPTION);
+    expect(() => service.encrypt("", "")).toThrow(ErrorCodes.ENCRYPTION.toString());
   });
 
   test("should throw decryption error if key is invalid", () => {
     const service = new CryptoService();
 
-    expect(() => service.decrypt("", "")).toThrow(ErrorCodes.DECRYPTION);
+    expect(() => service.decrypt("", "")).toThrow(ErrorCodes.DECRYPTION.toString());
   });
 
   test("should encrypt and decrypt properly", () => {

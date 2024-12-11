@@ -1,8 +1,6 @@
-import type { KernelAccountClient, KernelSmartAccount } from "@zerodev/sdk";
 import type { TallyData } from "maci-cli";
 import type { Proof } from "maci-contracts";
-import type { ENTRYPOINT_ADDRESS_V07_TYPE } from "permissionless/types";
-import type { Chain, Hex, HttpTransport, PublicClient, Transport } from "viem";
+import type { Hex } from "viem";
 
 import { ESupportedNetworks } from "../common";
 
@@ -120,31 +118,4 @@ export interface IMergeArgs {
    * Chain
    */
   chain: ESupportedNetworks;
-}
-
-/**
- * Merge message sub-trees
- */
-export interface IMergeMessageSubTreesArgs {
-  /**
-   * Public client
-   */
-  publicClient: PublicClient<HttpTransport, Chain>;
-  /**
-   * Kernel client
-   */
-  kernelClient: KernelAccountClient<
-    ENTRYPOINT_ADDRESS_V07_TYPE,
-    Transport,
-    Chain,
-    KernelSmartAccount<ENTRYPOINT_ADDRESS_V07_TYPE, HttpTransport, Chain>
-  >;
-  /**
-   * Poll address
-   */
-  pollAddress: Hex;
-  /**
-   * Message AQ address
-   */
-  messageAqAddress: Hex;
 }

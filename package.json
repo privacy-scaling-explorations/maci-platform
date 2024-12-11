@@ -8,6 +8,7 @@
     "build": "lerna run build",
     "clean": "lerna exec -- rm -rf node_modules build && rm -rf node_modules",
     "commit": "git cz",
+    "download-zkeys:latest": "lerna run download-zkeys:latest --scope=maci-coordinator",
     "download-zkeys:test": "lerna run download-zkeys:test --scope=maci-coordinator",
     "download-zkeys:prod": "lerna run download-zkeys:prod --scope=maci-coordinator",
     "prettier": "prettier -c .",

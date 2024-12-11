@@ -7,10 +7,8 @@ import {
   ProofGenerator,
   type Poll,
   type MACI,
-  type AccQueue,
   type IGenerateProofsOptions,
   Poll__factory as PollFactory,
-  AccQueueQuinaryMaci__factory as AccQueueQuinaryMaciFactory,
   MACI__factory as MACIFactory,
 } from "maci-contracts";
 import { Keypair, PrivKey, PubKey } from "maci-domainobjs";
@@ -18,7 +16,7 @@ import { Hex } from "viem";
 
 import path from "path";
 
-import type { IGenerateArgs, IGenerateData, IMergeArgs, IMergeMessageSubTreesArgs } from "./types";
+import type { IGenerateArgs, IGenerateData, IMergeArgs } from "./types";
 
 import { ErrorCodes } from "../common";
 import { getPublicClient } from "../common/accountAbstraction";
@@ -49,7 +47,7 @@ export class ProofGeneratorService {
     private readonly fileService: FileService,
     private readonly sessionKeysService: SessionKeysService,
   ) {
-    this.deployment = Deployment.getInstance(hre);
+    this.deployment = Deployment.getInstance({ hre });
     this.deployment.setHre(hre);
     this.logger = new Logger(ProofGeneratorService.name);
   }
@@ -83,35 +81,21 @@ export class ProofGeneratorService {
 
       if (pollContracts.poll.toLowerCase() === ZeroAddress.toLowerCase()) {
         this.logger.error(`Error: ${ErrorCodes.POLL_NOT_FOUND}, Poll ${poll} not found`);
-        throw new Error(ErrorCodes.POLL_NOT_FOUND);
+        throw new Error(ErrorCodes.POLL_NOT_FOUND.toString());
       }
 
       const pollContract = await this.deployment.getContract<Poll>({
         name: EContracts.Poll,
         address: pollContracts.poll,
       });
-      const [{ messageAq: messageAqAddress }, coordinatorPublicKey, isStateAqMerged, messageTreeDepth] =
-        await Promise.all([
-          pollContract.extContracts(),
-          pollContract.coordinatorPubKey(),
-          pollContract.stateMerged(),
-          pollContract.treeDepths().then((depths) => Number(depths[2])),
-        ]);
-      const messageAq = await this.deployment.getContract<AccQueue>({
-        name: EContracts.AccQueue,
-        address: messageAqAddress,
-      });
+      const [coordinatorPublicKey, isStateAqMerged] = await Promise.all([
+        pollContract.coordinatorPubKey(),
+        pollContract.stateMerged(),
+      ]);
 
       if (!isStateAqMerged) {
         this.logger.error(`Error: ${ErrorCodes.NOT_MERGED_STATE_TREE}, state tree is not merged`);
-        throw new Error(ErrorCodes.NOT_MERGED_STATE_TREE);
-      }
-
-      const mainRoot = await messageAq.getMainRoot(messageTreeDepth.toString());
-
-      if (mainRoot.toString() === "0") {
-        this.logger.error(`Error: ${ErrorCodes.NOT_MERGED_MESSAGE_TREE}, message tree is not merged`);
-        throw new Error(ErrorCodes.NOT_MERGED_MESSAGE_TREE);
+        throw new Error(ErrorCodes.NOT_MERGED_STATE_TREE.toString());
       }
 
       const { privateKey } = await this.fileService.getPrivateKey();
@@ -126,7 +110,7 @@ export class ProofGeneratorService {
 
       if (!coordinatorKeypair.pubKey.equals(publicKey)) {
         this.logger.error(`Error: ${ErrorCodes.PRIVATE_KEY_MISMATCH}, wrong private key`);
-        throw new Error(ErrorCodes.PRIVATE_KEY_MISMATCH);
+        throw new Error(ErrorCodes.PRIVATE_KEY_MISMATCH.toString());
       }
 
       const outputDir = path.resolve("./proofs");
@@ -134,7 +118,6 @@ export class ProofGeneratorService {
       const maciState = await ProofGenerator.prepareState({
         maciContract,
         pollContract,
-        messageAq,
         maciPrivateKey,
         coordinatorKeypair,
         pollId: poll,
@@ -151,7 +134,7 @@ export class ProofGeneratorService {
 
       if (!foundPoll) {
         this.logger.error(`Error: ${ErrorCodes.POLL_NOT_FOUND}, Poll ${poll} not found in maci state`);
-        throw new Error(ErrorCodes.POLL_NOT_FOUND);
+        throw new Error(ErrorCodes.POLL_NOT_FOUND.toString());
       }
 
       const proofGenerator = new ProofGenerator({
@@ -181,64 +164,6 @@ export class ProofGeneratorService {
   }
 
   /**
-   * Merge message accumular queue sub trees
-   *
-   * @param args - merge message sub trees arguments
-   */
-  async mergeMessageSubTrees({
-    publicClient,
-    kernelClient,
-    pollAddress,
-    messageAqAddress,
-  }: IMergeMessageSubTreesArgs): Promise<void> {
-    let subTreesMerged = false;
-
-    while (!subTreesMerged) {
-      // eslint-disable-next-line no-await-in-loop
-      subTreesMerged = await publicClient.readContract({
-        address: messageAqAddress,
-        abi: AccQueueQuinaryMaciFactory.abi,
-        functionName: "subTreesMerged",
-      });
-
-      if (subTreesMerged) {
-        this.logger.debug("All subtrees are merged");
-      } else {
-        // eslint-disable-next-line no-await-in-loop
-        const indices = await publicClient.readContract({
-          address: messageAqAddress,
-          abi: AccQueueQuinaryMaciFactory.abi,
-          functionName: "getSrIndices",
-        });
-
-        this.logger.debug(`Merging message subroots ${indices[0] + 1n} / ${indices[1] + 1n}`);
-
-        // eslint-disable-next-line no-await-in-loop
-        const { request } = await publicClient.simulateContract({
-          account: kernelClient.account.address,
-          address: pollAddress,
-          abi: PollFactory.abi,
-          functionName: "mergeMessageAqSubRoots",
-          args: [4n],
-        });
-
-        // eslint-disable-next-line no-await-in-loop
-        const txHash = await kernelClient.writeContract(request);
-
-        // eslint-disable-next-line no-await-in-loop
-        const txReceipt = await publicClient.waitForTransactionReceipt({
-          hash: txHash,
-        });
-
-        if (txReceipt.status !== "success") {
-          this.logger.error(`Error: ${ErrorCodes.FAILED_TO_MERGE_MESSAGE_SUBTREES}, message subtree merge failed`);
-          throw new Error(ErrorCodes.FAILED_TO_MERGE_MESSAGE_SUBTREES);
-        }
-      }
-    }
-  }
-
-  /**
    * Merge state and message trees
    *
    * @param args - merge arguments
@@ -258,18 +183,11 @@ export class ProofGeneratorService {
 
     if (pollAddress.toLowerCase() === ZeroAddress.toLowerCase()) {
       this.logger.error(`Error: ${ErrorCodes.POLL_NOT_FOUND}, Poll ${pollId} not found`);
-      throw new Error(ErrorCodes.POLL_NOT_FOUND);
+      throw new Error(ErrorCodes.POLL_NOT_FOUND.toString());
     }
 
     // get a kernel client
     const kernelClient = await this.sessionKeysService.generateClientFromSessionKey(sessionKeyAddress, approval, chain);
-
-    // get external contracts
-    const externalContracts = await publicClient.readContract({
-      address: pollAddress,
-      abi: PollFactory.abi,
-      functionName: "extContracts",
-    });
 
     // start with the state tree
     const isStateMerged = await publicClient.readContract({
@@ -287,7 +205,7 @@ export class ProofGeneratorService {
         account: kernelClient.account,
         address: pollAddress,
         abi: PollFactory.abi,
-        functionName: "mergeMaciState",
+        functionName: "mergeState",
       });
 
       const txHash = await kernelClient.writeContract(request);
@@ -297,59 +215,8 @@ export class ProofGeneratorService {
 
       if (txReceipt.status !== "success") {
         this.logger.error(`Error: ${ErrorCodes.FAILED_TO_MERGE_STATE_TREE}, state tree merge failed`);
-        throw new Error(ErrorCodes.FAILED_TO_MERGE_STATE_TREE);
+        throw new Error(ErrorCodes.FAILED_TO_MERGE_STATE_TREE.toString());
       }
-    }
-
-    // merge the message sub trees first
-    await this.mergeMessageSubTrees({
-      publicClient,
-      kernelClient,
-      pollAddress,
-      messageAqAddress: externalContracts[1],
-    });
-
-    // then merge the main root
-    const messageTreeDepth = await publicClient
-      .readContract({
-        address: pollAddress,
-        abi: PollFactory.abi,
-        functionName: "treeDepths",
-      })
-      .then((depths) => BigInt(depths[2]));
-
-    const mainRoot = await publicClient.readContract({
-      address: externalContracts[1],
-      abi: AccQueueQuinaryMaciFactory.abi,
-      functionName: "getMainRoot",
-      args: [messageTreeDepth],
-    });
-
-    if (mainRoot.toString() === "0") {
-      this.logger.debug(`Message tree is not merged yet`);
-
-      const { request } = await publicClient.simulateContract({
-        // @ts-expect-error type error between permissionless.js and viem
-        account: kernelClient.account,
-        address: pollAddress,
-        abi: PollFactory.abi,
-        functionName: "mergeMessageAq",
-        args: [],
-      });
-
-      const txHash = await kernelClient.writeContract(request);
-      const txReceipt = await publicClient.waitForTransactionReceipt({
-        hash: txHash,
-      });
-
-      if (txReceipt.status === "success") {
-        this.logger.debug(`Message tree has been merged`);
-      } else {
-        this.logger.error(`Error: ${ErrorCodes.FAILED_TO_MERGE_MESSAGE_TREE}, message tree merge failed`);
-        throw new Error(ErrorCodes.FAILED_TO_MERGE_MESSAGE_TREE);
-      }
-    } else {
-      this.logger.debug(`Message tree has already been merged`);
     }
 
     return true;
