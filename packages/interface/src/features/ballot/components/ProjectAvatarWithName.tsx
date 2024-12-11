@@ -29,12 +29,14 @@ export const ProjectAvatarWithName = ({
 
   return (
     <Component className="flex flex-1 items-center gap-4" href={`/rounds/${pollId}/${id}`} tabIndex={-1}>
-      <ProjectAvatar rounded="full" size="sm" url={metadata.data?.profileImageUrl} />
+      <div className="h-12 w-12">
+        <ProjectAvatar rounded="full" size="sm" url={metadata.data?.profileImageUrl} />
+      </div>
 
       <div>
         <div className="font-bold uppercase dark:text-white">{metadata.data?.name}</div>
 
-        <div className="text-sm text-gray-400">
+        <div className="max-h-10 overflow-scroll text-sm text-gray-400">
           <p>{showDescription && (metadata.data?.bio ?? null)}</p>
 
           <p>{allocation > 0 && `Votes you have allocated: ${allocation}`}</p>

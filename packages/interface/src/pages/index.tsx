@@ -26,8 +26,8 @@ const HomePage = (): JSX.Element => {
       {singleRound && <SingleRoundHome round={singleRound} />}
 
       {!singleRound && (
-        <div className="flex h-auto w-screen flex-col items-center justify-center gap-4 bg-blue-50 px-2 pb-4 sm:h-[90vh] dark:bg-black">
-          <Heading className="mt-4 max-w-screen-lg text-center sm:mt-0" size="6xl">
+        <div className="flex h-auto w-screen flex-col items-center justify-center gap-4 bg-blue-50 px-2 pb-4 sm:min-h-[90vh] dark:bg-black">
+          <Heading className="mt-4 max-w-screen-lg text-center sm:mt-8" size="6xl">
             {config.eventName}
           </Heading>
 
