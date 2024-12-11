@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useDeferredValue, useMemo, useState } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { Hex, zeroAddress } from "viem";
 
@@ -26,6 +26,7 @@ export interface IProjectsProps {
 
 export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
   const [searchTerm, setSearchTerm] = useState("");
+  const deferredSearchTerm = useDeferredValue(searchTerm);
 
   const roundState = useRoundState({ pollId });
 
@@ -34,7 +35,7 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
 
   const projects = useSearchProjects({
     pollId,
-    search: searchTerm,
+    search: deferredSearchTerm,
     registryAddress: round?.registryAddress ?? zeroAddress,
   });
 
