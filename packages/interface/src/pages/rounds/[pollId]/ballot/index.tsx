@@ -1,9 +1,7 @@
 import clsx from "clsx";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useCallback, useState, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
-import { useAccount } from "wagmi";
 
 import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
@@ -154,28 +152,21 @@ interface IBallotPageProps {
 }
 
 const BallotPage = ({ pollId }: IBallotPageProps): JSX.Element => {
-  const { address, isConnecting } = useAccount();
   const { getBallot, sumBallot } = useBallot();
   const { getRoundByPollId } = useRound();
-  const router = useRouter();
+  const { isRegistered } = useMaci();
   const roundState = useRoundState({ pollId });
 
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
   const ballot = useMemo(() => getBallot(pollId), [round?.pollId, getBallot]);
-
-  useEffect(() => {
-    if (!address && !isConnecting) {
-      router.push("/");
-    }
-  }, [address, isConnecting, router]);
 
   const handleSubmit = useCallback(() => {
     sumBallot();
   }, [sumBallot]);
 
   return (
-    <LayoutWithSidebar requireAuth requireRegistration showBallot showSubmitButton pollId={pollId} sidebar="right">
-      {roundState === ERoundState.VOTING && (
+    <LayoutWithSidebar requireAuth showBallot showSubmitButton pollId={pollId} sidebar="right">
+      {roundState === ERoundState.VOTING && isRegistered && (
         <Form defaultValues={ballot} schema={BallotSchema} values={ballot} onSubmit={handleSubmit}>
           <BallotAllocationForm mode={round!.mode} pollId={pollId} />
         </Form>
@@ -183,6 +174,10 @@ const BallotPage = ({ pollId }: IBallotPageProps): JSX.Element => {
 
       {roundState !== ERoundState.VOTING && (
         <div className="dark:text-white">You can only vote during the voting period.</div>
+      )}
+
+      {!isRegistered && (
+        <div className="dark:text-white">You must sign up to access the full information on this page.</div>
       )}
     </LayoutWithSidebar>
   );

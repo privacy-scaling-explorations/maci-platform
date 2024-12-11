@@ -3,7 +3,6 @@ import type { ReactNode, PropsWithChildren } from "react";
 export interface LayoutProps {
   title?: string;
   requireAuth?: boolean;
-  requireRegistration?: boolean;
   eligibilityCheck?: boolean;
   showBallot?: boolean;
   type?: string;
