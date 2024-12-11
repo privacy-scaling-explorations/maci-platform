@@ -23,7 +23,7 @@ export const genPimlicoRPCUrl = (network: string): string => {
   const pimlicoAPIKey = process.env.PIMLICO_API_KEY;
 
   if (!pimlicoAPIKey) {
-    throw new Error(ErrorCodes.PIMLICO_API_KEY_NOT_SET);
+    throw new Error(ErrorCodes.PIMLICO_API_KEY_NOT_SET.toString());
   }
 
   return `https://api.pimlico.io/v2/${network}/rpc?apikey=${pimlicoAPIKey}`;
@@ -39,7 +39,7 @@ export const genAlchemyRPCUrl = (network: ESupportedNetworks): string => {
   const rpcAPIKey = process.env.RPC_API_KEY;
 
   if (!rpcAPIKey) {
-    throw new Error(ErrorCodes.RPC_API_KEY_NOT_SET);
+    throw new Error(ErrorCodes.RPC_API_KEY_NOT_SET.toString());
   }
 
   switch (network) {
@@ -48,7 +48,7 @@ export const genAlchemyRPCUrl = (network: ESupportedNetworks): string => {
     case ESupportedNetworks.ETHEREUM_SEPOLIA:
       return `https://eth-sepolia.g.alchemy.com/v2/${rpcAPIKey}`;
     default:
-      throw new Error(ErrorCodes.UNSUPPORTED_NETWORK);
+      throw new Error(ErrorCodes.UNSUPPORTED_NETWORK.toString());
   }
 };
 

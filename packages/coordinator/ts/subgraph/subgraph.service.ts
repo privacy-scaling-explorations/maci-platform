@@ -111,7 +111,7 @@ export class SubgraphService {
       const url = deployOutput.stdout.match(URL_REGEX)?.[1]?.trim().replace("\u001b[0m", "");
 
       if (!url) {
-        throw new Error(ErrorCodes.SUBGRAPH_DEPLOY);
+        throw new Error(ErrorCodes.SUBGRAPH_DEPLOY.toString());
       }
 
       options?.onSuccess(url);
@@ -120,7 +120,7 @@ export class SubgraphService {
     } catch (error) {
       this.logger.error("Error: ", error);
       options?.onFail(error as Error);
-      throw new Error(ErrorCodes.SUBGRAPH_DEPLOY);
+      throw new Error(ErrorCodes.SUBGRAPH_DEPLOY.toString());
     }
   }
 }

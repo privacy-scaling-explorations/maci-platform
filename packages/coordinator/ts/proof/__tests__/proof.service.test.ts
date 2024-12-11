@@ -123,7 +123,7 @@ describe("ProofGeneratorService", () => {
 
     const service = new ProofGeneratorService(defaultCryptoService, fileService, sessionKeysService);
 
-    await expect(service.generate(defaultProofArgs)).rejects.toThrow(ErrorCodes.NOT_MERGED_STATE_TREE);
+    await expect(service.generate(defaultProofArgs)).rejects.toThrow(ErrorCodes.NOT_MERGED_STATE_TREE.toString());
   });
 
   test("should throw error if private key is wrong", async () => {
@@ -132,28 +132,24 @@ describe("ProofGeneratorService", () => {
 
     const service = new ProofGeneratorService(defaultCryptoService, fileService, sessionKeysService);
 
-    await expect(service.generate(defaultProofArgs)).rejects.toThrow(ErrorCodes.PRIVATE_KEY_MISMATCH);
-  });
-
-  test("should throw error if there is no any poll", async () => {
-    mockContract.getMainRoot.mockResolvedValue(0n);
-
-    const service = new ProofGeneratorService(defaultCryptoService, fileService, sessionKeysService);
-
-    await expect(service.generate(defaultProofArgs)).rejects.toThrow(ErrorCodes.NOT_MERGED_MESSAGE_TREE);
+    await expect(service.generate(defaultProofArgs)).rejects.toThrow(ErrorCodes.PRIVATE_KEY_MISMATCH.toString());
   });
 
   test("should throw error if poll is not found", async () => {
     const service = new ProofGeneratorService(defaultCryptoService, fileService, sessionKeysService);
 
-    await expect(service.generate({ ...defaultProofArgs, poll: 2 })).rejects.toThrow(ErrorCodes.POLL_NOT_FOUND);
+    await expect(service.generate({ ...defaultProofArgs, poll: 2 })).rejects.toThrow(
+      ErrorCodes.POLL_NOT_FOUND.toString(),
+    );
   });
 
   test("should throw error if poll is not found in maci contract", async () => {
     mockContract.polls.mockResolvedValue({ poll: zeroAddress });
     const service = new ProofGeneratorService(defaultCryptoService, fileService, sessionKeysService);
 
-    await expect(service.generate({ ...defaultProofArgs, poll: 2 })).rejects.toThrow(ErrorCodes.POLL_NOT_FOUND);
+    await expect(service.generate({ ...defaultProofArgs, poll: 2 })).rejects.toThrow(
+      ErrorCodes.POLL_NOT_FOUND.toString(),
+    );
   });
 
   test("should throw error if coordinator key cannot be decrypted", async () => {

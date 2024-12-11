@@ -11,7 +11,7 @@ describe("common", () => {
 
     test("should throw when PIMLICO_API_KEY is not set", () => {
       delete process.env.PIMLICO_API_KEY;
-      expect(() => genPimlicoRPCUrl("optimism-sepolia")).toThrow(ErrorCodes.PIMLICO_API_KEY_NOT_SET);
+      expect(() => genPimlicoRPCUrl("optimism-sepolia")).toThrow(ErrorCodes.PIMLICO_API_KEY_NOT_SET.toString());
     });
   });
 });

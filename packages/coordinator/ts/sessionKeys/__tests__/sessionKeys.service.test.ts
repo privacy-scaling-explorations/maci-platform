@@ -52,14 +52,14 @@ describe("SessionKeysService", () => {
           "0xinvalid",
           ESupportedNetworks.OPTIMISM_SEPOLIA,
         ),
-      ).rejects.toThrow(ErrorCodes.INVALID_APPROVAL);
+      ).rejects.toThrow(ErrorCodes.INVALID_APPROVAL.toString());
     });
 
     test("should throw when given a non existent session key address", async () => {
       const approval = await mockSessionKeyApproval(zeroAddress);
       await expect(
         sessionKeysService.generateClientFromSessionKey(zeroAddress, approval, ESupportedNetworks.OPTIMISM_SEPOLIA),
-      ).rejects.toThrow(ErrorCodes.SESSION_KEY_NOT_FOUND);
+      ).rejects.toThrow(ErrorCodes.SESSION_KEY_NOT_FOUND.toString());
     });
 
     test("should generate a client from a session key", async () => {

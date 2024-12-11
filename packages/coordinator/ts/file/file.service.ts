@@ -113,7 +113,7 @@ export class FileService {
 
     if (!fs.existsSync(zkey) || (!fs.existsSync(wasm) && !fs.existsSync(witgen))) {
       this.logger.error(`Error: ${ErrorCodes.FILE_NOT_FOUND}, zkey: ${zkey}, wasm: ${wasm}, witgen: ${witgen}`);
-      throw new Error(ErrorCodes.FILE_NOT_FOUND);
+      throw new Error(ErrorCodes.FILE_NOT_FOUND.toString());
     }
 
     return {

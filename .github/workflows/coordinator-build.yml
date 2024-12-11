@@ -10,12 +10,13 @@ env:
   COORDINATOR_PUBLIC_KEY_PATH: "./pub.key"
   COORDINATOR_PRIVATE_KEY_PATH: "./priv.key"
   COORDINATOR_TALLY_ZKEY_NAME: "TallyVotes_10-1-2_test"
-  COORDINATOR_MESSAGE_PROCESS_ZKEY_NAME: "ProcessMessages_10-2-1-2_test"
+  COORDINATOR_MESSAGE_PROCESS_ZKEY_NAME: "ProcessMessages_10-20-2_test"
+  COORDINATOR_POLL_JOINING_ZKEY_NAME: "PollJoining_10_test"
   COORDINATOR_ZKEY_PATH: "./zkeys/"
   COORDINATOR_RAPIDSNARK_EXE: "~/rapidsnark/build/prover"
   PIMLICO_API_KEY: "pim_"
   RPC_API_KEY: "rpc_"
-  SUBGRAPH_FOLDER: "./node_modules/maci-subgraph"
+  SUBGRAPH_FOLDER: "./node_modules/maci-platform-subgraph"
   SUBGRAPH_NAME: ${{ secrets.SUBGRAPH_NAME }}
   SUBGRAPH_PROVIDER_URL: ${{ secrets.SUBGRAPH_PROVIDER_URL }}
   SUBGRAPH_DEPLOY_KEY: ${{ secrets.SUBGRAPH_DEPLOY_KEY }}
@@ -103,7 +104,7 @@ jobs:
 
       - name: Download zkeys
         run: |
-          pnpm download-zkeys:test
+          pnpm download-zkeys:latest
 
       - name: Generate keypair
         run: |

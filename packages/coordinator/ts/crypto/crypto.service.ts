@@ -35,7 +35,7 @@ export class CryptoService {
       return encrypted.toString("base64");
     } catch (error) {
       this.logger.error(`Error: ${ErrorCodes.ENCRYPTION}`, error);
-      throw new Error(ErrorCodes.ENCRYPTION);
+      throw new Error(ErrorCodes.ENCRYPTION.toString());
     }
   }
 
@@ -53,7 +53,7 @@ export class CryptoService {
       return decryptedData.toString();
     } catch (error) {
       this.logger.error(`Error: ${ErrorCodes.DECRYPTION}`, error);
-      throw new Error(ErrorCodes.DECRYPTION);
+      throw new Error(ErrorCodes.DECRYPTION.toString());
     }
   }
 }
