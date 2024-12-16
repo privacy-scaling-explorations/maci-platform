@@ -72,7 +72,7 @@ export const RoundItem = ({ round }: IRoundItemProps): JSX.Element => {
           {round.roundId}
         </Heading>
 
-        <div className="my-4 h-16 overflow-scroll text-gray-400">{round.description}</div>
+        <div className="my-4 h-16 overflow-hidden text-gray-400">{round.description}</div>
 
         <RoundTag state={roundState} />
       </div>

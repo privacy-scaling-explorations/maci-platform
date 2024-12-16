@@ -310,9 +310,17 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         signer,
       })
         .then(() => onSuccess())
-        .catch((err: Error) => {
-          setError(err.message);
-          return onError(err.message);
+        .catch((err: unknown) => {
+          if ((err as { code: string }).code === "ACTION_REJECTED") {
+            setError("Transaction rejected");
+            return onError("Transaction rejected");
+          }
+          if (err instanceof Error) {
+            setError(err.message);
+            return onError(err.message);
+          }
+          setError(String(err));
+          return onError(String(err));
         })
         .finally(() => {
           setIsLoading(false);
