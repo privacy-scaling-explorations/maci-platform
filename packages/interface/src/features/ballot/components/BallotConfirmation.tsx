@@ -1,6 +1,8 @@
 import { format } from "date-fns";
 import Link from "next/link";
 import { useMemo } from "react";
+import { FaGithub } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { tv } from "tailwind-variants";
 import { Hex } from "viem";
 import { useAccount } from "wagmi";
@@ -26,7 +28,16 @@ const feedbackUrl = process.env.NEXT_PUBLIC_FEEDBACK_URL!;
 const Card = createComponent(
   "div",
   tv({
-    base: "rounded-lg border border-blue-400 p-8 bg-blue-50 flex justify-between items-center gap-8 my-14",
+    base: "rounded-lg border p-8 justify-between items-center gap-8 my-14",
+    variants: {
+      variant: {
+        default: "border-blue-400 bg-blue-50 flex",
+        invert: "text-blue-700 bg-blue-400 border-blue-700",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
   }),
 );
 
@@ -100,11 +111,33 @@ export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.El
 
         <Notice
           content={
-            round?.votingEndsAt ? format(round.votingEndsAt, "d MMM yyyy hh:mm") : "The date would be announced soon."
+            round?.votingEndsAt
+              ? `Results will be available after tallying - ${format(round.votingEndsAt, "d MMM yyyy hh:mm")}`
+              : "The date would be announced soon."
           }
-          title="Results will be available after tallying."
-          variant="block"
         />
+
+        <Card variant="invert">
+          <div className="text-center">
+            <b className="text-2xl uppercase">Share that you have voted in {round?.roundId} round.</b>
+          </div>
+
+          <div className="mt-2 flex w-full flex-col items-center justify-center gap-2 sm:flex-row sm:gap-4">
+            <Button size="auto" variant="tertiary">
+              <FaXTwitter />
+
+              <span className="ml-2">Twitter</span>
+            </Button>
+
+            <p>OR</p>
+
+            <Button size="auto" variant="tertiary">
+              <FaGithub />
+
+              <span className="ml-2">Github</span>
+            </Button>
+          </div>
+        </Card>
 
         {roundState === ERoundState.VOTING && (
           <Card className="flex-col sm:flex-row">

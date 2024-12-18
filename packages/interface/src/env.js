@@ -9,6 +9,10 @@ module.exports = createEnv({
    */
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+    TWITTER_CLIENT_ID: z.string(),
+    TWITTER_CLIENT_SECRET: z.string(),
+    GITHUB_CLIENT_ID: z.string(),
+    GITHUB_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -60,6 +64,10 @@ module.exports = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
+    TWITTER_CLIENT_ID: process.env.TWITTER_CLIENT_ID,
+    TWITTER_CLIENT_SECRET: process.env.TWITTER_CLIENT_SECRET,
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
 
     NEXT_PUBLIC_CHAIN_NAME: process.env.NEXT_PUBLIC_CHAIN_NAME,
 
