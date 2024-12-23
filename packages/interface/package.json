@@ -108,7 +108,7 @@
     "postcss": "^8.4.47",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.5.14",
-    "typescript": "^5.3.3"
+    "typescript": "^5.7.2"
   },
   "jest": {
     "moduleFileExtensions": [
