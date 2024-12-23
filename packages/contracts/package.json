@@ -83,6 +83,6 @@
     "hardhat-contract-sizer": "^2.10.0",
     "sol2uml": "^2.5.20",
     "ts-node": "^10.9.1",
-    "typescript": "^5.5.4"
+    "typescript": "^5.7.2"
   }
 }
