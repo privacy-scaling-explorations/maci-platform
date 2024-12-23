@@ -366,8 +366,8 @@ importers:
         specifier: ^0.6.5
         version: 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@pcd/pcd-types':
-        specifier: ^0.11.4
-        version: 0.11.4
+        specifier: ^0.15.0
+        version: 0.15.0
       '@pcd/util':
         specifier: ^0.5.4
         version: 0.5.4
@@ -3279,6 +3279,9 @@ packages:
 
   '@pcd/pcd-types@0.11.4':
     resolution: {integrity: sha512-IxPzs5dFc9O7mtcusbEMNln3lWtoyMkxPLbcJTbmlR+HGURNxDR5ZumXlXTOv8LL1OwkY1TaU1EkrhXVnVWdNA==}
+
+  '@pcd/pcd-types@0.15.0':
+    resolution: {integrity: sha512-2sWpSuYvdBc2Fo+GnxkrRt2YW1kYDceXFBCzKrpa0D12uCRl8/Y3+4HHEGoqZnWV8ONMN9Dk4x5UlkmFCf3ntw==}
 
   '@pcd/pod-pcd@0.1.7':
     resolution: {integrity: sha512-bzRPrhCRp7L1oAO6GmP5S58snxGOtU7aEsfcl7zLm1iz4I6pKcYTMVVaFXKGFuSZbur18IEkaOHMAzT3mZJ4IA==}
@@ -17281,6 +17284,8 @@ snapshots:
       - utf-8-validate
 
   '@pcd/pcd-types@0.11.4': {}
+
+  '@pcd/pcd-types@0.15.0': {}
 
   '@pcd/pod-pcd@0.1.7':
     dependencies:
