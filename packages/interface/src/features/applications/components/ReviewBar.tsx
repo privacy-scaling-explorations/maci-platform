@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { useMemo, useCallback, useEffect } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { zeroAddress } from "viem";
@@ -38,13 +39,23 @@ export const ReviewBar = ({ pollId, projectId }: IReviewBarProps): JSX.Element =
     return false;
   }, [project.data, approve.isSuccess, approve.isError]);
 
+  const router = useRouter();
+
   // approve the application
-  const onClick = useCallback(() => {
+  const onClickApprove = useCallback(() => {
     if (!application.data) {
       return;
     }
     approve.mutate([application.data.index]);
   }, [approve, application.data]);
+
+  const onClickEdit = useCallback(() => {
+    if (!application.data) {
+      return;
+    }
+
+    router.push(`/rounds/${pollId}/applications/edit/${projectId}`);
+  }, [application.data]);
 
   useEffect(() => {
     application.refetch().catch();
@@ -72,15 +83,27 @@ export const ReviewBar = ({ pollId, projectId }: IReviewBarProps): JSX.Element =
         />
       )}
 
-      {isAdmin && !isApproved && (
-        <div className="my-3 flex justify-end gap-2">
-          <Button suppressHydrationWarning disabled={!isCorrectNetwork} size="auto" variant="primary" onClick={onClick}>
+      <div className="my-3 flex justify-end gap-2">
+        {!isApproved && (
+          <Button size="auto" variant="secondary" onClick={onClickEdit}>
+            Edit Application
+          </Button>
+        )}
+
+        {isAdmin && !isApproved && (
+          <Button
+            suppressHydrationWarning
+            disabled={!isCorrectNetwork}
+            size="auto"
+            variant="primary"
+            onClick={onClickApprove}
+          >
             {approve.isPending && <Spinner className="mr-2 h-4 w-4" />}
 
             {!approve.isPending && !isCorrectNetwork ? `Connect to ${correctNetwork.name}` : "Approve application"}
           </Button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
