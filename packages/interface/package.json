@@ -3,15 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
-    "dev": "next dev",
+    "build": "pnpm run git-hash && next build",
+    "dev": "pnpm run git-hash && next dev",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "start": "next start",
+    "start": "pnpm run git-hash && next start",
     "prettier": "prettier -c .",
     "prettier:fix": "prettier -w .",
     "types": "tsc -p tsconfig.json --noEmit",
-    "eas:registerSchemas": "npx tsx src/lib/eas/registerSchemas"
+    "eas:registerSchemas": "npx tsx src/lib/eas/registerSchemas",
+    "git-hash": "node ./scripts/genGitHash.js"
   },
   "dependencies": {
     "@ethereum-attestation-service/eas-sdk": "^2.7.0",
