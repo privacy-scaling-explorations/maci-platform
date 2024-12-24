@@ -1,6 +1,8 @@
 import type { IGetPollData } from "maci-cli/sdk";
 import type { Address, Hex } from "viem";
 
+export const MY_APPS_KEY = "my-apps";
+
 export enum ERoundState {
   LOADING = "LOADING",
   APPLICATION = "APPLICATION",
