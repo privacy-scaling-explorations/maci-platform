@@ -25,6 +25,7 @@ export const fundingSourceTypes = {
 export const ApplicationSchema = z.object({
   name: z.string().min(3),
   bio: z.string().min(3),
+  creator: z.string().optional(),
   profileImageUrl: z.string().optional(),
   bannerImageUrl: z.string().optional(),
   submittedAt: z.number().optional(),
