@@ -634,8 +634,8 @@ importers:
         specifier: ^0.85.0
         version: 0.85.0(@types/node@22.7.5)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@3.3.2)(typescript@5.7.2)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-ts':
-        specifier: ^0.35.1
-        version: 0.35.1
+        specifier: ^0.37.0
+        version: 0.37.0
       maci-platform-contracts:
         specifier: workspace:^0.1.0
         version: link:../contracts
@@ -2145,6 +2145,9 @@ packages:
 
   '@graphprotocol/graph-ts@0.35.1':
     resolution: {integrity: sha512-74CfuQmf7JI76/XCC34FTkMMKeaf+3Pn0FIV3m9KNeaOJ+OI3CvjMIVRhOZdKcJxsFCBGaCCl0eQjh47xTjxKA==}
+
+  '@graphprotocol/graph-ts@0.37.0':
+    resolution: {integrity: sha512-3xp/sO8zFDBkX44ydGB87ow5Cyrfr/SAm/cWzIRzUVL7ROw0KUyFBG1xj4KKlMnAod7/RL99zChYquC15H4Oqg==}
 
   '@graphql-typed-document-node/core@3.2.0':
     resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
@@ -5412,6 +5415,11 @@ packages:
     resolution: {integrity: sha512-fwOQNZVTMga5KRsfY80g7cpOl4PsFQczMwHzdtgoqLXaYhkhavufKb0sB0l3T1DUxpAufA0KNhlbpuuhZUwxMA==}
     hasBin: true
 
+  assemblyscript@0.27.31:
+    resolution: {integrity: sha512-Ra8kiGhgJQGZcBxjtMcyVRxOEJZX64kd+XGpjWzjcjgxWJVv+CAQO0aDBk4GQVhjYbOkATarC83mHjAVGtwPBQ==}
+    engines: {node: '>=16', npm: '>=7'}
+    hasBin: true
+
   assertion-error@1.1.0:
     resolution: {integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==}
 
@@ -5612,6 +5620,10 @@ packages:
 
   binaryen@102.0.0-nightly.20211028:
     resolution: {integrity: sha512-GCJBVB5exbxzzvyt8MGDv/MeUjs6gkXDvf4xOIItRBptYl0Tz5sm1o/uG95YK0L0VeG5ajDu3hRtkBP2kzqC5w==}
+    hasBin: true
+
+  binaryen@116.0.0-nightly.20240114:
+    resolution: {integrity: sha512-0GZrojJnuhoe+hiwji7QFaL3tBlJoA+KFUN7ouYSDGZLSo9CKM8swQX8n/UcbR0d1VuZKU+nhogNzv423JEu5A==}
     hasBin: true
 
   bl@1.2.3:
@@ -15346,6 +15358,10 @@ snapshots:
     dependencies:
       assemblyscript: 0.19.10
 
+  '@graphprotocol/graph-ts@0.37.0':
+    dependencies:
+      assemblyscript: 0.27.31
+
   '@graphql-typed-document-node/core@3.2.0(graphql@16.9.0)':
     dependencies:
       graphql: 16.9.0
@@ -20273,6 +20289,11 @@ snapshots:
       long: 5.2.3
       source-map-support: 0.5.21
 
+  assemblyscript@0.27.31:
+    dependencies:
+      binaryen: 116.0.0-nightly.20240114
+      long: 5.2.3
+
   assertion-error@1.1.0: {}
 
   ast-parents@0.0.1: {}
@@ -20516,6 +20537,8 @@ snapshots:
   binaryen@101.0.0-nightly.20210723: {}
 
   binaryen@102.0.0-nightly.20211028: {}
+
+  binaryen@116.0.0-nightly.20240114: {}
 
   bl@1.2.3:
     dependencies:

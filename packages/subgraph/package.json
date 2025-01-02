@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.85.0",
-    "@graphprotocol/graph-ts": "^0.35.1",
+    "@graphprotocol/graph-ts": "^0.37.0",
     "maci-platform-contracts": "workspace:^0.1.0"
   },
   "devDependencies": {
