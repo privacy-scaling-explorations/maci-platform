@@ -71,7 +71,7 @@ export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.El
 
   return (
     <div className="flex w-full justify-center dark:text-white">
-      <section className="md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
+      <section className="w-full md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
         <Heading as="h2" className="tracking-tighter" size="4xl">
           Your ballot has been successfully submitted 🥳
         </Heading>

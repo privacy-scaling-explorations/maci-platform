@@ -73,7 +73,10 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
   }, [theme, setTheme]);
 
   // the URI of round index page looks like: /rounds/:pollId, without anything else, which is the reason why the length is 3
-  const isRoundIndexPage = useMemo(() => asPath.includes("rounds") && asPath.split("/").length === 3, [asPath]);
+  const isRoundProjectPage = useMemo(
+    () => asPath.includes("rounds") && !asPath.includes("applications") && !asPath.includes("ballot"),
+    [asPath],
+  );
 
   return (
     <header className="dark:border-lighterBlack dark:bg-lightBlack relative z-[100] border-b border-gray-200 bg-white dark:text-white">
@@ -96,7 +99,7 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
         <div className="hidden h-full items-center gap-4 overflow-x-auto uppercase md:flex">
           {navLinks.map((link) => {
             const isActive =
-              asPath.includes(link.children.toLowerCase()) || (link.children === "Projects" && isRoundIndexPage);
+              asPath.includes(link.children.toLowerCase()) || (link.children === "Projects" && isRoundProjectPage);
 
             return (
               <NavLink key={link.href} href={link.href} isActive={isActive}>
