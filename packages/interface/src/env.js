@@ -52,6 +52,8 @@ module.exports = createEnv({
 
     NEXT_PUBLIC_SEMAPHORE_SUBGRAPH: z.string().url().optional(),
     NEXT_PUBLIC_TREE_URL: z.string().url().optional(),
+
+    NEXT_PUBLIC_COMMIT_HASH: z.string(),
   },
 
   /**
@@ -83,6 +85,8 @@ module.exports = createEnv({
 
     NEXT_PUBLIC_SEMAPHORE_SUBGRAPH: process.env.NEXT_PUBLIC_SEMAPHORE_SUBGRAPH,
     NEXT_PUBLIC_TREE_URL: process.env.NEXT_PUBLIC_TREE_URL,
+
+    NEXT_PUBLIC_COMMIT_HASH: process.env.NEXT_PUBLIC_COMMIT_HASH,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

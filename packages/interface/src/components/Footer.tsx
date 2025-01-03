@@ -2,6 +2,8 @@ import Image from "next/image";
 import { FaGithub, FaDiscord } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
+import { config } from "~/config";
+
 import { Logo } from "./ui/Logo";
 
 export const Footer = (): JSX.Element => (
@@ -26,6 +28,8 @@ export const Footer = (): JSX.Element => (
     </div>
 
     <div className="flex justify-end gap-4">
+      <p className="text-red flex items-center">Git Version: {config.commitHash}</p>
+
       <a className="flex items-center gap-1" href="https://maci.pse.dev" rel="noreferrer" target="_blank">
         <span>Docs</span>
 
