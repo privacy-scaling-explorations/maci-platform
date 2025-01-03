@@ -7,8 +7,8 @@ import { config } from "~/config";
 import { Logo } from "./ui/Logo";
 
 export const Footer = (): JSX.Element => (
-  <footer className="dark:border-lighterBlack flex items-center justify-between border-t border-gray-300 bg-gray-50 px-12 py-9 dark:bg-black dark:text-white">
-    <div className="flex items-center justify-start gap-4">
+  <footer className="dark:border-lighterBlack flex items-center justify-between border-t border-gray-300 bg-gray-50 px-2 py-4 sm:px-12 sm:py-9 dark:bg-black dark:text-white">
+    <div className="flex items-center justify-start gap-2 sm:gap-4">
       <a aria-label="twitter" href="https://x.com/zkMACI" rel="noreferrer" target="_blank">
         <FaXTwitter />
       </a>
@@ -27,16 +27,16 @@ export const Footer = (): JSX.Element => (
       </a>
     </div>
 
-    <div className="flex justify-end gap-4">
+    <div className="flex justify-end gap-2 sm:gap-4">
       <p className="text-red flex items-center">Git Version: {config.commitHash}</p>
 
-      <a className="flex items-center gap-1" href="https://maci.pse.dev" rel="noreferrer" target="_blank">
+      <a className="flex items-center sm:gap-1" href="https://maci.pse.dev" rel="noreferrer" target="_blank">
         <span>Docs</span>
 
         <Image alt="arrow-go-to" className="dark:invert" height="18" src="/arrow-go-to.svg" width="18" />
       </a>
 
-      <a className="flex items-center gap-1" href="https://maci.pse.dev" rel="noreferrer" target="_blank">
+      <a className="flex items-center sm:gap-1" href="https://maci.pse.dev" rel="noreferrer" target="_blank">
         <span>About</span>
 
         <Image alt="arrow-go-to" className="dark:invert" height="18" src="/arrow-go-to.svg" width="18" />
