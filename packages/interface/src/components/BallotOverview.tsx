@@ -25,7 +25,13 @@ export const BallotOverview = ({ title = undefined, pollId }: IBallotOverviewPro
 
   const { asPath } = useRouter();
 
-  const showButton = useMemo(() => !asPath.includes("ballot"), [asPath]);
+  const showButton = useMemo(
+    () =>
+      !asPath.includes("ballot") &&
+      (roundState === ERoundState.VOTING ||
+        ((roundState === ERoundState.TALLYING || roundState === ERoundState.RESULTS) && ballot.published)),
+    [asPath],
+  );
 
   return (
     <Link
