@@ -17,7 +17,7 @@ export const FAQItem = ({ title, description }: IFAQItemProps): JSX.Element => {
   return (
     <div className="flex w-4/5 flex-col gap-4 border-b border-b-black py-6 sm:w-3/5 dark:border-b-white dark:text-white">
       <button className="flex cursor-pointer justify-between" type="button" onClick={openDescription}>
-        <p className="w-full font-mono text-2xl uppercase sm:w-auto">{title}</p>
+        <p className="w-full text-left font-mono text-2xl uppercase sm:w-auto">{title}</p>
 
         <Image
           alt="arrow-down"
