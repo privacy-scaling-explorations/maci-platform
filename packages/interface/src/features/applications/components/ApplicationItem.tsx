@@ -32,7 +32,11 @@ export const ApplicationItem = ({
 
   const form = useFormContext<TApplicationsToApprove>();
 
-  const { fundingSources = [], profileImageUrl } = metadata.data ?? {};
+  const { profileImageUrl } = metadata.data ?? {};
+  const bio =
+    metadata.data?.bio && metadata.data.bio.length > 140
+      ? `${metadata.data.bio.substring(0, 140)}...`
+      : metadata.data?.bio;
 
   useEffect(() => {
     if (isApproved) {
@@ -60,7 +64,7 @@ export const ApplicationItem = ({
             </Skeleton>
 
             <div className="text-sm text-gray-400">
-              <div>{fundingSources.length} funding sources</div>
+              <div>{bio}</div>
             </div>
           </div>
         </div>
