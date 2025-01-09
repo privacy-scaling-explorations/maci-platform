@@ -2,10 +2,12 @@ import clsx from "clsx";
 import { useMemo, type ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
 import Markdown from "react-markdown";
+import { Hex } from "viem";
 
 import { Heading } from "~/components/ui/Heading";
 import { Tag } from "~/components/ui/Tag";
 import { impactCategories } from "~/config";
+import { ProjectItem } from "~/features/projects/components/ProjectItem";
 
 import type { Application } from "../types";
 
@@ -149,6 +151,29 @@ export const ReviewApplicationDetails = (): JSX.Element => {
         <ValueField
           body={application.fundingSources?.map((link) => <LinkField key={link.description} fundingSource={link} />)}
           title="Funding sources"
+        />
+      </div>
+
+      <b className="text-lg">Project Preview Card</b>
+
+      <p className="text-sm">This is how your project will look in the dashboard:</p>
+
+      <div className="mb-2 grid w-96 gap-4 sm:grid-cols-2  lg:grid-cols-1">
+        <ProjectItem
+          isLoading={false}
+          pollId=""
+          recipient={{
+            ...application,
+            id: "no-id",
+            metadataUrl: "",
+            payout: application.payoutAddress as Hex,
+            index: "0",
+            bannerImageUrl: application.bannerImageUrl,
+            profileImageUrl: application.profileImageUrl,
+            name: application.name,
+            bio: application.bio,
+            impactCategory: application.impactCategory,
+          }}
         />
       </div>
     </div>
