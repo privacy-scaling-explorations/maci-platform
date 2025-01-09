@@ -247,6 +247,26 @@ export interface IRecipient {
    * Whether it was approved or not
    */
   initialized?: boolean;
+  /**
+   * Banner Image Url, used only for preview of card
+   */
+  bannerImageUrl?: string;
+  /**
+   * Profile Image Url, used only for preview of card
+   */
+  profileImageUrl?: string;
+  /**
+   * Name of the recipient, used only for preview of card
+   */
+  name?: string;
+  /**
+   * Bio of the recipient, used only for preview of card
+   */
+  bio?: string;
+  /**
+   * Impact categories of the recipient, used only for preview of card
+   */
+  impactCategory?: string[];
 }
 
 /**

@@ -35,6 +35,11 @@ export const ProjectItem = ({
 }: IProjectItemProps): JSX.Element => {
   const metadata = useProjectMetadata(recipient.metadataUrl);
   const roundState = useRoundState({ pollId });
+  const bannerImageUrl = recipient.bannerImageUrl ? recipient.bannerImageUrl : metadata.data?.bannerImageUrl;
+  const profileImageUrl = recipient.profileImageUrl ? recipient.profileImageUrl : metadata.data?.profileImageUrl;
+  const name = recipient.name ? recipient.name : metadata.data?.name;
+  const bio = recipient.bio ? recipient.bio : metadata.data?.bio;
+  const impactCategory = recipient.impactCategory ? recipient.impactCategory : metadata.data?.impactCategory;
 
   return (
     <article
@@ -42,24 +47,24 @@ export const ProjectItem = ({
       data-testid={`project-${recipient.id}`}
     >
       <div className="opacity-70 transition-opacity group-hover:opacity-100">
-        <ProjectBanner url={metadata.data?.bannerImageUrl} />
+        <ProjectBanner url={bannerImageUrl} />
 
-        <ProjectAvatar className="-mt-8 ml-4" rounded="full" url={metadata.data?.profileImageUrl} />
+        <ProjectAvatar className="-mt-8 ml-4" rounded="full" url={profileImageUrl} />
       </div>
 
       <div className="p-4 pt-2">
         <Heading as="h3" className="truncate dark:text-white" size="lg">
-          <Skeleton isLoading={isLoading}>{metadata.data?.name}</Skeleton>
+          <Skeleton isLoading={isLoading}>{name}</Skeleton>
         </Heading>
 
         <div className="mb-2 line-clamp-2 h-10 text-sm text-gray-400">
           <Skeleton className="w-full" isLoading={isLoading}>
-            {removeMarkdown(metadata.data?.bio || "")}
+            {removeMarkdown(bio || "")}
           </Skeleton>
         </div>
 
         <Skeleton className="w-[100px]" isLoading={isLoading}>
-          <ImpactCategories tags={metadata.data?.impactCategory} />
+          <ImpactCategories tags={impactCategory} />
         </Skeleton>
 
         {!isLoading && state !== undefined && action && roundState === ERoundState.VOTING && (
