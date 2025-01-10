@@ -44,7 +44,7 @@
     "ethers": "^6.13.4",
     "graphql-request": "^7.1.2",
     "js-sha256": "^0.11.0",
-    "lowdb": "^1.0.0",
+    "lowdb": "^7.0.1",
     "lucide-react": "^0.454.0",
     "maci-cli": "^2.4.0",
     "maci-domainobjs": "^2.4.0",

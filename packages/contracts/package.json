@@ -62,7 +62,7 @@
     "circomlibjs": "^0.1.7",
     "ethers": "^6.13.4",
     "hardhat": "^2.22.15",
-    "lowdb": "^1.0.0",
+    "lowdb": "^7.0.1",
     "maci-contracts": "0.0.0-ci.6bdb342",
     "maci-core": "^2.4.0",
     "maci-crypto": "^2.4.0",

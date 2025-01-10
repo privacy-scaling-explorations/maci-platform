@@ -51,7 +51,7 @@
     "ethers": "^6.13.4",
     "hardhat": "^2.22.15",
     "helmet": "^8.0.0",
-    "lowdb": "^1.0.0",
+    "lowdb": "^7.0.1",
     "maci-circuits": "0.0.0-ci.30f517a",
     "maci-cli": "0.0.0-ci.30f517a",
     "maci-contracts": "0.0.0-ci.30f517a",
