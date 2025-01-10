@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { FiAlertCircle } from "react-icons/fi";
@@ -8,7 +7,7 @@ import { EmptyState } from "~/components/EmptyState";
 import { Alert } from "~/components/ui/Alert";
 import { Heading } from "~/components/ui/Heading";
 import { useRound } from "~/contexts/Round";
-import { useApplicationById } from "~/features/applications/hooks/useApplicationById";
+import { useApplicationById } from "~/features/applications/hooks/useApplications";
 import { ProjectItem } from "~/features/projects/components/ProjectItem";
 import { Layout } from "~/layouts/DefaultLayout";
 import { useRoundState } from "~/utils/state";
@@ -83,9 +82,7 @@ const ConfirmProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
             </div>
           )}
 
-          <Link href={`/rounds/${pollId}/${project.recipient.id}`}>
-            <ProjectItem isLoading={false} pollId={pollId} recipient={project.recipient as IRecipient} />
-          </Link>
+          <ProjectItem isLoading={false} pollId={pollId} recipient={project.recipient as IRecipient} />
         </div>
       </div>
     </Layout>

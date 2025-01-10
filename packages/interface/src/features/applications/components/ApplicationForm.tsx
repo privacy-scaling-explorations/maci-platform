@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { useState, useCallback } from "react";
-import { useLocalStorage } from "react-use";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
 
@@ -22,8 +21,6 @@ interface IApplicationFormProps {
 }
 
 export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element => {
-  const clearDraft = useLocalStorage("application-draft")[2];
-
   const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
 
   const { address } = useAccount();
@@ -56,7 +53,6 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
 
   const create = useCreateApplication({
     onSuccess: (id: bigint) => {
-      clearDraft();
       router.push(`/rounds/${pollId}/applications/confirmation?id=${id.toString()}`);
     },
     onError: (err: { message: string }) =>
