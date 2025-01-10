@@ -15,5 +15,5 @@
 ```
 
 3. Run `pnpm run build`. You can use env variables `NETWORK` and `VERSION` to switch config files.
-4. Run `graph auth --studio {key}`. You can find the key in subgraph studio dashboard.
-5. Run `pnpm run deploy` to deploy subgraph
+4. Run `graph auth --studio {key}`. You can find the key in subgraph studio dashboard; if you're using alchemy graph, skip this step.
+5. Run `pnpm run deploy` to deploy subgraph; if you're using alchemy graph, run `pnpm run deploy-alchemy --deploy-key {key}` instead.
