@@ -45,7 +45,7 @@ describe("Tally", () => {
 
     handleAddResult(event);
 
-    const tallyResult = TallyResult.load(event.params.index.toString())!;
+    const tallyResult = TallyResult.load(`${DEFAULT_TALLY_ADDRESS.toHexString()}-${event.params.index.toString()}`)!;
 
     assert.fieldEquals("TallyResult", tallyResult.id, "result", event.params.result.toString());
   });
