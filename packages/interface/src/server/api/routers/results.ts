@@ -58,8 +58,11 @@ export async function calculateMaciResults(
     });
   }
 
-  const results = tallyData.results.reduce((acc, tally, index) => {
-    const project = projects[index];
+  const results = tallyData.results.reduce((acc, tally) => {
+    /// The tallyResult.id on old version subgraph is 0, 1, 2, ..., and is {tallyAddress}-{id=0, 1, 2, ...} on new version
+    const [id1, id2] = tally.id.split("-");
+    const projectIndex = id2 ? Number(id2) : Number(id1);
+    const project = projects[projectIndex];
     if (project) {
       acc.set(project.id, { votes: Number(tally.result), voters: 0 });
     }

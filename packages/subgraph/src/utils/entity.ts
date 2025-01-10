@@ -151,10 +151,12 @@ export const createOrLoadClaim = (index: GraphBN, recipient: Bytes, amount: Grap
 };
 
 export const createOrLoadTallyResult = (index: GraphBN, result: GraphBN, tally: Bytes): TallyResult => {
-  let tallyResult = TallyResult.load(index.toString());
+  // Create composite key by combining tally address and index
+  const compositeId = `${tally.toHexString()}-${index.toString()}`;
+  let tallyResult = TallyResult.load(compositeId);
 
   if (!tallyResult) {
-    tallyResult = new TallyResult(index.toString());
+    tallyResult = new TallyResult(compositeId);
     tallyResult.result = result;
     tallyResult.tally = tally;
     tallyResult.save();
