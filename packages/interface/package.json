@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prebuild": "pnpm run git-hash",
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
@@ -11,7 +12,8 @@
     "prettier": "prettier -c .",
     "prettier:fix": "prettier -w .",
     "types": "tsc -p tsconfig.json --noEmit",
-    "eas:registerSchemas": "npx tsx src/lib/eas/registerSchemas"
+    "eas:registerSchemas": "npx tsx src/lib/eas/registerSchemas",
+    "git-hash": "node ./scripts/genGitHash.js"
   },
   "dependencies": {
     "@ethereum-attestation-service/eas-sdk": "^2.7.0",
