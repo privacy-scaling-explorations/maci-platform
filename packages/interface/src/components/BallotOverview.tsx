@@ -5,6 +5,8 @@ import { useMemo } from "react";
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
+import { AllocateEquallyButton } from "~/features/ballot/components/AllocateEquallyButton";
+import { RemoveAllVotesButton } from "~/features/ballot/components/RemoveAllVotesButton";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
@@ -49,6 +51,18 @@ export const BallotOverview = ({ title = undefined, pollId }: IBallotOverviewPro
         <AddedProjects pollId={pollId} />
 
         <VotingUsage pollId={pollId} />
+
+        {!showButton && (
+          <>
+            <AllocateEquallyButton pollId={pollId} />
+
+            <p className="mt-6 text-[10px] text-gray-300">
+              If votes are not equally divisible, the remainder will be distributed starting with the top item.
+            </p>
+
+            <RemoveAllVotesButton pollId={pollId} />
+          </>
+        )}
 
         {showButton && (
           <Button className="mt-2" variant="secondary">

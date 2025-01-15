@@ -51,7 +51,7 @@ export const SubmitBallotButton = ({ pollId }: ISubmitBallotButtonProps): JSX.El
 
       {sum > initialVoiceCredits && !isLoading && "Exceed initial voice credits"}
 
-      {sum <= 0 && !isLoading && "Add you vote first"}
+      {sum <= 0 && !isLoading && "Add your vote first"}
 
       {isLoading && <Spinner className="h-4 w-4" />}
     </Button>

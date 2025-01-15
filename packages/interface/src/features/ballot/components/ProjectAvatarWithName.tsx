@@ -36,7 +36,7 @@ export const ProjectAvatarWithName = ({
       <div>
         <div className="font-bold uppercase dark:text-white">{metadata.data?.name}</div>
 
-        <div className="max-h-10 overflow-scroll text-sm text-gray-400">
+        <div className="max-h-10 overflow-hidden text-sm text-gray-400">
           <p>{showDescription && (metadata.data?.bio ?? null)}</p>
 
           <p>{allocation > 0 && `Votes you have allocated: ${allocation}`}</p>
