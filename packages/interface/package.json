@@ -37,7 +37,7 @@
     "@trpc/next": "11.0.0-rc.660",
     "@trpc/react-query": "11.0.0-rc.608",
     "@trpc/server": "11.0.0-rc.608",
-    "@vercel/blob": "^0.25.0",
+    "@vercel/blob": "^0.27.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.7",
