@@ -6,6 +6,7 @@ import { Skeleton } from "~/components/ui/Skeleton";
 import { config } from "~/config";
 import { formatNumber } from "~/utils/formatNumber";
 import { removeMarkdown } from "~/utils/removeMarkdown";
+import { removeMarkdown } from "~/utils/removeMarkdown";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
