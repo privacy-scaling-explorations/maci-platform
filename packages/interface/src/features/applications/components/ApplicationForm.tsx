@@ -99,6 +99,8 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
             <Textarea placeholder="Type project description" rows={4} />
           </FormControl>
 
+          <small className="-mt-4">*Markdown Supported</small>
+
           <div className="gap-4 md:flex">
             <FormControl required className="flex-1" label="Website" name="websiteUrl">
               <Input placeholder="https://" />
@@ -156,9 +158,13 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
             <Textarea placeholder="What have your project contributed to?" rows={4} />
           </FormControl>
 
+          <small className="-mt-4">*Markdown Supported</small>
+
           <FormControl required label="Impact description" name="impactDescription">
             <Textarea placeholder="What impact has your project had?" rows={4} />
           </FormControl>
+
+          <small className="-mt-4">*Markdown Supported</small>
 
           <ImpactTags />
 

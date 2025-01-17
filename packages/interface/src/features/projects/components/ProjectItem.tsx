@@ -5,6 +5,7 @@ import { Heading } from "~/components/ui/Heading";
 import { Skeleton } from "~/components/ui/Skeleton";
 import { config } from "~/config";
 import { formatNumber } from "~/utils/formatNumber";
+import { removeMarkdown } from "~/utils/removeMarkdown";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
@@ -53,7 +54,7 @@ export const ProjectItem = ({
 
         <div className="mb-2 line-clamp-2 h-10 text-sm text-gray-400">
           <Skeleton className="w-full" isLoading={isLoading}>
-            {metadata.data?.bio}
+            {removeMarkdown(metadata.data?.bio || "")}
           </Skeleton>
         </div>
 

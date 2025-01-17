@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useMemo, type ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
+import Markdown from "react-markdown";
 
 import { Heading } from "~/components/ui/Heading";
 import { Tag } from "~/components/ui/Tag";
@@ -36,13 +37,33 @@ const ValueField = ({ title, body = undefined, required = false }: IValueFieldPr
   );
 };
 
+const MarkdownField = ({ title, body = undefined, required = false }: IValueFieldProps): JSX.Element => {
+  const emptyPlaceholder = "(empty)";
+
+  return (
+    <div className="flex flex-col gap-2 ">
+      <b className={clsx(required && "text-xs after:text-blue-400 after:content-['*'] sm:text-sm")}>{title}</b>
+
+      <div className="text-light flex flex-col flex-wrap gap-2 text-gray-400">
+        {body === undefined && emptyPlaceholder}
+
+        {Array.isArray(body) && body.length === 0 && emptyPlaceholder}
+
+        {typeof body === "string" && body.length === 0 && emptyPlaceholder}
+
+        {((typeof body === "string" && body.length > 0) || typeof body !== "string") && body}
+      </div>
+    </div>
+  );
+};
+
 export const ReviewApplicationDetails = (): JSX.Element => {
   const form = useFormContext<Application>();
 
   const application = useMemo(() => form.getValues(), [form]);
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="markdown-support flex flex-col gap-8">
       <div>
         <Heading className="mb-1 font-sans text-xl font-semibold">Review & Submit</Heading>
 
@@ -54,7 +75,7 @@ export const ReviewApplicationDetails = (): JSX.Element => {
 
         <ValueField required body={application.name} title="Project name" />
 
-        <ValueField required body={application.bio} title="Project description" />
+        <MarkdownField required body={<Markdown>{application.bio}</Markdown>} title="Project description" />
 
         <div className="grid grid-flow-row gap-4 sm:grid-cols-2">
           <ValueField required body={application.websiteUrl} title="Website" />
@@ -94,9 +115,17 @@ export const ReviewApplicationDetails = (): JSX.Element => {
       <div className="flex flex-col gap-6 dark:text-white">
         <b className="text-lg">Contribution & Impact</b>
 
-        <ValueField required body={application.contributionDescription} title="Contribution description" />
+        <MarkdownField
+          required
+          body={<Markdown>{application.contributionDescription}</Markdown>}
+          title="Contribution description"
+        />
 
-        <ValueField required body={application.impactDescription} title="Impact description" />
+        <MarkdownField
+          required
+          body={<Markdown>{application.impactDescription}</Markdown>}
+          title="Impact description"
+        />
 
         <ValueField
           required

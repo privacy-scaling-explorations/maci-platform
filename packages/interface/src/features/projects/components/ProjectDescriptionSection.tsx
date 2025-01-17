@@ -1,5 +1,6 @@
 import { FaGithub, FaEthereum } from "react-icons/fa";
 import { RiGlobalLine } from "react-icons/ri";
+import Markdown from "react-markdown";
 
 import { Link } from "~/components/ui/Link";
 
@@ -23,7 +24,7 @@ export const ProjectDescriptionSection = ({
   <div className="flex flex-col gap-6">
     <p className="text-lg uppercase">{title}</p>
 
-    {description.length > 0 && <p className="text-lg text-gray-400">{description}</p>}
+    {description.length > 0 && <Markdown className="text-gray-400">{description}</Markdown>}
 
     {contributions.length > 0 && (
       <div className="border-l border-gray-200 px-4">
