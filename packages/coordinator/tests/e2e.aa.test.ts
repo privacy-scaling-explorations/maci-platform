@@ -12,10 +12,10 @@ import { privateKeyToAccount } from "viem/accounts";
 import { ErrorCodes, ESupportedNetworks } from "../ts/common";
 import { getPublicClient } from "../ts/common/accountAbstraction";
 import { CryptoService } from "../ts/crypto/crypto.service";
-import { FileService } from "../ts/file/file.service";
-import { ProofGeneratorService } from "../ts/proof/proof.service";
 import { testMaciDeploymentConfig, testPollDeploymentConfig } from "../ts/deployer/__tests__/utils";
 import { DeployerService } from "../ts/deployer/deployer.service";
+import { FileService } from "../ts/file/file.service";
+import { ProofGeneratorService } from "../ts/proof/proof.service";
 import { SessionKeysService } from "../ts/sessionKeys/sessionKeys.service";
 
 dotenv.config();
@@ -111,13 +111,13 @@ describe("E2E Account Abstraction Tests", () => {
   describe("merge", () => {
     test("should return true when there are no errors", async () => {
       const sessionKey = sessionKeyService.generateSessionKey().sessionKeyAddress;
-      const approval = await generateApproval(sessionKey);
+      const generatedApproval = await generateApproval(sessionKey);
 
       const merged = await proofService.merge({
         maciContractAddress: maciContract,
         pollId,
         sessionKeyAddress: sessionKey,
-        approval,
+        approval: generatedApproval,
         chain: ESupportedNetworks.OPTIMISM_SEPOLIA,
       });
 
@@ -126,14 +126,14 @@ describe("E2E Account Abstraction Tests", () => {
 
     test("should throw when given an invalid pollId", async () => {
       const sessionKey = sessionKeyService.generateSessionKey().sessionKeyAddress;
-      const approval = await generateApproval(sessionKey);
+      const generatedApproval = await generateApproval(sessionKey);
 
       await expect(
         proofService.merge({
           maciContractAddress: maciContract,
           pollId: 50000,
           sessionKeyAddress: sessionKey,
-          approval,
+          approval: generatedApproval,
           chain: ESupportedNetworks.OPTIMISM_SEPOLIA,
         }),
       ).rejects.toThrow(ErrorCodes.POLL_NOT_FOUND.toString());

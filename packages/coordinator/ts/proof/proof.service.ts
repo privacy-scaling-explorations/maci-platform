@@ -237,4 +237,12 @@ export class ProofGeneratorService {
 
     return true;
   }
+
+  /**
+   * Submit proofs on-chain and upload tally results
+   */
+  async submitOnChain(): Promise<void> {
+    // TODO: work in progress
+    return Promise.resolve();
+  }
 }

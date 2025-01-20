@@ -2,7 +2,8 @@ import { expect } from "chai";
 import { encodeBytes32String, Signer, ZeroAddress } from "ethers";
 import { Verifier, VkRegistry, EMode, getSigners, deployContract } from "maci-contracts";
 import { MaciState } from "maci-core";
-import { Keypair, Message, PubKey } from "maci-domainobjs";
+import { Keypair, PubKey } from "maci-domainobjs";
+import { Message } from "maci-domainobjs-v2.5";
 
 import { MACI, Poll__factory as PollFactory, Poll as PollContract } from "../typechain-types";
 

@@ -8,7 +8,7 @@ import {
   type PollContracts,
   deploy,
   deployPoll,
-  deployVkRegistryContract,
+  // deployVkRegistryContract,
   setVerifyingKeys,
   signup,
   publish,
@@ -60,7 +60,7 @@ describe("e2e", () => {
 
     process.env.COORDINATOR_ADDRESSES = await signer.getAddress();
 
-    const vkRegistry = await deployVkRegistryContract({ signer });
+    // const vkRegistry = await deployVkRegistryContract({ signer });
     await setVerifyingKeys({
       quiet: true,
       stateTreeDepth: STATE_TREE_DEPTH,

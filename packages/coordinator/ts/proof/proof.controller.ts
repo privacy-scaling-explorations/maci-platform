@@ -69,6 +69,19 @@ export class ProofController {
   }
 
   /**
+   * Submit proof on-chain api method
+   */
+  @ApiResponse({ status: HttpStatus.CREATED, description: "The proofs have been successfully submitted" })
+  @ApiResponse({ status: HttpStatus.FORBIDDEN, description: "Forbidden" })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "BadRequest" })
+  async submitOnChain(): Promise<void> {
+    return this.proofGeneratorService.submitOnChain().catch((error: Error) => {
+      this.logger.error(`Error:`, error);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    });
+  }
+
+  /**
    * Get RSA public key for authorization setup
    *
    * @returns RSA public key

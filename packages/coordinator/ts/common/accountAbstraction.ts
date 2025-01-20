@@ -1,8 +1,8 @@
+import dotenv from "dotenv";
 import { BundlerClient, createBundlerClient, ENTRYPOINT_ADDRESS_V07 } from "permissionless";
-import type { ENTRYPOINT_ADDRESS_V07_TYPE } from "permissionless/types";
 import { createPublicClient, http, type HttpTransport, type TransactionReceipt, type PublicClient, Chain } from "viem";
 
-import dotenv from "dotenv";
+import type { ENTRYPOINT_ADDRESS_V07_TYPE } from "permissionless/types";
 
 import { ErrorCodes } from "./errors";
 import { ESupportedNetworks, viemChain } from "./networks";

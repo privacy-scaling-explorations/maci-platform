@@ -139,3 +139,34 @@ export class MergeTreesDto {
   @IsString()
   approval!: string;
 }
+
+/**
+ * Data transfer object for submi on chain proof
+ */
+export class SubmitOnChainDto {
+  /**
+   * Poll id
+   */
+  @ApiProperty({
+    description: "Poll id",
+    minimum: 0,
+    type: Number,
+  })
+  @IsInt()
+  @Min(0)
+  poll!: number;
+
+  /**
+   * Proofs path
+   */
+
+  /**
+   * Tally file path
+   */
+  @ApiProperty({
+    description: "Tally file path",
+    type: String,
+  })
+  @IsString()
+  tallyFilePath!: string;
+}
