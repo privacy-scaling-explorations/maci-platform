@@ -54,4 +54,14 @@
     text-transform: uppercase;
     color: #888888;
   }
+
+  .markdown-support ul,
+  .markdown-support ol {
+    list-style: revert;
+    padding-left: 1.5rem;
+  }
+
+  .markdown-support p {
+    margin-top: 0.5rem;
+  }
 }
