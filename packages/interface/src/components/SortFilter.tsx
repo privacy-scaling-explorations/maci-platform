@@ -41,7 +41,7 @@ export const SortFilter = ({ onSearchChange }: ISortFilterProps): JSX.Element =>
       <SearchInput className="w-full" placeholder="Search project..." value={search} onChange={onChangeSearchInput} />
 
       <SortByDropdown
-        options={["name_asc", "name_desc"]}
+        options={["name_asc", "name_desc", "time_asc", "time_desc"]}
         value={`${orderBy}_${sortOrder}`}
         onChange={onChangeSortByDropdown}
       />

@@ -94,8 +94,9 @@ export async function fetchApprovedProjects(registryAddress: string): Promise<IR
 
 /**
  * Fetch all approved projects with metadata
+ * @param search
  * @param registryAddress
- * @returns the projects with metadata values
+ * @returns the projects with metadata values filtered by the search term
  */
 export async function fetchApprovedProjectsWithMetadata(
   search: string,

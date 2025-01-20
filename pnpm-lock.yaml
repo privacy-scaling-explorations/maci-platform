@@ -119,6 +119,9 @@ importers:
       maci-domainobjs:
         specifier: ^2.4.0
         version: 2.5.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      maci-domainobjs-v2.5:
+        specifier: npm:maci-domainobjs@2.5.0
+        version: maci-domainobjs@2.5.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       solidity-docgen:
         specifier: ^0.6.0-beta.36
         version: 0.6.0-beta.36(hardhat@2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@22.2.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))

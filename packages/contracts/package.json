@@ -67,6 +67,7 @@
     "maci-core": "^2.4.0",
     "maci-crypto": "^2.4.0",
     "maci-domainobjs": "^2.4.0",
+    "maci-domainobjs-v2.5": "npm:maci-domainobjs@2.5.0",
     "solidity-docgen": "^0.6.0-beta.36"
   },
   "devDependencies": {
