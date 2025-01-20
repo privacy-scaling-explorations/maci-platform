@@ -51,7 +51,7 @@ export const ProjectItem = ({
           <Skeleton isLoading={isLoading}>{metadata.data?.name}</Skeleton>
         </Heading>
 
-        <div className="line-clamp-2 h-10 text-sm text-gray-400">
+        <div className="mb-2 line-clamp-2 h-10 text-sm text-gray-400">
           <Skeleton className="w-full" isLoading={isLoading}>
             {metadata.data?.bio}
           </Skeleton>
