@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { HiOutlineTrash } from "react-icons/hi";
 import { Hex } from "viem";
@@ -40,6 +40,15 @@ export const AllocationFormWrapper = ({
   });
 
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
+
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      onSave(value.votes as { projectId: string; amount: number; projectIndex: number }[], round!.pollId);
+    });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [form, onSave, round?.pollId]);
 
   return (
     <Table>

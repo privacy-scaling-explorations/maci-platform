@@ -36,7 +36,7 @@ export const BallotProvider: React.FC<BallotProviderProps> = ({ children }: Ball
     [ballots],
   );
 
-  // convert the input to an obkect
+  // convert the input to an object
   const toObject = useCallback(
     (key: string, arr: object[] = []) => arr.reduce((acc, x) => ({ ...acc, [x[key as keyof typeof acc]]: x }), {}),
     [],
