@@ -3,7 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { ImageIcon } from "lucide-react";
-import { type ComponentProps, forwardRef, useRef, useCallback, ChangeEvent } from "react";
+import { type ComponentProps, forwardRef, useRef, useCallback, ChangeEvent, ForwardedRef } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -21,8 +21,7 @@ export const ImageUpload = forwardRef(
       maxSize = 1024 * 1024, // 1 MB
       className,
     }: IImageUploadProps,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _,
+    ref: ForwardedRef<HTMLInputElement>,
   ): JSX.Element => {
     const internalRef = useRef<HTMLInputElement>(null);
     const { control } = useFormContext();
@@ -48,6 +47,15 @@ export const ImageUpload = forwardRef(
       internalRef.current?.click();
     }, [internalRef]);
 
+    const onKeyDownContainer = useCallback(
+      (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === "Enter" || event.key === " ") {
+          onClickContainer();
+        }
+      },
+      [onClickContainer],
+    );
+
     const onChangeInputImage = useCallback(
       (event: ChangeEvent<HTMLInputElement>, onChange: (event: string) => void) => {
         const [file] = event.target.files ?? [];
@@ -67,9 +75,20 @@ export const ImageUpload = forwardRef(
         control={control}
         name={name}
         render={({ field: { value, onChange, ...field } }) => (
-          // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
-          <div className={clsx("relative cursor-pointer overflow-hidden", className)} onClick={onClickContainer}>
-            <IconButton className="absolute bottom-1 right-1" icon={ImageIcon} onClick={onClickIconButton} />
+          <div
+            ref={ref}
+            className={clsx("relative cursor-pointer overflow-hidden", className)}
+            role="button"
+            tabIndex={0}
+            onClick={onClickContainer}
+            onKeyDown={onKeyDownContainer}
+          >
+            <IconButton
+              className="absolute bottom-1 right-1"
+              icon={ImageIcon}
+              tabIndex={-1}
+              onClick={onClickIconButton}
+            />
 
             <div
               className={clsx("h-full rounded-xl bg-gray-200 bg-cover bg-center bg-no-repeat")}
