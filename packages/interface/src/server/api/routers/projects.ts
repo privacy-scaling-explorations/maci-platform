@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { FilterSchema } from "~/features/filter/types";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { fetchApprovedProjects, fetchProjects } from "~/utils/fetchProjects";
+import { fetchApprovedProjectsWithMetadata, fetchProjects } from "~/utils/fetchProjects";
 import { getProjectCount } from "~/utils/registry";
 
 import type { Chain, Hex } from "viem";
@@ -32,7 +32,7 @@ export const projectsRouter = createTRPCRouter({
     .input(FilterSchema.extend({ search: z.string(), registryAddress: z.string() }))
     .query(async ({ input }) =>
       // get the projects that are approved
-      fetchApprovedProjects(input.registryAddress),
+      fetchApprovedProjectsWithMetadata(input.search, input.registryAddress),
     ),
 
   projects: publicProcedure

@@ -1,6 +1,8 @@
 import { config } from "~/config";
+import { Application } from "~/features/applications/types";
 
 import { createCachedFetch } from "./fetch";
+import { fetchMetadata } from "./fetchMetadata";
 import { IRecipient } from "./types";
 
 const cachedFetch = createCachedFetch({ ttl: 1000 });
@@ -88,4 +90,47 @@ export async function fetchApprovedProjects(registryAddress: string): Promise<IR
   }));
 
   return recipients ?? [];
+}
+
+/**
+ * Fetch all approved projects with metadata
+ * @param search
+ * @param registryAddress
+ * @returns the projects with metadata values filtered by the search term
+ */
+export async function fetchApprovedProjectsWithMetadata(
+  search: string,
+  registryAddress: string,
+): Promise<(IRecipient | null)[]> {
+  const response = await cachedFetch<{ recipients: IRecipient[] }>(config.maciSubgraphUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      query: ApprovedProjects,
+      variables: { registryAddress },
+    }),
+  }).then((resp: GraphQLResponse) => resp.data?.recipients);
+
+  if (!response) {
+    return [];
+  }
+
+  const recipients = await Promise.all(
+    response.map(async (request) => {
+      const metadata = (await fetchMetadata(request.metadataUrl)) as unknown as Application;
+      const name = metadata.name.toLowerCase();
+      if (search !== "" && !name.includes(search.trim().toLowerCase())) {
+        return null;
+      }
+      return {
+        id: request.id,
+        metadataUrl: request.metadataUrl,
+        metadata,
+        payout: request.payout,
+        initialized: request.initialized,
+        index: request.index,
+      };
+    }),
+  );
+
+  return recipients.filter((r) => r !== null);
 }
