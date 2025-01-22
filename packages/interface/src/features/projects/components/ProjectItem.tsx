@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
@@ -42,57 +43,59 @@ export const ProjectItem = ({
   const impactCategory = recipient.impactCategory ? recipient.impactCategory : metadata.data?.impactCategory;
 
   return (
-    <article
-      className="dark:bg-lightBlack group w-96 rounded-xl bg-white shadow-lg hover:shadow-sm sm:w-full"
-      data-testid={`project-${recipient.id}`}
-    >
-      <div className="opacity-70 transition-opacity group-hover:opacity-100">
-        <ProjectBanner url={bannerImageUrl} />
+    <Link href={`/rounds/${pollId}/${recipient.id}`}>
+      <article
+        className="dark:bg-lightBlack group w-96 rounded-xl bg-white shadow-lg hover:shadow-sm sm:w-full"
+        data-testid={`project-${recipient.id}`}
+      >
+        <div className="opacity-70 transition-opacity group-hover:opacity-100">
+          <ProjectBanner url={bannerImageUrl} />
 
-        <ProjectAvatar className="-mt-8 ml-4" rounded="full" url={profileImageUrl} />
-      </div>
-
-      <div className="p-4 pt-2">
-        <Heading as="h3" className="truncate dark:text-white" size="lg">
-          <Skeleton isLoading={isLoading}>{name}</Skeleton>
-        </Heading>
-
-        <div className="mb-2 line-clamp-2 h-10 text-sm text-gray-400">
-          <Skeleton className="w-full" isLoading={isLoading}>
-            {removeMarkdown(bio || "")}
-          </Skeleton>
+          <ProjectAvatar className="-mt-8 ml-4" rounded="full" url={profileImageUrl} />
         </div>
 
-        <Skeleton className="w-[100px]" isLoading={isLoading}>
-          <ImpactCategories tags={impactCategory} />
-        </Skeleton>
+        <div className="p-4 pt-2">
+          <Heading as="h3" className="truncate dark:text-white" size="lg">
+            <Skeleton isLoading={isLoading}>{name}</Skeleton>
+          </Heading>
 
-        {!isLoading && state !== undefined && action && roundState === ERoundState.VOTING && (
-          <div className="flex justify-end pt-6">
-            <Skeleton>
-              {state === EProjectState.DEFAULT && (
-                <Button size="sm" variant="inverted" onClick={action}>
-                  Add to ballot
-                </Button>
-              )}
-
-              {state === EProjectState.ADDED && (
-                <Button size="sm" variant="primary" onClick={action}>
-                  Added
-                  <Image alt="check-white" height="18" src="/check-white.svg" width="18" />
-                </Button>
-              )}
-
-              {state === EProjectState.SUBMITTED && (
-                <Button size="sm" variant="disabled">
-                  Submitted
-                </Button>
-              )}
+          <div className="mb-2 line-clamp-2 h-10 text-sm text-gray-400">
+            <Skeleton className="w-full" isLoading={isLoading}>
+              {removeMarkdown(bio || "")}
             </Skeleton>
           </div>
-        )}
-      </div>
-    </article>
+
+          <Skeleton className="w-[100px]" isLoading={isLoading}>
+            <ImpactCategories tags={impactCategory} />
+          </Skeleton>
+
+          {!isLoading && state !== undefined && action && roundState === ERoundState.VOTING && (
+            <div className="flex justify-end pt-6">
+              <Skeleton>
+                {state === EProjectState.DEFAULT && (
+                  <Button size="sm" variant="inverted" onClick={action}>
+                    Add to ballot
+                  </Button>
+                )}
+
+                {state === EProjectState.ADDED && (
+                  <Button size="sm" variant="primary" onClick={action}>
+                    Added
+                    <Image alt="check-white" height="18" src="/check-white.svg" width="18" />
+                  </Button>
+                )}
+
+                {state === EProjectState.SUBMITTED && (
+                  <Button size="sm" variant="disabled">
+                    Submitted
+                  </Button>
+                )}
+              </Skeleton>
+            </div>
+          )}
+        </div>
+      </article>
+    </Link>
   );
 };
 
