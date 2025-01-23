@@ -16,10 +16,10 @@ export const AllocationInput = ({
   name,
   tokenAddon = false,
   onBlur,
+  disabled = false,
   ...props
 }: IAllocationInputProps): JSX.Element => {
   const form = useFormContext();
-
   return (
     <InputWrapper className="min-w-[132px]">
       <Controller
@@ -34,7 +34,7 @@ export const AllocationInput = ({
             {...field}
             autoComplete="off"
             defaultValue={props.defaultValue as string}
-            disabled={props.disabled}
+            disabled={disabled}
             max={votingMaxProject}
             min="0"
             type="number"
@@ -54,7 +54,7 @@ export const AllocationInput = ({
         )}
       />
 
-      {tokenAddon && <InputAddon disabled={props.disabled}>{config.tokenName}</InputAddon>}
+      {tokenAddon && <InputAddon disabled={disabled}>{config.tokenName}</InputAddon>}
     </InputWrapper>
   );
 };
