@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { FilterSchema } from "~/features/filter/types";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { fetchApprovedProjectsWithMetadata, fetchProjects } from "~/utils/fetchProjects";
+import { fetchApprovedProjectsWithMetadata, fetchProjects, fetchProjectsByAddress } from "~/utils/fetchProjects";
 import { getProjectCount } from "~/utils/registry";
 
 import type { Chain, Hex } from "viem";
@@ -38,6 +38,10 @@ export const projectsRouter = createTRPCRouter({
   projects: publicProcedure
     .input(FilterSchema.extend({ registryAddress: z.string() }))
     .query(async ({ input }) => fetchProjects(input.registryAddress)),
+
+  getMine: publicProcedure
+    .input(z.object({ registryAddress: z.string(), address: z.string() }))
+    .query(async ({ input }) => fetchProjectsByAddress(input.registryAddress, input.address)),
 
   // Used for distribution to get the projects' payoutAddress
   // To get this data we need to fetch all projects and their metadata

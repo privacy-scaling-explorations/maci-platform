@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useCallback, useDeferredValue, useMemo, useState } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { Hex, zeroAddress } from "viem";
+import { useAccount } from "wagmi";
 
 import { InfiniteLoading } from "~/components/InfiniteLoading";
 import { SortFilter } from "~/components/SortFilter";
@@ -12,6 +13,7 @@ import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
+import { useMyApplications } from "~/features/applications/hooks/useApplications";
 import { useResults } from "~/hooks/useResults";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
@@ -29,6 +31,8 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
   const deferredSearchTerm = useDeferredValue(searchTerm);
 
   const roundState = useRoundState({ pollId });
+
+  const { address } = useAccount();
 
   const { getRoundByPollId } = useRound();
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
@@ -49,6 +53,13 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
   );
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
+
+  /**
+   *  Find my applications: "I" am either the "creator" or the "payout address"
+   */
+  const applications = useMyApplications(round?.registryAddress ?? zeroAddress, address ?? zeroAddress);
+
+  const myApplications = useMemo(() => applications.data, [applications]);
 
   const handleAction = useCallback(
     (projectIndex: number, projectId: string) => (e: Event) => {
@@ -125,24 +136,36 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
         </div>
       </div>
 
-      {roundState === ERoundState.APPLICATION && (
-        <div className="mb-4 flex w-full justify-end">
-          <Link href={`/rounds/${pollId}/applications/new`}>
-            <Button size="auto" variant="primary">
-              Create Application
-            </Button>
-          </Link>
+      {roundState === ERoundState.APPLICATION && address && (
+        <div className="mb-4 rounded-md border border-black p-4 dark:border-white">
+          <div className="flex justify-between">
+            <Heading size="xl">My Projects</Heading>
+
+            <Link href={`/rounds/${pollId}/applications/new`}>
+              <Button size="auto" variant="primary">
+                Create Application
+              </Button>
+            </Link>
+          </div>
+
+          <div className="my-4 gap-4 md:grid md:grid-cols-2 lg:grid lg:grid-cols-3">
+            {myApplications &&
+              myApplications.length > 0 &&
+              myApplications.map((project) => (
+                <ProjectItem key={project.id} isLoading={false} pollId={pollId} recipient={project} />
+              ))}
+
+            {(!myApplications || myApplications.length === 0) && (
+              <p className="text-gray-400">Create your application by clicking the button</p>
+            )}
+          </div>
         </div>
       )}
 
       <InfiniteLoading
         {...projects}
         renderItem={(item, { isLoading }) => (
-          <Link
-            key={item.id}
-            className={clsx("relative", { "animate-pulse": isLoading })}
-            href={`/rounds/${pollId}/${item.id}`}
-          >
+          <div key={item.id} className={clsx("relative", { "animate-pulse": isLoading })}>
             {!results.isLoading && roundState === ERoundState.RESULTS ? (
               <ProjectItemAwarded amount={results.data?.projects[item.id]?.votes} />
             ) : null}
@@ -154,7 +177,7 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
               recipient={item}
               state={defineState(Number.parseInt(item.index, 10))}
             />
-          </Link>
+          </div>
         )}
       />
     </div>

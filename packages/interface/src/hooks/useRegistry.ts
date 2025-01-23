@@ -22,7 +22,7 @@ interface SubmitApplicationArgs {
    */
   registryAddress: Hex;
   /**
-   * The recipient of the attestation
+   * The recipient of the application
    */
   recipient: Hex;
 }
