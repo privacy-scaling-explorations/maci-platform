@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
-import { useCallback, useMemo } from "react";
+import { useCallback, useDeferredValue, useMemo, useState } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { Hex, zeroAddress } from "viem";
 import { useAccount } from "wagmi";
@@ -27,6 +27,9 @@ export interface IProjectsProps {
 }
 
 export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const deferredSearchTerm = useDeferredValue(searchTerm);
+
   const roundState = useRoundState({ pollId });
 
   const { address } = useAccount();
@@ -34,7 +37,11 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
   const { getRoundByPollId } = useRound();
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
 
-  const projects = useSearchProjects({ pollId, search: "", registryAddress: round?.registryAddress ?? zeroAddress });
+  const projects = useSearchProjects({
+    pollId,
+    search: deferredSearchTerm,
+    registryAddress: round?.registryAddress ?? zeroAddress,
+  });
 
   const { isRegistered } = useMaci();
   const { addToBallot, removeFromBallot, ballotContains, getBallot } = useBallot();
@@ -125,7 +132,7 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
         </Heading>
 
         <div>
-          <SortFilter />
+          <SortFilter onSearchChange={setSearchTerm} />
         </div>
       </div>
 

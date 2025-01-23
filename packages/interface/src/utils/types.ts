@@ -1,3 +1,5 @@
+import { Application } from "~/features/applications/types";
+
 import type { IGetPollData } from "maci-cli/sdk";
 import type { Address, Hex } from "viem";
 
@@ -229,6 +231,10 @@ export interface IRecipient {
    * The recipient metadata url
    */
   metadataUrl: string;
+  /**
+   * The recipient metadata values
+   */
+  metadata?: Application;
   /**
    * The recipient address
    */
