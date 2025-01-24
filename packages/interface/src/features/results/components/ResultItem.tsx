@@ -26,7 +26,7 @@ export const ResultItem = ({ pollId, rank, project }: IResultItemProps): JSX.Ele
 
   return (
     <Link href={`/rounds/${pollId}/${project.id}`}>
-      <div className="flex cursor-pointer leading-8 hover:bg-blue-50">
+      <div className="flex cursor-pointer leading-8 hover:bg-blue-50 dark:hover:bg-blue-50/10">
         <div className="my-1 w-8 flex-none justify-center">
           {rank === 1 && <Image alt="gold" height="26" src="/gold.svg" width="26" />}
 
@@ -35,11 +35,11 @@ export const ResultItem = ({ pollId, rank, project }: IResultItemProps): JSX.Ele
           {rank === 3 && <Image alt="bronze" height="26" src="/bronze.svg" width="26" />}
         </div>
 
-        <div className="w-6 flex-none text-center">{rank}</div>
+        <div className="w-6 flex-none text-center dark:text-white">{rank}</div>
 
-        <div className="mx-2 flex-1">{metadata.data?.name}</div>
+        <div className="mx-2 flex-1 dark:text-white">{metadata.data?.name}</div>
 
-        <div className="w-24 flex-none text-end">{`${project.votes} votes`}</div>
+        <div className="w-24 flex-none text-end dark:text-white">{`${project.votes} votes`}</div>
       </div>
     </Link>
   );
