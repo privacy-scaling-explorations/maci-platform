@@ -3,6 +3,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { RiGlobalLine } from "react-icons/ri";
 
 import { Link } from "~/components/ui/Link";
+import { prefixes } from "~/config";
 import useScreenSize from "~/hooks/useScreenSize";
 
 interface IProjectContactsProps {
@@ -23,34 +24,42 @@ export const ProjectContacts = ({
   return (
     <div className="my-8 grid w-full grid-cols-1 gap-4 border-y border-gray-200 px-2 py-4 text-blue-400 xl:grid-cols-2">
       {author && (
-        <Link href={`https://etherscan.io/address/${author}`} target="_blank">
-          <FaEthereum />
+        <div className="w-full">
+          <Link className="w-fit" href={`${prefixes.ETHER_PREFIX}${author}`} target="_blank">
+            <FaEthereum />
 
-          {width <= 640 ? `${author.slice(0, 6)}...${author.slice(-4)}` : author}
-        </Link>
+            {width <= 640 ? `${author.slice(0, 6)}...${author.slice(-4)}` : author}
+          </Link>
+        </div>
       )}
 
       {twitter && (
-        <Link href="https://x.com" target="_blank">
-          <FaXTwitter />
-          x.com
-        </Link>
+        <div className="w-full">
+          <Link className="w-fit" href={`${prefixes.TWITTER_PREFIX}${twitter}`} target="_blank">
+            <FaXTwitter />
+            x.com
+          </Link>
+        </div>
       )}
 
       {website && (
-        <Link href={website} target="_blank">
-          <RiGlobalLine />
+        <div className="w-full">
+          <Link className="w-fit" href={website} target="_blank">
+            <RiGlobalLine />
 
-          {website}
-        </Link>
+            {website}
+          </Link>
+        </div>
       )}
 
       {github && (
-        <Link href="https://github.com" target="_blank">
-          <FaGithub />
+        <div className="w-full">
+          <Link className="w-fit" href={`${prefixes.GITHUB_PREFIX}${github}`} target="_blank">
+            <FaGithub />
 
-          {github}
-        </Link>
+            {github}
+          </Link>
+        </div>
       )}
     </div>
   );

@@ -127,3 +127,9 @@ export const impactCategories = {
   DEVELOPER_ECOSYSTEM: { label: "Developer Ecosystem" },
   END_USER_EXPERIENCE_AND_ADOPTION: { label: "End user UX" },
 } as const;
+
+export const prefixes = {
+  GITHUB_PREFIX: "https://github.com/",
+  TWITTER_PREFIX: "https://x.com/",
+  ETHER_PREFIX: "https://etherscan.io/address/",
+};
