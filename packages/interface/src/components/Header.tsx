@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
-import { type ComponentPropsWithRef, useState, useCallback, useMemo } from "react";
+import { type ComponentPropsWithRef, useState, useCallback, useMemo, useEffect } from "react";
 
 import { useBallot } from "~/contexts/Ballot";
 import { useRoundState } from "~/utils/state";
@@ -67,6 +67,14 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
   const { theme, setTheme } = useTheme();
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
+
+  // set default theme to light if it's not set
+  useEffect(() => {
+    const defaultTheme = theme === "dark" ? "dark" : "light";
+    if (!["dark", "light"].includes(theme ?? "")) {
+      setTheme(defaultTheme);
+    }
+  }, []);
 
   const handleChangeTheme = useCallback(() => {
     setTheme(theme === "light" ? "dark" : "light");
