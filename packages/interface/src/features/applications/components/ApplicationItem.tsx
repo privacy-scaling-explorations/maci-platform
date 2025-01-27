@@ -56,7 +56,9 @@ export const ApplicationItem = ({
         </label>
 
         <div className="flex flex-[5] items-center gap-4 sm:flex-[8]">
-          <ProjectAvatar isLoading={isLoading} size="sm" url={profileImageUrl} />
+          <div className="flex items-center justify-center">
+            <ProjectAvatar isLoading={isLoading} size="sm" url={profileImageUrl} />
+          </div>
 
           <div className="flex flex-col">
             <Skeleton className="mb-1 min-h-5 min-w-24" isLoading={isLoading}>
