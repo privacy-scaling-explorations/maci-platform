@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import Link from "next/link";
 import { useMemo, type ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
 import Markdown from "react-markdown";
@@ -7,7 +8,7 @@ import { useAccount } from "wagmi";
 
 import { Heading } from "~/components/ui/Heading";
 import { Tag } from "~/components/ui/Tag";
-import { impactCategories } from "~/config";
+import { impactCategories, prefixes } from "~/config";
 import { ProjectItem } from "~/features/projects/components/ProjectItem";
 
 import type { Application } from "../types";
@@ -17,44 +18,31 @@ import { LinkField } from "./LinkField";
 interface IValueFieldProps {
   title: string;
   body?: ReactNode;
+  link?: string;
   required?: boolean;
 }
 
-const ValueField = ({ title, body = undefined, required = false }: IValueFieldProps): JSX.Element => {
+const ValueField = ({ title, body = undefined, link = undefined, required = false }: IValueFieldProps): JSX.Element => {
   const emptyPlaceholder = "(empty)";
 
   return (
     <div className="flex flex-col gap-2 text-xs sm:text-sm">
       <b className={clsx(required && "after:text-blue-400 after:content-['*']")}>{title}</b>
 
-      <div className="text-light flex flex-wrap gap-2 break-all text-gray-400">
+      <div className="text-light flex flex-col flex-wrap gap-2 break-all text-gray-400">
         {body === undefined && emptyPlaceholder}
 
         {Array.isArray(body) && body.length === 0 && emptyPlaceholder}
 
         {typeof body === "string" && body.length === 0 && emptyPlaceholder}
 
-        {((typeof body === "string" && body.length > 0) || typeof body !== "string") && body}
-      </div>
-    </div>
-  );
-};
+        {((typeof body === "string" && body.length > 0) || typeof body !== "string") && link && (
+          <Link className="hover:underline" href={link} target="_blank">
+            {body}
+          </Link>
+        )}
 
-const MarkdownField = ({ title, body = undefined, required = false }: IValueFieldProps): JSX.Element => {
-  const emptyPlaceholder = "(empty)";
-
-  return (
-    <div className="flex flex-col gap-2 ">
-      <b className={clsx(required && "text-xs after:text-blue-400 after:content-['*'] sm:text-sm")}>{title}</b>
-
-      <div className="text-light flex flex-col flex-wrap gap-2 text-gray-400">
-        {body === undefined && emptyPlaceholder}
-
-        {Array.isArray(body) && body.length === 0 && emptyPlaceholder}
-
-        {typeof body === "string" && body.length === 0 && emptyPlaceholder}
-
-        {((typeof body === "string" && body.length > 0) || typeof body !== "string") && body}
+        {((typeof body === "string" && body.length > 0) || typeof body !== "string") && !link && body}
       </div>
     </div>
   );
@@ -82,16 +70,29 @@ export const ReviewApplicationDetails = (): JSX.Element => {
 
         <ValueField required body={address} title="Created By" />
 
-        <MarkdownField required body={<Markdown>{application.bio}</Markdown>} title="Project description" />
+        <ValueField required body={<Markdown>{application.bio}</Markdown>} title="Project description" />
 
         <div className="grid grid-flow-row gap-4 sm:grid-cols-2">
-          <ValueField required body={application.websiteUrl} title="Website" />
+          <ValueField required body={application.websiteUrl} link={application.websiteUrl} title="Website" />
 
-          <ValueField required body={application.payoutAddress} title="Payout address" />
+          <ValueField
+            required
+            body={application.payoutAddress}
+            link={`${prefixes.ETHER_PREFIX}${application.payoutAddress}`}
+            title="Payout address"
+          />
 
-          <ValueField body={application.twitter} title="X(Twitter)" />
+          <ValueField
+            body={application.twitter}
+            link={application.twitter ? `${prefixes.TWITTER_PREFIX}${application.twitter}` : undefined}
+            title="X(Twitter)"
+          />
 
-          <ValueField body={application.github} title="Github" />
+          <ValueField
+            body={application.github}
+            link={application.github ? `${prefixes.GITHUB_PREFIX}${application.github}` : undefined}
+            title="Github"
+          />
         </div>
 
         <div className="gap-6 sm:flex">
@@ -122,27 +123,27 @@ export const ReviewApplicationDetails = (): JSX.Element => {
       <div className="flex flex-col gap-6 dark:text-white">
         <b className="text-lg">Contribution & Impact</b>
 
-        <MarkdownField
+        <ValueField
           required
           body={<Markdown>{application.contributionDescription}</Markdown>}
           title="Contribution description"
         />
 
-        <MarkdownField
-          required
-          body={<Markdown>{application.impactDescription}</Markdown>}
-          title="Impact description"
-        />
+        <ValueField required body={<Markdown>{application.impactDescription}</Markdown>} title="Impact description" />
 
         <ValueField
           required
-          body={application.impactCategory?.map((tag) => (
-            <Tag key={tag} selected size="sm">
-              {Object.keys(impactCategories).includes(tag) && (
-                <span>{impactCategories[tag as keyof typeof impactCategories].label}</span>
-              )}
-            </Tag>
-          ))}
+          body={
+            <div className="flex">
+              {application.impactCategory?.map((tag) => (
+                <Tag key={tag} selected size="sm">
+                  {Object.keys(impactCategories).includes(tag) && (
+                    <span>{impactCategories[tag as keyof typeof impactCategories].label}</span>
+                  )}
+                </Tag>
+              ))}
+            </div>
+          }
           title="Impact categories"
         />
 
