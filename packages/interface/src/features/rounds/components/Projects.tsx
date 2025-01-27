@@ -14,9 +14,10 @@ import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
 import { useMyApplications } from "~/features/applications/hooks/useApplications";
+import { useRandomizedProjects } from "~/hooks/useRandomizedProjects";
 import { useResults } from "~/hooks/useResults";
 import { useRoundState } from "~/utils/state";
-import { ERoundState } from "~/utils/types";
+import { ERoundState, IRecipient } from "~/utils/types";
 
 import { ProjectItem, ProjectItemAwarded } from "../../projects/components/ProjectItem";
 import { useSearchProjects } from "../../projects/hooks/useProjects";
@@ -42,6 +43,8 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
     search: deferredSearchTerm,
     registryAddress: round?.registryAddress ?? zeroAddress,
   });
+
+  const randomizedProjects = useRandomizedProjects(projects, pollId);
 
   const { isRegistered } = useMaci();
   const { addToBallot, removeFromBallot, ballotContains, getBallot } = useBallot();
@@ -163,8 +166,8 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
       )}
 
       <InfiniteLoading
-        {...projects}
-        renderItem={(item, { isLoading }) => (
+        {...randomizedProjects}
+        renderItem={(item: IRecipient, { isLoading }) => (
           <div key={item.id} className={clsx("relative", { "animate-pulse": isLoading })}>
             {!results.isLoading && roundState === ERoundState.RESULTS ? (
               <ProjectItemAwarded amount={results.data?.projects[item.id]?.votes} />
