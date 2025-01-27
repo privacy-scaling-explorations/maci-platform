@@ -6,7 +6,7 @@ import { type PropsWithChildren, createContext, useContext, useEffect, useCallba
 import { tv } from "tailwind-variants";
 import { useAccount } from "wagmi";
 
-import { Footer } from "~/components/Footer";
+import Footer from "~/components/Footer";
 import { createComponent } from "~/components/ui";
 import { metadata } from "~/config";
 

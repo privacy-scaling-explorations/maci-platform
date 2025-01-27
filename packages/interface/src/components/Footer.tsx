@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { FaGithub, FaDiscord } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -9,7 +10,7 @@ import { Logo } from "./ui/Logo";
 
 const feedbackUrl = process.env.NEXT_PUBLIC_FEEDBACK_URL!;
 
-export const Footer = (): JSX.Element => {
+const Footer = (): JSX.Element => {
   const isMobile = useIsMobile();
 
   return (
@@ -69,3 +70,5 @@ export const Footer = (): JSX.Element => {
     </footer>
   );
 };
+
+export default dynamic(async () => Promise.resolve(Footer), { ssr: false });
