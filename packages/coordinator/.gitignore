@@ -5,3 +5,6 @@ proofs/
 tally.json
 session-keys.json
 round-metadata.json
+
+deploy-config.json
+deployed-contracts.json

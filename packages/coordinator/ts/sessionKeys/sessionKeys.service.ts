@@ -11,7 +11,7 @@ import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import type { Chain, Hex, HttpTransport, Transport } from "viem";
 
 import { ErrorCodes, ESupportedNetworks } from "../common";
-import { getPublicClient } from "../common/accountAbstraction";
+import { getPublicClient, getZeroDevBundlerRPCUrl } from "../common/accountAbstraction";
 import { viemChain } from "../common/networks";
 import { FileService } from "../file/file.service";
 
@@ -105,7 +105,7 @@ export class SessionKeysService {
       );
 
       return createKernelAccountClient({
-        bundlerTransport: http(process.env.ZERODEV_BUNDLER_RPC),
+        bundlerTransport: http(getZeroDevBundlerRPCUrl(chain)),
         entryPoint: ENTRYPOINT_ADDRESS_V07,
         account: sessionKeyAccount,
         chain: viemChain(chain),

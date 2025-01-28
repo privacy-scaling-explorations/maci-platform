@@ -3,9 +3,18 @@ import { toECDSASigner } from "@zerodev/permissions/signers";
 import { createKernelAccountClient, KernelAccountClient, KernelSmartAccount } from "@zerodev/sdk";
 import { KERNEL_V3_1 } from "@zerodev/sdk/constants";
 import dotenv from "dotenv";
-import { ENTRYPOINT_ADDRESS_V07 } from "permissionless";
+import { BundlerClient, createBundlerClient, ENTRYPOINT_ADDRESS_V07 } from "permissionless";
 import { ENTRYPOINT_ADDRESS_V07_TYPE } from "permissionless/types";
-import { createPublicClient, http, type HttpTransport, type Transport, type Hex, type PublicClient, Chain } from "viem";
+import {
+  createPublicClient,
+  http,
+  type HttpTransport,
+  type Transport,
+  type Hex,
+  type PublicClient,
+  Chain,
+  TransactionReceipt,
+} from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 
 import { ErrorCodes } from "./errors";
@@ -63,6 +72,59 @@ export const getPublicClient = (chainName: ESupportedNetworks): PublicClient<Htt
     transport: http(genAlchemyRPCUrl(chainName)),
     chain: viemChain(chainName),
   });
+
+/**
+ * Get the ZeroDev bundler RPC URL based on the network
+ *
+ * @param network - the network we are on
+ * @returns the ZeroDev bundler RPC URL
+ */
+export const getZeroDevBundlerRPCUrl = (network: ESupportedNetworks): string => {
+  switch (network) {
+    case ESupportedNetworks.OPTIMISM_SEPOLIA:
+      return process.env.ZERODEV_BUNDLER_RPC_OP_SEPOLIA || "";
+    case ESupportedNetworks.OPTIMISM:
+      return process.env.ZERODEV_BUNDLER_RPC_OP || "";
+    default:
+      throw new Error(ErrorCodes.UNSUPPORTED_NETWORK.toString());
+  }
+};
+
+/**
+ * Get a bundler client
+ *
+ * @param chainName - the chain name
+ * @returns the bundler client
+ */
+export const getBundlerClient = (chainName: ESupportedNetworks): BundlerClient<ENTRYPOINT_ADDRESS_V07_TYPE> =>
+  createBundlerClient({
+    transport: http(genPimlicoRPCUrl(chainName)),
+    chain: viemChain(chainName),
+    entryPoint: ENTRYPOINT_ADDRESS_V07,
+  });
+
+/**
+ * The topic for the contract creation event
+ */
+export const contractCreationEventTopic = "0x4db17dd5e4732fb6da34a148104a592783ca119a1e7bb8829eba6cbadef0b511";
+
+/**
+ * The offset for the address in the contract creation event
+ */
+export const addressOffset = 26;
+
+/**
+ * Get the address of the newly deployed contract from a transaction receipt
+ * @param receipt - The transaction receipt
+ * @returns The address of the newly deployed contract
+ */
+export const getDeployedContractAddress = (receipt: TransactionReceipt): string | undefined => {
+  const addr = receipt.logs.find((log) => log.topics[0] === contractCreationEventTopic);
+
+  const deployedAddress = addr ? `0x${addr.topics[1]?.slice(addressOffset)}` : undefined;
+
+  return deployedAddress;
+};
 
 /**
  * Get a Kernel account handle given a session key
