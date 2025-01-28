@@ -299,8 +299,8 @@ importers:
         specifier: ^11.0.2
         version: 11.0.2(@types/node@20.14.14)
       '@nestjs/schematics':
-        specifier: ^11.0.0
-        version: 11.0.0(chokidar@4.0.3)(typescript@5.7.2)
+        specifier: ^10.1.2
+        version: 10.1.3(chokidar@3.6.0)(typescript@5.7.2)
       '@nestjs/testing':
         specifier: ^10.4.15
         version: 10.4.15(@nestjs/common@10.4.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.7(@nestjs/common@10.4.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.7)(@nestjs/websockets@10.4.7)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.7(@nestjs/common@10.4.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.7))
@@ -2864,6 +2864,11 @@ packages:
     peerDependencies:
       typescript: '>=4.8.2'
 
+  '@nestjs/schematics@11.0.0':
+    resolution: {integrity: sha512-wts8lG0GfNWw3Wk9aaG5I/wcMIAdm7HjjeThQfUZhJxeIFT82Z3F5+0cYdHH4ii2pYQGiCSrR1VcuMwPiHoecg==}
+    peerDependencies:
+      typescript: '>=4.8.2'
+
   '@nestjs/swagger@8.0.3':
     resolution: {integrity: sha512-bAke1vMMiRivLPWQQiLSDCv7U+wO9COVHQSylv2kyAkW1EYU3R/D/l2FJvopSOPV3bLrysaOxSU8kIYPeebfmw==}
     peerDependencies:
@@ -4287,13 +4292,13 @@ packages:
     cpu: [x64]
     os: [darwin]
 
-  '@rollup/rollup-darwin-x64@4.32.0':
-    resolution: {integrity: sha512-F9ct0+ZX5Np6+ZDztxiGCIvlCaW87HBdHcozUfsHnj1WCUTBUubAoanhHUfnUHZABlElyRikI0mgcw/qdEm2VQ==}
+  '@rollup/rollup-darwin-x64@4.31.0':
+    resolution: {integrity: sha512-hrWL7uQacTEF8gdrQAqcDy9xllQ0w0zuL1wk1HV8wKGSGbKPVjVUv/DEwT2+Asabf8Dh/As+IvfdU+H8hhzrQQ==}
     cpu: [x64]
     os: [darwin]
 
-  '@rollup/rollup-freebsd-arm64@4.32.0':
-    resolution: {integrity: sha512-JpsGxLBB2EFXBsTLHfkZDsXSpSmKD3VxXCgBQtlPcuAqB8TlqtLcbeMhxXQkCDv1avgwNjF8uEIbq5p+Cee0PA==}
+  '@rollup/rollup-freebsd-arm64@4.31.0':
+    resolution: {integrity: sha512-S2oCsZ4hJviG1QjPY1h6sVJLBI6ekBeAEssYKad1soRFv3SocsQCzX6cwnk6fID6UQQACTjeIMB+hyYrFacRew==}
     cpu: [arm64]
     os: [freebsd]
 
@@ -4327,8 +4332,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  '@rollup/rollup-linux-arm64-gnu@4.32.0':
-    resolution: {integrity: sha512-r7/OTF5MqeBrZo5omPXcTnjvv1GsrdH8a8RerARvDFiDwFpDVDnJyByYM/nX+mvks8XXsgPUxkwe/ltaX2VH7w==}
+  '@rollup/rollup-linux-arm64-gnu@4.31.0':
+    resolution: {integrity: sha512-JyFFshbN5xwy6fulZ8B/8qOqENRmDdEkcIMF0Zz+RsfamEW+Zabl5jAb0IozP/8UKnJ7g2FtZZPEUIAlUSX8cA==}
     cpu: [arm64]
     os: [linux]
 
@@ -4337,8 +4342,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  '@rollup/rollup-linux-arm64-musl@4.32.0':
-    resolution: {integrity: sha512-HJbifC9vex9NqnlodV2BHVFNuzKL5OnsV2dvTw6e1dpZKkNjPG6WUq+nhEYV6Hv2Bv++BXkwcyoGlXnPrjAKXw==}
+  '@rollup/rollup-linux-arm64-musl@4.31.0':
+    resolution: {integrity: sha512-kpQXQ0UPFeMPmPYksiBL9WS/BDiQEjRGMfklVIsA0Sng347H8W2iexch+IEwaR7OVSKtr2ZFxggt11zVIlZ25g==}
     cpu: [arm64]
     os: [linux]
 
@@ -14636,7 +14641,7 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@angular-devkit/core@19.0.1(chokidar@4.0.3)':
+  '@angular-devkit/core@17.3.8(chokidar@3.6.0)':
     dependencies:
       ajv: 8.12.0
       ajv-formats: 2.1.1(ajv@8.12.0)
@@ -14648,7 +14653,7 @@ snapshots:
       chokidar: 4.0.3
       chokidar: 4.0.3
 
-  '@angular-devkit/core@19.1.3(chokidar@4.0.3)':
+  '@angular-devkit/schematics-cli@17.3.8(chokidar@3.6.0)':
     dependencies:
       '@angular-devkit/core': 17.3.8(chokidar@3.6.0)
       '@angular-devkit/schematics': 17.3.8(chokidar@3.6.0)
@@ -14660,38 +14665,23 @@ snapshots:
       - '@types/node'
       - chokidar
 
-  '@angular-devkit/schematics-cli@19.1.3(@types/node@20.14.14)(chokidar@4.0.3)':
+  '@angular-devkit/schematics@17.3.8(chokidar@3.6.0)':
     dependencies:
-      '@angular-devkit/core': 19.1.3(chokidar@4.0.3)
-      '@angular-devkit/schematics': 19.1.3(chokidar@4.0.3)
-      '@inquirer/prompts': 7.2.1(@types/node@20.14.14)
-      ajv: 8.17.1
-      ajv-formats: 3.0.1(ajv@8.17.1)
-      jsonc-parser: 3.3.1
-      picomatch: 4.0.2
+      '@angular-devkit/core': 17.3.8(chokidar@3.6.0)
+      jsonc-parser: 3.2.1
+      magic-string: 0.30.8
+      ora: 5.4.1
       rxjs: 7.8.1
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/core@19.1.3(chokidar@4.0.3)':
+  '@angular-devkit/schematics@17.3.8(chokidar@3.6.0)':
     dependencies:
-      ajv: 8.17.1
-      ajv-formats: 3.0.1(ajv@8.17.1)
-      jsonc-parser: 3.3.1
-      picomatch: 4.0.2
+      '@angular-devkit/core': 17.3.8(chokidar@3.6.0)
+      jsonc-parser: 3.2.1
+      magic-string: 0.30.8
+      ora: 5.4.1
       rxjs: 7.8.1
-      source-map: 0.7.4
-    optionalDependencies:
-      chokidar: 4.0.3
-
-  '@angular-devkit/schematics-cli@19.1.3(@types/node@20.14.14)(chokidar@4.0.3)':
-    dependencies:
-      '@angular-devkit/core': 19.1.3(chokidar@4.0.3)
-      '@angular-devkit/schematics': 19.1.3(chokidar@4.0.3)
-      '@inquirer/prompts': 7.2.1(@types/node@20.14.14)
-      ansi-colors: 4.1.3
-      symbol-observable: 4.0.0
-      yargs-parser: 21.1.1
     transitivePeerDependencies:
       - chokidar
 
@@ -15735,6 +15725,9 @@ snapshots:
       commander: 13.1.0
 
   '@commitlint/cli@19.4.0(@types/node@22.10.7)(typescript@5.7.2)':
+=======
+  '@commitlint/cli@19.4.0(@types/node@22.10.10)(typescript@5.7.2)':
+>>>>>>> fea264a (chore(deps-dev): bump is-ci from 3.0.1 to 4.1.0)
     dependencies:
       '@commitlint/format': 19.3.0
       '@commitlint/lint': 19.2.2
@@ -17590,11 +17583,11 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nestjs/schematics@11.0.0(chokidar@4.0.3)(typescript@5.7.2)':
+  '@nestjs/schematics@10.1.3(chokidar@3.6.0)(typescript@5.3.3)':
     dependencies:
-      '@angular-devkit/core': 19.0.1(chokidar@4.0.3)
-      '@angular-devkit/schematics': 19.0.1(chokidar@4.0.3)
-      comment-json: 4.2.5
+      '@angular-devkit/core': 17.3.8(chokidar@3.6.0)
+      '@angular-devkit/schematics': 17.3.8(chokidar@3.6.0)
+      comment-json: 4.2.3
       jsonc-parser: 3.3.1
       pluralize: 8.0.0
       typescript: 5.7.2
@@ -20967,7 +20960,7 @@ snapshots:
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 22.10.7
     optional: true
 
   '@typescript-eslint/eslint-plugin@7.0.0(@typescript-eslint/parser@7.18.0(eslint@8.57.0)(typescript@5.7.2))(eslint@8.57.0)(typescript@5.7.2)':
@@ -27778,7 +27771,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 22.10.7
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -28752,10 +28745,6 @@ snapshots:
       - typechain
       - typescript
       - utf-8-validate
-
-  magic-string@0.30.8:
-    dependencies:
-      '@jridgewell/sourcemap-codec': 1.5.0
 
   magic-string@0.30.12:
     dependencies:
@@ -30631,7 +30620,7 @@ snapshots:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.2
-      '@types/node': 22.9.0
+      '@types/node': 22.10.7
       long: 4.0.0
 
   protocols@2.0.1: {}
@@ -31895,7 +31884,7 @@ snapshots:
       shelljs: 0.8.5
       web3-utils: 1.10.4
 
-  solidity-coverage@0.8.12(hardhat@2.22.18(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)):
+  solidity-docgen@0.6.0-beta.36(hardhat@2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)):
     dependencies:
       '@ethersproject/abi': 5.7.0
       '@solidity-parser/parser': 0.18.0
@@ -31921,7 +31910,7 @@ snapshots:
   solidity-docgen@0.6.0-beta.36(hardhat@2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)):
     dependencies:
       handlebars: 4.7.8
-      hardhat: 2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
+      hardhat: 2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@22.2.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
       solidity-ast: 0.4.56
 
   solidity-docgen@0.6.0-beta.36(hardhat@2.22.18(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)):
