@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import { Body, Controller, Delete, Get, HttpStatus, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from "@nestjs/swagger";
 
@@ -30,8 +29,8 @@ export class SessionKeysController {
   @ApiResponse({ status: HttpStatus.FORBIDDEN, description: "Forbidden" })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "BadRequest" })
   @Get("generate")
-  async generateSessionKey(): Promise<IGenerateSessionKeyReturn> {
-    return Promise.resolve(this.sessionKeysService.generateSessionKey());
+  generateSessionKey(): IGenerateSessionKeyReturn {
+    return this.sessionKeysService.generateSessionKey();
   }
 
   /**
