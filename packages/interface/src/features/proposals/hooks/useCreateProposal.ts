@@ -7,31 +7,28 @@ import { useRound } from "~/contexts/Round";
 import { type TransactionError } from "~/features/voters/hooks/useApproveVoters";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { useUploadMetadata } from "~/hooks/useMetadata";
-import { useSubmitApplication } from "~/hooks/useRegistry";
+import { useSubmitAddRequest } from "~/hooks/useRegistry";
 import { getRegistryManagerContract } from "~/utils/registry";
 
-import type { Application } from "../types";
+import type { Metadata } from "../types";
 
-export type TUseCreateApplicationReturn = Omit<
-  UseMutationResult<bigint, Error | TransactionError, Application>,
-  "error"
-> & {
+export type TUseCreateProposalReturn = Omit<UseMutationResult<bigint, Error | TransactionError, Metadata>, "error"> & {
   error: Error | TransactionError | null;
   isPending: boolean;
   isSuccess: boolean;
 };
 
 /**
- * Hook to create an application
+ * Hook to create a propject proposal
  *
  * @param options - Options for the hook
  * @returns the result of the mutation
  */
-export function useCreateApplication(options: {
+export function useCreateProposal(options: {
   onSuccess: (id: bigint) => void;
   onError: (err: Error) => void;
   pollId: string;
-}): TUseCreateApplicationReturn {
+}): TUseCreateProposalReturn {
   const upload = useUploadMetadata();
 
   const { chain, address } = useAccount();
@@ -39,11 +36,11 @@ export function useCreateApplication(options: {
 
   const roundData = getRoundByPollId(options.pollId);
 
-  const submitApplication = useSubmitApplication();
+  const submitProposal = useSubmitAddRequest();
   const signer = useEthersSigner();
 
   const mutation = useMutation({
-    mutationFn: async (values: Application) => {
+    mutationFn: async (values: Metadata) => {
       if (!signer || !chain || !address) {
         throw new Error("Please connect your wallet first");
       }
@@ -78,18 +75,18 @@ export function useCreateApplication(options: {
 
       const recipient = values.payoutAddress as Hex;
 
-      // now we submit the approval request
-      const res = await submitApplication.mutateAsync({
+      // now we submit the proposal
+      const res = await submitProposal.mutateAsync({
         metadataUrl: uploadRes.url,
         recipient,
         registryAddress: roundData.registryAddress as Hex,
       });
 
       if (res.status !== "success") {
-        throw new Error("Failed to submit application");
+        throw new Error("Failed to submit proposal");
       }
 
-      // get the last application id
+      // get the last request id
       const publicClient = createPublicClient({
         transport: custom(window.ethereum!),
         chain,
@@ -111,8 +108,8 @@ export function useCreateApplication(options: {
 
   return {
     ...mutation,
-    error: submitApplication.error ?? upload.error ?? mutation.error,
-    isPending: submitApplication.isPending || upload.isPending,
-    isSuccess: submitApplication.isSuccess && upload.isSuccess,
+    error: submitProposal.error ?? upload.error ?? mutation.error,
+    isPending: submitProposal.isPending || upload.isPending,
+    isSuccess: submitProposal.isSuccess && upload.isSuccess,
   };
 }

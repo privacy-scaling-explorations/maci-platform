@@ -11,7 +11,7 @@ import { Tag } from "~/components/ui/Tag";
 import { impactCategories, prefixes } from "~/config";
 import { ProjectItem } from "~/features/projects/components/ProjectItem";
 
-import type { Application } from "../types";
+import type { Metadata } from "../types";
 
 import { LinkField } from "./LinkField";
 
@@ -48,10 +48,10 @@ const ValueField = ({ title, body = undefined, link = undefined, required = fals
   );
 };
 
-export const ReviewApplicationDetails = (): JSX.Element => {
-  const form = useFormContext<Application>();
+export const ReviewProposalDetails = (): JSX.Element => {
+  const form = useFormContext<Metadata>();
 
-  const application = useMemo(() => form.getValues(), [form]);
+  const metadata = useMemo(() => form.getValues(), [form]);
 
   const { address } = useAccount();
 
@@ -60,37 +60,37 @@ export const ReviewApplicationDetails = (): JSX.Element => {
       <div>
         <Heading className="mb-1 font-sans text-xl font-semibold">Review & Submit</Heading>
 
-        <p className="leading-loose text-gray-400">Please review and submit your project application.</p>
+        <p className="leading-loose text-gray-400">Please review and submit your project proposal.</p>
       </div>
 
       <div className="flex flex-col gap-6 dark:text-white">
         <b className="text-lg">Project Profile</b>
 
-        <ValueField required body={application.name} title="Project name" />
+        <ValueField required body={metadata.name} title="Project name" />
 
         <ValueField required body={address} title="Created By" />
 
-        <ValueField required body={<Markdown>{application.bio}</Markdown>} title="Project description" />
+        <ValueField required body={<Markdown>{metadata.bio}</Markdown>} title="Project description" />
 
         <div className="grid grid-flow-row gap-4 sm:grid-cols-2">
-          <ValueField required body={application.websiteUrl} link={application.websiteUrl} title="Website" />
+          <ValueField required body={metadata.websiteUrl} link={metadata.websiteUrl} title="Website" />
 
           <ValueField
             required
-            body={application.payoutAddress}
-            link={`${prefixes.ETHER_PREFIX}${application.payoutAddress}`}
+            body={metadata.payoutAddress}
+            link={`${prefixes.ETHER_PREFIX}${metadata.payoutAddress}`}
             title="Payout address"
           />
 
           <ValueField
-            body={application.twitter}
-            link={application.twitter ? `${prefixes.TWITTER_PREFIX}${application.twitter}` : undefined}
+            body={metadata.twitter}
+            link={metadata.twitter ? `${prefixes.TWITTER_PREFIX}${metadata.twitter}` : undefined}
             title="X(Twitter)"
           />
 
           <ValueField
-            body={application.github}
-            link={application.github ? `${prefixes.GITHUB_PREFIX}${application.github}` : undefined}
+            body={metadata.github}
+            link={metadata.github ? `${prefixes.GITHUB_PREFIX}${metadata.github}` : undefined}
             title="Github"
           />
         </div>
@@ -102,7 +102,7 @@ export const ReviewApplicationDetails = (): JSX.Element => {
             <div
               className="h-48 w-48 rounded-full bg-gray-200 bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `url("${application.profileImageUrl}")`,
+                backgroundImage: `url("${metadata.profileImageUrl}")`,
               }}
             />
           </div>
@@ -113,7 +113,7 @@ export const ReviewApplicationDetails = (): JSX.Element => {
             <div
               className="h-48 rounded-xl bg-gray-200 bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `url("${application.bannerImageUrl}")`,
+                backgroundImage: `url("${metadata.bannerImageUrl}")`,
               }}
             />
           </div>
@@ -125,17 +125,17 @@ export const ReviewApplicationDetails = (): JSX.Element => {
 
         <ValueField
           required
-          body={<Markdown>{application.contributionDescription}</Markdown>}
+          body={<Markdown>{metadata.contributionDescription}</Markdown>}
           title="Contribution description"
         />
 
-        <ValueField required body={<Markdown>{application.impactDescription}</Markdown>} title="Impact description" />
+        <ValueField required body={<Markdown>{metadata.impactDescription}</Markdown>} title="Impact description" />
 
         <ValueField
           required
           body={
             <div className="flex">
-              {application.impactCategory?.map((tag) => (
+              {metadata.impactCategory?.map((tag) => (
                 <Tag key={tag} selected size="sm">
                   {Object.keys(impactCategories).includes(tag) && (
                     <span>{impactCategories[tag as keyof typeof impactCategories].label}</span>
@@ -148,14 +148,12 @@ export const ReviewApplicationDetails = (): JSX.Element => {
         />
 
         <ValueField
-          body={application.contributionLinks?.map((link) => (
-            <LinkField key={link.description} contributionLink={link} />
-          ))}
+          body={metadata.contributionLinks?.map((link) => <LinkField key={link.description} contributionLink={link} />)}
           title="Contribution links"
         />
 
         <ValueField
-          body={application.fundingSources?.map((link) => <LinkField key={link.description} fundingSource={link} />)}
+          body={metadata.fundingSources?.map((link) => <LinkField key={link.description} fundingSource={link} />)}
           title="Funding sources"
         />
       </div>
@@ -169,16 +167,16 @@ export const ReviewApplicationDetails = (): JSX.Element => {
           isLoading={false}
           pollId=""
           recipient={{
-            ...application,
+            ...metadata,
             id: "no-id",
             metadataUrl: "",
-            payout: application.payoutAddress as Hex,
+            payout: metadata.payoutAddress as Hex,
             index: "0",
-            bannerImageUrl: application.bannerImageUrl,
-            profileImageUrl: application.profileImageUrl,
-            name: application.name,
-            bio: application.bio,
-            impactCategory: application.impactCategory,
+            bannerImageUrl: metadata.bannerImageUrl,
+            profileImageUrl: metadata.profileImageUrl,
+            name: metadata.name,
+            bio: metadata.bio,
+            impactCategory: metadata.impactCategory,
           }}
         />
       </div>

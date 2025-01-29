@@ -7,37 +7,37 @@ import { Dialog } from "~/components/ui/Dialog";
 import { Spinner } from "~/components/ui/Spinner";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
-import type { Application } from "../types";
+import type { Metadata } from "../types";
 import type { ImpactMetrix, ContributionLink, FundingSource } from "~/features/projects/types";
 
-export enum EApplicationStep {
+export enum EMetadataStep {
   PROFILE,
   ADVANCED,
   REVIEW,
 }
 
-interface IApplicationButtonsProps {
-  step: EApplicationStep;
+interface IMetadataButtonsProps {
+  step: EMetadataStep;
   isUploading: boolean;
   isPending: boolean;
   onNextStep: () => void;
   onBackStep: () => void;
 }
 
-export const ApplicationButtons = ({
+export const MetadataButtons = ({
   step,
   isUploading,
   isPending,
   onNextStep,
   onBackStep,
-}: IApplicationButtonsProps): JSX.Element => {
+}: IMetadataButtonsProps): JSX.Element => {
   const { isCorrectNetwork } = useIsCorrectNetwork();
 
   const { address } = useAccount();
 
   const [showDialog, setShowDialog] = useState<boolean>(false);
 
-  const form = useFormContext<Application>();
+  const form = useFormContext<Metadata>();
 
   const [
     name,
@@ -75,7 +75,7 @@ export const ApplicationButtons = ({
     links === undefined || links.every((link) => link.description !== undefined && link.description.length > 0);
 
   const checkStepComplete = (): boolean => {
-    if (step === EApplicationStep.PROFILE) {
+    if (step === EMetadataStep.PROFILE) {
       return (
         bannerImageUrl !== undefined &&
         profileImageUrl !== undefined &&
@@ -86,7 +86,7 @@ export const ApplicationButtons = ({
       );
     }
 
-    if (step === EApplicationStep.ADVANCED) {
+    if (step === EMetadataStep.ADVANCED) {
       return (
         impactCategory !== undefined &&
         impactCategory.length > 0 &&
@@ -135,19 +135,19 @@ export const ApplicationButtons = ({
         onOpenChange={handleOnOpenChange}
       />
 
-      {step !== EApplicationStep.PROFILE && (
+      {step !== EMetadataStep.PROFILE && (
         <Button className="text-gray-300 underline" size="auto" variant="ghost" onClick={handleOnClickBackStep}>
           Back
         </Button>
       )}
 
-      {step !== EApplicationStep.REVIEW && (
+      {step !== EMetadataStep.REVIEW && (
         <Button size="auto" variant="primary" onClick={handleOnClickNextStep}>
           Next
         </Button>
       )}
 
-      {step === EApplicationStep.REVIEW && (
+      {step === EMetadataStep.REVIEW && (
         <IconButton
           disabled={isPending || !address || !isCorrectNetwork}
           icon={isPending ? Spinner : null}

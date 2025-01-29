@@ -4,7 +4,7 @@ import { Button } from "~/components/ui/Button";
 import { useIsAdmin } from "~/hooks/useIsAdmin";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
-import type { TApplicationsToApprove } from "../types";
+import type { TRequestToApprove } from "../types";
 
 interface IApproveButtonProps {
   isLoading?: boolean;
@@ -13,10 +13,10 @@ interface IApproveButtonProps {
 export const ApproveButton = ({ isLoading = false }: IApproveButtonProps): JSX.Element => {
   const isAdmin = useIsAdmin();
   const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
-  const form = useFormContext<TApplicationsToApprove>();
+  const form = useFormContext<TRequestToApprove>();
   const selectedCount = Object.values(form.watch("selected")).filter(Boolean).length;
 
-  const text = isAdmin ? `Approve ${selectedCount} applications` : "You must be an admin";
+  const text = isAdmin ? `Approve ${selectedCount} proposals` : "You must be an admin";
 
   return (
     <Button

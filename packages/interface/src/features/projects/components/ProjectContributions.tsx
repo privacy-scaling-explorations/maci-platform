@@ -3,13 +3,13 @@ import { createElement } from "react";
 
 import { Heading } from "~/components/ui/Heading";
 import { Markdown } from "~/components/ui/Markdown";
-import { type Application } from "~/features/applications/types";
+import { type Metadata } from "~/features/proposals/types";
 
 import { LinkBox } from "./LinkBox";
 
 interface IProjectContributionsProps {
   isLoading: boolean;
-  project?: Application;
+  project?: Metadata;
 }
 
 const ProjectContributions = ({ isLoading, project = undefined }: IProjectContributionsProps): JSX.Element => (

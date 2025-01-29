@@ -1,6 +1,6 @@
 import { Chain, Hex } from "viem";
 
-import { type Application } from "~/features/applications/types";
+import { type Metadata } from "~/features/proposals/types";
 import { useMetadata } from "~/hooks/useMetadata";
 import { api } from "~/utils/api";
 
@@ -33,8 +33,8 @@ export function useSearchProjects({
   );
 }
 
-export function useProjectMetadata(metadataPtr?: string): UseTRPCQueryResult<Application, unknown> {
-  return useMetadata<Application>(metadataPtr);
+export function useProjectMetadata(metadataPtr?: string): UseTRPCQueryResult<Metadata, unknown> {
+  return useMetadata<Metadata>(metadataPtr);
 }
 
 export function useProjectCount({

@@ -10,30 +10,30 @@ import { Form } from "~/components/ui/Form";
 import { Heading } from "~/components/ui/Heading";
 import { Spinner } from "~/components/ui/Spinner";
 import { useRound } from "~/contexts/Round";
-import { useApprovedApplications, usePendingApplications } from "~/features/applications/hooks/useApplications";
+import { useApprovedRequests, usePendingRequests } from "~/hooks/useRequests";
 
-import { useApproveApplication } from "../hooks/useApproveApplication";
-import { ApplicationsToApproveSchema, type TApplicationsToApprove } from "../types";
+import { RequestsHeader } from "../../requests/components/RequestsHeader";
+import { useApproveRequest } from "../hooks/useApproveRequest";
+import { RequestSchema, type TRequestToApprove } from "../types";
 
-import { ApplicationHeader } from "./ApplicationHeader";
-import { ApplicationItem } from "./ApplicationItem";
 import { ApproveButton } from "./ApproveButton";
+import { ProposalItem } from "./ProposalItem";
 
-interface IApplicationsToApproveProps {
+interface IProposalsToApproveProps {
   pollId: string;
 }
 
 /**
- * Displays the applications that are pending approval.
+ * Displays the proposals that are pending approval.
  */
-export const ApplicationsToApprove = ({ pollId }: IApplicationsToApproveProps): JSX.Element => {
+export const ProposalsToApprove = ({ pollId }: IProposalsToApproveProps): JSX.Element => {
   const router = useRouter();
   const { getRoundByPollId } = useRound();
 
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
-  const approved = useApprovedApplications(round?.registryAddress ?? zeroAddress);
-  const pending = usePendingApplications(round?.registryAddress ?? zeroAddress);
-  const approve = useApproveApplication({});
+  const approved = useApprovedRequests(round?.registryAddress ?? zeroAddress);
+  const pending = usePendingRequests(round?.registryAddress ?? zeroAddress);
+  const approve = useApproveRequest({});
 
   useEffect(() => {
     approved.refetch().catch();
@@ -41,7 +41,7 @@ export const ApplicationsToApprove = ({ pollId }: IApplicationsToApproveProps): 
   }, [approve.isSuccess, approve.isPending, approve.isError]);
 
   const handleSubmit = useCallback(
-    (values: TApplicationsToApprove) => {
+    (values: TRequestToApprove) => {
       approve.mutate(values.selected);
     },
     [approve],
@@ -51,22 +51,22 @@ export const ApplicationsToApprove = ({ pollId }: IApplicationsToApproveProps): 
     <div className="flex w-full justify-center dark:text-white">
       <div className="flex flex-col gap-4 md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
         <Heading as="h3" size="3xl">
-          Review Applications
+          Review Project Proposals
         </Heading>
 
         <p className="text-gray-400">
-          Select the applications you want to approve. You must be an admin to be able to approve applications.
+          Select the proposals you want to approve. You must be an admin to be able to approve them.
         </p>
 
         <p className="flex items-center gap-2 text-blue-400">
           <FiAlertCircle className="h-4 w-4" />
 
-          <span>Newly submitted applications can take 10 minutes to show up.</span>
+          <span>Newly submitted proposals can take 10 minutes to show up.</span>
         </p>
 
-        <div className="mt-6 text-2xl font-extrabold uppercase text-black dark:text-white">{`${(pending.data?.length ?? 0) + (approved.data?.length ?? 0)} applications found`}</div>
+        <div className="mt-6 text-2xl font-extrabold uppercase text-black dark:text-white">{`${(pending.data?.length ?? 0) + (approved.data?.length ?? 0)} requests found`}</div>
 
-        <Form defaultValues={{ selected: [] }} schema={ApplicationsToApproveSchema} onSubmit={handleSubmit}>
+        <Form defaultValues={{ selected: [] }} schema={RequestSchema} onSubmit={handleSubmit}>
           {pending.isLoading && (
             <div className="flex items-center justify-center py-16">
               <Spinner />
@@ -74,9 +74,9 @@ export const ApplicationsToApprove = ({ pollId }: IApplicationsToApproveProps): 
           )}
 
           {!pending.isLoading && !pending.data?.length ? (
-            <EmptyState title="No pending applications">
+            <EmptyState title="No pending proposals">
               <Button as={Link} href={`${router.asPath}/new`} variant="primary">
-                Go to create application
+                Go to create proposals
               </Button>
             </EmptyState>
           ) : null}
@@ -85,20 +85,14 @@ export const ApplicationsToApprove = ({ pollId }: IApplicationsToApproveProps): 
             <ApproveButton isLoading={approve.isPending} />
           </div>
 
-          <ApplicationHeader applications={pending.data ?? []} />
+          <RequestsHeader requests={pending.data ?? []} />
 
           {pending.data?.map((item) => (
-            <ApplicationItem
-              key={item.index}
-              {...item}
-              isApproved={false}
-              isLoading={pending.isLoading}
-              pollId={pollId}
-            />
+            <ProposalItem key={item.index} {...item} isApproved={false} isLoading={pending.isLoading} pollId={pollId} />
           ))}
 
           {approved.data?.map((item) => (
-            <ApplicationItem key={item.index} {...item} isApproved isLoading={approved.isLoading} pollId={pollId} />
+            <ProposalItem key={item.index} {...item} isApproved isLoading={approved.isLoading} pollId={pollId} />
           ))}
         </Form>
       </div>

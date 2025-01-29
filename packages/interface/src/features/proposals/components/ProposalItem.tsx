@@ -11,10 +11,10 @@ import { useMetadata } from "~/hooks/useMetadata";
 import { removeMarkdown } from "~/utils/removeMarkdown";
 import { formatDate } from "~/utils/time";
 
-import type { TApplicationsToApprove, Application } from "../types";
+import type { TRequestToApprove, Metadata } from "../types";
 import type { IRecipient, IRecipientContract } from "~/utils/types";
 
-export interface IApplicationItemProps {
+export interface IProposalItemProps {
   index: string;
   recipient: IRecipient | IRecipientContract;
   isApproved?: boolean;
@@ -22,16 +22,16 @@ export interface IApplicationItemProps {
   pollId: string;
 }
 
-export const ApplicationItem = ({
+export const ProposalItem = ({
   index,
   recipient,
   isApproved = false,
   isLoading = false,
   pollId,
-}: IApplicationItemProps): JSX.Element => {
-  const metadata = useMetadata<Application>(recipient.metadataUrl);
+}: IProposalItemProps): JSX.Element => {
+  const metadata = useMetadata<Metadata>(recipient.metadataUrl);
 
-  const form = useFormContext<TApplicationsToApprove>();
+  const form = useFormContext<TRequestToApprove>();
 
   const { profileImageUrl } = metadata.data ?? {};
   const bio =

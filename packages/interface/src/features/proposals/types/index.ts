@@ -3,12 +3,6 @@ import { z } from "zod";
 import { EthAddressSchema } from "~/features/voters/types";
 import { reverseKeys } from "~/utils/reverseKeys";
 
-export const MetadataSchema = z.object({
-  name: z.string().min(3),
-  metadataType: z.enum(["1"]),
-  metadataPtr: z.string().min(3),
-});
-
 export const contributionTypes = {
   CONTRACT_ADDRESS: "Contract address",
   GITHUB_REPO: "Github repo",
@@ -22,7 +16,7 @@ export const fundingSourceTypes = {
   OTHER: "Other",
 } as const;
 
-export const ApplicationSchema = z.object({
+export const MetadataSchema = z.object({
   name: z.string().min(3),
   bio: z.string().min(3),
   creator: z.string().optional(),
@@ -71,9 +65,9 @@ export const ApplicationSchema = z.object({
     .optional(),
 });
 
-export type Application = z.infer<typeof ApplicationSchema>;
+export type Metadata = z.infer<typeof MetadataSchema>;
 
-export const ApplicationsToApproveSchema = z.object({
+export const RequestSchema = z.object({
   selected: z.array(z.string()),
 });
-export type TApplicationsToApprove = z.infer<typeof ApplicationsToApproveSchema>;
+export type TRequestToApprove = z.infer<typeof RequestSchema>;

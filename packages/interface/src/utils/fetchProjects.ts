@@ -1,5 +1,5 @@
 import { config } from "~/config";
-import { Application } from "~/features/applications/types";
+import { Metadata } from "~/features/proposals/types";
 
 import { createCachedFetch } from "./fetch";
 import { fetchMetadata } from "./fetchMetadata";
@@ -13,10 +13,10 @@ export interface GraphQLResponse {
   };
 }
 
-// query to fetch all approved projects
+// Query to fetch all approved projects
 const ApprovedProjects = `
   query Recipients($registryAddress: String) {
-    recipients (where:{ deleted:false, initialized: true, registry: $registryAddress }) {
+    recipients(where:{ deleted:false, initialized: true, registry: $registryAddress }) {
       id
       payout
       metadataUrl
@@ -28,9 +28,10 @@ const ApprovedProjects = `
     }
   }`;
 
+// Query to fetch all projects, no matter approved or not
 const Projects = `
   query Recipients($registryAddress: String) {
-    recipients (where:{ deleted:false, registry: $registryAddress }) {
+    recipients(where:{ deleted:false, registry: $registryAddress }) {
       id
       payout
       metadataUrl
@@ -42,8 +43,9 @@ const Projects = `
     }
   }`;
 
+// Query to fetch project by payout address
 const ProjectsByAddress = `
-  query ApplicationsByAddress($registryAddress: String!, $address: String!) {
+  query ProjectsByAddress($registryAddress: String!, $address: String!) {
     recipients(where: { registry: $registryAddress, payout: $address  }) {
       id
       metadataUrl
@@ -131,7 +133,7 @@ export async function fetchApprovedProjectsWithMetadata(
 
   const recipients = await Promise.all(
     response.map(async (request) => {
-      const metadata = (await fetchMetadata(request.metadataUrl)) as unknown as Application;
+      const metadata = (await fetchMetadata(request.metadataUrl)) as unknown as Metadata;
       const name = metadata.name.toLowerCase();
       if (search !== "" && !name.includes(search.trim().toLowerCase())) {
         return null;

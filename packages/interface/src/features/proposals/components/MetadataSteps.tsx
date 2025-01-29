@@ -12,7 +12,7 @@ interface IStepCategoryProps {
   progress: EStepState;
 }
 
-interface IApplicationStepsProps {
+interface IMetadataStepsProps {
   step: number;
 }
 
@@ -34,7 +34,7 @@ const StepCategory = ({ title, progress }: IStepCategoryProps): JSX.Element => (
 
 const Interline = (): JSX.Element => <div className="h-[1px] w-4 bg-gray-300 sm:w-9" />;
 
-export const ApplicationSteps = ({ step }: IApplicationStepsProps): JSX.Element => (
+export const MetadataSteps = ({ step }: IMetadataStepsProps): JSX.Element => (
   <div className="mb-4 flex items-center gap-1 sm:gap-4">
     <StepCategory progress={step} title="Project Profile" />
 

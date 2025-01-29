@@ -13,7 +13,7 @@ import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
-import { useMyApplications } from "~/features/applications/hooks/useApplications";
+import { useMyProjects } from "~/hooks/useProjects";
 import { useResults } from "~/hooks/useResults";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
@@ -55,11 +55,11 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
 
   /**
-   *  Find my applications: "I" am either the "creator" or the "payout address"
+   *  Find my projects: "I" am either the "creator" or the "payout address"
    */
-  const applications = useMyApplications(round?.registryAddress ?? zeroAddress, address ?? zeroAddress);
+  const myProjects = useMyProjects(round?.registryAddress ?? zeroAddress, address ?? zeroAddress);
 
-  const myApplications = useMemo(() => applications.data, [applications]);
+  const myProjectsData = useMemo(() => myProjects.data, [myProjects]);
 
   const handleAction = useCallback(
     (projectIndex: number, projectId: string) => (e: Event) => {
@@ -141,22 +141,22 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
           <div className="flex justify-between">
             <Heading size="xl">My Projects</Heading>
 
-            <Link href={`/rounds/${pollId}/applications/new`}>
+            <Link href={`/rounds/${pollId}/proposals/new`}>
               <Button size="auto" variant="primary">
-                Create Application
+                Create Project Proposal
               </Button>
             </Link>
           </div>
 
           <div className="my-4 gap-4 md:grid md:grid-cols-2 lg:grid lg:grid-cols-3">
-            {myApplications &&
-              myApplications.length > 0 &&
-              myApplications.map((project) => (
+            {myProjectsData &&
+              myProjectsData.length > 0 &&
+              myProjectsData.map((project) => (
                 <ProjectItem key={project.id} isLoading={false} pollId={pollId} recipient={project} />
               ))}
 
-            {(!myApplications || myApplications.length === 0) && (
-              <p className="text-gray-400">Create your application by clicking the button</p>
+            {(!myProjectsData || myProjectsData.length === 0) && (
+              <p className="text-gray-400">Create your project by clicking the button</p>
             )}
           </div>
         </div>

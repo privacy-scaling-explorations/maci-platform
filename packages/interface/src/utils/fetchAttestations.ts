@@ -2,9 +2,26 @@ import { eas } from "~/config";
 
 import { createCachedFetch } from "./fetch";
 import { parseAttestation, createDataFilter } from "./fetchAttestationsUtils";
-import { type AttestationWithMetadata, type AttestationsFilter, type Attestation, AttestationsQuery } from "./types";
+import { type AttestationWithMetadata, type AttestationsFilter, type Attestation } from "./types";
 
 const cachedFetch = createCachedFetch({ ttl: 1000 * 60 * 10 });
+
+// Query for fetch attestion
+const AttestationsQuery = `
+  query Attestations($where: AttestationWhereInput, $orderBy: [AttestationOrderByWithRelationInput!], $take: Int, $skip: Int) {
+    attestations(take: $take, skip: $skip, orderBy: $orderBy, where: $where) {
+      id
+      refUID
+      decodedDataJson
+      attester
+      recipient
+      revoked
+      schemaId
+      txid
+      time
+    }
+  }
+`;
 
 /// TODO: add roundId as one of the filter
 export async function fetchAttestations(schema: string[], filter?: AttestationsFilter): Promise<Attestation[]> {

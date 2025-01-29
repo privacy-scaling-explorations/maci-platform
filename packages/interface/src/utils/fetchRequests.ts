@@ -8,7 +8,7 @@ export interface GraphQLResponse {
   };
 }
 
-// Fetch only pending add requests
+// Query to fetch only pending add requests
 const PendingRequests = `
   query PendingAddRequests($registryAddress: String!) {
     requests(where: { requestType: "Add", status: "Pending", recipient_: { registry: $registryAddress } }) {
@@ -27,7 +27,7 @@ const PendingRequests = `
   }
 `;
 
-// Fetch only rejected add requests
+// Query to fetch only rejected add requests
 const RejectedRequests = `
   query RejectedRequests($registryAddress: String!) {
     requests(where: { status: "Rejected", requestType: "Add", recipient_: { registry: $registryAddress } }) {
@@ -46,7 +46,7 @@ const RejectedRequests = `
   }
 `;
 
-// Fetch only approved add requests
+// Query to fetch only approved add requests
 const ApprovedRequests = `
   query ApprovedRequests($registryAddress: String!) {
     requests(where: { status: "Approved", requestType: "Add", recipient_: { registry: $registryAddress } }) {
@@ -65,9 +65,9 @@ const ApprovedRequests = `
   }
 `;
 
-// Fetch all add requests
-const AllRequests = `
-  query AllRequests($registryAddress: String!) {
+// Query to fetch all add requests
+const AddRequests = `
+  query AddRequests($registryAddress: String!) {
     requests(where: { requestType: "Add", recipient_: { registry: $registryAddress } }) {
       index
       recipient {
@@ -84,9 +84,10 @@ const AllRequests = `
   }
 `;
 
-const IndividualRequest = `
-  query PendingAddRequests($registryAddress: String!, $recipientId: String!) {
-    requests(where: { requestType: "Add", status: "Pending", recipient_: { 
+// Query to fetch request by project id
+const RequestByProjectId = `
+  query RequestByProjectId($registryAddress: String!, $recipientId: String!) {
+    requests(where: { requestType: "Add", recipient_: { 
         registry: $registryAddress,
         id: $recipientId
       }
@@ -106,8 +107,9 @@ const IndividualRequest = `
   }
 `;
 
-const ApplicationById = `
-  query ApplicationById($registryAddress: String!, $id: String!) {
+// Query to fetch request by request id
+const RequestById = `
+  query RequestById($registryAddress: String!, $id: String!) {
     requests(where: { recipient_: { registry: $registryAddress }, id: $id, requestType: "Add"  }) {
       id
       index
@@ -126,19 +128,19 @@ const ApplicationById = `
 `;
 
 /**
- * Fetch application by project ID
+ * Fetch request by project ID
  *
  * @param projectId - the project ID
  * @param registryAddress - the registry ID
  */
-export async function fetchApplicationByProjectId(projectId: string, registryAddress: string): Promise<IRequest> {
+export async function fetchRequestByProjectId(projectId: string, registryAddress: string): Promise<IRequest> {
   const response = await fetch(config.maciSubgraphUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      query: IndividualRequest,
+      query: RequestByProjectId,
       variables: { recipientId: projectId, registryAddress },
     }),
   });
@@ -153,11 +155,11 @@ export async function fetchApplicationByProjectId(projectId: string, registryAdd
 }
 
 /**
- * Fetch all pending applications
+ * Fetch all pending requests
  *
  * @returns the pending add requests
  */
-export async function fetchPendingApplications(registryAddress: string): Promise<IRequest[]> {
+export async function fetchPendingRequests(registryAddress: string): Promise<IRequest[]> {
   const response = await fetch(config.maciSubgraphUrl, {
     method: "POST",
     headers: {
@@ -179,12 +181,12 @@ export async function fetchPendingApplications(registryAddress: string): Promise
 }
 
 /**
- * Fetch applications that have been rejected
+ * Fetch requests that have been rejected
  *
  * @param registryAddress - the registry ID to filter by
  * @returns the rejected add requests
  */
-export async function fetchRejectedApplications(registryAddress: string): Promise<IRequest[]> {
+export async function fetchRejectedRequests(registryAddress: string): Promise<IRequest[]> {
   const response = await fetch(config.maciSubgraphUrl, {
     method: "POST",
     headers: {
@@ -206,12 +208,12 @@ export async function fetchRejectedApplications(registryAddress: string): Promis
 }
 
 /**
- * Fetch applications that have been approved
+ * Fetch requests that have been approved
  *
  * @param registryAddress - the registry ID to filter by
  * @returns the approved add requests
  */
-export async function fetchApprovedApplications(registryAddress: string): Promise<IRequest[]> {
+export async function fetchApprovedRequests(registryAddress: string): Promise<IRequest[]> {
   const response = await fetch(config.maciSubgraphUrl, {
     method: "POST",
     headers: {
@@ -233,19 +235,19 @@ export async function fetchApprovedApplications(registryAddress: string): Promis
 }
 
 /**
- * Fetch all applications
+ * Fetch all add requests
  *
  * @param registryAddress - the registry ID to filter by
  * @returns the add requests
  */
-export async function fetchApplications(registryAddress: string): Promise<IRequest[]> {
+export async function fetchAllAddRequests(registryAddress: string): Promise<IRequest[]> {
   const response = await fetch(config.maciSubgraphUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      query: AllRequests,
+      query: AddRequests,
       variables: { registryAddress },
     }),
   });
@@ -260,20 +262,20 @@ export async function fetchApplications(registryAddress: string): Promise<IReque
 }
 
 /**
- * Fetch application by ID
+ * Fetch request by ID
  *
  * @param registryAddress - the registry ID
- * @param id - the application ID
- * @returns the application
+ * @param id - the request ID
+ * @returns the request
  */
-export async function fetchApplicationById(registryAddress: string, id: string): Promise<IRequest> {
+export async function fetchRequestById(registryAddress: string, id: string): Promise<IRequest> {
   const response = await fetch(config.maciSubgraphUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      query: ApplicationById,
+      query: RequestById,
       variables: { id, registryAddress },
     }),
   });
@@ -281,7 +283,7 @@ export async function fetchApplicationById(registryAddress: string, id: string):
   const result = (await response.json()) as GraphQLResponse;
 
   if (!result.data?.requests) {
-    throw new Error("No application found with this ID");
+    throw new Error("No request found with this ID");
   }
 
   return result.data.requests[0]!;

@@ -5,10 +5,10 @@ import { ErrorMessage, Label } from "~/components/ui/Form";
 import { Tag } from "~/components/ui/Tag";
 import { impactCategories } from "~/config";
 
-import { ApplicationSchema } from "../types";
+import { MetadataSchema } from "../types";
 
 export const ImpactTags = (): JSX.Element => {
-  const { control, watch, formState } = useFormContext<z.infer<typeof ApplicationSchema>>();
+  const { control, watch, formState } = useFormContext<z.infer<typeof MetadataSchema>>();
   const { field } = useController({
     name: "impactCategory",
     control,
