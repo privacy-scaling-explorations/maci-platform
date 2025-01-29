@@ -1,4 +1,6 @@
 import { EGatekeepers, EInitialVoiceCreditProxies } from "maci-contracts";
+import { PrepareUserOperationRequestParameters } from "permissionless/actions/smartAccount";
+import { ENTRYPOINT_ADDRESS_V07_TYPE } from "permissionless/types";
 
 import type { Abi, Hex } from "viem";
 
@@ -273,3 +275,8 @@ export interface IContractData {
    */
   alreadyDeployed: boolean;
 }
+
+/**
+ * IUserOperation represents the data send for a user operation
+ */
+export type IUserOperation = PrepareUserOperationRequestParameters<ENTRYPOINT_ADDRESS_V07_TYPE>["userOperation"];
