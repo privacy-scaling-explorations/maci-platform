@@ -51,7 +51,7 @@
     "lint-staged": "^15.2.7",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.5.14",
-    "solhint": "^5.0.3",
+    "solhint": "^5.0.5",
     "typescript": "^5.7.2"
   },
   "config": {
