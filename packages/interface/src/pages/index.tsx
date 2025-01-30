@@ -10,6 +10,7 @@ import { config } from "~/config";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
 import { FAQList } from "~/features/home/components/FaqList";
+import { Glossary } from "~/features/home/components/Glossary";
 import { RoundsList } from "~/features/rounds/components/RoundsList";
 import { useIsAdmin } from "~/hooks/useIsAdmin";
 import { Layout } from "~/layouts/DefaultLayout";
@@ -60,6 +61,8 @@ const HomePage = (): JSX.Element => {
       )}
 
       <FAQList />
+
+      <Glossary />
     </Layout>
   );
 };

@@ -11,6 +11,7 @@ import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
 import ConnectButton from "./ConnectButton";
+import { HelpButton } from "./HelpButton";
 import { IconButton } from "./ui/Button";
 import { Logo } from "./ui/Logo";
 
@@ -125,9 +126,11 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
 
         <div className="flex-1 md:ml-8" />
 
-        <div className="ml-4 flex items-center gap-4 md:ml-8 xl:ml-32">
+        <div className="ml-4 flex items-center gap-2 md:ml-8 xl:ml-32">
+          <HelpButton />
+
           <IconButton
-            className="text-gray-600"
+            className="w-[50px] text-gray-600"
             icon={theme === "light" ? SunIcon : MoonIcon}
             variant="ghost"
             onClick={handleChangeTheme}

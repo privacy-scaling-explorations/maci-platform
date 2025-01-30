@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 
 import { Providers } from "~/providers";
 import "~/styles/globals.css";
+import "~/styles/HelpButton.css";
 import { api } from "~/utils/api";
 
 import type { AppProps } from "next/app";
