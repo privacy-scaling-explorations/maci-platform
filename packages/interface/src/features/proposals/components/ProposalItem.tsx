@@ -8,6 +8,7 @@ import { Checkbox } from "~/components/ui/Form";
 import { Skeleton } from "~/components/ui/Skeleton";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { useMetadata } from "~/hooks/useMetadata";
+import { removeMarkdown } from "~/utils/removeMarkdown";
 import { formatDate } from "~/utils/time";
 
 import type { TRequestToApprove, Metadata } from "../types";
@@ -67,7 +68,7 @@ export const ProposalItem = ({
             </Skeleton>
 
             <div className="text-sm text-gray-400">
-              <div>{shortBio}</div>
+              <div>{removeMarkdown(bio || "")}</div>
             </div>
           </div>
         </div>
