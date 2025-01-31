@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useMemo, type ReactNode } from "react";
 import { FaGithub, FaEthereum } from "react-icons/fa";
 import { RiGlobalLine } from "react-icons/ri";
@@ -49,7 +50,11 @@ export const LinkField = ({
 
   const content = useMemo((): ReactNode | undefined => {
     if (contributionLink) {
-      return contributionLink.url;
+      return (
+        <Link className="hover:underline" href={contributionLink.url} target="_blank">
+          {contributionLink.url}
+        </Link>
+      );
     }
 
     if (impactMetrix) {
@@ -79,7 +84,7 @@ export const LinkField = ({
     <div className="flex w-full flex-col justify-start gap-2">
       <p className="text-sm text-gray-400">{title}</p>
 
-      <div className="flex items-center gap-2 text-sm text-black">
+      <div className="flex items-center gap-2 text-sm text-black dark:text-blue-200">
         {logo}
 
         {content}

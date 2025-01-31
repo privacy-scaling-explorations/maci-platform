@@ -51,8 +51,9 @@ const MobileMenu = ({ isOpen = false, navLinks }: IMobileMenuProps) => (
 );
 
 interface INavLink {
+  label: string;
   href: string;
-  children: string;
+  name: string;
 }
 
 interface IHeaderProps {
@@ -82,7 +83,7 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
   }, [theme, setTheme]);
 
   // the URI of round index page looks like: /rounds/:pollId, without anything else, which is the reason why the length is 3
-  const isRoundProjectPage = useMemo(
+  const isRoundIndexPage = useMemo(
     () => asPath.includes("rounds") && !asPath.includes("proposals") && !asPath.includes("ballot"),
     [asPath],
   );
@@ -108,11 +109,11 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
         <div className="hidden h-full items-center gap-4 overflow-x-auto uppercase md:flex">
           {navLinks.map((link) => {
             const isActive =
-              asPath.includes(link.children.toLowerCase()) || (link.children === "Projects" && isRoundProjectPage);
+              (link.label !== "round" && asPath.includes(link.label)) || (link.label === "round" && isRoundIndexPage);
 
             return (
-              <NavLink key={link.href} href={link.href} isActive={isActive}>
-                {link.children}
+              <NavLink key={link.label} href={link.href} isActive={isActive}>
+                {link.name}
 
                 {roundState === ERoundState.VOTING && link.href.includes("/ballot") && ballot.votes.length > 0 && (
                   <div className="ml-2 h-5 w-5 rounded-full border-2 border-blue-400 bg-blue-50 text-center text-sm leading-4 text-blue-400">

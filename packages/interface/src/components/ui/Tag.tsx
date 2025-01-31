@@ -13,7 +13,7 @@ export const Tag = createComponent(
         lg: "rounded-xl py-2 px-4 text-lg",
       },
       selected: {
-        true: "bg-blue-400 text-white",
+        true: "bg-blue-400 text-white hover:text-blue-400",
       },
       disabled: {
         true: "border-gray-200 text-gray-200 cursor-not-allowed",
