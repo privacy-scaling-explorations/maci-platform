@@ -50,7 +50,7 @@ export const VotingWidget = ({ projectId, pollId, projectIndex }: IVotingWidgetP
 
       {buttonState === EButtonState.DEFAULT && (
         <Button variant="inverted" onClick={handleButtonAction}>
-          add to ballot
+          Add to ballot
         </Button>
       )}
     </div>

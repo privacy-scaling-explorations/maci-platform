@@ -56,7 +56,7 @@ const ClearBallot = ({ pollId }: IClearBallotProps): JSX.Element | null => {
       <Dialog
         button="primary"
         buttonAction={handleClearBallot}
-        buttonName="Yes, Clear my ballot"
+        buttonName="Yes, Clear my Ballot"
         description="This will empty your ballot and remove all the projects you have added."
         isOpen={isOpen}
         size="sm"

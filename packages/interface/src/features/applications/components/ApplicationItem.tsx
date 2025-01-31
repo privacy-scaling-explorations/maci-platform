@@ -8,6 +8,7 @@ import { Checkbox } from "~/components/ui/Form";
 import { Skeleton } from "~/components/ui/Skeleton";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { useMetadata } from "~/hooks/useMetadata";
+import { removeMarkdown } from "~/utils/removeMarkdown";
 import { formatDate } from "~/utils/time";
 
 import type { TApplicationsToApprove, Application } from "../types";
@@ -66,7 +67,7 @@ export const ApplicationItem = ({
             </Skeleton>
 
             <div className="text-sm text-gray-400">
-              <div>{bio}</div>
+              <div>{removeMarkdown(bio || "")}</div>
             </div>
           </div>
         </div>
