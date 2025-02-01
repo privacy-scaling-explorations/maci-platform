@@ -248,6 +248,10 @@ export interface IRecipient {
    */
   bio?: string;
   /**
+   * Short Bio of the recipient, used only for preview of card
+   */
+  shortBio?: string;
+  /**
    * Impact categories of the recipient, used only for preview of card
    */
   impactCategory?: string[];

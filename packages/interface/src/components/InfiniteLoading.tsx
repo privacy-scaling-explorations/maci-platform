@@ -43,7 +43,7 @@ export const InfiniteLoading = <T,>({
 
   return (
     <div>
-      {!isLoading && !items.length ? <EmptyState title="No results found" /> : null}
+      {!isLoading && !items.length ? <EmptyState title="No proposals yet! Be the first to create one." /> : null}
 
       <div className={`mb-16 grid ${columnMap[columns]} gap-4`}>
         {items.map((item) => renderItem(item, { isLoading }))}

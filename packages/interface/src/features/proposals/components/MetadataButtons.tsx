@@ -41,6 +41,7 @@ export const MetadataButtons = ({
 
   const [
     name,
+    shortBio,
     bio,
     payoutAddress,
     websiteUrl,
@@ -55,6 +56,7 @@ export const MetadataButtons = ({
     () =>
       form.watch([
         "name",
+        "shortBio",
         "bio",
         "payoutAddress",
         "websiteUrl",
@@ -79,6 +81,7 @@ export const MetadataButtons = ({
       return (
         bannerImageUrl !== undefined &&
         profileImageUrl !== undefined &&
+        shortBio.length > 0 &&
         bio.length > 0 &&
         name.length > 0 &&
         payoutAddress.length > 0 &&

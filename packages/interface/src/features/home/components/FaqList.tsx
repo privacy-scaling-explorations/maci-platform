@@ -3,7 +3,7 @@ import { Heading } from "~/components/ui/Heading";
 import { FAQItem } from "./FaqItem";
 
 export const FAQList = (): JSX.Element => (
-  <div className="mt-14 flex flex-col items-center justify-center sm:mt-28 dark:text-white" id="FAQ">
+  <div className="dark:bg-lightBlack flex flex-col items-center justify-center py-14 sm:pt-28 dark:text-white" id="FAQ">
     <Heading size="6xl">FAQ</Heading>
 
     <FAQItem

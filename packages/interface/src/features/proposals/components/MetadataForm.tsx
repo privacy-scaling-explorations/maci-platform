@@ -91,6 +91,10 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
             <Input placeholder="Type your project name" />
           </FormControl>
 
+          <FormControl required label="Short Description" name="shortBio">
+            <Textarea placeholder="Short description. Maximum 140 characters." rows={4} />
+          </FormControl>
+
           <FormControl required label="Description" name="bio">
             <Textarea placeholder="Type project description" rows={4} />
           </FormControl>
@@ -194,7 +198,7 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
           <FieldArray
             description="From what sources have you received funding?"
             name="fundingSources"
-            renderField={(field, i) => (
+            renderField={(_field, i) => (
               <div className="mb-4 flex flex-wrap gap-2">
                 <FormControl required className="min-w-96" name={`fundingSources.${i}.description`}>
                   <Input placeholder="Type the name of your funding source" />

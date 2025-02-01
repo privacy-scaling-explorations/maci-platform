@@ -69,6 +69,8 @@ export const ReviewProposalDetails = (): JSX.Element => {
 
         <ValueField required body={address} title="Created By" />
 
+        <ValueField required body={metadata.shortBio} title="Short description" />
+
         <ValueField required body={<Markdown>{metadata.bio}</Markdown>} title="Project description" />
 
         <div className="grid grid-flow-row gap-4 sm:grid-cols-2">
@@ -165,10 +167,10 @@ export const ReviewProposalDetails = (): JSX.Element => {
         <div className="mb-2 grid grid-cols-1 sm:grid-cols-3">
           <ProjectItemContent
             bannerImageUrl={metadata.bannerImageUrl}
-            bio={metadata.bio}
             impactCategory={metadata.impactCategory}
             name={metadata.name}
             profileImageUrl={metadata.profileImageUrl}
+            shortBio={metadata.shortBio}
           />
         </div>
       </div>
