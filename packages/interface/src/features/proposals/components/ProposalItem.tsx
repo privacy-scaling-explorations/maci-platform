@@ -9,9 +9,9 @@ import { Skeleton } from "~/components/ui/Skeleton";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { useMetadata } from "~/hooks/useMetadata";
 import { formatDate } from "~/utils/time";
+import { type IRecipient, type IRecipientContract, ERequestType } from "~/utils/types";
 
 import type { TRequestToApprove, Metadata } from "../types";
-import type { IRecipient, IRecipientContract } from "~/utils/types";
 
 export interface IProposalItemProps {
   index: string;
@@ -19,6 +19,7 @@ export interface IProposalItemProps {
   isApproved?: boolean;
   isLoading?: boolean;
   pollId: string;
+  type: ERequestType;
 }
 
 export const ProposalItem = ({
@@ -27,6 +28,7 @@ export const ProposalItem = ({
   isApproved = false,
   isLoading = false,
   pollId,
+  type,
 }: IProposalItemProps): JSX.Element => {
   const metadata = useMetadata<Metadata>(recipient.metadataUrl);
 
@@ -78,6 +80,14 @@ export const ProposalItem = ({
           <Skeleton className="mb-1 min-h-5 min-w-24" isLoading={isLoading}>
             {metadata.data?.submittedAt ? formatDate(metadata.data.submittedAt) : "N/A"}
           </Skeleton>
+        </div>
+
+        <div className="flex-[2]">
+          {type.toString() === "Add" && <Badge variant="notice">New</Badge>}
+
+          {type.toString() === "Change" && <Badge variant="pending">Edit</Badge>}
+
+          {type.toString() === "Remove" && <Badge variant="reject">Delete</Badge>}
         </div>
 
         <div className="flex-[2]">

@@ -88,11 +88,25 @@ export const ProposalsToApprove = ({ pollId }: IProposalsToApproveProps): JSX.El
           <RequestsHeader requests={pending.data ?? []} />
 
           {pending.data?.map((item) => (
-            <ProposalItem key={item.index} {...item} isApproved={false} isLoading={pending.isLoading} pollId={pollId} />
+            <ProposalItem
+              key={item.index}
+              {...item}
+              isApproved={false}
+              isLoading={pending.isLoading}
+              pollId={pollId}
+              type={item.requestType}
+            />
           ))}
 
           {approved.data?.map((item) => (
-            <ProposalItem key={item.index} {...item} isApproved isLoading={approved.isLoading} pollId={pollId} />
+            <ProposalItem
+              key={item.index}
+              {...item}
+              isApproved
+              isLoading={approved.isLoading}
+              pollId={pollId}
+              type={item.requestType}
+            />
           ))}
         </Form>
       </div>

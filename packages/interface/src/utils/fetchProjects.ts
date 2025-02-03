@@ -16,7 +16,7 @@ export interface GraphQLResponse {
 // Query to fetch all approved projects
 const ApprovedProjects = `
   query Recipients($registryAddress: String) {
-    recipients(where:{ deleted:false, initialized: true, registry: $registryAddress }) {
+    recipients(where:{ deleted: false, initialized: true, registry: $registryAddress }) {
       id
       payout
       metadataUrl
@@ -31,12 +31,13 @@ const ApprovedProjects = `
 // Query to fetch all projects, no matter approved or not
 const Projects = `
   query Recipients($registryAddress: String) {
-    recipients(where:{ deleted:false, registry: $registryAddress }) {
+    recipients(where:{ registry: $registryAddress }) {
       id
       payout
       metadataUrl
       index
       initialized
+      deleted
       registry {
         id
       }
@@ -46,7 +47,22 @@ const Projects = `
 // Query to fetch project by payout address
 const ProjectsByAddress = `
   query ProjectsByAddress($registryAddress: String!, $address: String!) {
-    recipients(where: { registry: $registryAddress, payout: $address  }) {
+    recipients(where: { registry: $registryAddress, payout: $address, deleted: false  }) {
+      id
+      metadataUrl
+      index
+      initialized
+      payout
+      registry {
+        id
+      }
+    }
+  }
+`;
+
+const ApprovedProjectByIndex = `
+  query ApprovedProjectByIndex($registryAddress: String!, $index: String!) {
+    recipients(where: { registry: $registryAddress, deleted: false, initialized: true, index: $index }) {
       id
       metadataUrl
       index
@@ -79,6 +95,7 @@ export async function fetchProjects(registryAddress: string): Promise<IRecipient
     payout: request.payout,
     initialized: request.initialized,
     index: request.index,
+    deleted: request.deleted,
   }));
 
   return recipients ?? [];
@@ -173,6 +190,33 @@ export async function fetchProjectsByAddress(registryAddress: string, address: s
   const result = (await response.json()) as GraphQLResponse;
 
   if (!result.data) {
+    throw new Error("No data returned from GraphQL query");
+  }
+
+  return result.data.recipients;
+}
+
+/**
+ * Fetch  projects of a specific payout address
+ * @param registryAddress
+ * @param index recipient index
+ * @return only the projects with a specific payout address
+ */
+export async function fetchApprovedProjectByIndex(registryAddress: string, index: string): Promise<IRecipient[]> {
+  const response = await fetch(config.maciSubgraphUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: ApprovedProjectByIndex,
+      variables: { registryAddress, index },
+    }),
+  });
+
+  const result = (await response.json()) as GraphQLResponse;
+
+  if (!result.data || result.data.recipients.length === 0) {
     throw new Error("No data returned from GraphQL query");
   }
 

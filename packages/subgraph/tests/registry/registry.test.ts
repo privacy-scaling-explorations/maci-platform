@@ -38,35 +38,48 @@ describe("Registry", () => {
   });
 
   test("should handle changing recipient properly", () => {
-    handleAddRecipient(
-      createRecipientAddEvent(
-        DEFAULT_REGISTRY_ADDRESS,
-        Bytes.fromUTF8("id"),
-        BigInt.fromI32(0),
-        DEFAULT_PAYOUT_ADDRESS,
-        "url",
-      ),
+    const addEvent1 = createRecipientAddEvent(
+      DEFAULT_REGISTRY_ADDRESS,
+      Bytes.fromUTF8("id1"),
+      BigInt.fromI32(0),
+      DEFAULT_PAYOUT_ADDRESS,
+      "url1",
     );
 
-    const event = createRecipientChangeEvent(
+    handleAddRecipient(addEvent1);
+
+    const addEvent2 = createRecipientAddEvent(
       DEFAULT_REGISTRY_ADDRESS,
-      Bytes.fromUTF8("id"),
+      Bytes.fromUTF8("id2"),
+      BigInt.fromI32(1),
+      DEFAULT_REGISTRY_ADDRESS,
+      "url2",
+    );
+
+    handleAddRecipient(addEvent2);
+
+    const changeEvent = createRecipientChangeEvent(
+      DEFAULT_REGISTRY_ADDRESS,
+      Bytes.fromUTF8("id2"),
       BigInt.fromI32(0),
       DEFAULT_REGISTRY_ADDRESS,
-      "url",
+      "url2",
     );
 
-    handleChangeRecipient(event);
+    handleChangeRecipient(changeEvent);
 
-    const registry = Registry.load(event.address)!;
-    const recipient = Recipient.load(event.params.id)!;
+    const registry = Registry.load(changeEvent.address)!;
+    const oldRecipient = Recipient.load(addEvent1.params.id)!;
+    const recipient = Recipient.load(changeEvent.params.id)!;
 
     assert.fieldEquals("Registry", registry.id.toHex(), "id", DEFAULT_REGISTRY_ADDRESS.toHex());
-    assert.fieldEquals("Recipient", recipient.id.toHex(), "index", event.params.index.toString());
+    assert.fieldEquals("Recipient", oldRecipient.id.toHex(), "index", changeEvent.params.index.toString());
+    assert.fieldEquals("Recipient", recipient.id.toHex(), "index", changeEvent.params.index.toString());
+    assert.fieldEquals("Recipient", oldRecipient.id.toHex(), "deleted", "true");
     assert.fieldEquals("Recipient", recipient.id.toHex(), "deleted", "false");
     assert.fieldEquals("Recipient", recipient.id.toHex(), "initialized", "true");
-    assert.fieldEquals("Recipient", recipient.id.toHex(), "metadataUrl", event.params.metadataUrl);
-    assert.fieldEquals("Recipient", recipient.id.toHex(), "payout", event.params.newPayout.toHex());
+    assert.fieldEquals("Recipient", recipient.id.toHex(), "metadataUrl", changeEvent.params.metadataUrl);
+    assert.fieldEquals("Recipient", recipient.id.toHex(), "payout", changeEvent.params.newPayout.toHex());
     assert.fieldEquals("Recipient", recipient.id.toHex(), "registry", DEFAULT_REGISTRY_ADDRESS.toHex());
   });
 
