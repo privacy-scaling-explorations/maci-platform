@@ -7,8 +7,8 @@ import { EmptyState } from "~/components/EmptyState";
 import { Alert } from "~/components/ui/Alert";
 import { Heading } from "~/components/ui/Heading";
 import { useRound } from "~/contexts/Round";
-import { useApplicationById } from "~/features/applications/hooks/useApplications";
 import { ProjectItem } from "~/features/projects/components/ProjectItem";
+import { useRequestById } from "~/hooks/useRequests";
 import { Layout } from "~/layouts/DefaultLayout";
 import { useRoundState } from "~/utils/state";
 import { ERoundState, type IRecipient } from "~/utils/types";
@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query: { pollId }
     props: { pollId },
   });
 
-const ConfirmProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
+const ConfirmProposalPage = ({ pollId }: { pollId: string }): JSX.Element => {
   const state = useRoundState({ pollId });
 
   const { getRoundByPollId } = useRound();
@@ -29,13 +29,13 @@ const ConfirmProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
 
   const searchParams = useSearchParams();
 
-  const applicationId = useMemo(() => searchParams.get("id"), [searchParams]);
-  const application = useApplicationById(round?.registryAddress ?? zeroAddress, applicationId ?? "");
+  const requestId = useMemo(() => searchParams.get("id"), [searchParams]);
+  const proposal = useRequestById(round?.registryAddress ?? zeroAddress, requestId ?? "");
 
-  const project = useMemo(() => application.data, [application]);
+  const project = useMemo(() => proposal.data, [proposal]);
 
-  if (application.isLoading) {
-    return <EmptyState title="Loading application..." />;
+  if (proposal.isLoading) {
+    return <EmptyState title="Loading your proposal..." />;
   }
 
   if (project === undefined) {
@@ -44,7 +44,7 @@ const ConfirmProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
         <div className="flex w-full justify-center">
           <div className="flex flex-col items-center gap-4 md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
             <Heading as="h2" size="4xl">
-              There is no such application for this round!
+              There is no such proposal for this round!
             </Heading>
           </div>
         </div>
@@ -59,17 +59,17 @@ const ConfirmProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
           {project.recipient.initialized === false ? (
             <div>
               <Heading as="h2" size="4xl">
-                Your project application has been submitted!
+                Your project proposal has been submitted!
               </Heading>
 
               <p className="text-gray-400">
-                Thank you for submitting your project application. Our team is now reviewing it.
+                Thank you for submitting your project proposal. Our team is now reviewing it.
               </p>
 
               <p className="flex gap-1 text-blue-400">
                 <FiAlertCircle className="h-4 w-4" />
 
-                <i className="text-sm">Applications can be edited and approved until the Application period ends.</i>
+                <i className="text-sm">Proposal can be approved until the Application period ends.</i>
               </p>
 
               {state !== ERoundState.APPLICATION && <Alert title="Application period has ended" variant="info" />}
@@ -77,7 +77,7 @@ const ConfirmProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
           ) : (
             <div>
               <Heading as="h2" size="4xl">
-                Your project application has been approved!
+                Your project proposal has been approved!
               </Heading>
             </div>
           )}
@@ -89,4 +89,4 @@ const ConfirmProjectPage = ({ pollId }: { pollId: string }): JSX.Element => {
   );
 };
 
-export default ConfirmProjectPage;
+export default ConfirmProposalPage;

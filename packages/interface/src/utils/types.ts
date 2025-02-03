@@ -1,4 +1,4 @@
-import { Application } from "~/features/applications/types";
+import { Metadata } from "~/features/proposals/types";
 
 import type { IGetPollData } from "maci-cli/sdk";
 import type { Address, Hex } from "viem";
@@ -77,7 +77,7 @@ export interface AttestationFilter {
   };
 }
 
-export interface Metadata {
+export interface EASMetadata {
   name: string;
   metadataPtr: string;
   round: string;
@@ -88,22 +88,6 @@ export interface TallyResult {
   id: string;
   result: string;
 }
-
-export const AttestationsQuery = `
-  query Attestations($where: AttestationWhereInput, $orderBy: [AttestationOrderByWithRelationInput!], $take: Int, $skip: Int) {
-    attestations(take: $take, skip: $skip, orderBy: $orderBy, where: $where) {
-      id
-      refUID
-      decodedDataJson
-      attester
-      recipient
-      revoked
-      schemaId
-      txid
-      time
-    }
-  }
-`;
 
 /**
  * The poll data
@@ -234,7 +218,7 @@ export interface IRecipient {
   /**
    * The recipient metadata values
    */
-  metadata?: Application;
+  metadata?: Metadata;
   /**
    * The recipient address
    */
@@ -296,7 +280,7 @@ export interface IRecipientContract {
  */
 export interface IRequest {
   /**
-   * The index of the application (optional onchain for Add so can use 0)
+   * The index of the project (optional onchain for Add so can use 0)
    */
   index: string;
   /**
@@ -322,7 +306,7 @@ export interface IRequest {
  */
 export interface IRequestContract {
   /**
-   * The index of the application (optional onchain for Add so can use 0)
+   * The index of the project (optional onchain for Add so can use 0)
    */
   index: bigint;
   /**

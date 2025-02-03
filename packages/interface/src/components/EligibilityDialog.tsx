@@ -93,7 +93,7 @@ export const EligibilityDialog = ({ pollId = "" }: IEligibilityDialogProps): JSX
   }, [disconnect]);
 
   const handleGoToCreateApp = useCallback(() => {
-    router.push(`/rounds/${pollId}/applications/new`);
+    router.push(`/rounds/${pollId}/requests/new`);
   }, [router, pollId]);
 
   if (roundState === ERoundState.APPLICATION) {
@@ -101,10 +101,10 @@ export const EligibilityDialog = ({ pollId = "" }: IEligibilityDialogProps): JSX
       <Dialog
         button="secondary"
         buttonAction={handleGoToCreateApp}
-        buttonName="Create Application"
+        buttonName="Create Project Request"
         description={
           <div className="flex flex-col gap-4">
-            <p>Start creating your own application now!</p>
+            <p>Start creating your own project now!</p>
           </div>
         }
         isOpen={openDialog}

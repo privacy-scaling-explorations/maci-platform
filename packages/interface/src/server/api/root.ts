@@ -1,7 +1,7 @@
-import { applicationsRouter } from "~/server/api/routers/applications";
 import { maciRouter } from "~/server/api/routers/maci";
 import { metadataRouter } from "~/server/api/routers/metadata";
 import { projectsRouter } from "~/server/api/routers/projects";
+import { requestsRouter } from "~/server/api/routers/requests";
 import { resultsRouter } from "~/server/api/routers/results";
 import { votersRouter } from "~/server/api/routers/voters";
 import { createTRPCRouter } from "~/server/api/trpc";
@@ -14,7 +14,7 @@ import { createTRPCRouter } from "~/server/api/trpc";
 export const appRouter = createTRPCRouter({
   results: resultsRouter,
   voters: votersRouter,
-  applications: applicationsRouter,
+  requests: requestsRouter,
   metadata: metadataRouter,
   projects: projectsRouter,
   maci: maciRouter,

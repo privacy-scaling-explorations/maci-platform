@@ -2,9 +2,9 @@ import { useMemo } from "react";
 import { zeroAddress } from "viem";
 
 import { useRound } from "~/contexts/Round";
-import { ReviewBar } from "~/features/applications/components/ReviewBar";
 import ProjectDetails from "~/features/projects/components/ProjectDetails";
 import { useProjectById } from "~/features/projects/hooks/useProjects";
+import { ReviewBar } from "~/features/proposals/components/ReviewBar";
 import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
 import { useRoundState } from "~/utils/state";
 import { ERoundState, IRecipient } from "~/utils/types";

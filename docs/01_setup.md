@@ -156,7 +156,8 @@ pnpm initPoll:NETWORK --poll [poll-id]
 
 The `.env.example` file in the `packages/interface/` folder contains instructions for most of these steps.
 
-At the very minimum you need to configure a **subgraph**, **admin address**, **MACI address**, the **EAS Schema** and the **application registration periods** under App Configuration.
+At the very minimum you need to configure a **subgraph**, **admin address**, and **MACI address** under App Configuration.
+If you're using EAS Gatekeeper, add **EAS Schema** as well.
 
 ### Subgraph
 
@@ -197,7 +198,7 @@ cd ../../packages/subgraph/
 
 The default configuration is Optimism Sepolia for development and Optimism for production.
 
-You can find supported networks on the EAS documentation website: https://docs.attest.sh/docs/quick--start/contracts
+For using EAS Gatekeeper, you can find supported networks on the EAS documentation website: https://docs.attest.sh/docs/quick--start/contracts
 
 #### App
 
@@ -215,9 +216,9 @@ To create your own round you need to do the following:
 
 #### EAS
 
-If you are running on a different network than Optimism Sepolia, just change the `NEXT_PUBLIC_CHAIN_NAME` to your network. Please head to `src/config.ts` to see which networks are available in the config file. The EAS addresses are used to create attestations for either voters or projects.
+If you are running on a different network than Optimism Sepolia, just change the `NEXT_PUBLIC_CHAIN_NAME` to your network. Please head to `src/config.ts` to see which networks are available in the config file. The EAS addresses are used to create attestations for either voters if you're using EAS Gatekeeper.
 
-If using EAS, it is required to create a schema on the network you choose to use. Once it's created, you can add the IDs to `NEXT_PUBLIC_APPROVAL_SCHEMA` and `NEXT_PUBLIC_METADATA_SCHEMA`. Please note that the schema IDs in the `.env.example` file work on Optimism Sepolia only.
+When using EAS, it is required to create a schema on the network you choose to use. Once it's created, you can add the IDs to `NEXT_PUBLIC_APPROVAL_SCHEMA`. Please note that the schema IDs in the `.env.example` file work on Optimism Sepolia only.
 
 You can also configure your own schemas here if you wish to, or deploy the EAS contracts to a network that doesn't have them.
 

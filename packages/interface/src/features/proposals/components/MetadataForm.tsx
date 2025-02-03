@@ -8,19 +8,19 @@ import { FieldArray, Form, FormControl, FormSection, Select, Textarea } from "~/
 import { Input } from "~/components/ui/Input";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
-import { useCreateApplication } from "../hooks/useCreateApplication";
-import { ApplicationSchema, contributionTypes, fundingSourceTypes, type Application } from "../types";
+import { useCreateProposal } from "../hooks/useCreateProposal";
+import { MetadataSchema, contributionTypes, fundingSourceTypes, type Metadata } from "../types";
 
-import { ApplicationButtons, EApplicationStep } from "./ApplicationButtons";
-import { ApplicationSteps } from "./ApplicationSteps";
 import { ImpactTags } from "./ImpactTags";
-import { ReviewApplicationDetails } from "./ReviewApplicationDetails";
+import { MetadataButtons, EMetadataStep } from "./MetadataButtons";
+import { MetadataSteps } from "./MetadataSteps";
+import { ReviewProposalDetails } from "./ReviewProposalDetails";
 
-interface IApplicationFormProps {
+interface IMetadataFormProps {
   pollId: string;
 }
 
-export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element => {
+export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
   const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
 
   const { address } = useAccount();
@@ -28,43 +28,43 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
   const router = useRouter();
 
   /**
-   * There are 3 steps for creating an application.
+   * There are 3 steps for creating a project proposal.
    * The first step is to set the project introduction (profile);
    * the second step is to set the contributions, impacts, and funding sources (advanced);
    * the last step is to review the input values, allow editing by going back to previous steps (review).
    */
-  const [step, setStep] = useState<EApplicationStep>(EApplicationStep.PROFILE);
+  const [step, setStep] = useState<EMetadataStep>(EMetadataStep.PROFILE);
 
   const handleNextStep = useCallback(() => {
-    if (step === EApplicationStep.PROFILE) {
-      setStep(EApplicationStep.ADVANCED);
-    } else if (step === EApplicationStep.ADVANCED) {
-      setStep(EApplicationStep.REVIEW);
+    if (step === EMetadataStep.PROFILE) {
+      setStep(EMetadataStep.ADVANCED);
+    } else if (step === EMetadataStep.ADVANCED) {
+      setStep(EMetadataStep.REVIEW);
     }
   }, [step, setStep]);
 
   const handleBackStep = useCallback(() => {
-    if (step === EApplicationStep.REVIEW) {
-      setStep(EApplicationStep.ADVANCED);
-    } else if (step === EApplicationStep.ADVANCED) {
-      setStep(EApplicationStep.PROFILE);
+    if (step === EMetadataStep.REVIEW) {
+      setStep(EMetadataStep.ADVANCED);
+    } else if (step === EMetadataStep.ADVANCED) {
+      setStep(EMetadataStep.PROFILE);
     }
   }, [step, setStep]);
 
-  const create = useCreateApplication({
+  const create = useCreateProposal({
     onSuccess: (id: bigint) => {
-      router.push(`/rounds/${pollId}/applications/confirmation?id=${id.toString()}`);
+      router.push(`/rounds/${pollId}/proposals/confirmation?id=${id.toString()}`);
     },
     onError: (err: { message: string }) =>
-      toast.error("Application create error", {
+      toast.error("Proposal create error", {
         description: err.message,
       }),
     pollId,
   });
 
   const handleSubmit = useCallback(
-    (application: Application) => {
-      create.mutate(application);
+    (metadata: Metadata) => {
+      create.mutate(metadata);
     },
     [create],
   );
@@ -73,17 +73,17 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
 
   return (
     <div className="dark:border-lighterBlack rounded-lg border border-gray-200 p-4">
-      <ApplicationSteps step={step} />
+      <MetadataSteps step={step} />
 
       <Form
         defaultValues={{
           payoutAddress: address,
         }}
-        schema={ApplicationSchema}
+        schema={MetadataSchema}
         onSubmit={handleSubmit}
       >
         <FormSection
-          className={step === EApplicationStep.PROFILE ? "block" : "hidden"}
+          className={step === EMetadataStep.PROFILE ? "block" : "hidden"}
           description="Please provide information about your project."
           title="Project Profile"
         >
@@ -146,7 +146,7 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
         </FormSection>
 
         <FormSection
-          className={step === EApplicationStep.ADVANCED ? "block" : "hidden"}
+          className={step === EMetadataStep.ADVANCED ? "block" : "hidden"}
           description="Describe the contribution and impact of your project."
           title="Contribution & Impact"
         >
@@ -223,11 +223,11 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
           />
         </FormSection>
 
-        {step === EApplicationStep.REVIEW && <ReviewApplicationDetails />}
+        {step === EMetadataStep.REVIEW && <ReviewProposalDetails />}
 
-        {step === EApplicationStep.REVIEW && (
+        {step === EMetadataStep.REVIEW && (
           <div className="mb-2 w-full text-right text-sm italic text-blue-400">
-            {!address && <p>You must connect wallet to create an application</p>}
+            {!address && <p>You must connect wallet to create a proposal of a project</p>}
 
             {!isCorrectNetwork && <p className="gap-2">You must be connected to {correctNetwork.name}</p>}
 
@@ -239,7 +239,7 @@ export const ApplicationForm = ({ pollId }: IApplicationFormProps): JSX.Element 
           </div>
         )}
 
-        <ApplicationButtons
+        <MetadataButtons
           isPending={create.isPending}
           isUploading={create.isPending}
           step={step}

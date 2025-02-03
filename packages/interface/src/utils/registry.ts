@@ -61,12 +61,12 @@ export const getRegistryManagerContract = async (chain: Chain): Promise<Hex> => 
 };
 
 /**
- * Approve an application to join the registry
+ * Approve a request to join the registry
  * @param chain - The chain to use
- * @param index - The index of the application to approve
- * @returns True if the application was approved, false otherwise
+ * @param index - The index of the request to approve
+ * @returns True if the request was approved, false otherwise
  */
-export const approveApplication = async (chain: Chain, index: string): Promise<boolean> => {
+export const approveRequest = async (chain: Chain, index: string): Promise<boolean> => {
   const publicClient = createPublicClient({
     transport: custom(window.ethereum!),
     chain,
@@ -100,13 +100,13 @@ export const approveApplication = async (chain: Chain, index: string): Promise<b
 };
 
 /**
- * Reject an application to join the registry
+ * Reject a request to join the registry
  *
  * @param chain - The chain to use
- * @param index - The index of the application to reject
- * @returns True if the application was rejected, false otherwise
+ * @param index - The index of the request to reject
+ * @returns True if the request was rejected, false otherwise
  */
-export const rejectApplication = async (chain: Chain, index: bigint): Promise<boolean> => {
+export const rejectRequest = async (chain: Chain, index: bigint): Promise<boolean> => {
   const [account] = (await window.ethereum!.request({ method: "eth_requestAccounts" })) as Hex[];
 
   const publicClient = createPublicClient({
@@ -139,17 +139,17 @@ export const rejectApplication = async (chain: Chain, index: bigint): Promise<bo
 };
 
 /**
- * Submit an application to join the registry
+ * Submit an request to join the registry
  *
  * @param chain - The chain to use
- * @param index - The index of the application to submit
+ * @param index - The index of the request to submit
  * @param metadataPtr - The metadata url
  * @param registryAddress - The registry address
  * @param recipientAddress - The recipient address
  * @param attestationId - The attestation id
  * @returns The transaction receipt
  */
-export const submitApplication = async (
+export const submitAddRequest = async (
   chain: Chain,
   metadataUrl: string,
   registryAddress: Hex,
@@ -198,7 +198,7 @@ export const submitApplication = async (
 
     return receipt;
   } catch (error) {
-    throw new Error("Failed to submit application");
+    throw new Error("Failed to submit your request");
   }
 };
 

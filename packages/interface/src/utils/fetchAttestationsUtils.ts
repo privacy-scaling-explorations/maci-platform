@@ -1,14 +1,14 @@
 import { encodeBytes32String } from "ethers";
 
-import type { Metadata, AttestationWithMetadata, Attestation, AttestationFilter } from "./types";
+import type { EASMetadata, AttestationWithMetadata, Attestation, AttestationFilter } from "./types";
 
 export function parseAttestation({ decodedDataJson, ...attestation }: AttestationWithMetadata): Attestation {
   return { ...attestation, ...parseDecodedMetadata(decodedDataJson) };
 }
 
-export function parseDecodedMetadata(json: string): Metadata {
+export function parseDecodedMetadata(json: string): EASMetadata {
   const data = JSON.parse(json) as { name: string; value: { value: string } }[];
-  const metadata = data.reduce((acc, x) => ({ ...acc, [x.name]: x.value.value }), {}) as Metadata;
+  const metadata = data.reduce((acc, x) => ({ ...acc, [x.name]: x.value.value }), {}) as EASMetadata;
 
   return metadata;
 }

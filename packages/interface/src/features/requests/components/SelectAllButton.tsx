@@ -2,24 +2,24 @@ import { useFormContext } from "react-hook-form";
 
 import { Button } from "~/components/ui/Button";
 
-import type { TApplicationsToApprove } from "../types";
+import type { TRequestToApprove } from "../../proposals/types";
 import type { IRequest } from "~/utils/types";
 
 interface ISelectAllButtonProps {
-  applications?: IRequest[];
+  requests?: IRequest[];
 }
 
-export const SelectAllButton = ({ applications = [] }: ISelectAllButtonProps): JSX.Element => {
-  const form = useFormContext<TApplicationsToApprove>();
+export const SelectAllButton = ({ requests = [] }: ISelectAllButtonProps): JSX.Element => {
+  const form = useFormContext<TRequestToApprove>();
   const selected = form.watch("selected");
-  const isAllSelected = selected.length > 0 && selected.length === applications.length;
+  const isAllSelected = selected.length > 0 && selected.length === requests.length;
   return (
     <Button
       className="px-2 text-sm sm:px-4 sm:text-base"
-      disabled={!applications.length}
+      disabled={!requests.length}
       type="button"
       onClick={() => {
-        const selectAll = isAllSelected ? [] : applications.map(({ index }) => index);
+        const selectAll = isAllSelected ? [] : requests.map(({ index }) => index);
         form.setValue("selected", selectAll);
       }}
     >

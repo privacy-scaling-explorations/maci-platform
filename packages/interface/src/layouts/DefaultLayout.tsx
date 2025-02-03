@@ -61,8 +61,8 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
 
     if (config.admin === address! && props.pollId) {
       links.push({
-        href: `/rounds/${props.pollId}/applications`,
-        children: "Applications",
+        href: `/rounds/${props.pollId}/proposals`,
+        children: "Proposals",
       });
     }
 

@@ -15,6 +15,8 @@ This means applications and profiles share the same schema and are differentiate
 Run: npx tsx src/lib/eas/registerSchemas
 */
 
+/** TODO: Not sure if we still need this file or not */
+
 const approvalSchema = "bytes32 type, bytes32 round";
 const metadataSchema = "string name, string metadataPtr, uint256 metadataType, bytes32 type, bytes32 round";
 

@@ -1,18 +1,18 @@
 import { DefaultError, useMutation, UseMutationResult } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 
-import { approveApplication, submitApplication } from "~/utils/registry";
+import { approveRequest, submitAddRequest } from "~/utils/registry";
 
 import type { Hex, TransactionReceipt } from "viem";
 
 /*
- * Arguments for the submitApplication function
+ * Arguments for the submitRequest function
  */
-interface SubmitApplicationArgs {
+interface SubmitRequestArgs {
   /**
-   * The attestation ID if EAS Registry
+   * The index of request
    */
-  refUID?: string;
+  requestIndex?: string;
   /**
    * The URL of the metadata
    */
@@ -22,22 +22,22 @@ interface SubmitApplicationArgs {
    */
   registryAddress: Hex;
   /**
-   * The recipient of the application
+   * The recipient of the project
    */
   recipient: Hex;
 }
 
 /**
- * Submit an application for approval
+ * Submit a project proposal for approval
  *
  * @returns whether the submission was successful
  */
-export function useSubmitApplication(): UseMutationResult<TransactionReceipt, DefaultError, SubmitApplicationArgs> {
+export function useSubmitAddRequest(): UseMutationResult<TransactionReceipt, DefaultError, SubmitRequestArgs> {
   const { chain } = useAccount();
 
   return useMutation({
-    mutationFn: async ({ refUID, metadataUrl, registryAddress, recipient }: SubmitApplicationArgs) =>
-      submitApplication(chain!, metadataUrl, registryAddress, recipient, refUID),
+    mutationFn: async ({ requestIndex: refUID, metadataUrl, registryAddress, recipient }: SubmitRequestArgs) =>
+      submitAddRequest(chain!, metadataUrl, registryAddress, recipient, refUID),
   });
 }
 
@@ -46,13 +46,13 @@ export function useSubmitApplication(): UseMutationResult<TransactionReceipt, De
  */
 interface SubmitApprovalArgs {
   /**
-   * The attestation ID if EAS Registry
+   * The index of request
    */
-  refUID: string;
+  requestIndex: string;
 }
 
 /**
- * Approve an application for a given refUID
+ * Approve a request for a given index
  *
  * @returns whether the approval was successful
  */
@@ -64,6 +64,6 @@ export function useSubmitApproval(): UseMutationResult<boolean, DefaultError, Su
   }
 
   return useMutation({
-    mutationFn: async ({ refUID }: SubmitApprovalArgs) => approveApplication(chain, refUID),
+    mutationFn: async ({ requestIndex }: SubmitApprovalArgs) => approveRequest(chain, requestIndex),
   });
 }

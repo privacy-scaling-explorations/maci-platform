@@ -83,7 +83,7 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
 
   // the URI of round index page looks like: /rounds/:pollId, without anything else, which is the reason why the length is 3
   const isRoundProjectPage = useMemo(
-    () => asPath.includes("rounds") && !asPath.includes("applications") && !asPath.includes("ballot"),
+    () => asPath.includes("rounds") && !asPath.includes("proposals") && !asPath.includes("ballot"),
     [asPath],
   );
 
