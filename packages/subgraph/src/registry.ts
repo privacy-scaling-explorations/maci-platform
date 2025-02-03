@@ -26,12 +26,24 @@ export function handleChangeRecipient(event: RecipientChanged): void {
     return;
   }
 
-  recipient.metadataUrl = event.params.metadataUrl.toString();
-  recipient.id = event.params.id;
+  const registry = createOrLoadRegistry(event.address);
+  const recipientsLoader = registry.recipients;
+  const recipients = recipientsLoader.load();
+
+  // eslint-disable-next-line @typescript-eslint/prefer-for-of, no-plusplus
+  for (let i = 0; i < recipients.length; i++) {
+    // eslint-disable-next-line eqeqeq
+    if (recipients[i].index == event.params.index && !recipients[i].deleted) {
+      recipients[i].deleted = true;
+      recipients[i].save();
+      break;
+    }
+  }
+
+  // we want to ensure that the index is the recipient index in the registry
   recipient.index = event.params.index;
   recipient.initialized = true;
   recipient.deleted = false;
-  recipient.payout = event.params.newPayout;
   recipient.save();
 }
 

@@ -3,7 +3,12 @@ import { z } from "zod";
 
 import { FilterSchema } from "~/features/filter/types";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { fetchApprovedProjectsWithMetadata, fetchProjects, fetchProjectsByAddress } from "~/utils/fetchProjects";
+import {
+  fetchApprovedProjectsWithMetadata,
+  fetchProjects,
+  fetchProjectsByAddress,
+  fetchApprovedProjectByIndex,
+} from "~/utils/fetchProjects";
 import { getProjectCount } from "~/utils/registry";
 
 import type { Chain, Hex } from "viem";
@@ -28,6 +33,13 @@ export const projectsRouter = createTRPCRouter({
       return projects.find((project) => ids.includes(project.id));
     }),
 
+  getWithMetadataById: publicProcedure
+    .input(z.object({ projectId: z.string(), registryAddress: z.string() }))
+    .query(async ({ input: { projectId, registryAddress } }) => {
+      const projects = await fetchApprovedProjectsWithMetadata("", registryAddress);
+      return projects.find((project) => project?.id === projectId);
+    }),
+
   search: publicProcedure
     .input(FilterSchema.extend({ search: z.string(), registryAddress: z.string() }))
     .query(async ({ input }) =>
@@ -42,6 +54,10 @@ export const projectsRouter = createTRPCRouter({
   getMine: publicProcedure
     .input(z.object({ registryAddress: z.string(), address: z.string() }))
     .query(async ({ input }) => fetchProjectsByAddress(input.registryAddress, input.address)),
+
+  getApprovedByIndex: publicProcedure
+    .input(z.object({ registryAddress: z.string(), index: z.string() }))
+    .query(async ({ input }) => fetchApprovedProjectByIndex(input.registryAddress, input.index)),
 
   // Used for distribution to get the projects' payoutAddress
   // To get this data we need to fetch all projects and their metadata

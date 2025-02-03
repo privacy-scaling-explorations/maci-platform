@@ -1,10 +1,13 @@
 import { useMemo } from "react";
+import { FiAlertCircle } from "react-icons/fi";
 import { zeroAddress } from "viem";
 
+import { StatusBar } from "~/components/ui/StatusBar";
 import { useRound } from "~/contexts/Round";
 import ProjectDetails from "~/features/projects/components/ProjectDetails";
 import { useProjectById } from "~/features/projects/hooks/useProjects";
 import { ReviewBar } from "~/features/proposals/components/ReviewBar";
+import { useChangeRequestByRecipientIndex } from "~/hooks/useRequests";
 import { LayoutWithSidebar } from "~/layouts/DefaultLayout";
 import { useRoundState } from "~/utils/state";
 import { ERoundState, IRecipient } from "~/utils/types";
@@ -21,15 +24,42 @@ const ProjectDetailsPage = ({ projectId = "", pollId }: IProjectDetailsProps): J
 
   const round = useMemo(() => getRoundByPollId(pollId), [pollId, getRoundByPollId]);
 
-  const projects = useProjectById(projectId, round?.registryAddress ?? zeroAddress);
+  const project = useProjectById(projectId, round?.registryAddress ?? zeroAddress);
 
   const roundState = useRoundState({ pollId });
 
+  const edition = useChangeRequestByRecipientIndex(round?.registryAddress ?? zeroAddress, project.data?.index ?? ""); // both approved or pending request could have edition
+
+  const hasEdition = useMemo(() => edition.data && edition.data.status.toString() === "Pending", [edition]);
+
+  const isDeleted = useMemo(() => project.data?.deleted === true, [project]);
+
   return (
     <LayoutWithSidebar eligibilityCheck showBallot showInfo pollId={pollId} sidebar="left">
-      {roundState === ERoundState.APPLICATION && <ReviewBar pollId={pollId} projectId={projectId} />}
+      {roundState === ERoundState.APPLICATION && !isDeleted && (
+        <ReviewBar
+          edition={hasEdition ? edition.data?.recipient.id : undefined}
+          pollId={pollId}
+          projectId={projectId}
+        />
+      )}
 
-      {projects.data && <ProjectDetails pollId={pollId} project={projects.data as unknown as IRecipient} />}
+      {isDeleted && (
+        <StatusBar
+          content={
+            <div className="flex items-center gap-2">
+              <FiAlertCircle className="h-4 w-4" />
+
+              <span>This project proposal is outdated.</span>
+
+              <i>Project proposal can be outdated after latest version is approved.</i>
+            </div>
+          }
+          status="declined"
+        />
+      )}
+
+      {project.data && <ProjectDetails pollId={pollId} project={project.data as unknown as IRecipient} />}
     </LayoutWithSidebar>
   );
 };

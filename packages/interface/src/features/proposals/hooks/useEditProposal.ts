@@ -7,28 +7,29 @@ import { useRound } from "~/contexts/Round";
 import { type TransactionError } from "~/features/voters/hooks/useApproveVoters";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { useUploadMetadata } from "~/hooks/useMetadata";
-import { useSubmitAddRequest } from "~/hooks/useRegistry";
+import { useSubmitEditRequest } from "~/hooks/useRegistry";
 import { getRegistryManagerContract } from "~/utils/registry";
 
 import type { Metadata } from "../types";
 
-export type TUseCreateProposalReturn = Omit<UseMutationResult<bigint, Error | TransactionError, Metadata>, "error"> & {
+export type TUseEditProposalReturn = Omit<UseMutationResult<bigint, Error | TransactionError, Metadata>, "error"> & {
   error: Error | TransactionError | null;
   isPending: boolean;
   isSuccess: boolean;
 };
 
 /**
- * Hook to create a project proposal
+ * Hook to edit a project proposal
  *
  * @param options - Options for the hook
  * @returns the result of the mutation
  */
-export function useCreateProposal(options: {
+export function useEditProposal(options: {
   onSuccess: (id: bigint) => void;
   onError: (err: Error) => void;
   pollId: string;
-}): TUseCreateProposalReturn {
+  recipientIndex?: string;
+}): TUseEditProposalReturn {
   const upload = useUploadMetadata();
 
   const { chain, address } = useAccount();
@@ -36,7 +37,7 @@ export function useCreateProposal(options: {
 
   const roundData = getRoundByPollId(options.pollId);
 
-  const submitProposal = useSubmitAddRequest();
+  const submitProposal = useSubmitEditRequest();
   const signer = useEthersSigner();
 
   const mutation = useMutation({
@@ -80,6 +81,7 @@ export function useCreateProposal(options: {
         metadataUrl: uploadRes.url,
         recipient,
         registryAddress: roundData.registryAddress as Hex,
+        recipientIndex: options.recipientIndex,
       });
 
       if (res.status !== "success") {

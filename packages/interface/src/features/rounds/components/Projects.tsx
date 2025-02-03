@@ -7,9 +7,9 @@ import { useAccount } from "wagmi";
 
 import { InfiniteLoading } from "~/components/InfiniteLoading";
 import { SortFilter } from "~/components/SortFilter";
-import { StatusBar } from "~/components/StatusBar";
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
+import { StatusBar } from "~/components/ui/StatusBar";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
@@ -152,7 +152,13 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
             {myProjectsData &&
               myProjectsData.length > 0 &&
               myProjectsData.map((project) => (
-                <ProjectItem key={project.id} isLoading={false} pollId={pollId} recipient={project} />
+                <ProjectItem
+                  key={project.id}
+                  isLoading={false}
+                  pollId={pollId}
+                  recipient={project}
+                  registryAddress={round?.registryAddress}
+                />
               ))}
 
             {(!myProjectsData || myProjectsData.length === 0) && (

@@ -37,6 +37,13 @@ export function useProjectMetadata(metadataPtr?: string): UseTRPCQueryResult<Met
   return useMetadata<Metadata>(metadataPtr);
 }
 
+export function useApprovedProjectByRecipientIndex(
+  registryAddress: string,
+  recipientIndex: string,
+): UseTRPCQueryResult<IRecipient[], unknown> {
+  return api.projects.getApprovedByIndex.useQuery({ registryAddress, index: recipientIndex });
+}
+
 export function useProjectCount({
   chain,
   registryAddress,
