@@ -29,15 +29,17 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
 
     if (roundState !== ERoundState.DEFAULT) {
       links.push({
+        label: "round",
         href: `/rounds/${props.pollId}`,
-        children: "Projects",
+        name: "Projects",
       });
     }
 
     if (roundState === ERoundState.VOTING && isRegistered) {
       links.push({
+        label: "ballot",
         href: `/rounds/${props.pollId}/ballot`,
-        children: "My Ballot",
+        name: "My Ballot",
       });
     }
 
@@ -47,22 +49,25 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
       isRegistered
     ) {
       links.push({
+        label: "ballot",
         href: `/rounds/${props.pollId}/ballot/confirmation`,
-        children: "Submitted Ballot",
+        name: "Submitted Ballot",
       });
     }
 
     if (roundState === ERoundState.RESULTS) {
       links.push({
+        label: "result",
         href: `/rounds/${props.pollId}/result`,
-        children: "Result",
+        name: "Result",
       });
     }
 
     if (config.admin === address! && props.pollId) {
       links.push({
+        label: "proposals",
         href: `/rounds/${props.pollId}/proposals`,
-        children: "Proposals",
+        name: "Proposals",
       });
     }
 
@@ -70,12 +75,14 @@ export const Layout = ({ children = null, ...props }: ILayoutProps): JSX.Element
       links.push(
         ...[
           {
+            label: "voters",
             href: "/voters",
-            children: "Voters",
+            name: "Voters",
           },
           {
+            label: "coordinator",
             href: "/coordinator",
-            children: "Coordinator",
+            name: "Coordinator",
           },
         ],
       );

@@ -4,12 +4,14 @@ import Link from "next/link";
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { Skeleton } from "~/components/ui/Skeleton";
+import { Spinner } from "~/components/ui/Spinner";
 import { config } from "~/config";
 import { formatNumber } from "~/utils/formatNumber";
 import { removeMarkdown } from "~/utils/removeMarkdown";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
+import type { ReactNode } from "react";
 import type { IRecipient } from "~/utils/types";
 
 import { useProjectMetadata } from "../hooks/useProjects";
@@ -18,6 +20,48 @@ import { EProjectState } from "../types";
 import { ImpactCategories } from "./ImpactCategories";
 import { ProjectAvatar } from "./ProjectAvatar";
 import { ProjectBanner } from "./ProjectBanner";
+
+export interface IProjectItemContentProps {
+  bannerImageUrl?: string;
+  profileImageUrl?: string;
+  name?: string;
+  bio?: string;
+  impactCategory?: string[];
+  actionButton?: ReactNode;
+}
+
+export const ProjectItemContent = ({
+  bannerImageUrl = "",
+  profileImageUrl = "",
+  name = "",
+  bio = "",
+  impactCategory = undefined,
+  actionButton = undefined,
+}: IProjectItemContentProps): JSX.Element => (
+  <article className="dark:bg-lightBlack group w-full rounded-xl bg-white shadow-lg hover:shadow-sm">
+    <div className="opacity-70 transition-opacity group-hover:opacity-100">
+      <ProjectBanner url={bannerImageUrl} />
+
+      <ProjectAvatar className="-mt-8 ml-4" rounded="full" url={profileImageUrl} />
+    </div>
+
+    <div className="p-4 pt-2">
+      <Heading as="h3" className="truncate dark:text-white" size="lg">
+        <Skeleton>{name}</Skeleton>
+      </Heading>
+
+      <div className="mb-2 line-clamp-2 h-10 text-sm text-gray-400">
+        <Skeleton className="w-full">{removeMarkdown(bio || "")}</Skeleton>
+      </div>
+
+      <Skeleton className="w-[100px]" isLoading={false}>
+        <ImpactCategories tags={impactCategory} />
+      </Skeleton>
+
+      {actionButton}
+    </div>
+  </article>
+);
 
 export interface IProjectItemProps {
   pollId: string;
@@ -44,57 +88,45 @@ export const ProjectItem = ({
 
   return (
     <Link href={`/rounds/${pollId}/${recipient.id}`}>
-      <article
-        className="dark:bg-lightBlack group w-96 rounded-xl bg-white shadow-lg hover:shadow-sm sm:w-full"
-        data-testid={`project-${recipient.id}`}
-      >
-        <div className="opacity-70 transition-opacity group-hover:opacity-100">
-          <ProjectBanner url={bannerImageUrl} />
+      {isLoading && <Spinner className="h-16 w-16" />}
 
-          <ProjectAvatar className="-mt-8 ml-4" rounded="full" url={profileImageUrl} />
-        </div>
+      {!isLoading && (
+        <ProjectItemContent
+          actionButton={
+            state !== undefined &&
+            action &&
+            roundState === ERoundState.VOTING && (
+              <div className="flex justify-end pt-6">
+                <Skeleton>
+                  {state === EProjectState.DEFAULT && (
+                    <Button size="sm" variant="inverted" onClick={action}>
+                      Add to ballot
+                    </Button>
+                  )}
 
-        <div className="p-4 pt-2">
-          <Heading as="h3" className="truncate dark:text-white" size="lg">
-            <Skeleton isLoading={isLoading}>{name}</Skeleton>
-          </Heading>
+                  {state === EProjectState.ADDED && (
+                    <Button size="sm" variant="primary" onClick={action}>
+                      Added
+                      <Image alt="check-white" height="18" src="/check-white.svg" width="18" />
+                    </Button>
+                  )}
 
-          <div className="mb-2 line-clamp-2 h-10 text-sm text-gray-400">
-            <Skeleton className="w-full" isLoading={isLoading}>
-              {removeMarkdown(bio || "")}
-            </Skeleton>
-          </div>
-
-          <Skeleton className="w-[100px]" isLoading={isLoading}>
-            <ImpactCategories tags={impactCategory} />
-          </Skeleton>
-
-          {!isLoading && state !== undefined && action && roundState === ERoundState.VOTING && (
-            <div className="flex justify-end pt-6">
-              <Skeleton>
-                {state === EProjectState.DEFAULT && (
-                  <Button size="sm" variant="inverted" onClick={action}>
-                    Add to ballot
-                  </Button>
-                )}
-
-                {state === EProjectState.ADDED && (
-                  <Button size="sm" variant="primary" onClick={action}>
-                    Added
-                    <Image alt="check-white" height="18" src="/check-white.svg" width="18" />
-                  </Button>
-                )}
-
-                {state === EProjectState.SUBMITTED && (
-                  <Button size="sm" variant="disabled">
-                    Submitted
-                  </Button>
-                )}
-              </Skeleton>
-            </div>
-          )}
-        </div>
-      </article>
+                  {state === EProjectState.SUBMITTED && (
+                    <Button size="sm" variant="disabled">
+                      Submitted
+                    </Button>
+                  )}
+                </Skeleton>
+              </div>
+            )
+          }
+          bannerImageUrl={bannerImageUrl}
+          bio={bio}
+          impactCategory={impactCategory}
+          name={name}
+          profileImageUrl={profileImageUrl}
+        />
+      )}
     </Link>
   );
 };

@@ -3,13 +3,12 @@ import Link from "next/link";
 import { useMemo, type ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
 import Markdown from "react-markdown";
-import { Hex } from "viem";
 import { useAccount } from "wagmi";
 
 import { Heading } from "~/components/ui/Heading";
 import { Tag } from "~/components/ui/Tag";
 import { impactCategories, prefixes } from "~/config";
-import { ProjectItem } from "~/features/projects/components/ProjectItem";
+import { ProjectItemContent } from "~/features/projects/components/ProjectItem";
 
 import type { Metadata } from "../types";
 
@@ -134,7 +133,7 @@ export const ReviewProposalDetails = (): JSX.Element => {
         <ValueField
           required
           body={
-            <div className="flex">
+            <div className="flex gap-2">
               {metadata.impactCategory?.map((tag) => (
                 <Tag key={tag} selected size="sm">
                   {Object.keys(impactCategories).includes(tag) && (
@@ -158,27 +157,20 @@ export const ReviewProposalDetails = (): JSX.Element => {
         />
       </div>
 
-      <b className="text-lg">Project Preview Card</b>
+      <div className="flex flex-col gap-2 dark:text-white">
+        <Heading className="text-lg">Project Preview Card</Heading>
 
-      <p className="text-sm">This is how your project will look in the dashboard:</p>
+        <p className="text-sm text-gray-400">This is how your project will look in the dashboard:</p>
 
-      <div className="mb-2 grid w-96 gap-4 sm:grid-cols-2  lg:grid-cols-1">
-        <ProjectItem
-          isLoading={false}
-          pollId=""
-          recipient={{
-            ...metadata,
-            id: "no-id",
-            metadataUrl: "",
-            payout: metadata.payoutAddress as Hex,
-            index: "0",
-            bannerImageUrl: metadata.bannerImageUrl,
-            profileImageUrl: metadata.profileImageUrl,
-            name: metadata.name,
-            bio: metadata.bio,
-            impactCategory: metadata.impactCategory,
-          }}
-        />
+        <div className="mb-2 grid grid-cols-1 sm:grid-cols-3">
+          <ProjectItemContent
+            bannerImageUrl={metadata.bannerImageUrl}
+            bio={metadata.bio}
+            impactCategory={metadata.impactCategory}
+            name={metadata.name}
+            profileImageUrl={metadata.profileImageUrl}
+          />
+        </div>
       </div>
     </div>
   );

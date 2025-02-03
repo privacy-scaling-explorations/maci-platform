@@ -52,7 +52,7 @@ export const BallotOverview = ({ title = undefined, pollId }: IBallotOverviewPro
 
         <VotingUsage pollId={pollId} />
 
-        {!showButton && (
+        {!showButton && roundState === ERoundState.VOTING && (
           <>
             <AllocateEquallyButton pollId={pollId} />
 
