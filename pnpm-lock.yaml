@@ -485,6 +485,9 @@ importers:
       nuqs:
         specifier: ^1.17.1
         version: 1.17.7(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))
+      permissionless:
+        specifier: '>=0.1.18 <=0.1.29'
+        version: 0.1.29(viem@2.19.1(bufferutil@4.0.8)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1))
       react:
         specifier: 18.2.0
         version: 18.2.0
