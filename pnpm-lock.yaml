@@ -206,7 +206,7 @@ importers:
         version: 3.0.8(ethers@6.13.4(bufferutil@4.0.8)(utf-8-validate@5.0.10))(hardhat@2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))
       '@nomicfoundation/hardhat-toolbox':
         specifier: ^5.0.0
-        version: 5.0.0(gulmave5ghlqtblz3vejn5g5jm)
+        version: 5.0.0(gi6tp7d47djb2vc4flrzkmbrsy)
       '@vercel/blob':
         specifier: ^0.27.1
         version: 0.27.1
@@ -256,10 +256,10 @@ importers:
         version: 0.0.0-ci.00a4f78(@types/snarkjs@0.7.8)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-cli:
         specifier: 0.0.0-ci.30f517a
-        version: 0.0.0-ci.30f517a(krlugfdf3pgp67xm2liavocuc4)
+        version: 0.0.0-ci.30f517a(ajhlwpvjhlugtkdjta5bzm3ozy)
       maci-contracts:
         specifier: 0.0.0-ci.30f517a
-        version: 0.0.0-ci.30f517a(ifwqcc3atv2zvyw4ggdxh63vl4)
+        version: 0.0.0-ci.30f517a(p2tozzgekh2wbpoeru7iyv3izu)
       maci-domainobjs:
         specifier: 0.0.0-ci.00a4f78
         version: 0.0.0-ci.00a4f78(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -267,7 +267,7 @@ importers:
         version: 0.0.0-ci.00a4f78(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-subgraph:
         specifier: 0.0.0-ci.30f517a
-        version: 0.0.0-ci.30f517a(xs73cjyi35kmvp4fvsc55e5yve)
+        version: 0.0.0-ci.30f517a(c4f63gta5bx5amx3vriakullke)
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -461,7 +461,7 @@ importers:
         version: 0.454.0(react@18.2.0)
       maci-cli:
         specifier: ^2.4.0
-        version: 2.4.0(krlugfdf3pgp67xm2liavocuc4)
+        version: 2.4.0(ajhlwpvjhlugtkdjta5bzm3ozy)
       maci-domainobjs:
         specifier: ^2.5.0
         version: 2.5.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -22210,7 +22210,7 @@ snapshots:
 
   axe-core@4.10.2: {}
 
-  axios-debug-log@1.0.0(axios@1.7.3):
+  axios-debug-log@1.0.0(axios@1.7.3(debug@4.3.6)):
     dependencies:
       '@types/debug': 4.1.12
       axios: 1.7.3(debug@4.3.6)
@@ -28376,16 +28376,16 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  maci-cli@0.0.0-ci.30f517a(krlugfdf3pgp67xm2liavocuc4):
+  maci-cli@0.0.0-ci.30f517a(ajhlwpvjhlugtkdjta5bzm3ozy):
     dependencies:
       '@commander-js/extra-typings': 12.1.0(commander@12.1.0)
-      '@nomicfoundation/hardhat-toolbox': 5.0.0(gulmave5ghlqtblz3vejn5g5jm)
+      '@nomicfoundation/hardhat-toolbox': 5.0.0(gi6tp7d47djb2vc4flrzkmbrsy)
       commander: 12.1.0
       dotenv: 16.4.7
       ethers: 6.13.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       hardhat: 2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
       maci-circuits: 0.0.0-ci.30f517a(@types/snarkjs@0.7.8)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      maci-contracts: 0.0.0-ci.30f517a(ifwqcc3atv2zvyw4ggdxh63vl4)
+      maci-contracts: 0.0.0-ci.30f517a(p2tozzgekh2wbpoeru7iyv3izu)
       maci-core: 0.0.0-ci.30f517a(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-crypto: 0.0.0-ci.30f517a(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-domainobjs: 0.0.0-ci.30f517a(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -28413,16 +28413,16 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  maci-cli@2.4.0(krlugfdf3pgp67xm2liavocuc4):
+  maci-cli@2.4.0(ajhlwpvjhlugtkdjta5bzm3ozy):
     dependencies:
       '@commander-js/extra-typings': 12.1.0(commander@12.1.0)
-      '@nomicfoundation/hardhat-toolbox': 5.0.0(gulmave5ghlqtblz3vejn5g5jm)
+      '@nomicfoundation/hardhat-toolbox': 5.0.0(gi6tp7d47djb2vc4flrzkmbrsy)
       commander: 12.1.0
       dotenv: 16.4.7
       ethers: 6.13.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       hardhat: 2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
       maci-circuits: 2.5.0(@types/snarkjs@0.7.8)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      maci-contracts: 2.5.0(ifwqcc3atv2zvyw4ggdxh63vl4)
+      maci-contracts: 2.5.0(p2tozzgekh2wbpoeru7iyv3izu)
       maci-core: 2.5.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-crypto: 2.5.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       maci-domainobjs: 2.5.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -28450,10 +28450,10 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  maci-contracts@0.0.0-ci.30f517a(ifwqcc3atv2zvyw4ggdxh63vl4):
+  maci-contracts@0.0.0-ci.30f517a(p2tozzgekh2wbpoeru7iyv3izu):
     dependencies:
       '@nomicfoundation/hardhat-ethers': 3.0.8(ethers@6.13.4(bufferutil@4.0.8)(utf-8-validate@5.0.10))(hardhat@2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))
-      '@nomicfoundation/hardhat-toolbox': 5.0.0(gulmave5ghlqtblz3vejn5g5jm)
+      '@nomicfoundation/hardhat-toolbox': 5.0.0(gi6tp7d47djb2vc4flrzkmbrsy)
       '@openzeppelin/contracts': 5.1.0
       '@openzeppelin/merkle-tree': 1.0.7
       '@pcd/util': 0.9.0
@@ -28541,10 +28541,10 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  maci-contracts@2.5.0(ifwqcc3atv2zvyw4ggdxh63vl4):
+  maci-contracts@2.5.0(p2tozzgekh2wbpoeru7iyv3izu):
     dependencies:
       '@nomicfoundation/hardhat-ethers': 3.0.8(ethers@6.13.4(bufferutil@4.0.8)(utf-8-validate@5.0.10))(hardhat@2.22.15(bufferutil@4.0.8)(ts-node@10.9.2(@types/node@20.14.14)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10))
-      '@nomicfoundation/hardhat-toolbox': 5.0.0(gulmave5ghlqtblz3vejn5g5jm)
+      '@nomicfoundation/hardhat-toolbox': 5.0.0(gi6tp7d47djb2vc4flrzkmbrsy)
       '@openzeppelin/contracts': 5.1.0
       '@openzeppelin/merkle-tree': 1.0.7
       circomlibjs: 0.1.7(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -28648,11 +28648,11 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  maci-subgraph@0.0.0-ci.30f517a(xs73cjyi35kmvp4fvsc55e5yve):
+  maci-subgraph@0.0.0-ci.30f517a(c4f63gta5bx5amx3vriakullke):
     dependencies:
       '@graphprotocol/graph-cli': 0.88.0(@types/node@20.14.14)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.7.2)(utf-8-validate@5.0.10)
       '@graphprotocol/graph-ts': 0.35.1
-      maci-contracts: 0.0.0-ci.30f517a(ifwqcc3atv2zvyw4ggdxh63vl4)
+      maci-contracts: 0.0.0-ci.30f517a(p2tozzgekh2wbpoeru7iyv3izu)
     transitivePeerDependencies:
       - '@nomicfoundation/hardhat-chai-matchers'
       - '@nomicfoundation/hardhat-ignition-ethers'
@@ -31671,7 +31671,7 @@ snapshots:
       '@aduh95/viz.js': 3.7.0
       '@solidity-parser/parser': 0.16.2
       axios: 1.7.3(debug@4.3.6)
-      axios-debug-log: 1.0.0(axios@1.7.3)
+      axios-debug-log: 1.0.0(axios@1.7.3(debug@4.3.6))
       cli-color: 2.0.4
       commander: 11.1.0
       convert-svg-to-png: 0.6.4(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
