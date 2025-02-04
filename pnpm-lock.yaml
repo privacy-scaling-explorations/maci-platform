@@ -320,11 +320,11 @@ importers:
   packages/e2e:
     dependencies:
       '@playwright/test':
-        specifier: ^1.48.2
-        version: 1.48.2
+        specifier: ^1.50.1
+        version: 1.50.1
       '@synthetixio/synpress':
         specifier: ^4.0.3
-        version: 4.0.3(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.48.2)(bufferutil@4.0.8)(ethers@6.13.5(bufferutil@4.0.8)(utf-8-validate@5.0.10))(playwright-core@1.48.2)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)
+        version: 4.0.3(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.50.1)(bufferutil@4.0.8)(ethers@6.13.5(bufferutil@4.0.8)(utf-8-validate@5.0.10))(playwright-core@1.50.1)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
@@ -400,7 +400,7 @@ importers:
         version: 11.0.0-rc.608(@trpc/server@11.0.0-rc.608)
       '@trpc/next':
         specifier: 11.0.0-rc.660
-        version: 11.0.0-rc.660(@tanstack/react-query@5.59.20(react@18.2.0))(@trpc/client@11.0.0-rc.608(@trpc/server@11.0.0-rc.608))(@trpc/react-query@11.0.0-rc.608(@tanstack/react-query@5.59.20(react@18.2.0))(@trpc/client@11.0.0-rc.608(@trpc/server@11.0.0-rc.608))(@trpc/server@11.0.0-rc.608)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(@trpc/server@11.0.0-rc.608)(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.7.2)
+        version: 11.0.0-rc.660(@tanstack/react-query@5.59.20(react@18.2.0))(@trpc/client@11.0.0-rc.608(@trpc/server@11.0.0-rc.608))(@trpc/react-query@11.0.0-rc.608(@tanstack/react-query@5.59.20(react@18.2.0))(@trpc/client@11.0.0-rc.608(@trpc/server@11.0.0-rc.608))(@trpc/server@11.0.0-rc.608)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(@trpc/server@11.0.0-rc.608)(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.7.2)
       '@trpc/react-query':
         specifier: 11.0.0-rc.608
         version: 11.0.0-rc.608(@tanstack/react-query@5.59.20(react@18.2.0))(@trpc/client@11.0.0-rc.608(@trpc/server@11.0.0-rc.608))(@trpc/server@11.0.0-rc.608)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
@@ -445,10 +445,10 @@ importers:
         version: link:../contracts
       next:
         specifier: ^14.1.0
-        version: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+        version: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
       next-auth:
         specifier: ^4.24.11
-        version: 4.24.11(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+        version: 4.24.11(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
       next-themes:
         specifier: ^0.4.3
         version: 0.4.3(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
@@ -457,7 +457,7 @@ importers:
         version: 5.0.2
       nuqs:
         specifier: ^1.17.1
-        version: 1.17.7(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))
+        version: 1.17.7(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -611,7 +611,7 @@ importers:
         version: 15.2.8
       next-router-mock:
         specifier: ^0.9.11
-        version: 0.9.13(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react@18.2.0)
+        version: 0.9.13(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react@18.2.0)
       postcss:
         specifier: ^8.4.47
         version: 8.4.47
@@ -3531,8 +3531,8 @@ packages:
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@playwright/test@1.48.2':
-    resolution: {integrity: sha512-54w1xCWfXuax7dz4W2M9uw0gDyh+ti/0K/MxcCUxChFh37kkdxPdfZDw5QBbuPUJHr1CiHJ1hXgSs+GgeQc5Zw==}
+  '@playwright/test@1.50.1':
+    resolution: {integrity: sha512-Jii3aBg+CEDpgnuDxEp/h7BimHcUTDlpEtce89xEumlJ5ef2hqepZ+PWp1DDpYC/VO9fmWVI1IlEaoI5fK9FXQ==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -11431,13 +11431,13 @@ packages:
   pkg-types@1.1.3:
     resolution: {integrity: sha512-+JrgthZG6m3ckicaOB74TwQ+tBWsFl3qVQg7mN8ulwSOElJ7gBhKzj2VkCPnZ4NlF6kEquYU+RIYNVAvzd54UA==}
 
-  playwright-core@1.48.2:
-    resolution: {integrity: sha512-sjjw+qrLFlriJo64du+EK0kJgZzoQPsabGF4lBvsid+3CNIZIYLgnMj9V6JY5VhM2Peh20DJWIVpVljLLnlawA==}
+  playwright-core@1.50.1:
+    resolution: {integrity: sha512-ra9fsNWayuYumt+NiM069M6OkcRb1FZSK8bgi66AtpFoWkg2+y0bJSNmkFrWhMbEBbVKC/EruAHH3g0zmtwGmQ==}
     engines: {node: '>=18'}
     hasBin: true
 
-  playwright@1.48.2:
-    resolution: {integrity: sha512-NjYvYgp4BPmiwfe31j4gHLa3J7bD2WiBz8Lk2RoSsmX38SVIARZ18VYjxLjAcDsAhA+F4iSEXTSGgjua0rrlgQ==}
+  playwright@1.50.1:
+    resolution: {integrity: sha512-G8rwsOQJ63XG6BbKj2w5rHeavFjy5zynBA9zsJMMtBoe/Uf757oG12NXz6e6OirF7RCrTVAKFXbLmn1RbL7Qaw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -18565,9 +18565,9 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
-  '@playwright/test@1.48.2':
+  '@playwright/test@1.50.1':
     dependencies:
-      playwright: 1.48.2
+      playwright: 1.50.1
 
   '@pnpm/config.env-replace@1.1.0': {}
 
@@ -19723,13 +19723,13 @@ snapshots:
       '@swc/counter': 0.1.3
       tslib: 2.8.1
 
-  '@synthetixio/ethereum-wallet-mock@0.0.4(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.48.2)(bufferutil@4.0.8)(ethers@6.13.5(bufferutil@4.0.8)(utf-8-validate@5.0.10))(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)':
+  '@synthetixio/ethereum-wallet-mock@0.0.4(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.50.1)(bufferutil@4.0.8)(ethers@6.13.5(bufferutil@4.0.8)(utf-8-validate@5.0.10))(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)':
     dependencies:
       '@depay/web3-client': 10.18.6(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(ethers@6.13.5(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       '@depay/web3-mock': 14.17.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@depay/web3-mock-evm': 14.19.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      '@playwright/test': 1.48.2
-      '@synthetixio/synpress-core': 0.0.4(@playwright/test@1.48.2)
+      '@playwright/test': 1.50.1
+      '@synthetixio/synpress-core': 0.0.4(@playwright/test@1.50.1)
       viem: 2.9.9(bufferutil@4.0.8)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)
     transitivePeerDependencies:
       - '@depay/solana-web3.js'
@@ -19740,7 +19740,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@synthetixio/synpress-cache@0.0.4(playwright-core@1.48.2)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)':
+  '@synthetixio/synpress-cache@0.0.4(playwright-core@1.50.1)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)':
     dependencies:
       axios: 1.6.7
       chalk: 5.3.0
@@ -19749,7 +19749,7 @@ snapshots:
       fs-extra: 11.2.0
       glob: 10.3.10
       gradient-string: 2.0.2
-      playwright-core: 1.48.2
+      playwright-core: 1.50.1
       progress: 2.0.3
       tsup: 8.0.2(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)
       unzipper: 0.10.14
@@ -19763,15 +19763,15 @@ snapshots:
       - ts-node
       - typescript
 
-  '@synthetixio/synpress-core@0.0.4(@playwright/test@1.48.2)':
+  '@synthetixio/synpress-core@0.0.4(@playwright/test@1.50.1)':
     dependencies:
-      '@playwright/test': 1.48.2
+      '@playwright/test': 1.50.1
 
-  '@synthetixio/synpress-metamask@0.0.4(@playwright/test@1.48.2)(bufferutil@4.0.8)(playwright-core@1.48.2)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)':
+  '@synthetixio/synpress-metamask@0.0.4(@playwright/test@1.50.1)(bufferutil@4.0.8)(playwright-core@1.50.1)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)':
     dependencies:
-      '@playwright/test': 1.48.2
-      '@synthetixio/synpress-cache': 0.0.4(playwright-core@1.48.2)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)
-      '@synthetixio/synpress-core': 0.0.4(@playwright/test@1.48.2)
+      '@playwright/test': 1.50.1
+      '@synthetixio/synpress-cache': 0.0.4(playwright-core@1.50.1)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)
+      '@synthetixio/synpress-core': 0.0.4(@playwright/test@1.50.1)
       '@viem/anvil': 0.0.7(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       fs-extra: 11.2.0
       zod: 3.22.4
@@ -19789,13 +19789,13 @@ snapshots:
 
   '@synthetixio/synpress-tsconfig@0.0.4': {}
 
-  '@synthetixio/synpress@4.0.3(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.48.2)(bufferutil@4.0.8)(ethers@6.13.5(bufferutil@4.0.8)(utf-8-validate@5.0.10))(playwright-core@1.48.2)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)':
+  '@synthetixio/synpress@4.0.3(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.50.1)(bufferutil@4.0.8)(ethers@6.13.5(bufferutil@4.0.8)(utf-8-validate@5.0.10))(playwright-core@1.50.1)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)':
     dependencies:
-      '@playwright/test': 1.48.2
-      '@synthetixio/ethereum-wallet-mock': 0.0.4(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.48.2)(bufferutil@4.0.8)(ethers@6.13.5(bufferutil@4.0.8)(utf-8-validate@5.0.10))(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)
-      '@synthetixio/synpress-cache': 0.0.4(playwright-core@1.48.2)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)
-      '@synthetixio/synpress-core': 0.0.4(@playwright/test@1.48.2)
-      '@synthetixio/synpress-metamask': 0.0.4(@playwright/test@1.48.2)(bufferutil@4.0.8)(playwright-core@1.48.2)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
+      '@playwright/test': 1.50.1
+      '@synthetixio/ethereum-wallet-mock': 0.0.4(@depay/solana-web3.js@1.27.0)(@depay/web3-blockchains@9.7.1)(@playwright/test@1.50.1)(bufferutil@4.0.8)(ethers@6.13.5(bufferutil@4.0.8)(utf-8-validate@5.0.10))(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)
+      '@synthetixio/synpress-cache': 0.0.4(playwright-core@1.50.1)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)
+      '@synthetixio/synpress-core': 0.0.4(@playwright/test@1.50.1)
+      '@synthetixio/synpress-metamask': 0.0.4(@playwright/test@1.50.1)(bufferutil@4.0.8)(playwright-core@1.50.1)(postcss@8.5.1)(ts-node@10.9.2(@types/node@22.9.0)(typescript@5.7.2))(typescript@5.7.2)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - '@depay/solana-web3.js'
       - '@depay/web3-blockchains'
@@ -19879,11 +19879,11 @@ snapshots:
     dependencies:
       '@trpc/server': 11.0.0-rc.608
 
-  '@trpc/next@11.0.0-rc.660(@tanstack/react-query@5.59.20(react@18.2.0))(@trpc/client@11.0.0-rc.608(@trpc/server@11.0.0-rc.608))(@trpc/react-query@11.0.0-rc.608(@tanstack/react-query@5.59.20(react@18.2.0))(@trpc/client@11.0.0-rc.608(@trpc/server@11.0.0-rc.608))(@trpc/server@11.0.0-rc.608)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(@trpc/server@11.0.0-rc.608)(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.7.2)':
+  '@trpc/next@11.0.0-rc.660(@tanstack/react-query@5.59.20(react@18.2.0))(@trpc/client@11.0.0-rc.608(@trpc/server@11.0.0-rc.608))(@trpc/react-query@11.0.0-rc.608(@tanstack/react-query@5.59.20(react@18.2.0))(@trpc/client@11.0.0-rc.608(@trpc/server@11.0.0-rc.608))(@trpc/server@11.0.0-rc.608)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(@trpc/server@11.0.0-rc.608)(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.7.2)':
     dependencies:
       '@trpc/client': 11.0.0-rc.608(@trpc/server@11.0.0-rc.608)
       '@trpc/server': 11.0.0-rc.608
-      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
       react: 18.2.0
       react-dom: 18.3.1(react@18.2.0)
       typescript: 5.7.2
@@ -28698,13 +28698,13 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next-auth@4.24.11(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react-dom@18.3.1(react@18.2.0))(react@18.2.0):
+  next-auth@4.24.11(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react-dom@18.3.1(react@18.2.0))(react@18.2.0):
     dependencies:
       '@babel/runtime': 7.25.0
       '@panva/hkdf': 1.2.1
       cookie: 0.7.1
       jose: 4.15.9
-      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
       oauth: 0.9.15
       openid-client: 5.6.5
       preact: 10.23.1
@@ -28713,9 +28713,9 @@ snapshots:
       react-dom: 18.3.1(react@18.2.0)
       uuid: 8.3.2
 
-  next-router-mock@0.9.13(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react@18.2.0):
+  next-router-mock@0.9.13(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0))(react@18.2.0):
     dependencies:
-      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
       react: 18.2.0
 
   next-themes@0.4.3(react-dom@18.3.1(react@18.2.0))(react@18.2.0):
@@ -28725,7 +28725,7 @@ snapshots:
 
   next-tick@1.1.0: {}
 
-  next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0):
+  next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0):
     dependencies:
       '@next/env': 14.2.5
       '@swc/helpers': 0.5.5
@@ -28747,7 +28747,7 @@ snapshots:
       '@next/swc-win32-ia32-msvc': 14.2.5
       '@next/swc-win32-x64-msvc': 14.2.5
       '@opentelemetry/api': 1.9.0
-      '@playwright/test': 1.48.2
+      '@playwright/test': 1.50.1
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
@@ -28926,10 +28926,10 @@ snapshots:
       bn.js: 4.11.6
       strip-hex-prefix: 1.0.0
 
-  nuqs@1.17.7(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)):
+  nuqs@1.17.7(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)):
     dependencies:
       mitt: 3.0.1
-      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
+      next: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
 
   nwsapi@2.2.12: {}
 
@@ -29471,11 +29471,11 @@ snapshots:
       mlly: 1.7.1
       pathe: 1.1.2
 
-  playwright-core@1.48.2: {}
+  playwright-core@1.50.1: {}
 
-  playwright@1.48.2:
+  playwright@1.50.1:
     dependencies:
-      playwright-core: 1.48.2
+      playwright-core: 1.50.1
     optionalDependencies:
       fsevents: 2.3.2
 
