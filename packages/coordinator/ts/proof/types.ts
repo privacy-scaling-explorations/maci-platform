@@ -14,6 +14,21 @@ export enum EProofGenerationEvents {
   ERROR = "exception",
 }
 
+/*
+ * Interface that represents read proofs results
+ */
+export interface IReadProofsResults {
+  /**
+   * Process proofs list
+   */
+  process: Proof[];
+
+  /**
+   * Tally proofs list
+   */
+  tally: Proof[];
+}
+
 /**
  * Interface that represents generate proofs arguments
  */
@@ -98,6 +113,32 @@ export interface IGetZkeyFilesData {
  * Merge arguments
  */
 export interface IMergeArgs {
+  /**
+   * MACI contract address
+   */
+  maciContractAddress: string;
+  /**
+   * Poll ID
+   */
+  pollId: number;
+  /**
+   * Approval for the session key
+   */
+  approval: string;
+  /**
+   * Session key address
+   */
+  sessionKeyAddress: Hex;
+  /**
+   * Chain
+   */
+  chain: ESupportedNetworks;
+}
+
+/**
+ * Submit proofs on-chain arguments
+ */
+export interface ISubmitProofsArgs {
   /**
    * MACI contract address
    */

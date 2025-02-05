@@ -1,5 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsEthereumAddress, IsInt, IsOptional, IsString, Length, Max, Min } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsBoolean, IsEnum, IsEthereumAddress, IsInt, IsOptional, IsString, Length, Max, Min } from "class-validator";
+import { Hex } from "viem";
+
+import { ESupportedNetworks, transformToString } from "../common";
 
 /**
  * Data transfer object for generate proof
@@ -138,4 +142,60 @@ export class MergeTreesDto {
   })
   @IsString()
   approval!: string;
+}
+
+/**
+ * Data transfer object for submit proofs on-chain
+ */
+export class SubmitProofsDto {
+  /**
+   * Poll id
+   */
+  @ApiProperty({
+    description: "Poll id",
+    minimum: 0,
+    type: Number,
+  })
+  @IsInt()
+  @Min(0)
+  pollId!: number;
+
+  @ApiProperty({
+    description: "MACI contract address",
+    type: String,
+  })
+  @IsEthereumAddress()
+  maciContractAddress!: Hex;
+
+  @ApiProperty({
+    description: "Tally contract address",
+    type: String,
+  })
+  @IsEthereumAddress()
+  tallyContractAddress!: Hex;
+
+  @ApiProperty({
+    description: "Session key address",
+    type: String,
+  })
+  @IsEthereumAddress()
+  sessionKeyAddress!: Hex;
+
+  @ApiProperty({
+    description: "Approval",
+    type: String,
+  })
+  @IsString()
+  approval!: string;
+
+  /**
+   * Chain Name
+   */
+  @ApiProperty({
+    description: "Chain to which to deploy the contract(s)",
+    enum: ESupportedNetworks,
+  })
+  @IsEnum(ESupportedNetworks)
+  @Transform(transformToString)
+  chain!: ESupportedNetworks;
 }

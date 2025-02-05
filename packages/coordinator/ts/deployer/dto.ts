@@ -5,9 +5,7 @@ import { IsEnum, IsString } from "class-validator";
 import type { IDeployMaciConfig, IDeployPollConfig } from "./types";
 import type { Hex } from "viem";
 
-import { ESupportedNetworks } from "../common";
-
-export const transformToString = ({ value }: { value: string }): string => value.toLowerCase();
+import { ESupportedNetworks, transformToString } from "../common";
 
 /**
  * Data transfer object for MACI contracts deployment
