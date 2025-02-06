@@ -34,7 +34,7 @@ export const VotingInfo = ({ pollId }: IVotingInfoProps): JSX.Element => {
       {!isLoading && timeLeft[3] < 0 && <p>Voting has ended</p>}
 
       {!isLoading && timeLeft[3] > 0 && (
-        <div className="flex gap-2">
+        <div className="flex gap-2 dark:text-white">
           <TimeSlot num={timeLeft[0]} unit="Days" />
 
           <TimeSlot num={timeLeft[1]} unit="Hours" />

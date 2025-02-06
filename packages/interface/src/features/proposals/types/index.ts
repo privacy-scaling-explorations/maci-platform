@@ -18,6 +18,7 @@ export const fundingSourceTypes = {
 
 export const MetadataSchema = z.object({
   name: z.string().min(3),
+  shortBio: z.string().max(140),
   bio: z.string().min(3),
   creator: z.string().optional(),
   profileImageUrl: z.string().optional(),

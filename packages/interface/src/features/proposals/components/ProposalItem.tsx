@@ -8,7 +8,6 @@ import { Checkbox } from "~/components/ui/Form";
 import { Skeleton } from "~/components/ui/Skeleton";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { useMetadata } from "~/hooks/useMetadata";
-import { removeMarkdown } from "~/utils/removeMarkdown";
 import { formatDate } from "~/utils/time";
 
 import type { TRequestToApprove, Metadata } from "../types";
@@ -34,10 +33,11 @@ export const ProposalItem = ({
   const form = useFormContext<TRequestToApprove>();
 
   const { profileImageUrl } = metadata.data ?? {};
-  const bio =
-    metadata.data?.bio && metadata.data.bio.length > 140
-      ? `${metadata.data.bio.substring(0, 140)}...`
-      : metadata.data?.bio;
+  let shortBio = metadata.data?.shortBio;
+  const bio = metadata.data?.bio;
+  if (!shortBio && bio) {
+    shortBio = bio.substring(0, 140);
+  }
 
   useEffect(() => {
     if (isApproved) {
@@ -67,7 +67,7 @@ export const ProposalItem = ({
             </Skeleton>
 
             <div className="text-sm text-gray-400">
-              <div>{removeMarkdown(bio || "")}</div>
+              <div>{shortBio}</div>
             </div>
           </div>
         </div>
