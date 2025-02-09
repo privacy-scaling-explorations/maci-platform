@@ -25,7 +25,7 @@ export class SessionKeysController {
    *
    * @returns generated session key address
    */
-  @ApiResponse({ status: HttpStatus.CREATED, description: "The session key was successfully generated" })
+  @ApiResponse({ status: HttpStatus.OK, description: "The session key was successfully generated" })
   @ApiResponse({ status: HttpStatus.FORBIDDEN, description: "Forbidden" })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "BadRequest" })
   @Get("generate")

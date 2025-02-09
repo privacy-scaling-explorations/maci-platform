@@ -1,16 +1,6 @@
-import { signerToEcdsaValidator } from "@zerodev/ecdsa-validator";
-import { serializePermissionAccount, toPermissionValidator } from "@zerodev/permissions";
-import { toSudoPolicy } from "@zerodev/permissions/policies";
-import { toECDSASigner } from "@zerodev/permissions/signers";
-import { addressToEmptyAccount, createKernelAccount } from "@zerodev/sdk";
-import { KERNEL_V3_1 } from "@zerodev/sdk/constants";
-import dotenv from "dotenv";
-import { ENTRYPOINT_ADDRESS_V07 } from "permissionless";
-import { Hex, zeroAddress } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
+import { zeroAddress } from "viem";
 
 import { ErrorCodes, ESupportedNetworks } from "../ts/common";
-import { getPublicClient } from "../ts/common/accountAbstraction";
 import { CryptoService } from "../ts/crypto/crypto.service";
 import { testMaciDeploymentConfig, testPollDeploymentConfig } from "../ts/deployer/__tests__/utils";
 import { DeployerService } from "../ts/deployer/deployer.service";
@@ -18,47 +8,7 @@ import { FileService } from "../ts/file/file.service";
 import { ProofGeneratorService } from "../ts/proof/proof.service";
 import { SessionKeysService } from "../ts/sessionKeys/sessionKeys.service";
 
-dotenv.config();
-
-const entryPoint = ENTRYPOINT_ADDRESS_V07;
-const kernelVersion = KERNEL_V3_1;
-
-/**
- * Generate an approval for a session key
- * @param sessionKeyAddress - the session key address
- * @returns - the approval
- */
-export const generateApproval = async (sessionKeyAddress: Hex): Promise<string> => {
-  const publicClient = getPublicClient(ESupportedNetworks.OPTIMISM_SEPOLIA);
-
-  const sessionKeySigner = privateKeyToAccount(process.env.TEST_PRIVATE_KEY! as `0x${string}`);
-  const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
-    signer: sessionKeySigner,
-    entryPoint,
-    kernelVersion,
-  });
-
-  const emptyAccount = addressToEmptyAccount(sessionKeyAddress);
-  const emptySessionKeySigner = toECDSASigner({ signer: emptyAccount });
-
-  const permissionPlugin = await toPermissionValidator(publicClient, {
-    entryPoint,
-    kernelVersion,
-    signer: emptySessionKeySigner,
-    policies: [toSudoPolicy({})],
-  });
-
-  const sessionKeyAccount = await createKernelAccount(publicClient, {
-    entryPoint,
-    kernelVersion,
-    plugins: {
-      sudo: ecdsaValidator,
-      regular: permissionPlugin,
-    },
-  });
-
-  return serializePermissionAccount(sessionKeyAccount);
-};
+import { ENTRY_POINT, generateApproval, KERNEL_VERSION } from "./utils";
 
 describe("E2E Account Abstraction Tests", () => {
   const fileService = new FileService();
@@ -151,8 +101,8 @@ describe("E2E Account Abstraction Tests", () => {
       expect(client.transport.key).toBe("http");
       expect(client.key).toBe("Account");
       expect(client.account.address).not.toBe(zeroAddress);
-      expect(client.account.kernelVersion).toBe(kernelVersion);
-      expect(client.account.entryPoint).toBe(entryPoint);
+      expect(client.account.kernelVersion).toBe(KERNEL_VERSION);
+      expect(client.account.entryPoint).toBe(ENTRY_POINT);
       // this is an account with limited permissions so no sudo validator
       expect(client.account.kernelPluginManager.address).toBe(zeroAddress);
       expect(client.account.kernelPluginManager.sudoValidator).toBe(undefined);

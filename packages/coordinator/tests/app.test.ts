@@ -1,7 +1,8 @@
 import { HttpStatus, ValidationPipe, type INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import { ValidationError } from "class-validator";
-import { getBytes, hashMessage, type Signer } from "ethers";
+import dotenv from "dotenv";
+import { type Signer } from "ethers";
 import hardhat from "hardhat";
 import {
   type DeployedContracts,
@@ -32,6 +33,10 @@ import { FileModule } from "../ts/file/file.module";
 import { EProofGenerationEvents, type IGenerateArgs } from "../ts/proof/types";
 import { ESubgraphEvents, type IDeploySubgraphArgs } from "../ts/subgraph/types";
 
+import { getAuthorizationHeader } from "./utils";
+
+dotenv.config();
+
 const STATE_TREE_DEPTH = 10;
 const INT_STATE_TREE_DEPTH = 1;
 const VOTE_OPTION_TREE_DEPTH = 2;
@@ -46,13 +51,6 @@ describe("e2e", () => {
   let socket: Socket;
 
   const cryptoService = new CryptoService();
-
-  const getAuthorizationHeader = async () => {
-    const publicKey = await fs.promises.readFile(process.env.COORDINATOR_PUBLIC_KEY_PATH!);
-    const signature = await signer.signMessage("message");
-    const digest = Buffer.from(getBytes(hashMessage("message"))).toString("hex");
-    return `Bearer ${cryptoService.encrypt(publicKey, `${signature}:${digest}`)}`;
-  };
 
   beforeAll(async () => {
     [signer] = await hardhat.ethers.getSigners();
@@ -102,7 +100,7 @@ describe("e2e", () => {
   });
 
   beforeEach(async () => {
-    const authorization = await getAuthorizationHeader();
+    const authorization = await getAuthorizationHeader(signer);
 
     await new Promise((resolve) => {
       app.getUrl().then((url) => {
@@ -148,7 +146,7 @@ describe("e2e", () => {
     test("should throw an error if poll id is invalid", async () => {
       const publicKey = await fs.promises.readFile(process.env.COORDINATOR_PUBLIC_KEY_PATH!);
       const encryptedCoordinatorPrivateKey = cryptoService.encrypt(publicKey, coordinatorKeypair.privKey.serialize());
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const result = await request(app.getHttpServer() as App)
         .post("/v1/proof/generate")
@@ -196,7 +194,7 @@ describe("e2e", () => {
     });
 
     test("should throw an error if encrypted key is invalid", async () => {
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const result = await request(app.getHttpServer() as App)
         .post("/v1/proof/generate")
@@ -242,7 +240,7 @@ describe("e2e", () => {
     test("should throw an error if maci address is invalid", async () => {
       const publicKey = await fs.promises.readFile(process.env.COORDINATOR_PUBLIC_KEY_PATH!);
       const encryptedCoordinatorPrivateKey = cryptoService.encrypt(publicKey, coordinatorKeypair.privKey.serialize());
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const result = await request(app.getHttpServer() as App)
         .post("/v1/proof/generate")
@@ -291,7 +289,7 @@ describe("e2e", () => {
     test("should throw an error if tally address is invalid", async () => {
       const publicKey = await fs.promises.readFile(process.env.COORDINATOR_PUBLIC_KEY_PATH!);
       const encryptedCoordinatorPrivateKey = cryptoService.encrypt(publicKey, coordinatorKeypair.privKey.serialize());
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const result = await request(app.getHttpServer() as App)
         .post("/v1/proof/generate")
@@ -340,7 +338,7 @@ describe("e2e", () => {
 
   describe("validation /v1/subgraph/deploy POST", () => {
     test("should throw an error if network is invalid", async () => {
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const result = await request(app.getHttpServer() as App)
         .post("/v1/subgraph/deploy")
@@ -384,7 +382,7 @@ describe("e2e", () => {
     });
 
     test("should throw an error if maci contract is invalid", async () => {
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const result = await request(app.getHttpServer() as App)
         .post("/v1/subgraph/deploy")
@@ -426,7 +424,7 @@ describe("e2e", () => {
     });
 
     test("should throw an error if tag is invalid", async () => {
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const result = await request(app.getHttpServer() as App)
         .post("/v1/subgraph/deploy")
@@ -543,7 +541,7 @@ describe("e2e", () => {
     test("should throw an error if poll is not over", async () => {
       const publicKey = await fs.promises.readFile(process.env.COORDINATOR_PUBLIC_KEY_PATH!);
       const encryptedCoordinatorPrivateKey = cryptoService.encrypt(publicKey, coordinatorKeypair.privKey.serialize());
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const result = await request(app.getHttpServer() as App)
         .post("/v1/proof/generate")
@@ -587,7 +585,7 @@ describe("e2e", () => {
     test("should throw an error if signups are not merged", async () => {
       const publicKey = await fs.promises.readFile(process.env.COORDINATOR_PUBLIC_KEY_PATH!);
       const encryptedCoordinatorPrivateKey = cryptoService.encrypt(publicKey, coordinatorKeypair.privKey.serialize());
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const result = await request(app.getHttpServer() as App)
         .post("/v1/proof/generate")
@@ -637,7 +635,7 @@ describe("e2e", () => {
         await mergeSignups({ pollId: 0n, signer });
       }
 
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const result = await request(app.getHttpServer() as App)
         .post("/v1/proof/generate")
@@ -684,7 +682,7 @@ describe("e2e", () => {
     });
 
     test("should throw an error if there is no such poll", async () => {
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const result = await request(app.getHttpServer() as App)
         .post("/v1/proof/generate")
@@ -762,7 +760,7 @@ describe("e2e", () => {
     });
 
     test("should throw error if coordinator key cannot be decrypted", async () => {
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const result = await request(app.getHttpServer() as App)
         .post("/v1/proof/generate")
@@ -803,7 +801,7 @@ describe("e2e", () => {
     test("should generate proofs properly", async () => {
       const publicKey = await fs.promises.readFile(process.env.COORDINATOR_PUBLIC_KEY_PATH!);
       const encryptedCoordinatorPrivateKey = cryptoService.encrypt(publicKey, coordinatorKeypair.privKey.serialize());
-      const encryptedHeader = await getAuthorizationHeader();
+      const encryptedHeader = await getAuthorizationHeader(signer);
 
       const args: IGenerateArgs = {
         poll: 0,

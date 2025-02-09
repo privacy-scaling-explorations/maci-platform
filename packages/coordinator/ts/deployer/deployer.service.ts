@@ -395,31 +395,6 @@ export class DeployerService {
 
     const kernelClient = await this.sessionKeysService.generateClientFromSessionKey(sessionKeyAddress, approval, chain);
 
-    let initialVoiceCreditProxyAddress = this.storage.getAddress(
-      config.initialVoiceCreditsProxy.type as unknown as EContracts,
-      chain,
-    );
-
-    const initialVoiceCreditProxyData = this.getVoiceCreditProxyData(
-      config.initialVoiceCreditsProxy.type,
-      chain,
-      config.initialVoiceCreditsProxy.args,
-    );
-
-    // if the initial voice credit proxy is not already deployed, we need to deploy it
-    if (!initialVoiceCreditProxyData.alreadyDeployed) {
-      initialVoiceCreditProxyAddress = await this.deployAndStore(
-        config.initialVoiceCreditsProxy.type as unknown as EContracts,
-        Object.values(config.initialVoiceCreditsProxy.args),
-        initialVoiceCreditProxyData.abi,
-        initialVoiceCreditProxyData.bytecode,
-        kernelClient,
-        bundlerClient,
-        publicClient,
-        chain,
-      );
-    }
-
     let gatekeeperAddress = this.storage.getAddress(config.gatekeeper.type as unknown as EContracts, chain);
     const gatekeeperData = this.getGatekeeperData(config.gatekeeper.type, chain, config.gatekeeper.args);
 
@@ -438,121 +413,124 @@ export class DeployerService {
     }
 
     // deploy all maci contracts
-    const [, poseidonT3Address, poseidonT4Address, poseidonT5Address, poseidonT6Address] = await Promise.all([
-      // 1. poseidon
-      this.deployAndStore(
-        EContracts.PoseidonT3,
-        [],
-        PoseidonT3Factory.abi,
-        PoseidonT3Factory.bytecode,
-        kernelClient,
-        bundlerClient,
-        publicClient,
-        chain,
-      ),
-      this.deployAndStore(
-        EContracts.PoseidonT4,
-        [],
-        PoseidonT4Factory.abi,
-        PoseidonT4Factory.bytecode,
-        kernelClient,
-        bundlerClient,
-        publicClient,
-        chain,
-      ),
-      this.deployAndStore(
-        EContracts.PoseidonT5,
-        [],
-        PoseidonT5Factory.abi,
-        PoseidonT5Factory.bytecode,
-        kernelClient,
-        bundlerClient,
-        publicClient,
-        chain,
-      ),
-      this.deployAndStore(
-        EContracts.PoseidonT6,
-        [],
-        PoseidonT6Factory.abi,
-        PoseidonT6Factory.bytecode,
-        kernelClient,
-        bundlerClient,
-        publicClient,
-        chain,
-      ),
-      // 2. verifier
-      this.deployAndStore(
-        EContracts.Verifier,
-        [],
-        VerifierFactory.abi,
-        VerifierFactory.bytecode,
-        kernelClient,
-        bundlerClient,
-        publicClient,
-        chain,
-      ),
-    ]);
+    // (we are not using Promise.all because the write tx nonce should be sequential)
+    // 1. verifier
+    await this.deployAndStore(
+      EContracts.Verifier,
+      [],
+      VerifierFactory.abi,
+      VerifierFactory.bytecode,
+      kernelClient,
+      bundlerClient,
+      publicClient,
+      chain,
+    );
 
-    const [pollFactoryAddress, tallyFactoryAddress, messageProcessorFactoryAddress, vkRegistryAddress] =
-      await Promise.all([
-        // 3. factories
-        this.deployAndStore(
-          EContracts.PollFactory,
-          [],
-          PollFactoryFactory.abi as unknown as Abi,
-          PollFactoryFactory.linkBytecode({
-            "contracts/crypto/PoseidonT3.sol:PoseidonT3": poseidonT3Address,
-            "contracts/crypto/PoseidonT4.sol:PoseidonT4": poseidonT4Address,
-            "contracts/crypto/PoseidonT5.sol:PoseidonT5": poseidonT5Address,
-            "contracts/crypto/PoseidonT6.sol:PoseidonT6": poseidonT6Address,
-          }) as Hex,
-          kernelClient,
-          bundlerClient,
-          publicClient,
-          chain,
-        ),
-        this.deployAndStore(
-          EContracts.TallyFactory,
-          [],
-          TallyFactoryFactory.abi as unknown as Abi,
-          TallyFactoryFactory.linkBytecode({
-            "contracts/crypto/PoseidonT3.sol:PoseidonT3": poseidonT3Address,
-            "contracts/crypto/PoseidonT4.sol:PoseidonT4": poseidonT4Address,
-            "contracts/crypto/PoseidonT5.sol:PoseidonT5": poseidonT5Address,
-            "contracts/crypto/PoseidonT6.sol:PoseidonT6": poseidonT6Address,
-          }) as Hex,
-          kernelClient,
-          bundlerClient,
-          publicClient,
-          chain,
-        ),
-        this.deployAndStore(
-          EContracts.MessageProcessorFactory,
-          [],
-          MessageProcessorFactoryFactory.abi,
-          MessageProcessorFactoryFactory.linkBytecode({
-            "contracts/crypto/PoseidonT3.sol:PoseidonT3": poseidonT3Address,
-            "contracts/crypto/PoseidonT4.sol:PoseidonT4": poseidonT4Address,
-            "contracts/crypto/PoseidonT5.sol:PoseidonT5": poseidonT5Address,
-            "contracts/crypto/PoseidonT6.sol:PoseidonT6": poseidonT6Address,
-          }) as Hex,
-          kernelClient,
-          bundlerClient,
-          publicClient,
-          chain,
-        ),
-        // 4. VkRegistry
-        this.deployAndStore(
-          EContracts.VkRegistry,
-          [],
-          VkRegistryFactory.abi,
-          VkRegistryFactory.bytecode,
-          kernelClient,
-          bundlerClient,
-          publicClient,
-          chain,
-        ),
-      ]);
+    // 2. poseidon
+    const poseidonT3Address = await this.deployAndStore(
+      EContracts.PoseidonT3,
+      [],
+      PoseidonT3Factory.abi,
+      PoseidonT3Factory.bytecode,
+      kernelClient,
+      bundlerClient,
+      publicClient,
+      chain,
+    );
+
+    const poseidonT4Address = await this.deployAndStore(
+      EContracts.PoseidonT4,
+      [],
+      PoseidonT4Factory.abi,
+      PoseidonT4Factory.bytecode,
+      kernelClient,
+      bundlerClient,
+      publicClient,
+      chain,
+    );
+
+    const poseidonT5Address = await this.deployAndStore(
+      EContracts.PoseidonT5,
+      [],
+      PoseidonT5Factory.abi,
+      PoseidonT5Factory.bytecode,
+      kernelClient,
+      bundlerClient,
+      publicClient,
+      chain,
+    );
+
+    const poseidonT6Address = await this.deployAndStore(
+      EContracts.PoseidonT6,
+      [],
+      PoseidonT6Factory.abi,
+      PoseidonT6Factory.bytecode,
+      kernelClient,
+      bundlerClient,
+      publicClient,
+      chain,
+    );
+
+    // 3. factories
+    const pollFactoryAddress = await this.deployAndStore(
+      EContracts.PollFactory,
+      [],
+      PollFactoryFactory.abi as unknown as Abi,
+      PollFactoryFactory.linkBytecode({
+        "contracts/crypto/PoseidonT3.sol:PoseidonT3": poseidonT3Address,
+        "contracts/crypto/PoseidonT4.sol:PoseidonT4": poseidonT4Address,
+        "contracts/crypto/PoseidonT5.sol:PoseidonT5": poseidonT5Address,
+        "contracts/crypto/PoseidonT6.sol:PoseidonT6": poseidonT6Address,
+      }) as Hex,
+      kernelClient,
+      bundlerClient,
+      publicClient,
+      chain,
+    );
+
+    const tallyFactoryAddress = await this.deployAndStore(
+      EContracts.TallyFactory,
+      [],
+      TallyFactoryFactory.abi as unknown as Abi,
+      TallyFactoryFactory.linkBytecode({
+        "contracts/crypto/PoseidonT3.sol:PoseidonT3": poseidonT3Address,
+        "contracts/crypto/PoseidonT4.sol:PoseidonT4": poseidonT4Address,
+        "contracts/crypto/PoseidonT5.sol:PoseidonT5": poseidonT5Address,
+        "contracts/crypto/PoseidonT6.sol:PoseidonT6": poseidonT6Address,
+      }) as Hex,
+      kernelClient,
+      bundlerClient,
+      publicClient,
+      chain,
+    );
+
+    const messageProcessorFactoryAddress = await this.deployAndStore(
+      EContracts.MessageProcessorFactory,
+      [],
+      MessageProcessorFactoryFactory.abi,
+      MessageProcessorFactoryFactory.linkBytecode({
+        "contracts/crypto/PoseidonT3.sol:PoseidonT3": poseidonT3Address,
+        "contracts/crypto/PoseidonT4.sol:PoseidonT4": poseidonT4Address,
+        "contracts/crypto/PoseidonT5.sol:PoseidonT5": poseidonT5Address,
+        "contracts/crypto/PoseidonT6.sol:PoseidonT6": poseidonT6Address,
+      }) as Hex,
+      kernelClient,
+      bundlerClient,
+      publicClient,
+      chain,
+    );
+
+    // 4. VkRegistry
+    const vkRegistryAddress = await this.deployAndStore(
+      EContracts.VkRegistry,
+      [],
+      VkRegistryFactory.abi,
+      VkRegistryFactory.bytecode,
+      kernelClient,
+      bundlerClient,
+      publicClient,
+      chain,
+    );
 
     try {
       const processMessagesZkeyPathQv = this.fileService.getZkeyFilePaths(
@@ -680,7 +658,6 @@ export class DeployerService {
         messageProcessorFactoryAddress,
         tallyFactoryAddress,
         gatekeeperAddress,
-        initialVoiceCreditProxyAddress,
         config.MACI.stateTreeDepth,
         emptyBallotRoots,
       ],
