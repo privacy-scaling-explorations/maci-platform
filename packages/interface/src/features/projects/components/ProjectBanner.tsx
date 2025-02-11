@@ -1,13 +1,13 @@
 import { type ComponentProps } from "react";
 
-import { Banner } from "~/components/ui/Banner";
+import { BackgroundImage } from "~/components/ui/BackgroundImage";
 
-export interface IProjectBannerProps extends ComponentProps<typeof Banner> {
+export interface IProjectBannerProps extends ComponentProps<typeof BackgroundImage> {
   url?: string;
 }
 
 export const ProjectBanner = ({ url = undefined, ...rest }: IProjectBannerProps): JSX.Element => (
-  <div className="overflow-hidden rounded-xl">
-    <Banner {...rest} fallbackSrc={url} src={url} />
+  <div className="overflow-hidden">
+    <BackgroundImage className="h-[132px] rounded-[10px] lg:h-[211px]" fallbackSrc={url} src={url} {...rest} />
   </div>
 );

@@ -22,7 +22,7 @@ const ConnectedDetails = ({ openAccountModal, account, isMobile }: IConnectedDet
     <div>
       <div className="flex gap-2 text-white">
         <Chip color="neutral" onClick={openAccountModal}>
-          {displayName}
+          <span className="font-sans text-base font-bold leading-none">{displayName}</span>
 
           <Image alt="dropdown" height="18" src="/dropdown.svg" width="18" />
         </Chip>
