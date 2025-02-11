@@ -13,7 +13,7 @@ export const Link = createComponent(
   }),
 );
 
-export const ExternalLink = ({ children, ...props }: ComponentProps<typeof NextLink>): JSX.Element => (
+export const ExternalLink = ({ children = null, ...props }: ComponentProps<typeof NextLink>): JSX.Element => (
   <NextLink className={clsx("flex items-center gap-2 font-semibold hover:underline")} {...props}>
     <span className="mr-1">{children}</span>
 

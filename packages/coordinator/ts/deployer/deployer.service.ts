@@ -1,7 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { KernelAccountClient, KernelSmartAccount } from "@zerodev/sdk";
 import { BaseContract, InterfaceAbi } from "ethers";
-import { extractVk } from "maci-circuits";
 import {
   ConstantInitialVoiceCreditProxy__factory as ConstantInitialVoiceCreditProxyFactory,
   ContractStorage,
@@ -30,6 +29,7 @@ import {
   genEmptyBallotRoots,
   EMode,
   IVerifyingKeyStruct,
+  extractVk,
 } from "maci-contracts";
 import { IVkObjectParams, PubKey, VerifyingKey } from "maci-domainobjs";
 import { BundlerClient, GetUserOperationReceiptReturnType } from "permissionless";
@@ -726,6 +726,7 @@ export class DeployerService {
       abi: MACIFactory.abi,
       functionName: "nextPollId",
     });
+    const startDate = await publicClient.getBlockNumber();
 
     try {
       await this.estimateGasAndSend(
@@ -735,7 +736,10 @@ export class DeployerService {
         "deployPoll",
         [
           {
-            duration: BigInt(config.pollDuration),
+            // TODO NICO: add pollStartDate and pollEndDate
+            // duration: BigInt(config.pollDuration),
+            pollStartDate: startDate,
+            pollEndDate: startDate + BigInt(config.pollDuration),
             treeDepths: {
               intStateTreeDepth: config.intStateTreeDepth,
               voteOptionTreeDepth: config.voteOptionTreeDepth,

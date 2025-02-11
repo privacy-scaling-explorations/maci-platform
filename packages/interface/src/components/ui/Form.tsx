@@ -199,7 +199,7 @@ export const FieldArray = <S extends z.Schema>({
 export const FormSection = ({
   title,
   description,
-  children,
+  children = null,
   ...props
 }: { title: string; description: string } & ComponentProps<"section">): JSX.Element => (
   <section className="mb-8" {...props}>

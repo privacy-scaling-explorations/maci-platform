@@ -142,6 +142,17 @@ export class MergeTreesDto {
   })
   @IsString()
   approval!: string;
+
+  /**
+   * Chain Name
+   */
+  @ApiProperty({
+    description: "Chain to which to deploy the contract(s)",
+    enum: ESupportedNetworks,
+  })
+  @IsEnum(ESupportedNetworks)
+  @Transform(transformToString)
+  chain!: ESupportedNetworks;
 }
 
 /**

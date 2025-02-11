@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { type ComponentProps } from "react";
 
-export const Spinner = (props: ComponentProps<"div">): JSX.Element => (
+export const Spinner = ({ ...props }: ComponentProps<"div">): JSX.Element => (
   <div role="status" {...props}>
     <svg
       aria-hidden="true"

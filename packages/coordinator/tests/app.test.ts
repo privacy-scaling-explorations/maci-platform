@@ -16,7 +16,7 @@ import {
   timeTravel,
   mergeSignups,
 } from "maci-cli";
-import { type Proof, type TallyData, Poll__factory as PollFactory } from "maci-contracts";
+import { type Proof, type TallyData, Poll__factory as PollFactory, getBlockTimestamp } from "maci-contracts";
 import { Keypair } from "maci-domainobjs";
 import { io, Socket } from "socket.io-client";
 import request from "supertest";
@@ -80,8 +80,11 @@ describe("e2e", () => {
 
     maciAddresses = await deploy({ stateTreeDepth: 10, signer });
 
+    const startDate = await getBlockTimestamp(signer);
+
     pollContracts = await deployPoll({
-      pollDuration: 30,
+      pollStartDate: startDate,
+      pollEndDate: startDate + 30,
       intStateTreeDepth: INT_STATE_TREE_DEPTH,
       messageBatchSize: MSG_BATCH_SIZE,
       voteOptionTreeDepth: VOTE_OPTION_TREE_DEPTH,

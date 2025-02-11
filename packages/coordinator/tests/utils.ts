@@ -7,6 +7,7 @@ import { KERNEL_V3_1 } from "@zerodev/sdk/constants";
 import dotenv from "dotenv";
 import { getBytes, hashMessage, type Signer } from "ethers";
 import { ENTRYPOINT_ADDRESS_V07 } from "permissionless";
+import { EntryPoint } from "permissionless/types";
 import { Chain, Hex, HttpTransport } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 
@@ -28,7 +29,7 @@ export const KERNEL_VERSION = KERNEL_V3_1;
  */
 export const getKernelAccount = async (
   sessionKeyAddress: Hex,
-): Promise<KernelSmartAccount<typeof ENTRY_POINT, HttpTransport, Chain>> => {
+): Promise<KernelSmartAccount<EntryPoint, HttpTransport, Chain>> => {
   const publicClient = getPublicClient(ESupportedNetworks.OPTIMISM_SEPOLIA);
 
   const sessionKeySigner = privateKeyToAccount(process.env.TEST_PRIVATE_KEY! as Hex);
