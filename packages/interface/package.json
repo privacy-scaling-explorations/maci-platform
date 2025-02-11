@@ -137,6 +137,6 @@
     "child_process": false
   },
   "engines": {
-    "pnpm": "9"
+    "pnpm": ">=9"
   }
 }

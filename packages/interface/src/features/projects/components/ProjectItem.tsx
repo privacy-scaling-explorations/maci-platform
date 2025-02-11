@@ -7,6 +7,7 @@ import { Skeleton } from "~/components/ui/Skeleton";
 import { Spinner } from "~/components/ui/Spinner";
 import { config } from "~/config";
 import { formatNumber } from "~/utils/formatNumber";
+import { removeMarkdown } from "~/utils/removeMarkdown";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
@@ -24,7 +25,7 @@ export interface IProjectItemContentProps {
   bannerImageUrl?: string;
   profileImageUrl?: string;
   name?: string;
-  shortBio?: string;
+  bio?: string;
   impactCategory?: string[];
   actionButton?: ReactNode;
 }
@@ -33,7 +34,7 @@ export const ProjectItemContent = ({
   bannerImageUrl = "",
   profileImageUrl = "",
   name = "",
-  shortBio = "",
+  bio = "",
   impactCategory = undefined,
   actionButton = undefined,
 }: IProjectItemContentProps): JSX.Element => (
@@ -50,9 +51,7 @@ export const ProjectItemContent = ({
       </Heading>
 
       <div className="mb-2 line-clamp-2 h-10 text-sm text-gray-400">
-        <Skeleton className="w-full" isLoading={false}>
-          {shortBio}
-        </Skeleton>
+        <Skeleton className="w-full">{removeMarkdown(bio || "")}</Skeleton>
       </div>
 
       <Skeleton className="w-[100px]" isLoading={false}>
@@ -84,11 +83,7 @@ export const ProjectItem = ({
   const bannerImageUrl = recipient.bannerImageUrl ? recipient.bannerImageUrl : metadata.data?.bannerImageUrl;
   const profileImageUrl = recipient.profileImageUrl ? recipient.profileImageUrl : metadata.data?.profileImageUrl;
   const name = recipient.name ? recipient.name : metadata.data?.name;
-  let shortBio = recipient.shortBio ? recipient.shortBio : metadata.data?.shortBio;
   const bio = recipient.bio ? recipient.bio : metadata.data?.bio;
-  if (!shortBio && bio) {
-    shortBio = bio.substring(0, 140);
-  }
   const impactCategory = recipient.impactCategory ? recipient.impactCategory : metadata.data?.impactCategory;
 
   return (
@@ -126,10 +121,10 @@ export const ProjectItem = ({
             )
           }
           bannerImageUrl={bannerImageUrl}
+          bio={bio}
           impactCategory={impactCategory}
           name={name}
           profileImageUrl={profileImageUrl}
-          shortBio={shortBio}
         />
       )}
     </Link>

@@ -3,72 +3,72 @@ import Image from "next/image";
 import { FaGithub, FaDiscord } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
-import { config } from "~/config";
-import { useIsMobile } from "~/hooks/useIsMobile";
+import { AppContainer } from "~/layouts/AppContainer";
 
 import { Logo } from "./ui/Logo";
 
 const feedbackUrl = process.env.NEXT_PUBLIC_FEEDBACK_URL!;
 
-const Footer = (): JSX.Element => {
-  const isMobile = useIsMobile();
+const FooterNavLink = ({
+  href,
+  children,
+  showExternalIcon = true,
+  isExternal = true,
+  ariaLabel = "",
+}: {
+  href: string;
+  children: React.ReactNode;
+  showExternalIcon?: boolean;
+  isExternal?: boolean;
+  ariaLabel?: string;
+}): JSX.Element => (
+  <a
+    aria-label={ariaLabel}
+    className="flex items-center justify-center gap-1 font-sans text-base font-medium text-black duration-200 hover:opacity-50 dark:text-white"
+    href={href}
+    rel={isExternal ? "noreferrer" : undefined}
+    target={isExternal ? "_blank" : undefined}
+  >
+    {children}
 
-  return (
-    <footer className="dark:border-lighterBlack flex flex-col items-center justify-between gap-4 border-t border-gray-300 bg-gray-50 px-2 py-4 sm:flex-row sm:px-12 sm:py-9 dark:bg-black dark:text-white">
-      <div className="flex items-center justify-start gap-8 sm:gap-4">
-        <a aria-label="twitter" href="https://x.com/zkMACI" rel="noreferrer" target="_blank">
-          <FaXTwitter />
-        </a>
+    {showExternalIcon && (
+      <Image alt="arrow-go-to" className="dark:invert" height="18" src="/arrow-go-to.svg" width="18" />
+    )}
+  </a>
+);
 
-        <a
-          aria-label="github"
+const Footer = (): JSX.Element => (
+  <footer className="dark:border-lighterBlack border-t border-gray-200 bg-gray-50 dark:bg-black dark:text-white">
+    <AppContainer className="flex flex-col items-center justify-between gap-4 py-12 md:flex-row md:py-9">
+      <div className="flex items-center justify-start gap-6 md:gap-4">
+        <FooterNavLink ariaLabel="twitter" href="https://x.com/zkMACI" showExternalIcon={false}>
+          <FaXTwitter size={20} />
+        </FooterNavLink>
+
+        <FooterNavLink
+          ariaLabel="github"
           href="https://github.com/privacy-scaling-explorations/maci-platform/"
-          rel="noreferrer"
-          target="_blank"
+          showExternalIcon={false}
         >
-          <FaGithub />
-        </a>
+          <FaGithub size={20} />
+        </FooterNavLink>
 
-        <a aria-label="discord" href="https://discord.com/invite/sF5CT5rzrR" rel="noreferrer" target="_blank">
-          <FaDiscord />
-        </a>
+        <FooterNavLink ariaLabel="discord" href="https://discord.com/invite/sF5CT5rzrR" showExternalIcon={false}>
+          <FaDiscord size={23} />
+        </FooterNavLink>
       </div>
 
-      <div className="flex flex-col items-center justify-end gap-4 sm:flex-row">
-        <p className="text-red flex items-center">Git Version: {config.commitHash}</p>
+      <div className="flex flex-col items-center justify-end gap-10 md:flex-row md:gap-6">
+        <FooterNavLink href={feedbackUrl}>Share your feedback</FooterNavLink>
 
-        <a className="flex items-center justify-center sm:gap-1" href={feedbackUrl} rel="noreferrer" target="_blank">
-          <span>{isMobile ? "Share your feedback" : "Feedback"}</span>
+        <FooterNavLink href="https://maci.pse.dev/docs/introduction">Documentation</FooterNavLink>
 
-          <Image alt="arrow-go-to" className="dark:invert" height="18" src="/arrow-go-to.svg" width="18" />
-        </a>
-
-        <a
-          className="flex items-center justify-center sm:gap-1"
-          href="https://maci.pse.dev/docs/introduction"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <span>{isMobile ? "Documentation" : "Docs"}</span>
-
-          <Image alt="arrow-go-to" className="dark:invert" height="18" src="/arrow-go-to.svg" width="18" />
-        </a>
-
-        <a
-          className="flex items-center justify-center sm:gap-1"
-          href="https://maci.pse.dev"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <span>{isMobile ? "About MACI Platform" : "About"}</span>
-
-          <Image alt="arrow-go-to" className="dark:invert" height="18" src="/arrow-go-to.svg" width="18" />
-        </a>
+        <FooterNavLink href="https://maci.pse.dev">About MACI PLATFORM</FooterNavLink>
 
         <Logo />
       </div>
-    </footer>
-  );
-};
+    </AppContainer>
+  </footer>
+);
 
 export default dynamic(async () => Promise.resolve(Footer), { ssr: false });

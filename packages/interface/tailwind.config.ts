@@ -78,9 +78,13 @@ export default {
         ...colors,
         ...customColors,
       },
+      boxShadow: {
+        "project-card": "0px 0px 1px 0px rgba(0, 0, 0, 0.05), 0px 8px 16px 0px rgba(0, 0, 0, 0.05)",
+      },
       fontFamily: {
-        sans: ["DM Sans", ...theme.fontFamily.sans],
-        mono: ["Share Tech Mono", ...theme.fontFamily.mono],
+        sans: ["var(--font-dm-sans)", ...theme.fontFamily.sans],
+        mono: ["var(--font-share-tech-mono)", ...theme.fontFamily.mono],
+        inter: ["var(--font-inter)", ...theme.fontFamily.sans],
       },
       width: {
         "112": "28rem",

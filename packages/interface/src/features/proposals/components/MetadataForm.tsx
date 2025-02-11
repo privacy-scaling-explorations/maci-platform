@@ -72,7 +72,7 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
   const { error: createError } = create;
 
   return (
-    <div className="dark:border-lighterBlack rounded-lg border border-gray-200 p-4">
+    <div className="dark:border-lighterBlack flex flex-col gap-10 rounded-lg border border-gray-200 p-5">
       <MetadataSteps step={step} />
 
       <Form
@@ -83,7 +83,7 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
         onSubmit={handleSubmit}
       >
         <FormSection
-          className={step === EMetadataStep.PROFILE ? "block" : "hidden"}
+          className={step === EMetadataStep.PROFILE ? "flex flex-col" : "hidden"}
           description="Please provide information about your project."
           title="Project Profile"
         >
@@ -95,11 +95,9 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
             <Textarea placeholder="Short description. Maximum 140 characters." rows={4} />
           </FormControl>
 
-          <FormControl required label="Description" name="bio">
+          <FormControl required description="*Markdown Supported" label="Description" name="bio">
             <Textarea placeholder="Type project description" rows={4} />
           </FormControl>
-
-          <small className="-mt-4">*Markdown Supported</small>
 
           <div className="gap-4 md:flex">
             <FormControl required className="flex-1" label="Website" name="websiteUrl">
@@ -116,55 +114,43 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
               <Input placeholder="Type your twitter username" />
             </FormControl>
 
-            <FormControl
-              className="flex-1"
-              hint="Provide your github of this project"
-              label="Github"
-              name="github"
-              required={false}
-            >
+            <FormControl className="flex-1" label="Github" name="github" required={false}>
               <Input placeholder="Type your github username" />
             </FormControl>
           </div>
 
-          <div className="mb-4 flex flex-col gap-4 sm:flex-row">
-            <FormControl
-              required
-              hint="The size should be smaller than 1MB."
-              label="Project avatar"
-              name="profileImageUrl"
-            >
-              <ImageUpload className="h-48 w-48" />
-            </FormControl>
+          <FormControl required hint="Maximum size 1MB" label="Project avatar" name="profileImageUrl">
+            <ImageUpload rounded className="h-48 w-48" />
+          </FormControl>
 
-            <FormControl
-              required
-              className="flex-1"
-              hint="The size should be smaller than 1MB."
-              label="Project background image"
-              name="bannerImageUrl"
-            >
-              <ImageUpload className="h-48" />
-            </FormControl>
-          </div>
+          <FormControl
+            required
+            className="flex-1"
+            hint="Maximum size 1MB"
+            label="Project background image"
+            name="bannerImageUrl"
+          >
+            <ImageUpload className="h-48" />
+          </FormControl>
         </FormSection>
 
         <FormSection
-          className={step === EMetadataStep.ADVANCED ? "block" : "hidden"}
+          className={step === EMetadataStep.ADVANCED ? "flex flex-col" : "hidden"}
           description="Describe the contribution and impact of your project."
           title="Contribution & Impact"
         >
-          <FormControl required label="Contribution description" name="contributionDescription">
+          <FormControl
+            required
+            description="*Markdown Supported"
+            label="Contribution description"
+            name="contributionDescription"
+          >
             <Textarea placeholder="What have your project contributed to?" rows={4} />
           </FormControl>
 
-          <small className="-mt-4">*Markdown Supported</small>
-
-          <FormControl required label="Impact description" name="impactDescription">
+          <FormControl required description="*Markdown Supported" label="Impact description" name="impactDescription">
             <Textarea placeholder="What impact has your project had?" rows={4} />
           </FormControl>
-
-          <small className="-mt-4">*Markdown Supported</small>
 
           <ImpactTags />
 
@@ -200,17 +186,19 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
             name="fundingSources"
             renderField={(_field, i) => (
               <div className="mb-4 flex flex-wrap gap-2">
-                <FormControl required className="min-w-96" name={`fundingSources.${i}.description`}>
-                  <Input placeholder="Type the name of your funding source" />
-                </FormControl>
+                <div className="grid grid-cols-1 gap-2 lg:grid-cols-4">
+                  <FormControl required className="col-span-1 lg:col-span-2" name={`fundingSources.${i}.description`}>
+                    <Input placeholder="Type the name of your funding source" />
+                  </FormControl>
 
-                <FormControl required valueAsNumber className="w-32" name={`fundingSources.${i}.amount`}>
-                  <Input placeholder="Amount" type="number" />
-                </FormControl>
+                  <FormControl required valueAsNumber className="col-span-1" name={`fundingSources.${i}.amount`}>
+                    <Input placeholder="Amount" type="number" />
+                  </FormControl>
 
-                <FormControl required className="w-32" name={`fundingSources.${i}.currency`}>
-                  <Input placeholder="e.g. USD" />
-                </FormControl>
+                  <FormControl required className="col-span-1" name={`fundingSources.${i}.currency`}>
+                    <Input placeholder="e.g. USD" />
+                  </FormControl>
+                </div>
 
                 <FormControl required name={`fundingSources.${i}.type`}>
                   <Select>
