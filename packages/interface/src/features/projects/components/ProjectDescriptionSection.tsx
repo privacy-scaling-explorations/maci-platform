@@ -1,7 +1,7 @@
 import { ExternalLinkIcon } from "lucide-react";
 import { FaGithub, FaEthereum } from "react-icons/fa";
 import { RiGlobalLine } from "react-icons/ri";
-import Markdown, { Components } from "react-markdown";
+import Markdown from "react-markdown";
 
 import { Link } from "~/components/ui/Link";
 import { markdownComponents } from "~/components/ui/MarkdownComponents";
@@ -26,7 +26,7 @@ export const ProjectDescriptionSection = ({
   <div className="flex flex-col gap-5">
     <h3 className="font-sans text-lg font-bold uppercase leading-[27px] dark:text-white">{title}</h3>
 
-    {description.length > 0 && <Markdown components={markdownComponents as Components}>{description}</Markdown>}
+    {description.length > 0 && <Markdown components={markdownComponents}>{description}</Markdown>}
 
     {contributions.length > 0 && (
       <div className="border-l border-gray-200 px-[10px]">
