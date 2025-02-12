@@ -121,7 +121,7 @@ export const BaseLayout = ({
           <MainContainer type={type}>
             {sidebar === "left" ? wrappedSidebar : null}
 
-            <div className="w-full pb-24">{children}</div>
+            <div className="min-h-[90vh] w-full pb-24">{children}</div>
 
             {sidebar === "right" ? wrappedSidebar : null}
           </MainContainer>

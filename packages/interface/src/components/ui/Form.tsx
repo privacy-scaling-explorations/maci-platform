@@ -155,7 +155,7 @@ export const FieldArray = <S extends z.Schema>({
   const error = form.formState.errors[name]?.message ?? "";
 
   return (
-    <div className="mb-8 flex flex-col gap-[10px]">
+    <div className="flex flex-col gap-[10px]">
       <div className="flex flex-col gap-[3px]">
         <Heading className="font-sans text-2xl font-bold">{title}</Heading>
 
@@ -165,11 +165,11 @@ export const FieldArray = <S extends z.Schema>({
       {error && <div className="border border-red-900 p-2">{String(error)}</div>}
 
       {fields.map((field, i) => (
-        <div key={field.id} className="flex flex-col">
+        <div key={field.id} className="relative flex flex-col">
           <div className="gap-4 md:flex">{renderField(field, i)}</div>
 
           <button
-            className="font-sans text-sm text-gray-400 underline duration-200 hover:text-blue-500"
+            className="absolute bottom-0 right-0 font-sans text-sm text-gray-400 underline duration-200 hover:text-blue-500"
             type="button"
             onClick={() => {
               remove(i);
@@ -181,7 +181,7 @@ export const FieldArray = <S extends z.Schema>({
       ))}
 
       <button
-        className="flex items-center gap-[6px] p-[6px] font-sans text-xs font-semibold uppercase text-black duration-200 hover:text-blue-500 dark:text-white"
+        className="flex w-full items-center gap-[6px] border-t border-gray-100 p-[6px] pt-4 font-sans text-xs font-semibold uppercase text-black duration-200 hover:text-blue-500 dark:text-white"
         type="button"
         onClick={() => {
           append({});
@@ -190,8 +190,6 @@ export const FieldArray = <S extends z.Schema>({
         <CirclePlusIcon className="size-4" />
         Add row
       </button>
-
-      <div className="mt-4 h-[1px] w-full bg-gray-100" />
     </div>
   );
 };
@@ -199,11 +197,11 @@ export const FieldArray = <S extends z.Schema>({
 export const FormSection = ({
   title,
   description,
-  children,
+  children = null,
   className = "",
   ...props
 }: { title: string; description: string } & ComponentProps<"section">): JSX.Element => (
-  <section className={cn("mb-8 flex max-w-[824px] flex-col gap-10", className)} {...props}>
+  <section className={cn("flex max-w-[824px] flex-col gap-10", className)} {...props}>
     <div className="flex flex-col gap-[10px]">
       <Heading className="font-sans text-2xl font-bold">{title}</Heading>
 

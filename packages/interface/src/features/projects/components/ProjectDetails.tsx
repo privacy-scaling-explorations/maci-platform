@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import Markdown, { Components } from "react-markdown";
+import Markdown from "react-markdown";
 
 import { Heading } from "~/components/ui/Heading";
 import { markdownComponents } from "~/components/ui/MarkdownComponents";
@@ -59,7 +59,7 @@ const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetails
 
           <ProjectContacts author={payoutAddress} github={github} twitter={twitter} website={websiteUrl} />
 
-          <Markdown components={markdownComponents as Components}>{bio}</Markdown>
+          <Markdown components={markdownComponents}>{bio}</Markdown>
         </div>
 
         <div className="flex flex-col gap-5">
