@@ -38,22 +38,21 @@ const button = tv({
 
 export const Button = createComponent("button", button);
 
-export interface IIconButtonProps extends ComponentPropsWithRef<typeof Button> {
+export interface IIconButtonProps extends Omit<ComponentPropsWithRef<typeof Button>, "size"> {
   icon: LucideIcon;
-  size: string;
-  children: ReactNode;
+  size?: string;
+  children?: ReactNode;
 }
-export const IconButton = forwardRef(
-  ({ children, icon, size, ...props }: Omit<IIconButtonProps, 'ref'>, ref): JSX.Element => (
-    <Button ref={ref} {...props} size={children ? size : "icon"}>
-      {icon
-        ? createElement(icon, {
-            className: `w-4 h-4 ${children ? "mr-2" : ""}`,
-          })
-        : null}
 
-        {children}
-      </Button>
+export const IconButton = forwardRef<HTMLButtonElement, IIconButtonProps>(
+  ({ children = null, icon = null, size = "", ...props }, ref) => (
+    <Button ref={ref} {...props} size={children ? size : "icon"}>
+      {createElement(icon, {
+        className: `w-4 h-4 ${children ? "mr-2" : ""}`,
+      })}
+
+      {children}
+    </Button>
   ),
 );
 
