@@ -39,7 +39,7 @@ const button = tv({
 export const Button = createComponent("button", button);
 
 export interface IIconButtonProps extends Omit<ComponentPropsWithRef<typeof Button>, "size"> {
-  icon: LucideIcon;
+  icon?: LucideIcon | null;
   size?: string;
   children?: ReactNode;
 }
@@ -47,9 +47,10 @@ export interface IIconButtonProps extends Omit<ComponentPropsWithRef<typeof Butt
 export const IconButton = forwardRef<HTMLButtonElement, IIconButtonProps>(
   ({ children = null, icon = null, size = "", ...props }, ref) => (
     <Button ref={ref} {...props} size={children ? size : "icon"}>
-      {createElement(icon, {
-        className: `w-4 h-4 ${children ? "mr-2" : ""}`,
-      })}
+      {icon &&
+        createElement(icon, {
+          className: `w-4 h-4 ${children ? "mr-2" : ""}`,
+        })}
 
       {children}
     </Button>
