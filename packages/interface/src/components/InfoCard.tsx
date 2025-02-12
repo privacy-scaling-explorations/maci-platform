@@ -8,7 +8,7 @@ import { EInfoCardState } from "~/utils/types";
 const InfoCardContainer = createComponent(
   "div",
   tv({
-    base: "rounded-md p-2 px-[10px] max-lg:w-full lg:w-64",
+    base: "rounded-md p-2 px-[10px] w-full",
     variants: {
       state: {
         [EInfoCardState.PASSED]: "border border-blue-500 bg-blue-50 text-blue-500 dark:bg-darkBlue dark:text-blue-800",

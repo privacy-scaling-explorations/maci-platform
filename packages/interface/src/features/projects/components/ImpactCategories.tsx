@@ -11,7 +11,7 @@ export const ImpactCategories = ({ tags = undefined }: IImpacCategoriesProps): J
       {tags?.map((key) => (
         <div key={key}>
           {Object.keys(impactCategories).includes(key) ? (
-            <Tag size="sm">{impactCategories[key as keyof typeof impactCategories].label}</Tag>
+            <Tag size="xs">{impactCategories[key as keyof typeof impactCategories].label}</Tag>
           ) : null}
         </div>
       ))}

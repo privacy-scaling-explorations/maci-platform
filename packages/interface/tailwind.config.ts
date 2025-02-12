@@ -80,6 +80,7 @@ export default {
       },
       boxShadow: {
         "project-card": "0px 0px 1px 0px rgba(0, 0, 0, 0.05), 0px 8px 16px 0px rgba(0, 0, 0, 0.05)",
+        "info-card": "0px 0px 1px 0px rgba(0, 0, 0, 0.05), 0px 8px 18px 0px rgba(0, 0, 0, 0.08)",
       },
       fontFamily: {
         sans: ["var(--font-dm-sans)", ...theme.fontFamily.sans],
