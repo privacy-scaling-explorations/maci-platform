@@ -3,7 +3,7 @@ import { EDeploySteps as EMaciDeploySteps, EContracts as EMaciContracts } from "
 import type { BigNumberish } from "ethers";
 
 /**
- * Deploy steps for maci-platform related constacts
+ * Deploy steps for maci-platform related contracts
  */
 export enum EPlatformDeployStep {
   RegistryManager = "full:deploy-registry-manager",
@@ -18,7 +18,7 @@ export const EDeploySteps = {
 };
 
 /**
- * Contracts for maci-platform related constacts
+ * Contracts for maci-platform related contracts
  */
 export enum EPlatformContracts {
   EASRegistryManager = "EASRegistryManager",
