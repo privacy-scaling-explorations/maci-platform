@@ -10,5 +10,10 @@
     "allowJs": true
   },
   "exclude": ["node_modules"],
-  "include": ["packages/coordinator/ts", "packages/coordinator/scripts", "packages/interface/src"]
+  "include": [
+    "packages/coordinator/ts",
+    "packages/coordinator/scripts",
+    "packages/interface/src",
+    ".github/scripts/downloadZKeys.ts"
+  ]
 }
