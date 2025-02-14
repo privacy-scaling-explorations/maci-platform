@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useCallback, useDeferredValue, useMemo, useState } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { Hex, zeroAddress } from "viem";
-import { useAccount } from "wagmi";
 
 import { InfiniteLoading } from "~/components/InfiniteLoading";
 import { SortFilter } from "~/components/SortFilter";
@@ -13,6 +12,7 @@ import { Heading } from "~/components/ui/Heading";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
+import useAccount from "~/hooks/useAccount";
 import { useMyProjects } from "~/hooks/useProjects";
 import { useResults } from "~/hooks/useResults";
 import { useRoundState } from "~/utils/state";

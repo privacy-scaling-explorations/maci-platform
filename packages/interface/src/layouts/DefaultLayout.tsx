@@ -1,6 +1,5 @@
 import { GatekeeperTrait } from "maci-cli/sdk";
 import { useMemo } from "react";
-import { useAccount } from "wagmi";
 
 import Header from "~/components/Header";
 import { Info } from "~/components/Info";
@@ -9,6 +8,7 @@ import { config } from "~/config";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { SubmitBallotButton } from "~/features/ballot/components/SubmitBallotButton";
+import useAccount from "~/hooks/useAccount";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 

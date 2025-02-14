@@ -5,19 +5,20 @@ import { type ZKEdDSAEventTicketPCD } from "@pcd/zk-eddsa-event-ticket-pcd/ZKEdD
 import { Identity } from "@semaphore-protocol/core";
 import { type Signer, AbiCoder } from "ethers";
 import {
-  signup,
   isRegisteredUser,
-  publishBatch,
   genKeyPair,
   GatekeeperTrait,
   getGatekeeperTrait,
   getHatsSingleGatekeeperData,
 } from "maci-cli/sdk";
 import React, { createContext, useContext, useCallback, useEffect, useMemo, useState } from "react";
-import { useAccount, useSignMessage } from "wagmi";
+import { Address } from "viem";
+import { useSignMessage } from "wagmi";
 
 import { config } from "~/config";
+import useAccount from "~/hooks/useAccount";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
+import { signup, publishBatch } from "~/utils/accountAbstraction";
 import { api } from "~/utils/api";
 import { getHatsClient } from "~/utils/hatsProtocol";
 import { generateWitness } from "~/utils/pcd";
@@ -35,8 +36,8 @@ export const MaciContext = createContext<MaciContextType | undefined>(undefined)
  * @returns The Context data (variables and functions)
  */
 export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProviderProps) => {
+  const { address, isConnected, isDisconnected, account, accountClient } = useAccount();
   const signer = useEthersSigner();
-  const { address, isConnected, isDisconnected } = useAccount();
 
   const [isRegistered, setIsRegistered] = useState<boolean>();
   const [stateIndex, setStateIndex] = useState<string>();
@@ -82,7 +83,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   // only fetch the attestations if the gatekeeper trait is EAS
   const attestations = api.voters.approvedAttestations.useQuery(
     {
-      address,
+      address: address!,
     },
     { enabled: gatekeeperTrait === GatekeeperTrait.EAS },
   );
@@ -244,7 +245,13 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   // function to be used to signup to MACI
   const onSignup = useCallback(
     async (onError: () => void) => {
-      if (!signer || !maciPubKey || (gatekeeperTrait && gatekeeperTrait !== GatekeeperTrait.FreeForAll && !sgData)) {
+      if (
+        !account ||
+        !accountClient ||
+        !signer ||
+        !maciPubKey ||
+        (gatekeeperTrait && gatekeeperTrait !== GatekeeperTrait.FreeForAll && !sgData)
+      ) {
         return;
       }
 
@@ -253,9 +260,11 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       try {
         const { stateIndex: index, voiceCredits } = await signup({
           maciPubKey,
-          maciAddress: config.maciAddress!,
-          sgDataArg: sgData,
+          maciAddress: config.maciAddress! as Address,
+          sgData,
           signer,
+          smartAccount: account,
+          smartAccountClient: accountClient,
         });
 
         if (index) {
@@ -281,7 +290,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       onError: (err: string) => Promise<void>,
       onSuccess: () => Promise<void>,
     ) => {
-      if (!signer || !stateIndex) {
+      if (!account || !accountClient || !signer || !stateIndex) {
         return;
       }
 
@@ -308,6 +317,8 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         privateKey: maciPrivKey!,
         pollId: BigInt(pollId),
         signer,
+        smartAccount: account,
+        smartAccountClient: accountClient,
       })
         .then(() => onSuccess())
         .catch((err: unknown) => {
@@ -361,7 +372,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       return;
     }
 
-    const [account] = user.data?.accounts.slice(-1) ?? [];
+    const [userAccount] = user.data?.accounts.slice(-1) ?? [];
 
     if (!config.maciSubgraphUrl) {
       isRegisteredUser({
@@ -376,8 +387,8 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
           setInitialVoiceCredits(Number(voiceCredits));
         })
         .catch(console.error);
-    } else if (account) {
-      const { id, voiceCreditBalance } = account;
+    } else if (userAccount) {
+      const { id, voiceCreditBalance } = userAccount;
 
       setIsRegistered(true);
       setStateIndex(id);
@@ -395,6 +406,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
     setIsRegistered,
     setStateIndex,
     setInitialVoiceCredits,
+    // smartAccount, TODO: add this?
   ]);
 
   /// check the tree data

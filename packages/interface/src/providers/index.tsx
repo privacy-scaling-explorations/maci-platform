@@ -1,3 +1,4 @@
+import { PrivyProvider } from "@privy-io/react-auth";
 import { type Chain, getDefaultConfig, RainbowKitProvider, type Theme, lightTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
@@ -6,6 +7,7 @@ import { http, WagmiProvider } from "wagmi";
 
 import { Toaster } from "~/components/Toaster";
 import * as appConfig from "~/config";
+import { AccountTypeProvider } from "~/contexts/AccountType";
 import { BallotProvider } from "~/contexts/Ballot";
 import { MaciProvider } from "~/contexts/Maci";
 import { RoundProvider } from "~/contexts/Round";
@@ -30,6 +32,11 @@ const customTheme: Theme = {
   },
 };
 
+if (!process.env.NEXT_PUBLIC_PRIVY_APP_ID) {
+  throw new Error("NEXT_PUBLIC_PRIVY_APP_ID is not set");
+}
+const privyId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
+
 export const Providers = ({ children }: PropsWithChildren): JSX.Element => {
   const { config, queryClient } = useMemo(() => createWagmiConfig(), []);
 
@@ -37,15 +44,35 @@ export const Providers = ({ children }: PropsWithChildren): JSX.Element => {
     <ThemeProvider attribute="class" forcedTheme={appConfig.theme.colorMode}>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider theme={customTheme}>
-            <RoundProvider>
-              <MaciProvider>
-                <BallotProvider>{children}</BallotProvider>
+          <PrivyProvider
+            appId={privyId}
+            config={{
+              // Customize Privy's appearance in your app
+              appearance: {
+                theme: "light",
+                accentColor: "#676FFF",
+                logo: "/round-logo.svg",
+                loginMessage: "Welcome to MACI Platform",
+                landingHeader: "MACI Platform",
+              },
+              // Create embedded wallets for users who don't have a wallet
+              embeddedWallets: {
+                createOnLogin: "users-without-wallets",
+              },
+            }}
+          >
+            <RainbowKitProvider theme={customTheme}>
+              <RoundProvider>
+                <AccountTypeProvider>
+                  <MaciProvider>
+                    <BallotProvider>{children}</BallotProvider>
 
-                <Toaster />
-              </MaciProvider>
-            </RoundProvider>
-          </RainbowKitProvider>
+                    <Toaster />
+                  </MaciProvider>
+                </AccountTypeProvider>
+              </RoundProvider>
+            </RainbowKitProvider>
+          </PrivyProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </ThemeProvider>

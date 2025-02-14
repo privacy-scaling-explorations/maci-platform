@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
 import { type PropsWithChildren, createContext, useContext, useEffect, useCallback, useMemo, useState } from "react";
 import { tv } from "tailwind-variants";
-import { useAccount } from "wagmi";
 
 import Footer from "~/components/Footer";
 import { createComponent } from "~/components/ui";
 import { metadata } from "~/config";
+import useAccount from "~/hooks/useAccount";
 
 import type { IBaseLayoutProps } from "./types";
 

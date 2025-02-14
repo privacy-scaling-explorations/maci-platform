@@ -1,9 +1,16 @@
-import { useAccount } from "wagmi";
+import { useWallets } from "@privy-io/react-auth";
+import { useMemo } from "react";
 
 import { config } from "~/config";
 
 export function useIsAdmin(): boolean {
-  const { address } = useAccount();
+  // Does this work with extension wallet?
+  const { wallets } = useWallets();
 
-  return config.admin === address!;
+  const wallet = useMemo(
+    () => wallets.find((w) => w.walletClientType === "privy" || w.walletClientType === "metamask"),
+    [wallets],
+  );
+
+  return config.admin === wallet?.address;
 }

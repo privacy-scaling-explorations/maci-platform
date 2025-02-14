@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { useAccount } from "wagmi";
 
 import ConnectButton from "~/components/ConnectButton";
 import { Info } from "~/components/Info";
@@ -7,6 +6,7 @@ import { JoinButton } from "~/components/JoinButton";
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { useMaci } from "~/contexts/Maci";
+import useAccount from "~/hooks/useAccount";
 import { useIsMobile } from "~/hooks/useIsMobile";
 import { useRoundState } from "~/utils/state";
 import { ERoundState, type IRoundData } from "~/utils/types";

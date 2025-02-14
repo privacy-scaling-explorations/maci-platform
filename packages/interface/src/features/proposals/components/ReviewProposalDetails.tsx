@@ -3,12 +3,12 @@ import Link from "next/link";
 import { useMemo, type ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
 import Markdown from "react-markdown";
-import { useAccount } from "wagmi";
 
 import { Heading } from "~/components/ui/Heading";
 import { Tag } from "~/components/ui/Tag";
 import { impactCategories, prefixes } from "~/config";
 import { ProjectItemContent } from "~/features/projects/components/ProjectItem";
+import useAccount from "~/hooks/useAccount";
 
 import type { Metadata } from "../types";
 

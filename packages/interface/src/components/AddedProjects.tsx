@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { Hex, zeroAddress } from "viem";
-import { useAccount } from "wagmi";
 
 import { useBallot } from "~/contexts/Ballot";
 import { useRound } from "~/contexts/Round";
 import { useProjectCount } from "~/features/projects/hooks/useProjects";
+import useAccount from "~/hooks/useAccount";
 
 interface IAddedProjectsProps {
   pollId: string;
@@ -19,7 +19,7 @@ export const AddedProjects = ({ pollId }: IAddedProjectsProps): JSX.Element => {
 
   const { data: projectCount } = useProjectCount({
     registryAddress: (round?.registryAddress ?? zeroAddress) as Hex,
-    chain: chain!,
+    chain,
   });
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
