@@ -8,7 +8,7 @@ import { tv } from "tailwind-variants";
 import Footer from "~/components/Footer";
 import { createComponent } from "~/components/ui";
 import { metadata } from "~/config";
-import useAccount from "~/hooks/useAccount";
+import { useAccount } from "~/contexts/Account";
 
 import type { IBaseLayoutProps } from "./types";
 

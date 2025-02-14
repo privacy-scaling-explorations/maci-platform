@@ -2,18 +2,16 @@ import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useAccountType } from "~/contexts/AccountType";
-import useAccount from "~/hooks/useAccount";
+import { useAccount } from "~/contexts/Account";
 
 import ConnectButton from "./ConnectButton";
 import { Button } from "./ui/Button";
 import { Heading } from "./ui/Heading";
 
 export const SignUpModal = (): JSX.Element => {
-  const { storeAccountType } = useAccountType();
   const router = useRouter();
   const { login } = usePrivy();
-  const { isConnected, isConnecting } = useAccount();
+  const { isConnected, isConnecting, storeAccountType } = useAccount();
 
   const signUpWithEmail = () => {
     storeAccountType("embedded");

@@ -1,13 +1,13 @@
-import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { useWallets, usePrivy } from "@privy-io/react-auth";
 import { signerToEcdsaValidator } from "@zerodev/ecdsa-validator";
 import {
+  KernelAccountClient,
   createKernelAccount,
   createKernelAccountClient,
   createZeroDevPaymasterClient,
-  KernelAccountClient,
 } from "@zerodev/sdk";
 import { KERNEL_V3_1 } from "@zerodev/sdk/constants";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, createContext, ReactNode, useContext } from "react";
 import {
   Account,
   Address,
@@ -25,7 +25,24 @@ import { entryPoint07Address, EntryPointVersion } from "viem/account-abstraction
 import { useAccount as wagmiUseAccount } from "wagmi";
 
 import { config, getBundlerURL, getPaymasterURL } from "~/config";
-import { useAccountType } from "~/contexts/AccountType";
+
+export type AccountType = "none" | "extension" | "embedded";
+
+interface AccountContextType {
+  accountType: AccountType;
+  storeAccountType: (accountType: AccountType) => void;
+  address: `0x${string}` | undefined;
+  chain: Chain;
+  isConnected: boolean;
+  isConnecting: boolean;
+  isDisconnected: boolean;
+  account: KernelAccount | undefined;
+  accountClient: KernelAccountClient<Transport, Chain> | undefined;
+}
+
+interface AccountProviderProps {
+  children: ReactNode;
+}
 
 type Signer = OneOf<EIP1193Provider | WalletClient<Transport, Chain | undefined, Account> | LocalAccount>;
 interface EntryPointType<entryPointVersion extends EntryPointVersion> {
@@ -94,15 +111,10 @@ export const createAccountClient = (account: KernelAccount | undefined): KernelA
     },
   });
 
-const useAccount = (): {
-  address: `0x${string}` | undefined;
-  chain: Chain;
-  isConnected: boolean;
-  isConnecting: boolean;
-  isDisconnected: boolean;
-  account: KernelAccount | undefined;
-  accountClient: KernelAccountClient<Transport, Chain> | undefined;
-} => {
+export const AccountContext = createContext<AccountContextType | undefined>(undefined);
+
+export const AccountProvider: React.FC<AccountProviderProps> = ({ children }: AccountProviderProps) => {
+  const [accountType, setAccountType] = useState<AccountType>("none");
   const [address, setAddress] = useState<`0x${string}` | undefined>();
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -110,7 +122,6 @@ const useAccount = (): {
   const [account, setAccount] = useState<KernelAccount>();
   const [accountClient, setAccountClient] = useState<KernelAccountClient<Transport, Chain>>();
 
-  const { accountType } = useAccountType();
   const { wallets } = useWallets();
   const { authenticated } = usePrivy();
   const wagmiAccount = wagmiUseAccount();
@@ -119,6 +130,21 @@ const useAccount = (): {
     () => wallets.find((w) => w.walletClientType === "privy" || w.walletClientType === "metamask"),
     [wallets],
   );
+
+  useEffect(() => {
+    const cachedAccountType = localStorage.getItem("accountType");
+    if (
+      cachedAccountType &&
+      (cachedAccountType === "none" || cachedAccountType === "extension" || cachedAccountType === "embedded")
+    ) {
+      setAccountType(cachedAccountType);
+    }
+  }, []);
+
+  const storeAccountType = (_accountType: AccountType) => {
+    localStorage.setItem("accountType", _accountType);
+    setAccountType(_accountType);
+  };
 
   const setupPrivyAccount = useCallback(async () => {
     if (!authenticated || !wallet) {
@@ -183,15 +209,30 @@ const useAccount = (): {
     setupPrivyAccount,
   ]);
 
-  return {
-    address,
-    chain,
-    isConnected,
-    isConnecting,
-    isDisconnected,
-    account,
-    accountClient,
-  };
+  const value = useMemo(
+    () => ({
+      accountType,
+      storeAccountType,
+      address,
+      chain,
+      isConnected,
+      isConnecting,
+      isDisconnected,
+      account,
+      accountClient,
+    }),
+    [accountType, storeAccountType, address, chain, isConnected, isConnecting, isDisconnected, account, accountClient],
+  );
+
+  return <AccountContext.Provider value={value as AccountContextType}>{children}</AccountContext.Provider>;
 };
 
-export default useAccount;
+export const useAccount = (): AccountContextType => {
+  const accountContext = useContext(AccountContext);
+
+  if (!accountContext) {
+    throw new Error("Should use context inside provider.");
+  }
+
+  return accountContext;
+};

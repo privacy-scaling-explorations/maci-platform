@@ -7,8 +7,8 @@ import { useCallback } from "react";
 import { toast } from "sonner";
 
 import { zupass, config } from "~/config";
+import { useAccount } from "~/contexts/Account";
 import { useMaci } from "~/contexts/Maci";
-import useAccount from "~/hooks/useAccount";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { jsonPCD } from "~/utils/types";
 

@@ -7,7 +7,7 @@ import { http, WagmiProvider } from "wagmi";
 
 import { Toaster } from "~/components/Toaster";
 import * as appConfig from "~/config";
-import { AccountTypeProvider } from "~/contexts/AccountType";
+import { AccountProvider } from "~/contexts/Account";
 import { BallotProvider } from "~/contexts/Ballot";
 import { MaciProvider } from "~/contexts/Maci";
 import { RoundProvider } from "~/contexts/Round";
@@ -63,13 +63,13 @@ export const Providers = ({ children }: PropsWithChildren): JSX.Element => {
           >
             <RainbowKitProvider theme={customTheme}>
               <RoundProvider>
-                <AccountTypeProvider>
+                <AccountProvider>
                   <MaciProvider>
                     <BallotProvider>{children}</BallotProvider>
 
                     <Toaster />
                   </MaciProvider>
-                </AccountTypeProvider>
+                </AccountProvider>
               </RoundProvider>
             </RainbowKitProvider>
           </PrivyProvider>

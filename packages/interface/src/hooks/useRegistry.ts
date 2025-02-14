@@ -1,10 +1,9 @@
 import { DefaultError, useMutation, UseMutationResult } from "@tanstack/react-query";
 
+import { useAccount } from "~/contexts/Account";
 import { approveRequest, submitAddRequest } from "~/utils/registry";
 
 import type { Hex, TransactionReceipt } from "viem";
-
-import useAccount from "./useAccount";
 
 /*
  * Arguments for the submitRequest function

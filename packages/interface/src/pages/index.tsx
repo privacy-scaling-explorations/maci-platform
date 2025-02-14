@@ -10,24 +10,22 @@ import { SingleRoundHome } from "~/components/SingleRoundHome";
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { config } from "~/config";
-import { useAccountType } from "~/contexts/AccountType";
+import { useAccount } from "~/contexts/Account";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
 import { FAQList } from "~/features/home/components/FaqList";
 import { Glossary } from "~/features/home/components/Glossary";
 import { RoundsList } from "~/features/rounds/components/RoundsList";
-import useAccount from "~/hooks/useAccount";
 import { useIsAdmin } from "~/hooks/useIsAdmin";
 import { Layout } from "~/layouts/DefaultLayout";
 
 const HomePage = (): JSX.Element => {
-  const { isConnected, address } = useAccount();
+  const { isConnected, address, accountType, storeAccountType } = useAccount();
   const { isRegistered } = useMaci();
   const isAdmin = useIsAdmin();
   const { rounds } = useRound();
   const singleRound = useMemo(() => (rounds && rounds.length === 1 ? rounds[0] : undefined), [rounds]);
   const { authenticated, logout } = usePrivy();
-  const { accountType, storeAccountType } = useAccountType();
 
   const { isConnected: extensionAuthenticated } = wagmiUseAccount();
   const embeddedAuthenticated = authenticated;

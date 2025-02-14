@@ -9,9 +9,9 @@ import { toast } from "sonner";
 import { useDisconnect } from "wagmi";
 
 import { zupass, config } from "~/config";
+import { useAccount } from "~/contexts/Account";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
-import useAccount from "~/hooks/useAccount";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { useRoundState } from "~/utils/state";
 import { ERoundState, jsonPCD } from "~/utils/types";

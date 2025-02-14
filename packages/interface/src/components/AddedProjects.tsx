@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { Hex, zeroAddress } from "viem";
 
+import { useAccount } from "~/contexts/Account";
 import { useBallot } from "~/contexts/Ballot";
 import { useRound } from "~/contexts/Round";
 import { useProjectCount } from "~/features/projects/hooks/useProjects";
-import useAccount from "~/hooks/useAccount";
 
 interface IAddedProjectsProps {
   pollId: string;

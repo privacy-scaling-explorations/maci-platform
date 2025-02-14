@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useMemo } from "react";
 
 import { config } from "~/config";
-import { useAccountType } from "~/contexts/AccountType";
+import { useAccount } from "~/contexts/Account";
 import { useIsMobile } from "~/hooks/useIsMobile";
 
 import { Button } from "./ui/Button";
@@ -38,7 +38,7 @@ interface IConnectButtonProps {
 
 const ConnectButton = ({ showMobile }: IConnectButtonProps): JSX.Element | null => {
   const isMobile = useIsMobile();
-  const { storeAccountType } = useAccountType();
+  const { storeAccountType } = useAccount();
 
   const isShow = useMemo(() => showMobile === isMobile, [isMobile, showMobile]);
 

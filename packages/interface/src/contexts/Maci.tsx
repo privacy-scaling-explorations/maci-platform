@@ -16,7 +16,6 @@ import { Address } from "viem";
 import { useSignMessage } from "wagmi";
 
 import { config } from "~/config";
-import useAccount from "~/hooks/useAccount";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { signup, publishBatch } from "~/utils/accountAbstraction";
 import { api } from "~/utils/api";
@@ -27,6 +26,8 @@ import { getSemaphoreProof } from "~/utils/semaphore";
 import type { IVoteArgs, MaciContextType, MaciProviderProps } from "./types";
 import type { PCD } from "@pcd/pcd-types";
 import type { Attestation } from "~/utils/types";
+
+import { useAccount } from "./Account";
 
 export const MaciContext = createContext<MaciContextType | undefined>(undefined);
 

@@ -8,9 +8,8 @@ import { useTheme } from "next-themes";
 import { type ComponentPropsWithRef, useState, useCallback, useMemo, useEffect } from "react";
 import { useAccount as wagmiUseAccount } from "wagmi";
 
-import { useAccountType } from "~/contexts/AccountType";
+import { useAccount } from "~/contexts/Account";
 import { useBallot } from "~/contexts/Ballot";
-import useAccount from "~/hooks/useAccount";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
@@ -73,9 +72,8 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
   const { getBallot } = useBallot();
   const roundState = useRoundState({ pollId });
   const { theme, setTheme } = useTheme();
-  const { isConnected, address } = useAccount();
+  const { isConnected, address, accountType, storeAccountType } = useAccount();
   const { authenticated, logout } = usePrivy();
-  const { accountType, storeAccountType } = useAccountType();
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
 

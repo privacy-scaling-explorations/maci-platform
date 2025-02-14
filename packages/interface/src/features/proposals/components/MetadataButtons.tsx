@@ -4,7 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { Button, IconButton } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
 import { Spinner } from "~/components/ui/Spinner";
-import useAccount from "~/hooks/useAccount";
+import { useAccount } from "~/contexts/Account";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
 import type { Metadata } from "../types";

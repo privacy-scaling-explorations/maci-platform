@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useMemo } from "react";
 
-import useAccount from "~/hooks/useAccount";
+import { useAccount } from "~/contexts/Account";
 import { useIsMobile } from "~/hooks/useIsMobile";
 
 import { Button } from "./ui/Button";

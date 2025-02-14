@@ -7,8 +7,8 @@ import Markdown from "react-markdown";
 import { Heading } from "~/components/ui/Heading";
 import { Tag } from "~/components/ui/Tag";
 import { impactCategories, prefixes } from "~/config";
+import { useAccount } from "~/contexts/Account";
 import { ProjectItemContent } from "~/features/projects/components/ProjectItem";
-import useAccount from "~/hooks/useAccount";
 
 import type { Metadata } from "../types";
 

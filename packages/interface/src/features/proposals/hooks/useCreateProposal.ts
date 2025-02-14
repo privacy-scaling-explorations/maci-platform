@@ -1,8 +1,8 @@
 import { type UseMutationResult, useMutation } from "@tanstack/react-query";
 import { RegistryManager__factory as RegistryManagerFactory } from "maci-platform-contracts/typechain-types";
 import { createPublicClient, custom, Hex } from "viem";
-import { useAccount } from "wagmi";
 
+import { useAccount } from "~/contexts/Account";
 import { useRound } from "~/contexts/Round";
 import { type TransactionError } from "~/features/voters/hooks/useApproveVoters";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
@@ -41,7 +41,7 @@ export function useCreateProposal(options: {
 
   const mutation = useMutation({
     mutationFn: async (values: Metadata) => {
-      if (!signer || !chain || !address) {
+      if (!signer || !address) {
         throw new Error("Please connect your wallet first");
       }
 
