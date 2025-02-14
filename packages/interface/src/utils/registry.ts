@@ -146,7 +146,6 @@ export const rejectRequest = async (chain: Chain, index: bigint): Promise<boolea
  * @param metadataPtr - The metadata url
  * @param registryAddress - The registry address
  * @param recipientAddress - The recipient address
- * @param attestationId - The attestation id
  * @returns The transaction receipt
  */
 export const submitAddRequest = async (
@@ -154,7 +153,6 @@ export const submitAddRequest = async (
   metadataUrl: string,
   registryAddress: Hex,
   recipientAddress: Hex,
-  attestationId?: string,
 ): Promise<TransactionReceipt> => {
   const [account] = (await window.ethereum!.request({ method: "eth_requestAccounts" })) as Hex[];
 
@@ -177,9 +175,72 @@ export const submitAddRequest = async (
     recipient: {
       recipient: recipientAddress,
       metadataUrl,
-      id: (attestationId ?? hexlify(randomBytes(32))) as Hex,
+      id: hexlify(randomBytes(32)) as Hex,
     },
     index: 0n,
+    status: ERequestStatus.Pending,
+  };
+
+  try {
+    const tx = await walletClient.writeContract({
+      abi: RegistryManagerFactory.abi,
+      address: registryManagerAddress,
+      functionName: "process",
+      // @ts-expect-error Saying it's expecting type never
+      args: [request],
+      chain,
+      account: account!,
+    });
+
+    const receipt = await publicClient.waitForTransactionReceipt({ hash: tx });
+
+    return receipt;
+  } catch (error) {
+    throw new Error("Failed to submit your request");
+  }
+};
+
+/**
+ * Submit an request to edit the approved recipient
+ *
+ * @param chain - The chain to use
+ * @param metadataPtr - The metadata url
+ * @param registryAddress - The registry address
+ * @param recipientAddress - The recipient address
+ * @param recipientIndex - The index of the recipient to submit
+ * @returns The transaction receipt
+ */
+export const submitEditRequest = async (
+  chain: Chain,
+  metadataUrl: string,
+  registryAddress: Hex,
+  recipientAddress: Hex,
+  recipientIndex: string,
+): Promise<TransactionReceipt> => {
+  const [account] = (await window.ethereum!.request({ method: "eth_requestAccounts" })) as Hex[];
+
+  const publicClient = createPublicClient({
+    transport: custom(window.ethereum!),
+    chain,
+  });
+
+  const walletClient = createWalletClient({
+    account: account!,
+    chain,
+    transport: custom(window.ethereum!),
+  });
+
+  const registryManagerAddress = await getRegistryManagerContract(chain);
+
+  const request: IRequestContract = {
+    registry: registryAddress,
+    requestType: ERequestType.Change,
+    recipient: {
+      recipient: recipientAddress,
+      metadataUrl,
+      id: hexlify(randomBytes(32)) as Hex,
+    },
+    index: BigInt(recipientIndex),
     status: ERequestStatus.Pending,
   };
 

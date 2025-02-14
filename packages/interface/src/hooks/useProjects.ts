@@ -17,3 +17,7 @@ export function useProjects(registryAddress: string): UseTRPCInfiniteQueryResult
 export function useMyProjects(registryAddress: string, address: string): UseTRPCQueryResult<IRecipient[], unknown> {
   return api.projects.getMine.useQuery({ registryAddress, address });
 }
+
+export function useProjectById(registryAddress: string, projectId: string): UseTRPCQueryResult<IRecipient, unknown> {
+  return api.projects.getWithMetadataById.useQuery({ registryAddress, projectId });
+}

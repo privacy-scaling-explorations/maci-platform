@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { IconButton } from "~/components/ui/Button";
 
 export interface IImageUploadProps extends ComponentProps<"img"> {
+  defaultValue?: string;
   name?: string;
   maxSize?: number;
 }
@@ -17,6 +18,7 @@ export interface IImageUploadProps extends ComponentProps<"img"> {
 export const ImageUpload = forwardRef(
   (
     {
+      defaultValue = "none",
       name = "",
       maxSize = 1024 * 1024, // 1 MB
       className,
@@ -93,7 +95,7 @@ export const ImageUpload = forwardRef(
             <div
               className={clsx("h-full rounded-xl bg-gray-200 bg-cover bg-center bg-no-repeat")}
               style={{
-                backgroundImage: select.data ? `url("${value}")` : "none",
+                backgroundImage: select.data ? `url("${value}")` : `url(${defaultValue})`,
               }}
             />
 

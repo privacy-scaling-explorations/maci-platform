@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { zeroAddress } from "viem";
 
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { Skeleton } from "~/components/ui/Skeleton";
 import { Spinner } from "~/components/ui/Spinner";
 import { config } from "~/config";
+import { useRequestByProjectId } from "~/hooks/useRequests";
 import { formatNumber } from "~/utils/formatNumber";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
@@ -69,6 +71,7 @@ export interface IProjectItemProps {
   recipient: IRecipient;
   isLoading: boolean;
   state?: EProjectState;
+  registryAddress?: string;
   action?: (e: Event) => void;
 }
 
@@ -77,9 +80,12 @@ export const ProjectItem = ({
   recipient,
   isLoading,
   state = undefined,
+  registryAddress = zeroAddress,
   action = undefined,
 }: IProjectItemProps): JSX.Element => {
   const metadata = useProjectMetadata(recipient.metadataUrl);
+  const request = useRequestByProjectId(recipient.id, registryAddress);
+
   const roundState = useRoundState({ pollId });
   const bannerImageUrl = recipient.bannerImageUrl ? recipient.bannerImageUrl : metadata.data?.bannerImageUrl;
   const profileImageUrl = recipient.profileImageUrl ? recipient.profileImageUrl : metadata.data?.profileImageUrl;
@@ -92,47 +98,49 @@ export const ProjectItem = ({
   const impactCategory = recipient.impactCategory ? recipient.impactCategory : metadata.data?.impactCategory;
 
   return (
-    <Link href={`/rounds/${pollId}/${recipient.id}`}>
-      {isLoading && <Spinner className="h-16 w-16" />}
+    <div className={request.data?.requestType.toString() === "Change" && !recipient.initialized ? "hidden" : ""}>
+      <Link href={`/rounds/${pollId}/${recipient.id}`}>
+        {isLoading && <Spinner className="h-16 w-16" />}
 
-      {!isLoading && (
-        <ProjectItemContent
-          actionButton={
-            state !== undefined &&
-            action &&
-            roundState === ERoundState.VOTING && (
-              <div className="flex justify-end pt-6">
-                <Skeleton>
-                  {state === EProjectState.DEFAULT && (
-                    <Button size="sm" variant="inverted" onClick={action}>
-                      Add to ballot
-                    </Button>
-                  )}
+        {!isLoading && (
+          <ProjectItemContent
+            actionButton={
+              state !== undefined &&
+              action &&
+              roundState === ERoundState.VOTING && (
+                <div className="flex justify-end pt-6">
+                  <Skeleton>
+                    {state === EProjectState.DEFAULT && (
+                      <Button size="sm" variant="inverted" onClick={action}>
+                        Add to ballot
+                      </Button>
+                    )}
 
-                  {state === EProjectState.ADDED && (
-                    <Button size="sm" variant="primary" onClick={action}>
-                      Added
-                      <Image alt="check-white" height="18" src="/check-white.svg" width="18" />
-                    </Button>
-                  )}
+                    {state === EProjectState.ADDED && (
+                      <Button size="sm" variant="primary" onClick={action}>
+                        Added
+                        <Image alt="check-white" height="18" src="/check-white.svg" width="18" />
+                      </Button>
+                    )}
 
-                  {state === EProjectState.SUBMITTED && (
-                    <Button size="sm" variant="disabled">
-                      Submitted
-                    </Button>
-                  )}
-                </Skeleton>
-              </div>
-            )
-          }
-          bannerImageUrl={bannerImageUrl}
-          impactCategory={impactCategory}
-          name={name}
-          profileImageUrl={profileImageUrl}
-          shortBio={shortBio}
-        />
-      )}
-    </Link>
+                    {state === EProjectState.SUBMITTED && (
+                      <Button size="sm" variant="disabled">
+                        Submitted
+                      </Button>
+                    )}
+                  </Skeleton>
+                </div>
+              )
+            }
+            bannerImageUrl={bannerImageUrl}
+            impactCategory={impactCategory}
+            name={name}
+            profileImageUrl={profileImageUrl}
+            shortBio={shortBio}
+          />
+        )}
+      </Link>
+    </div>
   );
 };
 
