@@ -31,7 +31,7 @@
     "@rainbow-me/rainbowkit": "^2.0.1",
     "@semaphore-protocol/core": "4.0.3",
     "@semaphore-protocol/data": "4.0.3",
-    "@t3-oss/env-nextjs": "^0.8.0",
+    "@t3-oss/env-nextjs": "^0.12.0",
     "@tanstack/react-query": "^5.59.20",
     "@trpc/client": "11.0.0-rc.608",
     "@trpc/next": "11.0.0-rc.660",
