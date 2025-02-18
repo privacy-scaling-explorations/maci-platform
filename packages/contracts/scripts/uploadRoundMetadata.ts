@@ -23,7 +23,7 @@ interface IUploadMetadataProps {
 
 const METADATA_PATH = path.resolve("./round-metadata.json");
 
-dotenv.config({ path: path.resolve(import.meta.dirname, "../.env") });
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 /**
  * A function to check if the input string is a valid date

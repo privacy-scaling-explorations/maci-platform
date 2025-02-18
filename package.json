@@ -8,9 +8,9 @@
     "build": "lerna run build",
     "clean": "lerna exec -- rm -rf node_modules build && rm -rf node_modules",
     "commit": "git cz",
-    "download-zkeys:latest": "lerna run download-zkeys:latest --scope=maci-coordinator",
-    "download-zkeys:test": "lerna run download-zkeys:test --scope=maci-coordinator",
-    "download-zkeys:prod": "lerna run download-zkeys:prod --scope=maci-coordinator",
+    "download-zkeys:latest": "ts-node .github/scripts/downloadZKeys.ts latest ./packages/contracts/zkeys",
+    "download-zkeys:test": "ts-node .github/scripts/downloadZKeys.ts test ./packages/contracts/zkeys",
+    "download-zkeys:prod": "ts-node .github/scripts/downloadZKeys.ts prod ./packages/contracts/zkeys",
     "prettier": "prettier -c .",
     "prettier:fix": "prettier -w .",
     "lint:ts": "eslint './**/**/*.ts' './**/**/*.tsx'",
@@ -52,6 +52,8 @@
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "solhint": "^5.0.3",
+    "tar": "^7.4.3",
+    "ts-node": "^10.9.1",
     "typescript": "^5.7.2"
   },
   "config": {

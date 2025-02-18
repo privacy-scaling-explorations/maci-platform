@@ -53,13 +53,17 @@
     "prove:optimism-sepolia": "pnpm run prove --network optimism_sepolia",
     "submitOnChain": "hardhat submitOnChain",
     "submitOnChain:localhost": "pnpm run submitOnChain",
-    "submitOnChain:optimism-sepolia": "pnpm run submitOnChain --network optimism_sepolia"
+    "submitOnChain:optimism-sepolia": "pnpm run submitOnChain --network optimism_sepolia",
+    "upload-round-metadata": "ts-node ./scripts/uploadRoundMetadata.ts"
   },
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@openzeppelin/contracts": "^5.0.2",
+    "@vercel/blob": "^0.27.1",
     "circomlibjs": "^0.1.7",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
     "ethers": "^6.13.5",
     "hardhat": "^2.22.15",
     "lowdb": "^1.0.0",
@@ -78,7 +82,6 @@
     "@types/snarkjs": "^0.7.8",
     "@types/uuid": "^10.0.0",
     "chai": "^4.3.10",
-    "dotenv": "^16.4.7",
     "hardhat-artifactor": "^0.2.0",
     "hardhat-contract-sizer": "^2.10.0",
     "sol2uml": "^2.5.20",
