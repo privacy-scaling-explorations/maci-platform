@@ -23,7 +23,7 @@ export interface IProjectItemContentProps {
   bannerImageUrl?: string;
   profileImageUrl?: string;
   name?: string;
-  bio?: string;
+  shortBio?: string;
   impactCategory?: string[];
   actionButton?: ReactNode;
 }
@@ -32,7 +32,7 @@ export const ProjectItemContent = ({
   bannerImageUrl = "",
   profileImageUrl = "",
   name = "",
-  bio = "",
+  shortBio = "",
   impactCategory = undefined,
   actionButton = undefined,
 }: IProjectItemContentProps): JSX.Element => (
@@ -47,7 +47,7 @@ export const ProjectItemContent = ({
       <div className="flex flex-col gap-1">
         <span className="font-sans text-base font-semibold uppercase text-black dark:text-white">{name}</span>
 
-        <span className="line-clamp-2 h-10 font-sans text-sm text-gray-400">{removeMarkdown(bio || "")}</span>
+        <span className="line-clamp-2 h-10 font-sans text-sm text-gray-400">{removeMarkdown(shortBio || "")}</span>
       </div>
 
       <ImpactCategories tags={impactCategory} />
@@ -79,6 +79,12 @@ export const ProjectItem = ({
   const name = recipient.name ? recipient.name : metadata.data?.name;
   const bio = recipient.bio ? recipient.bio : metadata.data?.bio;
   const impactCategory = recipient.impactCategory ? recipient.impactCategory : metadata.data?.impactCategory;
+
+  let shortBio = recipient.shortBio ? recipient.shortBio : metadata.data?.shortBio;
+
+  if (!shortBio && bio) {
+    shortBio = bio.substring(0, 140);
+  }
 
   if (isLoading) {
     return (
@@ -118,10 +124,10 @@ export const ProjectItem = ({
           )
         }
         bannerImageUrl={bannerImageUrl}
-        bio={bio}
         impactCategory={impactCategory}
         name={name}
         profileImageUrl={profileImageUrl}
+        shortBio={shortBio}
       />
     </Link>
   );
