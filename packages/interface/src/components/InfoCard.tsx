@@ -29,7 +29,7 @@ interface InfoCardProps {
 
 export const InfoCard = ({ state, title, start, end }: InfoCardProps): JSX.Element => (
   <InfoCardContainer state={state}>
-    <div className="flex items-center justify-between">
+    <div className="flex min-w-[200px] items-center justify-between">
       <span className="font-sans text-base font-extrabold uppercase leading-6 tracking-[0.16px]">{title}</span>
 
       {state === EInfoCardState.PASSED && (
