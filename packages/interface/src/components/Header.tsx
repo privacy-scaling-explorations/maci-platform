@@ -1,9 +1,9 @@
-import { Menu, X } from "lucide-react";
+import { Menu, MoonIcon, SunIcon, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
-import { type ComponentPropsWithRef, useState, useMemo, useEffect } from "react";
+import { type ComponentPropsWithRef, useState, useMemo, useEffect, useCallback } from "react";
 
 import { useBallot } from "~/contexts/Ballot";
 import { AppContainer } from "~/layouts/AppContainer";
@@ -12,6 +12,7 @@ import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
 import ConnectButton from "./ConnectButton";
+import { HelpButton } from "./HelpButton";
 import { IconButton } from "./ui/Button";
 import { Logo } from "./ui/Logo";
 
@@ -30,23 +31,53 @@ const NavLink = ({ isActive, ...props }: INavLinkProps) => (
 interface IMobileMenuProps {
   isOpen?: boolean;
   navLinks: INavLink[];
+  pollId: string;
+  setOpen: (open: boolean) => void;
 }
 
-const MobileMenu = ({ isOpen = false, navLinks }: IMobileMenuProps) => (
-  <div
-    className={cn("fixed left-0 top-16 z-10 h-full w-full bg-white transition-transform duration-150", {
-      "-translate-x-full": !isOpen,
-    })}
-  >
-    <Link key="home" className={cn("block p-4 text-2xl  font-semibold")} href="/">
-      Home
-    </Link>
+const MobileMenu = ({ isOpen = false, navLinks, pollId, setOpen }: IMobileMenuProps) => {
+  const { getBallot } = useBallot();
+  const roundState = useRoundState({ pollId });
+  const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
 
-    {navLinks.map((link) => (
-      <Link key={link.href} className={cn("block p-4 text-2xl  font-semibold")} {...link} />
-    ))}
-  </div>
-);
+  return (
+    <div
+      className={cn("fixed left-0 top-16 z-10 h-full w-full bg-white transition-transform duration-150", {
+        "-translate-x-full": !isOpen,
+      })}
+    >
+      <Link
+        key="home"
+        className={cn("block p-4 text-2xl  font-semibold")}
+        href="/"
+        onClick={() => {
+          setOpen(false);
+        }}
+      >
+        Home
+      </Link>
+
+      {navLinks.map((link) => (
+        <Link
+          key={link.href}
+          className={cn("block p-4 text-2xl font-semibold uppercase  text-black dark:text-white")}
+          href={link.href}
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          {link.name}
+
+          {roundState === ERoundState.VOTING && link.href.includes("/ballot") && ballot.votes.length > 0 && (
+            <div className="ml-2 h-5 w-5 rounded-full bg-blue-50 font-sans text-sm font-medium leading-5 text-blue-400">
+              {ballot.votes.length}
+            </div>
+          )}
+        </Link>
+      ))}
+    </div>
+  );
+};
 
 interface INavLink {
   label: string;
@@ -76,11 +107,9 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
     }
   }, []);
 
-  /* 
   const handleChangeTheme = useCallback(() => {
     setTheme(theme === "light" ? "dark" : "light");
   }, [theme, setTheme]);
-  */
 
   // the URI of round index page looks like: /rounds/:pollId, without anything else, which is the reason why the length is 3
   const isRoundIndexPage = useMemo(
@@ -127,10 +156,7 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
 
         <div className="flex-1 md:ml-8" />
 
-        <ConnectButton showMobile={false} />
-
-        {/*
-        <div className="ml-4 flex items-center gap-2 md:ml-8 xl:ml-32">
+        <div className="flex items-center gap-2">
           <HelpButton />
 
           <IconButton
@@ -140,11 +166,10 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
             onClick={handleChangeTheme}
           />
 
-       
+          <ConnectButton showMobile={false} />
         </div>
-        */}
 
-        <MobileMenu isOpen={isOpen} navLinks={navLinks} />
+        <MobileMenu isOpen={isOpen} navLinks={navLinks} pollId={pollId} setOpen={setOpen} />
       </AppContainer>
     </header>
   );

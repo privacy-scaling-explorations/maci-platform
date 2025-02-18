@@ -7,8 +7,8 @@ import { EmptyState } from "./EmptyState";
 import { FetchInView } from "./FetchInView";
 
 const columnMap = {
-  2: "grid-cols-1 md:grid-cols-2",
-  3: "sm:grid-cols-2 lg:grid-cols-3",
+  2: "grid-cols-1 lg:grid-cols-2",
+  3: "grid-cols-1 lg:grid-cols-3",
 } as const;
 
 type Props<T> = UseTRPCInfiniteQueryResult<T[], unknown, unknown> & {

@@ -37,7 +37,7 @@ export const useLayoutOptions = (): { eligibilityCheck: boolean; showBallot: boo
 const Sidebar = ({ side = undefined, ...props }: PropsWithChildren<{ side?: "left" | "right" }>) => (
   <div>
     <div
-      className={clsx("md:w-[336px]", {
+      className={clsx("px-4 md:w-[336px] lg:px-0", {
         "left-0 top-[2rem] md:sticky": side === "left",
       })}
       {...props}
@@ -80,6 +80,9 @@ export const BaseLayout = ({
 
   const contextValue = useMemo(() => ({ eligibilityCheck, showBallot }), [eligibilityCheck, showBallot]);
 
+  const hasSidebar = sidebar === "left" || sidebar === "right";
+  const isHome = router.pathname === "/";
+
   return (
     <Context.Provider value={contextValue}>
       <Head>
@@ -117,11 +120,17 @@ export const BaseLayout = ({
       >
         {header}
 
-        <AppContainer>
+        <AppContainer fullWidth={!hasSidebar}>
           <MainContainer type={type}>
             {sidebar === "left" ? wrappedSidebar : null}
 
-            <div className="min-h-[90vh] w-full pb-24">{children}</div>
+            <div
+              className={clsx("min-h-[90vh] w-full pb-24", {
+                "px-4 lg:px-2": hasSidebar || !isHome,
+              })}
+            >
+              {children}
+            </div>
 
             {sidebar === "right" ? wrappedSidebar : null}
           </MainContainer>
