@@ -6,9 +6,10 @@ import { GatekeeperTrait, getZupassGatekeeperData } from "maci-cli/sdk";
 import { useRouter } from "next/router";
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { toast } from "sonner";
-import { useAccount, useDisconnect } from "wagmi";
+import { useDisconnect } from "wagmi";
 
 import { zupass, config } from "~/config";
+import { useAccount } from "~/contexts/Account";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
@@ -25,6 +26,7 @@ interface IEligibilityDialogProps {
 
 export const EligibilityDialog = ({ pollId = "" }: IEligibilityDialogProps): JSX.Element | null => {
   const { address } = useAccount();
+  // TODO: make this work with privy
   const { disconnect } = useDisconnect();
   const { getRoundByPollId } = useRound();
 

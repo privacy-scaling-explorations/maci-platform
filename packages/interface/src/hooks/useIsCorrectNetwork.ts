@@ -1,6 +1,7 @@
-import { useAccount, useChainId } from "wagmi";
+import { useChainId } from "wagmi";
 
 import { config } from "~/config";
+import { useAccount } from "~/contexts/Account";
 
 export interface IUseIsCorrectNetworkReturn {
   isCorrectNetwork: boolean;

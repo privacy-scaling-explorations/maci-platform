@@ -69,6 +69,32 @@ export const getRPCURL = (): string | undefined => {
   }
 };
 
+/**
+ * Get the BUNDLER URL based on the network we are connected to
+ * @returns the BUNDLER URL
+ */
+export const getBundlerURL = (): string | undefined => {
+  switch (process.env.NEXT_PUBLIC_CHAIN_NAME) {
+    case "optimismSepolia":
+      return process.env.NEXT_PUBLIC_BUNDLER_URL;
+    default:
+      return undefined;
+  }
+};
+
+/**
+ * Get the PAYMASTER URL based on the network we are connected to
+ * @returns the PAYMASTER URL
+ */
+export const getPaymasterURL = (): string | undefined => {
+  switch (process.env.NEXT_PUBLIC_CHAIN_NAME) {
+    case "optimismSepolia":
+      return process.env.NEXT_PUBLIC_PAYMASTER_URL;
+    default:
+      return undefined;
+  }
+};
+
 export const config = {
   logoUrl: "/Logo.svg",
   pageSize: 3 * 4,
