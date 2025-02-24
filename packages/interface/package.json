@@ -39,7 +39,7 @@
     "@trpc/server": "11.0.0-rc.608",
     "@vercel/blob": "^0.27.1",
     "clsx": "^2.1.0",
-    "date-fns": "^3.6.0",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "ethers": "^6.13.5",
     "graphql-request": "^7.1.2",
