@@ -25,7 +25,7 @@
     "@pcd/pcd-types": "^0.15.0",
     "@pcd/util": "^0.5.4",
     "@pcd/zk-eddsa-event-ticket-pcd": "^0.6.6",
-    "@pcd/zuauth": "^1.4.5",
+    "@pcd/zuauth": "^1.8.0",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.1.2",
     "@rainbow-me/rainbowkit": "^2.0.1",
