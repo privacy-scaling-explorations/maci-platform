@@ -53,6 +53,7 @@ interface EntryPointType<entryPointVersion extends EntryPointVersion> {
 export type KernelAccount = Awaited<ReturnType<typeof createKernelAccount>>;
 
 interface GetPaymasterDataParameters {
+  sender: `0x${string}`;
   callData: Hex;
   callGasLimit?: bigint;
   factory?: `0x${string}` | undefined;
@@ -62,6 +63,8 @@ interface GetPaymasterDataParameters {
   nonce: bigint;
   preVerificationGas?: bigint;
   verificationGasLimit?: bigint;
+  chainId: number;
+  entryPointAddress: `0x${string}`;
 }
 
 export const entryPoint: EntryPointType<"0.7"> = {

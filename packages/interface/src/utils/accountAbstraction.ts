@@ -14,7 +14,7 @@ import { createBundlerClient } from "viem/account-abstraction";
 import { optimismSepolia } from "viem/chains";
 
 import { config, getBundlerURL } from "~/config";
-import { KernelAccount } from "~/hooks/useAccount";
+import { KernelAccount } from "~/contexts/Account";
 
 const MESSAGE_TREE_ARITY = 5;
 
