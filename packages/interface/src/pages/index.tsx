@@ -5,7 +5,6 @@ import { useAccount as wagmiUseAccount } from "wagmi";
 import ConnectButton from "~/components/ConnectButton";
 import { JoinButton } from "~/components/JoinButton";
 import SignInButton from "~/components/SignInButton";
-import SignUpButton from "~/components/SignUpButton";
 import { SingleRoundHome } from "~/components/SingleRoundHome";
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
@@ -54,8 +53,6 @@ const HomePage = (): JSX.Element => {
           {!extensionConnected && !embeddedConnected && (
             <div className="flex flex-col gap-4">
               <SignInButton showMessage showMobile />
-
-              <SignUpButton showMessage showMobile />
             </div>
           )}
 

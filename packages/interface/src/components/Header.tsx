@@ -16,7 +16,6 @@ import { ERoundState } from "~/utils/types";
 import ConnectButton from "./ConnectButton";
 import { HelpButton } from "./HelpButton";
 import SignInButton from "./SignInButton";
-import SignUpButton from "./SignUpButton";
 import { Button, IconButton } from "./ui/Button";
 import { Logo } from "./ui/Logo";
 
@@ -157,8 +156,6 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
           {!extensionConnected && !embeddedConnected && (
             <div className="flex items-center gap-4">
               <SignInButton showMessage={false} showMobile={false} />
-
-              <SignUpButton showMessage={false} showMobile={false} />
             </div>
           )}
 
