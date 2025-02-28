@@ -74,7 +74,7 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
   const { error: createError } = create;
 
   return (
-    <div className="dark:border-lighterBlack flex w-full max-w-[824px] flex-col gap-10 rounded-lg border border-gray-200 p-5">
+    <div className="dark:border-lighterBlack flex w-full flex-col gap-10 rounded-lg border border-gray-200 p-5 sm:w-[824px]">
       <MetadataSteps step={step} />
 
       <Form

@@ -82,7 +82,9 @@ const ConfirmProposalPage = ({ pollId }: { pollId: string }): JSX.Element => {
             </div>
           )}
 
-          <ProjectItem isLoading={false} pollId={pollId} recipient={project.recipient as IRecipient} />
+          <div className="w-[330px]">
+            <ProjectItem isLoading={false} pollId={pollId} recipient={project.recipient as IRecipient} />
+          </div>
         </div>
       </div>
     </Layout>

@@ -12,7 +12,7 @@ export const AppContainer = ({
   ...props
 }: IAppContainerProps): JSX.Element => (
   <Component
-    className={cn("mx-auto flex w-full", className, {
+    className={cn("mx-auto flex w-full px-2", className, {
       "max-w-screen-2xl": !fullWidth,
       "max-w-full": fullWidth,
     })}

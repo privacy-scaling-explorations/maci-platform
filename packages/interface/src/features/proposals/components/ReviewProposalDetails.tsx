@@ -30,7 +30,7 @@ const ValueField = ({ title, body = undefined, link = undefined }: IValueFieldPr
 
   return (
     <div className="flex flex-col gap-2 text-xs sm:text-sm">
-      <h4 className={clsx("text-lg font-bold uppercase leading-[27px] text-black")}>{title}</h4>
+      <h4 className={clsx("text-lg font-bold uppercase leading-[27px] text-black dark:text-white")}>{title}</h4>
 
       <div className="text-light flex flex-col flex-wrap gap-2 break-all text-gray-400">
         {body === undefined && emptyPlaceholder}

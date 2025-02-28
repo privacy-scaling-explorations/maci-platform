@@ -41,7 +41,8 @@ export const ProjectContacts = ({
           target="_blank"
         >
           <FaXTwitter />
-          x.com
+
+          {twitter}
         </Link>
       </div>
     )}

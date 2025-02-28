@@ -65,17 +65,17 @@ const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetails
         <div className="flex flex-col gap-5">
           <h3 className="font-sans text-lg font-bold uppercase leading-[27px] dark:text-white">Impact statements</h3>
 
+          <Markdown components={markdownComponents}>{metadata.data?.impactDescription}</Markdown>
+
           <ProjectDescriptionSection
             contributions={metadata.data?.contributionLinks}
             description={metadata.data?.contributionDescription}
             title="contributions"
           />
 
-          <ProjectDescriptionSection
-            description={metadata.data?.impactDescription}
-            fundings={fundingSources}
-            title="past grants and funding"
-          />
+          {fundingSources && fundingSources.length > 0 && (
+            <ProjectDescriptionSection fundings={fundingSources} title="past grants and funding" />
+          )}
 
           {action}
         </div>

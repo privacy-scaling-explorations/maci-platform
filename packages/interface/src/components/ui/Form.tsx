@@ -155,7 +155,7 @@ export const FieldArray = <S extends z.Schema>({
   const error = form.formState.errors[name]?.message ?? "";
 
   return (
-    <div className="flex flex-col gap-[10px]">
+    <div className="flex flex-col gap-[10px] dark:text-white">
       <div className="flex flex-col gap-[3px]">
         <Heading className="font-sans text-2xl font-bold">{title}</Heading>
 

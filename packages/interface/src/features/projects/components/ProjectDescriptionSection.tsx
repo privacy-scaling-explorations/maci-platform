@@ -6,13 +6,12 @@ import Markdown from "react-markdown";
 import { Link } from "~/components/ui/Link";
 import { markdownComponents } from "~/components/ui/MarkdownComponents";
 
-import { type ImpactMetrix, type ContributionLink, type FundingSource, EContributionType } from "../types";
+import { type ContributionLink, type FundingSource, EContributionType } from "../types";
 
 interface ProjectDescriptionSectionProps {
   title: string;
   description?: string;
   contributions?: ContributionLink[];
-  impacts?: ImpactMetrix[];
   fundings?: FundingSource[];
 }
 
@@ -20,7 +19,6 @@ export const ProjectDescriptionSection = ({
   title,
   description = "",
   contributions = [],
-  impacts = [],
   fundings = [],
 }: ProjectDescriptionSectionProps): JSX.Element => (
   <div className="flex flex-col gap-5">
@@ -43,20 +41,6 @@ export const ProjectDescriptionSection = ({
             {link.description}
 
             <ExternalLinkIcon className="h-4 w-4" />
-          </Link>
-        ))}
-      </div>
-    )}
-
-    {impacts.length > 0 && (
-      <div className="border-l border-gray-200 px-[10px]">
-        <span className="font-sans text-sm font-semibold uppercase leading-5 text-gray-800">{`${title} links`}</span>
-
-        {impacts.map((link) => (
-          <Link key={link.description} href={link.url} target="_blank">
-            {link.description}
-
-            {link.number && ` - ${link.number}k`}
           </Link>
         ))}
       </div>
