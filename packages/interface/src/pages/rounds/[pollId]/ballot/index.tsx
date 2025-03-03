@@ -137,10 +137,15 @@ const BallotAllocationForm = ({ pollId, mode }: IBallotAllocationFormProps): JSX
           )}
         </div>
 
-        <div className={clsx("flex h-16 items-center justify-end gap-2", sum > initialVoiceCredits && "text-red")}>
+        <div
+          className={clsx(
+            "flex h-16 items-center justify-end gap-2 dark:text-white",
+            sum > initialVoiceCredits && "text-red",
+          )}
+        >
           <h4>Total votes:</h4>
 
-          <p className="dark:text-white">{formatNumber(sum)}</p>
+          <p>{formatNumber(sum)}</p>
         </div>
       </div>
     </div>

@@ -1,10 +1,7 @@
 import clsx from "clsx";
-import { ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { useMemo, type ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
-import { FaEthereum, FaGithub } from "react-icons/fa";
-import { RiGlobalLine } from "react-icons/ri";
 import Markdown from "react-markdown";
 import { useAccount } from "wagmi";
 
@@ -13,7 +10,6 @@ import { markdownComponents } from "~/components/ui/MarkdownComponents";
 import { Tag } from "~/components/ui/Tag";
 import { impactCategories } from "~/config";
 import { ProjectContacts } from "~/features/projects/components/ProjectContacts";
-import { EContributionType } from "~/features/projects/types";
 
 import type { Metadata } from "../types";
 
@@ -110,34 +106,7 @@ export const ReviewProposalDetails = (): JSX.Element => {
       </div>
 
       <div className="flex flex-col gap-6 dark:text-white">
-        <div className="flex flex-col gap-3">
-          <ValueField body={<Markdown>{metadata.contributionDescription}</Markdown>} title="Contribution description" />
-
-          <div className="flex flex-col gap-1 border-l border-gray-200 px-[10px]">
-            <span className="font-sans text-sm font-semibold uppercase leading-5 text-gray-800">
-              Contribution links
-            </span>
-
-            {metadata.contributionLinks?.map((link) => (
-              <Link
-                key={link.type}
-                className="flex items-center gap-1 text-base font-normal leading-6 text-blue-500 underline duration-200 hover:opacity-50"
-                href={link.url}
-                target="_blank"
-              >
-                {link.type === (EContributionType.GITHUB_REPO as string) && <FaGithub />}
-
-                {link.type === (EContributionType.CONTRACT_ADDRESS as string) && <FaEthereum />}
-
-                {link.type === (EContributionType.OTHER as string) && <RiGlobalLine />}
-
-                {link.description}
-
-                <ExternalLinkIcon className="textt-blue-500 h-4 w-4" />
-              </Link>
-            ))}
-          </div>
-        </div>
+        <ValueField body={<Markdown>{metadata.contributionDescription}</Markdown>} title="Contribution description" />
 
         <ValueField body={<Markdown>{metadata.impactDescription}</Markdown>} title="Impact description" />
 
