@@ -8,7 +8,9 @@ import { FieldArray, Form, FormControl, FormSection, Select, Textarea } from "~/
 import { Input } from "~/components/ui/Input";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
-import { useCreateProposal } from "../hooks/useCreateProposal";
+import type { IRecipient } from "~/utils/types";
+
+import { useEditProposal } from "../hooks/useEditProposal";
 import { MetadataSchema, contributionTypes, fundingSourceTypes, type Metadata } from "../types";
 
 import { ImpactTags } from "./ImpactTags";
@@ -16,11 +18,12 @@ import { MetadataButtons, EMetadataStep } from "./MetadataButtons";
 import { MetadataSteps } from "./MetadataSteps";
 import { ReviewProposalDetails } from "./ReviewProposalDetails";
 
-interface IMetadataFormProps {
+interface IEditMetadataFormProps {
   pollId: string;
+  project: IRecipient;
 }
 
-export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
+export const EditMetadataForm = ({ pollId, project }: IEditMetadataFormProps): JSX.Element => {
   const { isCorrectNetwork, correctNetwork } = useIsCorrectNetwork();
 
   const { address } = useAccount();
@@ -28,9 +31,9 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
   const router = useRouter();
 
   /**
-   * There are 3 steps for creating a project proposal.
-   * The first step is to set the project introduction (profile);
-   * the second step is to set the contributions, impacts, and funding sources (advanced);
+   * There are 3 steps for editing a project proposal.
+   * The first step is to edit the project introduction (profile);
+   * the second step is to edit the contributions, impacts, and funding sources (advanced);
    * the last step is to review the input values, allow editing by going back to previous steps (review).
    */
   const [step, setStep] = useState<EMetadataStep>(EMetadataStep.PROFILE);
@@ -51,15 +54,16 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
     }
   }, [step, setStep]);
 
-  const create = useCreateProposal({
+  const create = useEditProposal({
     onSuccess: (id: bigint) => {
       router.push(`/rounds/${pollId}/proposals/confirmation?index=${id.toString()}`);
     },
     onError: (err: { message: string }) =>
-      toast.error("Proposal create error", {
+      toast.error("Edit proposal error", {
         description: err.message,
       }),
     pollId,
+    recipientIndex: project.index,
   });
 
   const handleSubmit = useCallback(
@@ -77,7 +81,20 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
 
       <Form
         defaultValues={{
-          payoutAddress: address,
+          payoutAddress: project.metadata?.payoutAddress,
+          name: project.metadata?.name,
+          bio: project.metadata?.bio,
+          shortBio: project.metadata?.shortBio,
+          websiteUrl: project.metadata?.websiteUrl,
+          twitter: project.metadata?.twitter,
+          github: project.metadata?.github,
+          contributionDescription: project.metadata?.contributionDescription,
+          impactDescription: project.metadata?.impactDescription,
+          impactCategory: project.metadata?.impactCategory,
+          profileImageUrl: project.metadata?.profileImageUrl,
+          bannerImageUrl: project.metadata?.bannerImageUrl,
+          contributionLinks: project.metadata?.contributionLinks,
+          fundingSources: project.metadata?.fundingSources,
         }}
         schema={MetadataSchema}
         onSubmit={handleSubmit}
@@ -134,7 +151,11 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
               label="Project avatar"
               name="profileImageUrl"
             >
-              <ImageUpload className="h-48 w-48" name="profileImageUrl" />
+              <ImageUpload
+                className="h-48 w-48"
+                defaultValue={project.metadata?.profileImageUrl}
+                name="profileImageUrl"
+              />
             </FormControl>
 
             <FormControl
@@ -144,7 +165,7 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
               label="Project background image"
               name="bannerImageUrl"
             >
-              <ImageUpload className="h-48" name="bannerImageUrl" />
+              <ImageUpload className="h-48" defaultValue={project.metadata?.bannerImageUrl} name="bannerImageUrl" />
             </FormControl>
           </div>
         </FormSection>
@@ -198,7 +219,7 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
           <FieldArray
             description="From what sources have you received funding?"
             name="fundingSources"
-            renderField={(_field, i) => (
+            renderField={(field, i) => (
               <div className="mb-4 flex flex-wrap gap-2">
                 <FormControl required className="min-w-96" name={`fundingSources.${i}.description`}>
                   <Input placeholder="Type the name of your funding source" />

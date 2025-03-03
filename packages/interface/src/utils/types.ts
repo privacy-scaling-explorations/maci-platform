@@ -228,9 +228,13 @@ export interface IRecipient {
    */
   index: string;
   /**
-   * Whether it was approved or not
+   * Whether it is approved or not
    */
   initialized?: boolean;
+  /**
+   * Whether it is deleted or not
+   */
+  deleted?: boolean;
   /**
    * Banner Image Url, used only for preview of card
    */
@@ -303,6 +307,10 @@ export interface IRequest {
    * The recipient data
    */
   recipient: IRecipient | IRecipientContract;
+  /**
+   * The recipient index
+   */
+  recipientIndex: string;
 }
 
 /**
