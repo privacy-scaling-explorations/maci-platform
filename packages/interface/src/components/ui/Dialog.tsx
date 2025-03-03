@@ -3,6 +3,9 @@ import { X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { tv } from "tailwind-variants";
 
+import { cn } from "~/utils/classNames";
+import { fontVariables } from "~/utils/fonts";
+
 import type { ReactNode, PropsWithChildren, ComponentProps } from "react";
 
 import { IconButton, Button } from "./Button";
@@ -58,11 +61,13 @@ export const Dialog = ({
         <RadixDialog.Overlay className="fixed left-0 top-0 z-10 h-full w-full bg-black/70" />
 
         {/* Because of Portal we need to set the theme here */}
-        <div className={theme}>
+        <div className={cn(theme, fontVariables)}>
           <Content size={size}>
-            <RadixDialog.Title className="text-2xl font-bold uppercase dark:text-white">{title}</RadixDialog.Title>
+            <RadixDialog.Title className="font-sans text-2xl font-bold uppercase dark:text-white">
+              {title}
+            </RadixDialog.Title>
 
-            <RadixDialog.Description className="text-gray-400">{description}</RadixDialog.Description>
+            <RadixDialog.Description className="font-sans text-gray-400">{description}</RadixDialog.Description>
 
             {children}
 

@@ -1,5 +1,6 @@
-import clsx from "clsx";
 import Image from "next/image";
+
+import { cn } from "~/utils/classNames";
 
 export enum EStepState {
   DEFAULT = -1,
@@ -17,25 +18,31 @@ interface IMetadataStepsProps {
 }
 
 const StepCategory = ({ title, progress }: IStepCategoryProps): JSX.Element => (
-  <div className="flex items-center gap-1 text-xs sm:gap-3 sm:text-base">
-    {progress === EStepState.ACTIVE && (
-      <Image alt="circle-check-blue" height="22" src="/circle-check-blue.svg" width="22" />
-    )}
+  <div className="flex items-center gap-1 text-xs sm:gap-[11px] sm:text-base">
+    <div className="w-[22px]">
+      {progress === EStepState.ACTIVE && (
+        <Image alt="circle-check-blue" height="22" src="/circle-check-blue.svg" width="22" />
+      )}
 
-    {progress >= EStepState.DONE && (
-      <Image alt="circle-check-blue-filled" height="22" src="/circle-check-blue-filled.svg" width="22" />
-    )}
+      {progress >= EStepState.DONE && (
+        <Image alt="circle-check-blue-filled" height="22" src="/circle-check-blue-filled.svg" width="22" />
+      )}
 
-    {progress <= EStepState.DEFAULT && <div className="h-4 w-4 rounded-full border-2 border-gray-300" />}
+      {progress <= EStepState.DEFAULT && <div className="h-4 w-4 rounded-full border-2 border-gray-300" />}
+    </div>
 
-    <div className={clsx("w-fit", progress === EStepState.ACTIVE ? "text-blue-400" : "text-gray-300")}>{title}</div>
+    <div
+      className={cn("w-fit font-sans font-normal", progress === EStepState.ACTIVE ? "text-blue-500" : "text-gray-300")}
+    >
+      {title}
+    </div>
   </div>
 );
 
-const Interline = (): JSX.Element => <div className="h-[1px] w-4 bg-gray-300 sm:w-9" />;
+const Interline = (): JSX.Element => <div className="h-[1px] w-4 bg-gray-200 sm:w-9" />;
 
 export const MetadataSteps = ({ step }: IMetadataStepsProps): JSX.Element => (
-  <div className="mb-4 flex items-center gap-1 sm:gap-4">
+  <div className="flex items-center gap-1 lg:gap-5">
     <StepCategory progress={step} title="Project Profile" />
 
     <Interline />

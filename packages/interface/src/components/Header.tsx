@@ -1,12 +1,13 @@
-import clsx from "clsx";
-import { Menu, X, SunIcon, MoonIcon } from "lucide-react";
+import { Menu, MoonIcon, SunIcon, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
-import { type ComponentPropsWithRef, useState, useCallback, useMemo, useEffect } from "react";
+import { type ComponentPropsWithRef, useState, useMemo, useEffect, useCallback } from "react";
 
 import { useBallot } from "~/contexts/Ballot";
+import { AppContainer } from "~/layouts/AppContainer";
+import { cn } from "~/utils/classNames";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
@@ -20,35 +21,63 @@ interface INavLinkProps extends ComponentPropsWithRef<typeof Link> {
 }
 
 const NavLink = ({ isActive, ...props }: INavLinkProps) => (
-  <Link
-    className={clsx(
-      "flex h-full items-center p-4 font-sans hover:font-extrabold",
-      isActive && "border-b-2 border-blue-400",
-    )}
-    {...props}
-  />
+  <Link className={cn("relative flex h-full w-full min-w-[95px] flex-col items-center")} {...props}>
+    <span className="p-2 font-sans text-sm font-medium leading-5">{props.children}</span>
+
+    <div className={cn("absolute bottom-0 h-[2px] w-full bg-blue-400", isActive ? "opacity-100" : "opacity-0")} />
+  </Link>
 );
 
 interface IMobileMenuProps {
   isOpen?: boolean;
   navLinks: INavLink[];
+  pollId: string;
+  setOpen: (open: boolean) => void;
 }
 
-const MobileMenu = ({ isOpen = false, navLinks }: IMobileMenuProps) => (
-  <div
-    className={clsx("fixed left-0 top-16 z-10 h-full w-full bg-white transition-transform duration-150", {
-      "-translate-x-full": !isOpen,
-    })}
-  >
-    <Link key="home" className={clsx("block p-4 text-2xl  font-semibold")} href="/">
-      Home
-    </Link>
+const MobileMenu = ({ isOpen = false, navLinks, pollId, setOpen }: IMobileMenuProps) => {
+  const { getBallot } = useBallot();
+  const roundState = useRoundState({ pollId });
+  const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
 
-    {navLinks.map((link) => (
-      <Link key={link.href} className={clsx("block p-4 text-2xl  font-semibold")} {...link} />
-    ))}
-  </div>
-);
+  return (
+    <div
+      className={cn("fixed left-0 top-16 z-10 h-full w-full bg-white transition-transform duration-150", {
+        "-translate-x-full": !isOpen,
+      })}
+    >
+      <Link
+        key="home"
+        className={cn("block p-4 text-2xl  font-semibold")}
+        href="/"
+        onClick={() => {
+          setOpen(false);
+        }}
+      >
+        Home
+      </Link>
+
+      {navLinks.map((link) => (
+        <Link
+          key={link.href}
+          className={cn("block p-4 text-2xl font-semibold uppercase  text-black dark:text-white")}
+          href={link.href}
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          {link.name}
+
+          {roundState === ERoundState.VOTING && link.href.includes("/ballot") && ballot.votes.length > 0 && (
+            <div className="ml-2 h-5 w-5 rounded-full bg-blue-50 font-sans text-sm font-medium leading-5 text-blue-400">
+              {ballot.votes.length}
+            </div>
+          )}
+        </Link>
+      ))}
+    </div>
+  );
+};
 
 interface INavLink {
   label: string;
@@ -89,8 +118,8 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
   );
 
   return (
-    <header className="dark:border-lighterBlack dark:bg-lightBlack relative z-[100] border-b border-gray-200 bg-white dark:text-white">
-      <div className="container mx-auto flex h-[72px] max-w-screen-2xl items-center px-2">
+    <header className="dark:border-lighterBlack dark:bg-lightBlack relative z-[100] border-b border-gray-200 bg-white py-[18px] dark:text-white">
+      <AppContainer as="div" className="container mx-auto flex items-center px-2">
         <div className="mr-4 flex items-center md:mr-16">
           <IconButton
             className="mr-1 text-gray-600 md:hidden"
@@ -101,12 +130,12 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
             }}
           />
 
-          <Link className="py-4" href="/">
+          <Link href="/">
             <Logo />
           </Link>
         </div>
 
-        <div className="hidden h-full items-center gap-4 overflow-x-auto uppercase md:flex">
+        <div className="hidden h-full items-center gap-[36px] overflow-x-auto uppercase md:flex">
           {navLinks.map((link) => {
             const isActive =
               (link.label !== "round" && asPath.includes(link.label)) || (link.label === "round" && isRoundIndexPage);
@@ -116,7 +145,7 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
                 {link.name}
 
                 {roundState === ERoundState.VOTING && link.href.includes("/ballot") && ballot.votes.length > 0 && (
-                  <div className="ml-2 h-5 w-5 rounded-full border-2 border-blue-400 bg-blue-50 text-center text-sm leading-4 text-blue-400">
+                  <div className="ml-2 h-5 w-5 rounded-full bg-blue-50 font-sans text-sm font-medium leading-5 text-blue-400">
                     {ballot.votes.length}
                   </div>
                 )}
@@ -127,7 +156,7 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
 
         <div className="flex-1 md:ml-8" />
 
-        <div className="ml-4 flex items-center gap-2 md:ml-8 xl:ml-32">
+        <div className="flex items-center gap-2">
           <HelpButton />
 
           <IconButton
@@ -140,8 +169,8 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
           <ConnectButton showMobile={false} />
         </div>
 
-        <MobileMenu isOpen={isOpen} navLinks={navLinks} />
-      </div>
+        <MobileMenu isOpen={isOpen} navLinks={navLinks} pollId={pollId} setOpen={setOpen} />
+      </AppContainer>
     </header>
   );
 };

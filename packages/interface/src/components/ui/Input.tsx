@@ -3,18 +3,15 @@ import { tv } from "tailwind-variants";
 import { createComponent } from ".";
 
 export const inputBase = [
+  "text-black text-sm leading-5 font-normala font-sans",
+  "duration-200",
   "disabled:opacity-30",
   "checked:bg-gray-800",
-  "outline-none",
-  "border-gray-200",
-  "rounded-lg",
-  "border",
-  "py-2",
-  "px-1",
+  "rounded border outline border-gray-200 outline-transparent",
+  "py-[9px] px-[10px]",
   "placeholder:text-gray-300",
-  "dark:border-gray-800",
-  "dark:bg-black",
-  "dark:text-white",
+  "dark:bg-black dark:text-white dark:border-gray-800",
+  "focus:border-blue-300 focus:outline-blue-300",
 ];
 
 export const Input = createComponent(

@@ -4,11 +4,9 @@ interface TimeSlotProps {
 }
 
 export const TimeSlot = ({ num, unit }: TimeSlotProps): JSX.Element => (
-  <div className="flex flex-1 flex-col items-center">
-    <p className="text-2xl">
-      <b>{num}</b>
-    </p>
+  <div className="flex flex-col items-center">
+    <span className="font-sans text-2xl font-extrabold uppercase leading-[36px] tracking-[0.24px]">{num}</span>
 
-    <p className="text-gray-400">{unit}</p>
+    <span className="font-sans text-[10px] font-medium uppercase leading-[15px] text-gray-400">{unit}</span>
   </div>
 );
