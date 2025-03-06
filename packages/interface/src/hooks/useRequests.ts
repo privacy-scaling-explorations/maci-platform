@@ -18,6 +18,13 @@ export function useRequestByProjectId(
   return api.requests.getByProjectId.useQuery({ projectId, registryAddress });
 }
 
-export function useRequestById(registryAddress: string, id: string): UseTRPCQueryResult<IRequest, unknown> {
-  return api.requests.getById.useQuery({ registryAddress, id });
+export function useRequestByIndex(registryAddress: string, index: string): UseTRPCQueryResult<IRequest, unknown> {
+  return api.requests.getByIndex.useQuery({ registryAddress, index });
+}
+
+export function useChangeRequestByRecipientIndex(
+  registryAddress: string,
+  recipientIndex: string,
+): UseTRPCQueryResult<IRequest, unknown> {
+  return api.requests.getEditionByRecipientIndex.useQuery({ registryAddress, recipientIndex });
 }
