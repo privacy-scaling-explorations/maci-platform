@@ -10,14 +10,15 @@ import {
   GatekeeperTrait,
   getGatekeeperTrait,
   getHatsSingleGatekeeperData,
+  signup,
+  publishBatch,
 } from "maci-cli/sdk";
 import React, { createContext, useContext, useCallback, useEffect, useMemo, useState } from "react";
 import { Address } from "viem";
-import { useSignMessage } from "wagmi";
+import { useAccount, useSignMessage } from "wagmi";
 
 import { config } from "~/config";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
-import { signup, publishBatch } from "~/utils/accountAbstraction";
 import { api } from "~/utils/api";
 import { getHatsClient } from "~/utils/hatsProtocol";
 import { generateWitness } from "~/utils/pcd";
@@ -27,8 +28,6 @@ import type { IVoteArgs, MaciContextType, MaciProviderProps } from "./types";
 import type { PCD } from "@pcd/pcd-types";
 import type { Attestation } from "~/utils/types";
 
-import { useAccount } from "./Account";
-
 export const MaciContext = createContext<MaciContextType | undefined>(undefined);
 
 /**
@@ -37,7 +36,7 @@ export const MaciContext = createContext<MaciContextType | undefined>(undefined)
  * @returns The Context data (variables and functions)
  */
 export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProviderProps) => {
-  const { address, isConnected, isDisconnected, account, accountClient } = useAccount();
+  const { address, isConnected, isDisconnected } = useAccount();
   const signer = useEthersSigner();
 
   const [isRegistered, setIsRegistered] = useState<boolean>();
@@ -246,13 +245,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   // function to be used to signup to MACI
   const onSignup = useCallback(
     async (onError: () => void) => {
-      if (
-        !account ||
-        !accountClient ||
-        !signer ||
-        !maciPubKey ||
-        (gatekeeperTrait && gatekeeperTrait !== GatekeeperTrait.FreeForAll && !sgData)
-      ) {
+      if (!signer || !maciPubKey || (gatekeeperTrait && gatekeeperTrait !== GatekeeperTrait.FreeForAll && !sgData)) {
         return;
       }
 
@@ -262,10 +255,8 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         const { stateIndex: index, voiceCredits } = await signup({
           maciPubKey,
           maciAddress: config.maciAddress! as Address,
-          sgData,
+          sgDataArg: sgData,
           signer,
-          smartAccount: account,
-          smartAccountClient: accountClient,
         });
 
         if (index) {
@@ -291,7 +282,7 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
       onError: (err: string) => Promise<void>,
       onSuccess: () => Promise<void>,
     ) => {
-      if (!account || !accountClient || !signer || !stateIndex) {
+      if (!signer || !stateIndex) {
         return;
       }
 
@@ -318,8 +309,6 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
         privateKey: maciPrivKey!,
         pollId: BigInt(pollId),
         signer,
-        smartAccount: account,
-        smartAccountClient: accountClient,
       })
         .then(() => onSuccess())
         .catch((err: unknown) => {

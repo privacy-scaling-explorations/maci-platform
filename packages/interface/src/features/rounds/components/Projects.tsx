@@ -3,13 +3,13 @@ import Link from "next/link";
 import { useCallback, useDeferredValue, useMemo, useState } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { Hex, zeroAddress } from "viem";
+import { useAccount } from "wagmi";
 
 import { InfiniteLoading } from "~/components/InfiniteLoading";
 import { SortFilter } from "~/components/SortFilter";
 import { StatusBar } from "~/components/StatusBar";
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
-import { useAccount } from "~/contexts/Account";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";

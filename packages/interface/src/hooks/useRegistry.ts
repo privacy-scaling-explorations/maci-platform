@@ -1,6 +1,6 @@
 import { DefaultError, useMutation, UseMutationResult } from "@tanstack/react-query";
+import { useAccount } from "wagmi";
 
-import { useAccount } from "~/contexts/Account";
 import { approveRequest, submitAddRequest } from "~/utils/registry";
 
 import type { Hex, TransactionReceipt } from "viem";
@@ -37,7 +37,7 @@ export function useSubmitAddRequest(): UseMutationResult<TransactionReceipt, Def
 
   return useMutation({
     mutationFn: async ({ requestIndex: refUID, metadataUrl, registryAddress, recipient }: SubmitRequestArgs) =>
-      submitAddRequest(chain, metadataUrl, registryAddress, recipient, refUID),
+      submitAddRequest(chain!, metadataUrl, registryAddress, recipient, refUID),
   });
 }
 
@@ -57,9 +57,9 @@ interface SubmitApprovalArgs {
  * @returns whether the approval was successful
  */
 export function useSubmitApproval(): UseMutationResult<boolean, DefaultError, SubmitApprovalArgs> {
-  const { isConnected, chain } = useAccount();
+  const { chain } = useAccount();
 
-  if (!isConnected) {
+  if (!chain) {
     throw new Error("Connect wallet first");
   }
 

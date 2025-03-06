@@ -1,25 +1,17 @@
-import { KernelAccountClient } from "@zerodev/sdk";
 import { BrowserProvider, JsonRpcSigner } from "ethers";
 import { useMemo } from "react";
-import { Chain, createWalletClient, http, Client, Transport } from "viem";
+import { Chain, Client, Transport, Account } from "viem";
 import { useConnectorClient } from "wagmi";
 
-import { getRPCURL } from "~/config";
+function clientToSigner(client: Client<Transport, Chain, Account>): JsonRpcSigner | undefined {
+  const { account, chain, transport } = client;
 
-function clientToSigner(client: KernelAccountClient<Transport, Chain> | Client): JsonRpcSigner | undefined {
-  const { account, chain } = client;
-
-  if (!chain || !account) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (!chain) {
     return undefined;
   }
 
-  const walletClient = createWalletClient({
-    account,
-    chain,
-    transport: http(getRPCURL()),
-  });
-
-  const provider = new BrowserProvider(walletClient.transport, {
+  const provider = new BrowserProvider(transport, {
     chainId: chain.id,
     name: chain.name,
     ensAddress: chain.contracts?.ensRegistry?.address,
@@ -29,12 +21,8 @@ function clientToSigner(client: KernelAccountClient<Transport, Chain> | Client):
 }
 
 /** Hook to convert a viem Wallet Client to an ethers.js Signer. */
-export function useEthersSigner({
-  chainId,
-  client,
-}: { chainId?: number; client?: KernelAccountClient<Transport, Chain> } = {}): JsonRpcSigner | undefined {
-  const { data: connectorClient } = useConnectorClient({ chainId });
-  const resolvedClient = client ?? connectorClient;
+export function useEthersSigner({ chainId }: { chainId?: number } = {}): JsonRpcSigner | undefined {
+  const { data: client } = useConnectorClient({ chainId });
 
-  return useMemo(() => (resolvedClient ? clientToSigner(resolvedClient) : undefined), [resolvedClient]);
+  return useMemo(() => (client ? clientToSigner(client) : undefined), [client]);
 }

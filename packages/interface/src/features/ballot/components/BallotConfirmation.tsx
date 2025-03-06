@@ -5,13 +5,13 @@ import { FaXTwitter, FaThreads } from "react-icons/fa6";
 import { SiFarcaster } from "react-icons/si";
 import { tv } from "tailwind-variants";
 import { Hex } from "viem";
+import { useAccount } from "wagmi";
 
 import { createComponent } from "~/components/ui";
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { Notice } from "~/components/ui/Notice";
 import { config } from "~/config";
-import { useAccount } from "~/contexts/Account";
 import { useBallot } from "~/contexts/Ballot";
 import { useRound } from "~/contexts/Round";
 import { useProjectCount } from "~/features/projects/hooks/useProjects";
@@ -62,7 +62,7 @@ export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.El
   const { chain } = useAccount();
   const { data: projectCount } = useProjectCount({
     registryAddress: round?.registryAddress as Hex,
-    chain,
+    chain: chain!,
   });
 
   const sum = useMemo(() => formatNumber(sumBallot(ballot.votes)), [ballot, sumBallot]);

@@ -236,8 +236,11 @@ importers:
         specifier: ^1.4.5
         version: 1.4.5(bufferutil@4.0.8)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(utf-8-validate@5.0.10)
       '@privy-io/react-auth':
-        specifier: ^2.2.1
+        specifier: ^2.4.5
         version: 2.4.5(@solana/web3.js@1.98.0(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10))(@types/react@18.3.3)(bs58@5.0.0)(bufferutil@4.0.8)(immer@10.0.2)(permissionless@0.2.34(viem@2.23.4(bufferutil@4.0.8)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1))(webauthn-p256@0.0.10))(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.7.2)(use-sync-external-store@1.2.0(react@18.2.0))(utf-8-validate@5.0.10)(zod@3.24.1)
+      '@privy-io/wagmi':
+        specifier: ^1.0.3
+        version: 1.0.3(knqrmelvq6zp3qdf2hoq3p7b44)
       '@radix-ui/react-dialog':
         specifier: ^1.0.5
         version: 1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.3)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
@@ -374,7 +377,7 @@ importers:
         specifier: ^2.23.4
         version: 2.23.4(bufferutil@4.0.8)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)
       wagmi:
-        specifier: ^2.9.8
+        specifier: ^2.12.4
         version: 2.12.4(@tanstack/query-core@5.59.20)(@tanstack/react-query@5.59.20(react@18.2.0))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.0.2)(react-dom@18.3.1(react@18.2.0))(react-native@0.74.5(@babel/core@7.26.0)(@babel/preset-env@7.25.3(@babel/core@7.26.0))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)(rollup@4.32.1)(typescript@5.7.2)(utf-8-validate@5.0.10)(viem@2.23.4(bufferutil@4.0.8)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1))(zod@3.24.1)
       zod:
         specifier: 3.24.1
@@ -3120,6 +3123,14 @@ packages:
         optional: true
       permissionless:
         optional: true
+
+  '@privy-io/wagmi@1.0.3':
+    resolution: {integrity: sha512-pxVulp8uKMJ1bG2X8oMw3z+RfBOZ3VkcFbFA9mRuWCgW8Zy88LnnRL8UYayklhHFXS1voCxWK88xEFg2+cBqwQ==}
+    peerDependencies:
+      '@privy-io/react-auth': ^2.0.0
+      react: '>=18'
+      viem: ^2
+      wagmi: ^2.14.11
 
   '@protobufjs/aspromise@1.1.2':
     resolution: {integrity: sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ==}
@@ -17014,6 +17025,13 @@ snapshots:
       - utf-8-validate
       - zod
 
+  '@privy-io/wagmi@1.0.3(knqrmelvq6zp3qdf2hoq3p7b44)':
+    dependencies:
+      '@privy-io/react-auth': 2.4.5(@solana/web3.js@1.98.0(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10))(@types/react@18.3.3)(bs58@5.0.0)(bufferutil@4.0.8)(immer@10.0.2)(permissionless@0.2.34(viem@2.23.4(bufferutil@4.0.8)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1))(webauthn-p256@0.0.10))(react-dom@18.3.1(react@18.2.0))(react@18.2.0)(typescript@5.7.2)(use-sync-external-store@1.2.0(react@18.2.0))(utf-8-validate@5.0.10)(zod@3.24.1)
+      react: 18.2.0
+      viem: 2.23.4(bufferutil@4.0.8)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1)
+      wagmi: 2.12.4(@tanstack/query-core@5.59.20)(@tanstack/react-query@5.59.20(react@18.2.0))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.0.2)(react-dom@18.3.1(react@18.2.0))(react-native@0.74.5(@babel/core@7.26.0)(@babel/preset-env@7.25.3(@babel/core@7.26.0))(@types/react@18.3.3)(bufferutil@4.0.8)(encoding@0.1.13)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)(rollup@4.32.1)(typescript@5.7.2)(utf-8-validate@5.0.10)(viem@2.23.4(bufferutil@4.0.8)(typescript@5.7.2)(utf-8-validate@5.0.10)(zod@3.24.1))(zod@3.24.1)
+
   '@protobufjs/aspromise@1.1.2': {}
 
   '@protobufjs/base64@1.1.2': {}
@@ -20161,7 +20179,7 @@ snapshots:
 
   axe-core@4.10.2: {}
 
-  axios-debug-log@1.0.0(axios@1.7.3(debug@4.3.6)):
+  axios-debug-log@1.0.0(axios@1.7.3):
     dependencies:
       '@types/debug': 4.1.12
       axios: 1.7.3(debug@4.3.6)
@@ -22168,7 +22186,7 @@ snapshots:
     dependencies:
       confusing-browser-globals: 1.0.11
       eslint: 8.57.0
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
       object.assign: 4.1.5
       object.entries: 1.1.8
       semver: 6.3.1
@@ -22177,7 +22195,7 @@ snapshots:
     dependencies:
       eslint: 8.57.0
       eslint-config-airbnb-base: 15.0.0(eslint-plugin-import@2.31.0)(eslint@8.57.0)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
       eslint-plugin-jsx-a11y: 6.9.0(eslint@8.57.0)
       eslint-plugin-react: 7.37.1(eslint@8.57.0)
       eslint-plugin-react-hooks: 4.6.2(eslint@8.57.0)
@@ -28456,7 +28474,7 @@ snapshots:
       '@aduh95/viz.js': 3.7.0
       '@solidity-parser/parser': 0.16.2
       axios: 1.7.3(debug@4.3.6)
-      axios-debug-log: 1.0.0(axios@1.7.3(debug@4.3.6))
+      axios-debug-log: 1.0.0(axios@1.7.3)
       cli-color: 2.0.4
       commander: 11.1.0
       convert-svg-to-png: 0.6.4(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)

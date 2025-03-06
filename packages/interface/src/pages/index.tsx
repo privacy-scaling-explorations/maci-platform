@@ -1,15 +1,12 @@
-import { usePrivy } from "@privy-io/react-auth";
 import { useMemo } from "react";
-import { useAccount as wagmiUseAccount } from "wagmi";
+import { useAccount } from "wagmi";
 
 import ConnectButton from "~/components/ConnectButton";
 import { JoinButton } from "~/components/JoinButton";
-import SignInButton from "~/components/SignInButton";
 import { SingleRoundHome } from "~/components/SingleRoundHome";
 import { Button } from "~/components/ui/Button";
 import { Heading } from "~/components/ui/Heading";
 import { config } from "~/config";
-import { useAccount } from "~/contexts/Account";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
 import { FAQList } from "~/features/home/components/FaqList";
@@ -19,22 +16,11 @@ import { useIsAdmin } from "~/hooks/useIsAdmin";
 import { Layout } from "~/layouts/DefaultLayout";
 
 const HomePage = (): JSX.Element => {
-  const { isConnected, address, accountType, storeAccountType } = useAccount();
+  const { isConnected } = useAccount();
   const { isRegistered } = useMaci();
   const isAdmin = useIsAdmin();
   const { rounds } = useRound();
   const singleRound = useMemo(() => (rounds && rounds.length === 1 ? rounds[0] : undefined), [rounds]);
-  const { authenticated, logout } = usePrivy();
-
-  const { isConnected: extensionAuthenticated } = wagmiUseAccount();
-  const embeddedAuthenticated = authenticated;
-  const extensionConnected = accountType === "extension" && isConnected && extensionAuthenticated;
-  const embeddedConnected = accountType === "embedded" && isConnected && embeddedAuthenticated;
-
-  const handleLogout = () => {
-    logout();
-    storeAccountType("none");
-  };
 
   return (
     <Layout pollId={singleRound ? singleRound.pollId : ""} type="home">
@@ -50,15 +36,9 @@ const HomePage = (): JSX.Element => {
             {config.eventDescription}
           </Heading>
 
-          {!extensionConnected && !embeddedConnected && (
-            <div className="flex flex-col gap-4">
-              <SignInButton showMessage showMobile />
-            </div>
-          )}
+          {!isConnected && <p className="text-gray-400">Connect your wallet to get started.</p>}
 
-          {extensionConnected && <ConnectButton showMobile={false} />}
-
-          {embeddedConnected && <Button onClick={handleLogout}>Logout: {address}</Button>}
+          <ConnectButton showMobile />
 
           {isConnected && !isRegistered && <JoinButton />}
 

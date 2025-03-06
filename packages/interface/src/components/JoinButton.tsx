@@ -5,9 +5,9 @@ import { zuAuthPopup } from "@pcd/zuauth";
 import { GatekeeperTrait, getZupassGatekeeperData } from "maci-cli/sdk";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import { useAccount } from "wagmi";
 
 import { zupass, config } from "~/config";
-import { useAccount } from "~/contexts/Account";
 import { useMaci } from "~/contexts/Maci";
 import { useEthersSigner } from "~/hooks/useEthersSigner";
 import { jsonPCD } from "~/utils/types";

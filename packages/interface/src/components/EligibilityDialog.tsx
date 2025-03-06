@@ -6,10 +6,9 @@ import { GatekeeperTrait, getZupassGatekeeperData } from "maci-cli/sdk";
 import { useRouter } from "next/router";
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { toast } from "sonner";
-import { useDisconnect } from "wagmi";
+import { useDisconnect, useAccount } from "wagmi";
 
 import { zupass, config } from "~/config";
-import { useAccount } from "~/contexts/Account";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
 import { useEthersSigner } from "~/hooks/useEthersSigner";

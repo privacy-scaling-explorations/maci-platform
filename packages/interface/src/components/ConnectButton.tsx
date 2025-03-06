@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useMemo } from "react";
 
 import { config } from "~/config";
-import { useAccount } from "~/contexts/Account";
 import { useIsMobile } from "~/hooks/useIsMobile";
 
 import { Button } from "./ui/Button";
@@ -38,7 +37,6 @@ interface IConnectButtonProps {
 
 const ConnectButton = ({ showMobile }: IConnectButtonProps): JSX.Element | null => {
   const isMobile = useIsMobile();
-  const { storeAccountType } = useAccount();
 
   const isShow = useMemo(() => showMobile === isMobile, [isMobile, showMobile]);
 
@@ -48,13 +46,6 @@ const ConnectButton = ({ showMobile }: IConnectButtonProps): JSX.Element | null 
         const ready = mounted && authenticationStatus !== "loading";
         const connected =
           ready && account && chain && (!authenticationStatus || authenticationStatus === "authenticated");
-
-        const signInWithExtension = () => {
-          storeAccountType("extension");
-          openConnectModal();
-          // eslint-disable-next-line no-console
-          console.log("signInWithExtension");
-        };
 
         return (
           <div
@@ -70,7 +61,7 @@ const ConnectButton = ({ showMobile }: IConnectButtonProps): JSX.Element | null 
             {(() => {
               if (!connected) {
                 return (
-                  <Button suppressHydrationWarning variant="secondary" onClick={signInWithExtension}>
+                  <Button suppressHydrationWarning variant="secondary" onClick={openConnectModal}>
                     <p>Connect wallet</p>
                   </Button>
                 );

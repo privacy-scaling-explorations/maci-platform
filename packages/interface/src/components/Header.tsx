@@ -1,4 +1,3 @@
-import { usePrivy } from "@privy-io/react-auth";
 import clsx from "clsx";
 import { Menu, X, SunIcon, MoonIcon } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -6,17 +5,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
 import { type ComponentPropsWithRef, useState, useCallback, useMemo, useEffect } from "react";
-import { useAccount as wagmiUseAccount } from "wagmi";
 
-import { useAccount } from "~/contexts/Account";
 import { useBallot } from "~/contexts/Ballot";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
 import ConnectButton from "./ConnectButton";
 import { HelpButton } from "./HelpButton";
-import SignInButton from "./SignInButton";
-import { Button, IconButton } from "./ui/Button";
+import { IconButton } from "./ui/Button";
 import { Logo } from "./ui/Logo";
 
 interface INavLinkProps extends ComponentPropsWithRef<typeof Link> {
@@ -71,20 +67,8 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
   const { getBallot } = useBallot();
   const roundState = useRoundState({ pollId });
   const { theme, setTheme } = useTheme();
-  const { isConnected, address, accountType, storeAccountType } = useAccount();
-  const { authenticated, logout } = usePrivy();
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
-
-  const { isConnected: extensionAuthenticated } = wagmiUseAccount();
-  const embeddedAuthenticated = authenticated;
-  const extensionConnected = accountType === "extension" && isConnected && extensionAuthenticated;
-  const embeddedConnected = accountType === "embedded" && isConnected && embeddedAuthenticated;
-
-  const handleLogout = () => {
-    logout();
-    storeAccountType("none");
-  };
 
   // set default theme to light if it's not set
   useEffect(() => {
@@ -153,15 +137,7 @@ const Header = ({ navLinks, pollId = "" }: IHeaderProps) => {
             onClick={handleChangeTheme}
           />
 
-          {!extensionConnected && !embeddedConnected && (
-            <div className="flex items-center gap-4">
-              <SignInButton showMessage={false} showMobile={false} />
-            </div>
-          )}
-
-          {extensionConnected && <ConnectButton showMobile={false} />}
-
-          {embeddedConnected && <Button onClick={handleLogout}>Logout: {address}</Button>}
+          <ConnectButton showMobile={false} />
         </div>
 
         <MobileMenu isOpen={isOpen} navLinks={navLinks} />

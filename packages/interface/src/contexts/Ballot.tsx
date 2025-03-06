@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
+import { useAccount } from "wagmi";
 
 import type { BallotContextType, BallotProviderProps } from "./types";
 import type { Ballot, Vote } from "~/features/ballot/types";
 
-import { useAccount } from "./Account";
 import { useRound } from "./Round";
 
 export const BallotContext = createContext<BallotContextType | undefined>(undefined);

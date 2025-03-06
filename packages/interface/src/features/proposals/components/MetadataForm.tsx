@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 import { useState, useCallback } from "react";
 import { toast } from "sonner";
+import { useAccount } from "wagmi";
 
 import { ImageUpload } from "~/components/ImageUpload";
 import { FieldArray, Form, FormControl, FormSection, Select, Textarea } from "~/components/ui/Form";
 import { Input } from "~/components/ui/Input";
-import { useAccount } from "~/contexts/Account";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
 import { useCreateProposal } from "../hooks/useCreateProposal";

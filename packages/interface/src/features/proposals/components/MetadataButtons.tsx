@@ -1,10 +1,10 @@
 import { useMemo, useCallback, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { useAccount } from "wagmi";
 
 import { Button, IconButton } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Dialog";
 import { Spinner } from "~/components/ui/Spinner";
-import { useAccount } from "~/contexts/Account";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
 
 import type { Metadata } from "../types";
