@@ -2,6 +2,7 @@
 import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 import { type StandardMerkleTreeData } from "@openzeppelin/merkle-tree/dist/standard";
 import { type ZKEdDSAEventTicketPCD } from "@pcd/zk-eddsa-event-ticket-pcd/ZKEdDSAEventTicketPCD";
+import { usePrivy } from "@privy-io/react-auth";
 import { Identity } from "@semaphore-protocol/core";
 import { type Signer, AbiCoder } from "ethers";
 import {
@@ -37,6 +38,7 @@ export const MaciContext = createContext<MaciContextType | undefined>(undefined)
  */
 export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProviderProps) => {
   const { address, isConnected, isDisconnected } = useAccount();
+  const { ready, authenticated } = usePrivy();
   const signer = useEthersSigner();
 
   const [isRegistered, setIsRegistered] = useState<boolean>();
@@ -219,7 +221,8 @@ export const MaciProvider: React.FC<MaciProviderProps> = ({ children }: MaciProv
   // generate the maci keypair using a ECDSA signature
   const generateKeypair = useCallback(async () => {
     // if we are not connected then do not generate the key pair
-    if (!address) {
+    const connected = ready && authenticated && address;
+    if (!connected) {
       return;
     }
 
