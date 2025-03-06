@@ -48,11 +48,11 @@ const ConnectedDetails = ({ address, isMobile }: IConnectedDetailsProps) => {
 
           <DropdownMenu.Portal>
             <DropdownMenu.Content
-              className="dark:bg-lightBlack z-50 w-[200px] rounded-md border border-gray-300 bg-white p-2"
-              sideOffset={5}
+              className="dark:bg-lightBlack z-[100] w-48 -translate-y-1 rounded-b-md border border-t-0 border-gray-300 bg-white p-0"
+              sideOffset={0}
             >
               <DropdownMenu.Item
-                className="cursor-pointer rounded p-2 text-sm text-gray-900 outline-none hover:bg-gray-100 dark:text-white"
+                className="cursor-pointer p-2 text-sm text-gray-900 outline-none hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                 onClick={logoutOfAccount}
               >
                 Logout
@@ -106,7 +106,11 @@ const ConnectButton = ({ showMobile }: IConnectButtonProps): JSX.Element | null 
     return <ConnectedDetails address={address} isMobile={false} />;
   }
 
-  return <Spinner className="h-6 w-6 py-4" />;
+  return (
+    <Button className="flex w-48 items-center justify-center" variant="outline">
+      <Spinner className="h-6 w-6" />
+    </Button>
+  );
 };
 
 export default dynamic(async () => Promise.resolve(ConnectButton), { ssr: false });
