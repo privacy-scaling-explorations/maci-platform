@@ -1,12 +1,14 @@
 import { useRouter } from "next/router";
 import { useState, useCallback } from "react";
+import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
 
 import { ImageUpload } from "~/components/ImageUpload";
-import { FieldArray, Form, FormControl, FormSection, Select, Textarea } from "~/components/ui/Form";
+import { FieldArray, Form, FormControl, FormSection, Textarea } from "~/components/ui/Form";
 import { Input } from "~/components/ui/Input";
 import { useIsCorrectNetwork } from "~/hooks/useIsCorrectNetwork";
+import { cn } from "~/utils/classNames";
 
 import { useCreateProposal } from "../hooks/useCreateProposal";
 import { MetadataSchema, contributionTypes, fundingSourceTypes, type Metadata } from "../types";
@@ -72,7 +74,7 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
   const { error: createError } = create;
 
   return (
-    <div className="dark:border-lighterBlack rounded-lg border border-gray-200 p-4">
+    <div className="dark:border-lighterBlack flex w-full flex-col gap-10 rounded-lg border border-gray-200 p-5 sm:w-[824px]">
       <MetadataSteps step={step} />
 
       <Form
@@ -83,7 +85,7 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
         onSubmit={handleSubmit}
       >
         <FormSection
-          className={step === EMetadataStep.PROFILE ? "block" : "hidden"}
+          className={step === EMetadataStep.PROFILE ? "flex flex-col" : "hidden"}
           description="Please provide information about your project."
           title="Project Profile"
         >
@@ -95,11 +97,9 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
             <Textarea placeholder="Short description. Maximum 140 characters." rows={4} />
           </FormControl>
 
-          <FormControl required label="Description" name="bio">
+          <FormControl required description="*Markdown Supported" label="Description" name="bio">
             <Textarea placeholder="Type project description" rows={4} />
           </FormControl>
-
-          <small className="-mt-4">*Markdown Supported</small>
 
           <div className="gap-4 md:flex">
             <FormControl required className="flex-1" label="Website" name="websiteUrl">
@@ -116,55 +116,43 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
               <Input placeholder="Type your twitter username" />
             </FormControl>
 
-            <FormControl
-              className="flex-1"
-              hint="Provide your github of this project"
-              label="Github"
-              name="github"
-              required={false}
-            >
+            <FormControl className="flex-1" label="Github" name="github" required={false}>
               <Input placeholder="Type your github username" />
             </FormControl>
           </div>
 
-          <div className="mb-4 flex flex-col gap-4 sm:flex-row">
-            <FormControl
-              required
-              hint="The size should be smaller than 1MB."
-              label="Project avatar"
-              name="profileImageUrl"
-            >
-              <ImageUpload className="h-48 w-48" name="profileImageUrl" />
-            </FormControl>
+          <FormControl required hint="Maximum size 1MB" label="Project avatar" name="profileImageUrl">
+            <ImageUpload rounded className="h-48 w-48" />
+          </FormControl>
 
-            <FormControl
-              required
-              className="flex-1"
-              hint="The size should be smaller than 1MB."
-              label="Project background image"
-              name="bannerImageUrl"
-            >
-              <ImageUpload className="h-48" name="bannerImageUrl" />
-            </FormControl>
-          </div>
+          <FormControl
+            required
+            className="flex-1"
+            hint="Maximum size 1MB"
+            label="Project background image"
+            name="bannerImageUrl"
+          >
+            <ImageUpload className="h-48" />
+          </FormControl>
         </FormSection>
 
         <FormSection
-          className={step === EMetadataStep.ADVANCED ? "block" : "hidden"}
+          className={step === EMetadataStep.ADVANCED ? "flex flex-col" : "hidden"}
           description="Describe the contribution and impact of your project."
           title="Contribution & Impact"
         >
-          <FormControl required label="Contribution description" name="contributionDescription">
+          <FormControl
+            required
+            description="*Markdown Supported"
+            label="Contribution description"
+            name="contributionDescription"
+          >
             <Textarea placeholder="What have your project contributed to?" rows={4} />
           </FormControl>
 
-          <small className="-mt-4">*Markdown Supported</small>
-
-          <FormControl required label="Impact description" name="impactDescription">
+          <FormControl required description="*Markdown Supported" label="Impact description" name="impactDescription">
             <Textarea placeholder="What impact has your project had?" rows={4} />
           </FormControl>
-
-          <small className="-mt-4">*Markdown Supported</small>
 
           <ImpactTags />
 
@@ -172,23 +160,39 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
             description="Where can we find your contributions?"
             name="contributionLinks"
             renderField={(field, i) => (
-              <div className="mb-4 flex flex-wrap gap-2">
-                <FormControl required className="min-w-96" name={`contributionLinks.${i}.description`}>
+              <div className={cn("flex flex-wrap gap-[12px]", i > 0 && "border-t border-gray-100 pt-3")}>
+                <FormControl required className="w-full" name={`contributionLinks.${i}.description`}>
                   <Input placeholder="Type the description of your contribution" />
+                </FormControl>
+
+                <FormControl required className="w-full" name={`contributionLinks.${i}.type`}>
+                  <Controller
+                    defaultValue="" // or set a default if needed
+                    name={`contributionLinks.${i}.type`}
+                    render={({ field: fieldCheckbox }) => (
+                      <div className="flex flex-wrap gap-2">
+                        {Object.entries(contributionTypes).map(([optionValue, label]) => (
+                          <label key={optionValue} className="flex items-center gap-2">
+                            <input
+                              checked={fieldCheckbox.value === optionValue}
+                              name={fieldCheckbox.name} // ensures the same radio group
+                              type="radio"
+                              value={optionValue}
+                              onChange={(e) => {
+                                fieldCheckbox.onChange(e.target.value);
+                              }}
+                            />
+
+                            {label}
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  />
                 </FormControl>
 
                 <FormControl required className="min-w-72" name={`contributionLinks.${i}.url`}>
                   <Input placeholder="https://" />
-                </FormControl>
-
-                <FormControl required name={`contributionLinks.${i}.type`}>
-                  <Select>
-                    {Object.entries(contributionTypes).map(([value, label]) => (
-                      <option key={value} value={value}>
-                        {label}
-                      </option>
-                    ))}
-                  </Select>
                 </FormControl>
               </div>
             )}
@@ -199,27 +203,45 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
             description="From what sources have you received funding?"
             name="fundingSources"
             renderField={(_field, i) => (
-              <div className="mb-4 flex flex-wrap gap-2">
-                <FormControl required className="min-w-96" name={`fundingSources.${i}.description`}>
-                  <Input placeholder="Type the name of your funding source" />
-                </FormControl>
+              <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-1 gap-2 lg:grid-cols-4">
+                  <FormControl required className="col-span-1 lg:col-span-2" name={`fundingSources.${i}.description`}>
+                    <Input placeholder="Type the name of your funding source" />
+                  </FormControl>
 
-                <FormControl required valueAsNumber className="w-32" name={`fundingSources.${i}.amount`}>
-                  <Input placeholder="Amount" type="number" />
-                </FormControl>
+                  <FormControl required valueAsNumber className="col-span-1" name={`fundingSources.${i}.amount`}>
+                    <Input placeholder="Amount" type="number" />
+                  </FormControl>
 
-                <FormControl required className="w-32" name={`fundingSources.${i}.currency`}>
-                  <Input placeholder="e.g. USD" />
-                </FormControl>
+                  <FormControl required className="col-span-1" name={`fundingSources.${i}.currency`}>
+                    <Input placeholder="e.g. USD" />
+                  </FormControl>
+                </div>
 
                 <FormControl required name={`fundingSources.${i}.type`}>
-                  <Select>
-                    {Object.entries(fundingSourceTypes).map(([value, label]) => (
-                      <option key={value} value={value}>
-                        {label}
-                      </option>
-                    ))}
-                  </Select>
+                  <Controller
+                    defaultValue="" // or set a default if needed
+                    name={`fundingSources.${i}.type`}
+                    render={({ field }) => (
+                      <div className="flex flex-wrap gap-2">
+                        {Object.entries(fundingSourceTypes).map(([optionValue, label]) => (
+                          <label key={optionValue} className="flex items-center gap-2">
+                            <input
+                              checked={field.value === optionValue}
+                              name={field.name} // ensures the same radio group
+                              type="radio"
+                              value={optionValue}
+                              onChange={(e) => {
+                                field.onChange(e.target.value);
+                              }}
+                            />
+
+                            {label}
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  />
                 </FormControl>
               </div>
             )}
@@ -243,13 +265,15 @@ export const MetadataForm = ({ pollId }: IMetadataFormProps): JSX.Element => {
           </div>
         )}
 
-        <MetadataButtons
-          isPending={create.isPending}
-          isUploading={create.isPending}
-          step={step}
-          onBackStep={handleBackStep}
-          onNextStep={handleNextStep}
-        />
+        <div className="mt-10">
+          <MetadataButtons
+            isPending={create.isPending}
+            isUploading={create.isPending}
+            step={step}
+            onBackStep={handleBackStep}
+            onNextStep={handleNextStep}
+          />
+        </div>
       </Form>
     </div>
   );

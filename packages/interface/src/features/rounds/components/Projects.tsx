@@ -13,6 +13,7 @@ import { StatusBar } from "~/components/ui/StatusBar";
 import { useBallot } from "~/contexts/Ballot";
 import { useMaci } from "~/contexts/Maci";
 import { useRound } from "~/contexts/Round";
+import { useIsMobile } from "~/hooks/useIsMobile";
 import { useMyProjects } from "~/hooks/useProjects";
 import { useResults } from "~/hooks/useResults";
 import { useRoundState } from "~/utils/state";
@@ -53,6 +54,8 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
   );
 
   const ballot = useMemo(() => getBallot(pollId), [pollId, getBallot]);
+
+  const isMobile = useIsMobile();
 
   /**
    *  Find my projects: "I" am either the "creator" or the "payout address"
@@ -143,7 +146,7 @@ export const Projects = ({ pollId = "" }: IProjectsProps): JSX.Element => {
 
             <Link href={`/rounds/${pollId}/proposals/new`}>
               <Button size="auto" variant="primary">
-                Create Project Proposal
+                {isMobile ? "Create" : "Create Project Proposal"}
               </Button>
             </Link>
           </div>

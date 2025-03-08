@@ -20,7 +20,7 @@ const customTheme: Theme = {
     ...theme.colors,
   },
   fonts: {
-    body: "Share Tech Mono",
+    body: "var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
   },
   radii: {
     ...theme.radii,

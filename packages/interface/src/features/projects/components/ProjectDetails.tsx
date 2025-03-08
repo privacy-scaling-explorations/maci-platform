@@ -2,6 +2,7 @@ import { type ReactNode } from "react";
 import Markdown from "react-markdown";
 
 import { Heading } from "~/components/ui/Heading";
+import { markdownComponents } from "~/components/ui/MarkdownComponents";
 import { Navigation } from "~/components/ui/Navigation";
 import { ProjectAvatar } from "~/features/projects/components/ProjectAvatar";
 import { ProjectBanner } from "~/features/projects/components/ProjectBanner";
@@ -31,51 +32,53 @@ const ProjectDetails = ({ pollId, project, action = undefined }: IProjectDetails
   const roundState = useRoundState({ pollId });
 
   return (
-    <div className="markdown-support relative dark:text-white">
-      <div className="mb-7 px-2">
-        <Navigation pollId={pollId} projectName={metadata.data?.name ?? "project name"} />
-      </div>
+    <div className="markdown-support relative flex flex-col gap-[30px]">
+      <Navigation pollId={pollId} projectName={metadata.data?.name ?? "project name"} />
 
-      <div className="overflow-hidden rounded-3xl">
-        <ProjectBanner size="lg" url={bannerImageUrl} />
-      </div>
+      <div className="flex flex-col gap-5">
+        <div className="flex flex-col">
+          <div className="overflow-hidden rounded-3xl">
+            <ProjectBanner url={bannerImageUrl} />
+          </div>
 
-      <div className="mb-8 flex items-end gap-4">
-        <ProjectAvatar className="-mt-20 ml-8" rounded="full" size="lg" url={profileImageUrl} />
-      </div>
+          <div className="flex items-end gap-4">
+            <ProjectAvatar className="-mt-[75px] ml-8 !size-[105px]" rounded="full" size="lg" url={profileImageUrl} />
+          </div>
+        </div>
 
-      <div className="flex flex-col items-center justify-between px-2 sm:flex-row">
-        <Heading as="h3" size="3xl">
-          {metadata.data?.name}
-        </Heading>
+        <div className="flex flex-col gap-[30px]">
+          <div className="flex flex-col items-center justify-between px-2 sm:flex-row">
+            <Heading as="h3" size="3xl">
+              {metadata.data?.name}
+            </Heading>
 
-        {roundState === ERoundState.VOTING && (
-          <VotingWidget pollId={pollId} projectId={project.id} projectIndex={Number.parseInt(project.index, 10)} />
-        )}
-      </div>
+            {roundState === ERoundState.VOTING && (
+              <VotingWidget pollId={pollId} projectId={project.id} projectIndex={Number.parseInt(project.index, 10)} />
+            )}
+          </div>
 
-      <ProjectContacts author={payoutAddress} github={github} twitter={twitter} website={websiteUrl} />
+          <ProjectContacts author={payoutAddress} github={github} twitter={twitter} website={websiteUrl} />
 
-      <Markdown className="px-2 text-gray-400">{bio}</Markdown>
+          <Markdown components={markdownComponents}>{bio}</Markdown>
+        </div>
 
-      <div className="my-8 flex flex-col gap-8 px-2">
-        <p className="text-xl uppercase">
-          <b>Impact statements</b>
-        </p>
+        <div className="flex flex-col gap-5">
+          <h3 className="font-sans text-lg font-bold uppercase leading-[27px] dark:text-white">Impact statements</h3>
 
-        <ProjectDescriptionSection
-          contributions={metadata.data?.contributionLinks}
-          description={metadata.data?.contributionDescription}
-          title="contributions"
-        />
+          <Markdown components={markdownComponents}>{metadata.data?.impactDescription}</Markdown>
 
-        <ProjectDescriptionSection
-          description={metadata.data?.impactDescription}
-          fundings={fundingSources}
-          title="past grants and funding"
-        />
+          <ProjectDescriptionSection
+            contributions={metadata.data?.contributionLinks}
+            description={metadata.data?.contributionDescription}
+            title="contributions"
+          />
 
-        {action}
+          {fundingSources && fundingSources.length > 0 && (
+            <ProjectDescriptionSection fundings={fundingSources} title="past grants and funding" />
+          )}
+
+          {action}
+        </div>
       </div>
     </div>
   );

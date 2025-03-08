@@ -26,20 +26,22 @@ export const ResultItem = ({ pollId, rank, project }: IResultItemProps): JSX.Ele
 
   return (
     <Link href={`/rounds/${pollId}/${project.id}`}>
-      <div className="flex cursor-pointer leading-8 hover:bg-blue-50 dark:hover:bg-blue-50/10">
-        <div className="my-1 w-8 flex-none justify-center">
-          {rank === 1 && <Image alt="gold" height="26" src="/gold.svg" width="26" />}
+      <div className="flex cursor-pointer gap-[14px] overflow-hidden rounded p-[10px] leading-8 duration-200 hover:bg-blue-50 dark:hover:bg-blue-50/10">
+        <div className="flex flex-none items-center justify-center gap-2 text-center font-sans text-base font-semibold text-black dark:text-white">
+          <span className="w-3">{rank}</span>
 
-          {rank === 2 && <Image alt="silver" height="26" src="/silver.svg" width="26" />}
+          <div className="w-4">
+            {rank === 1 && <Image alt="gold" height="26" src="/gold.svg" width="20" />}
 
-          {rank === 3 && <Image alt="bronze" height="26" src="/bronze.svg" width="26" />}
+            {rank === 2 && <Image alt="silver" height="26" src="/silver.svg" width="20" />}
+
+            {rank === 3 && <Image alt="bronze" height="26" src="/bronze.svg" width="20" />}
+          </div>
         </div>
 
-        <div className="w-6 flex-none text-center dark:text-white">{rank}</div>
+        <div className="flex-1 font-sans text-lg font-medium leading-[28px] dark:text-white">{metadata.data?.name}</div>
 
-        <div className="mx-2 flex-1 dark:text-white">{metadata.data?.name}</div>
-
-        <div className="w-24 flex-none text-end dark:text-white">{`${project.votes} votes`}</div>
+        <div className="flex-none text-end font-sans text-base font-normal text-black dark:text-white">{`${project.votes} votes`}</div>
       </div>
     </Link>
   );

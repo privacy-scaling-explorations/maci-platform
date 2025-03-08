@@ -6,14 +6,12 @@ interface INavigationProps {
 }
 
 export const Navigation = ({ projectName, pollId }: INavigationProps): JSX.Element => (
-  <div className="flex gap-2 text-sm uppercase text-gray-400">
-    <span>
-      <Link href={`/rounds/${pollId}`}>Projects</Link>
-    </span>
+  <div className="flex gap-2 font-sans text-xs font-medium uppercase leading-[18px] text-gray-400">
+    <Link href={`/rounds/${pollId}`}>Projects</Link>
 
     <span>{">"}</span>
 
-    <span className="text-blue-400">
+    <span className="font-bold tracking-[0.1px] text-blue-500">
       <b>{projectName}</b>
     </span>
   </div>

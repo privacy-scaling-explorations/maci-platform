@@ -26,20 +26,14 @@ export const AddedProjects = ({ pollId }: IAddedProjectsProps): JSX.Element => {
 
   return (
     <div className="border-b border-gray-200 py-2">
-      <h4>Projects Added</h4>
+      <h4 className="font-sans text-base font-normal uppercase text-gray-400">Projects Added</h4>
 
-      <div className="mt-2 flex gap-2 text-2xl">
+      <div className="flex gap-1 font-sans text-2xl font-extrabold">
         <span>
           <b>{ballot.votes.length}</b>
         </span>
 
-        <span className="text-gray-300">
-          <b>of</b>
-        </span>
-
-        <span className="text-gray-300">
-          <b>{projectCount?.count.toString()}</b>
-        </span>
+        <span className="text-gray-300">{`of ${projectCount?.count.toString()}`}</span>
       </div>
     </div>
   );

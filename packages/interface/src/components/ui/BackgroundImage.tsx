@@ -6,13 +6,14 @@ export interface IBackgroundImageProps extends ComponentPropsWithRef<"div"> {
   src?: string;
   fallbackSrc?: string;
   isLoading?: boolean;
+  className?: string;
 }
 
 export const BackgroundImage = ({
   src = "",
   fallbackSrc = "",
   isLoading = false,
-  className,
+  className = "",
   ...props
 }: IBackgroundImageProps): JSX.Element => (
   <div

@@ -21,7 +21,7 @@ export const AllocationInput = ({
 }: IAllocationInputProps): JSX.Element => {
   const form = useFormContext();
   return (
-    <InputWrapper className="min-w-[132px]">
+    <InputWrapper className="min-w-[64px] sm:min-w-[132px]">
       <Controller
         control={form.control}
         name={name!}

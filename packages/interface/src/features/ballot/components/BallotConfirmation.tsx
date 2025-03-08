@@ -70,7 +70,7 @@ export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.El
   const shareText = useMemo(() => `I+successfully+submit+my+vote+in+${round?.roundId}+round.`, [round]);
 
   return (
-    <div className="flex w-full justify-center dark:text-white">
+    <div className="flex w-full justify-center">
       <section className="w-full md:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg">
         <Heading as="h2" className="tracking-tighter" size="4xl">
           Your ballot has been successfully submitted 🥳
@@ -80,7 +80,7 @@ export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.El
           {`Thank you for participating in ${config.eventName} ${round?.roundId} round.`}
         </p>
 
-        <div className="mb-7 rounded-lg border border-gray-200 p-5">
+        <div className="mb-7 rounded-lg border border-gray-200 p-5 dark:text-white">
           <b className="font-mono text-2xl uppercase">Summary of your ballot</b>
 
           <p className="my-8 text-gray-400">
@@ -170,7 +170,7 @@ export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.El
         {roundState === ERoundState.VOTING && (
           <Card className="flex-col sm:flex-row">
             <div className="flex-3 flex flex-col gap-4">
-              <b className="font-mono text-2xl uppercase">Changed your mind?</b>
+              <b className="font-mono text-2xl uppercase">Change your mind?</b>
 
               <p className="text-gray-400">
                 Your can edit your ballot and resubmit it anytime during the voting period.
@@ -178,7 +178,7 @@ export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.El
             </div>
 
             <div>
-              <Button as={Link} className="w-80 sm:w-fit" href={`/rounds/${pollId}/ballot`} variant="primary">
+              <Button as={Link} className="w-64 sm:w-fit" href={`/rounds/${pollId}/ballot`} variant="primary">
                 Edit my ballot
               </Button>
             </div>
@@ -196,7 +196,7 @@ export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.El
           </div>
 
           <div>
-            <Button as={Link} className="w-80 sm:w-fit" href={feedbackUrl} target="_blank" variant="primary">
+            <Button as={Link} className="w-64 sm:w-fit" href={feedbackUrl} target="_blank" variant="primary">
               Share your feedback
             </Button>
           </div>
@@ -215,7 +215,7 @@ export const BallotConfirmation = ({ pollId }: IBallotConfirmationProps): JSX.El
           <div>
             <Button
               as={Link}
-              className="w-80 sm:w-fit"
+              className="w-64 sm:w-fit"
               href="https://discord.com/invite/sF5CT5rzrR"
               target="_blank"
               variant="primary"

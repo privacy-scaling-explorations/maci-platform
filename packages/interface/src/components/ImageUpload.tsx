@@ -1,18 +1,18 @@
 /* eslint-disable react/require-default-props */
 
 import { useMutation } from "@tanstack/react-query";
-import clsx from "clsx";
-import { ImageIcon } from "lucide-react";
+import Image from "next/image";
 import { type ComponentProps, forwardRef, useRef, useCallback, ChangeEvent, ForwardedRef } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 
-import { IconButton } from "~/components/ui/Button";
+import { cn } from "~/utils/classNames";
 
 export interface IImageUploadProps extends ComponentProps<"img"> {
   defaultValue?: string;
   name?: string;
   maxSize?: number;
+  rounded?: boolean;
 }
 
 export const ImageUpload = forwardRef(
@@ -22,6 +22,7 @@ export const ImageUpload = forwardRef(
       name = "",
       maxSize = 1024 * 1024, // 1 MB
       className,
+      rounded = false,
     }: IImageUploadProps,
     ref: ForwardedRef<HTMLInputElement>,
   ): JSX.Element => {
@@ -79,21 +80,30 @@ export const ImageUpload = forwardRef(
         render={({ field: { value, onChange, ...field } }) => (
           <div
             ref={ref}
-            className={clsx("relative cursor-pointer overflow-hidden", className)}
+            className={cn("relative cursor-pointer overflow-hidden", className)}
             role="button"
             tabIndex={0}
             onClick={onClickContainer}
             onKeyDown={onKeyDownContainer}
           >
-            <IconButton
-              className="absolute bottom-1 right-1"
-              icon={ImageIcon}
+            <button
+              aria-label="Cover image"
+              className={cn(
+                "absolute flex h-8 w-8 items-center justify-center rounded-full bg-gray-200",
+                rounded ? "inset-0 m-auto" : "bottom-2 right-2",
+              )}
               tabIndex={-1}
+              type="button"
               onClick={onClickIconButton}
-            />
+            >
+              <Image alt="upload-image" height="24" src="/image-cover.svg" width="24" />
+            </button>
 
             <div
-              className={clsx("h-full rounded-xl bg-gray-200 bg-cover bg-center bg-no-repeat")}
+              className={cn(
+                "h-full bg-gray-50 bg-cover bg-center bg-no-repeat duration-200 hover:bg-gray-100",
+                rounded ? "rounded-full" : "rounded-xl",
+              )}
               style={{
                 backgroundImage: select.data ? `url("${value}")` : `url(${defaultValue})`,
               }}

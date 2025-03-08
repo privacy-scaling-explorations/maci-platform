@@ -3,12 +3,11 @@ import Link from "next/link";
 import { zeroAddress } from "viem";
 
 import { Button } from "~/components/ui/Button";
-import { Heading } from "~/components/ui/Heading";
 import { Skeleton } from "~/components/ui/Skeleton";
-import { Spinner } from "~/components/ui/Spinner";
 import { config } from "~/config";
 import { useRequestByProjectId } from "~/hooks/useRequests";
 import { formatNumber } from "~/utils/formatNumber";
+import { removeMarkdown } from "~/utils/removeMarkdown";
 import { useRoundState } from "~/utils/state";
 import { ERoundState } from "~/utils/types";
 
@@ -39,27 +38,21 @@ export const ProjectItemContent = ({
   impactCategory = undefined,
   actionButton = undefined,
 }: IProjectItemContentProps): JSX.Element => (
-  <article className="dark:bg-lightBlack group w-full rounded-xl bg-white shadow-lg hover:shadow-sm">
-    <div className="opacity-70 transition-opacity group-hover:opacity-100">
-      <ProjectBanner url={bannerImageUrl} />
+  <article className="dark:bg-lightBlack shadow-project-card group w-full rounded-[10px] border border-gray-50 bg-white">
+    <div className="opacity-70 transition-opacity duration-200 group-hover:opacity-100">
+      <ProjectBanner className="!rounded-b-none" size="sm" url={bannerImageUrl} />
 
       <ProjectAvatar className="-mt-8 ml-4" rounded="full" url={profileImageUrl} />
     </div>
 
-    <div className="p-4 pt-2">
-      <Heading as="h3" className="truncate dark:text-white" size="lg">
-        <Skeleton>{name}</Skeleton>
-      </Heading>
+    <div className="flex flex-col gap-5 p-4 pt-2">
+      <div className="flex flex-col gap-1">
+        <span className="font-sans text-base font-semibold uppercase text-black dark:text-white">{name}</span>
 
-      <div className="mb-2 line-clamp-2 h-10 text-sm text-gray-400">
-        <Skeleton className="w-full" isLoading={false}>
-          {shortBio}
-        </Skeleton>
+        <span className="line-clamp-2 h-10 font-sans text-sm text-gray-400">{removeMarkdown(shortBio || "")}</span>
       </div>
 
-      <Skeleton className="w-[100px]" isLoading={false}>
-        <ImpactCategories tags={impactCategory} />
-      </Skeleton>
+      <ImpactCategories tags={impactCategory} />
 
       {actionButton}
     </div>
@@ -90,55 +83,59 @@ export const ProjectItem = ({
   const bannerImageUrl = recipient.bannerImageUrl ? recipient.bannerImageUrl : metadata.data?.bannerImageUrl;
   const profileImageUrl = recipient.profileImageUrl ? recipient.profileImageUrl : metadata.data?.profileImageUrl;
   const name = recipient.name ? recipient.name : metadata.data?.name;
-  let shortBio = recipient.shortBio ? recipient.shortBio : metadata.data?.shortBio;
   const bio = recipient.bio ? recipient.bio : metadata.data?.bio;
+  const impactCategory = recipient.impactCategory ? recipient.impactCategory : metadata.data?.impactCategory;
+
+  let shortBio = recipient.shortBio ? recipient.shortBio : metadata.data?.shortBio;
+
   if (!shortBio && bio) {
     shortBio = bio.substring(0, 140);
   }
-  const impactCategory = recipient.impactCategory ? recipient.impactCategory : metadata.data?.impactCategory;
+
+  if (isLoading) {
+    return (
+      <div className="flex h-[325px] w-full animate-pulse items-center justify-center rounded-[10px] bg-gray-100" />
+    );
+  }
 
   return (
     <div className={request.data?.requestType.toString() === "Change" && !recipient.initialized ? "hidden" : ""}>
       <Link href={`/rounds/${pollId}/${recipient.id}`}>
-        {isLoading && <Spinner className="h-16 w-16" />}
+        <ProjectItemContent
+          actionButton={
+            state !== undefined &&
+            action &&
+            roundState === ERoundState.VOTING && (
+              <div className="flex justify-end pt-6">
+                <Skeleton>
+                  {state === EProjectState.DEFAULT && (
+                    <Button size="sm" variant="inverted" onClick={action}>
+                      Add to ballot
+                    </Button>
+                  )}
 
-        {!isLoading && (
-          <ProjectItemContent
-            actionButton={
-              state !== undefined &&
-              action &&
-              roundState === ERoundState.VOTING && (
-                <div className="flex justify-end pt-6">
-                  <Skeleton>
-                    {state === EProjectState.DEFAULT && (
-                      <Button size="sm" variant="inverted" onClick={action}>
-                        Add to ballot
-                      </Button>
-                    )}
+                  {state === EProjectState.ADDED && (
+                    <Button size="sm" variant="primary" onClick={action}>
+                      Added
+                      <Image alt="check-white" height="18" src="/check-white.svg" width="18" />
+                    </Button>
+                  )}
 
-                    {state === EProjectState.ADDED && (
-                      <Button size="sm" variant="primary" onClick={action}>
-                        Added
-                        <Image alt="check-white" height="18" src="/check-white.svg" width="18" />
-                      </Button>
-                    )}
-
-                    {state === EProjectState.SUBMITTED && (
-                      <Button size="sm" variant="disabled">
-                        Submitted
-                      </Button>
-                    )}
-                  </Skeleton>
-                </div>
-              )
-            }
-            bannerImageUrl={bannerImageUrl}
-            impactCategory={impactCategory}
-            name={name}
-            profileImageUrl={profileImageUrl}
-            shortBio={shortBio}
-          />
-        )}
+                  {state === EProjectState.SUBMITTED && (
+                    <Button size="sm" variant="disabled">
+                      Submitted
+                    </Button>
+                  )}
+                </Skeleton>
+              </div>
+            )
+          }
+          bannerImageUrl={bannerImageUrl}
+          impactCategory={impactCategory}
+          name={name}
+          profileImageUrl={profileImageUrl}
+          shortBio={shortBio}
+        />
       </Link>
     </div>
   );

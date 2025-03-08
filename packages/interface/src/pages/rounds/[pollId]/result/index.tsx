@@ -40,20 +40,22 @@ const ResultPage = ({ pollId }: IResultPageProps): JSX.Element => {
   return (
     <LayoutWithSidebar showInfo pollId={pollId} sidebar="left">
       {roundState === ERoundState.RESULTS && (
-        <div className="flex flex-col gap-2">
-          <Heading as="h3" size="3xl">
-            Leaderboard
-          </Heading>
+        <div className="flex flex-col gap-[30px]">
+          <div className="flex flex-col gap-[10px]">
+            <Heading as="h3" className="!text-[36px] !leading-[54px]" size="3xl">
+              Leaderboard
+            </Heading>
 
-          <p className="flex gap-1 text-gray-400">
-            <span>{round?.startsAt ? format(round.startsAt, "d MMM yyyy") : "undefined"}</span>
+            <span className="flex gap-1 font-sans text-base text-gray-400">
+              <span>{round?.startsAt ? format(round.startsAt, "d MMM yyyy") : "undefined"}</span>
 
-            <span>-</span>
+              <span>-</span>
 
-            <span>{round?.votingEndsAt ? format(round.votingEndsAt, "d MMM yyyy") : "undefined"}</span>
-          </p>
+              <span>{round?.votingEndsAt ? format(round.votingEndsAt, "d MMM yyyy") : "undefined"}</span>
+            </span>
+          </div>
 
-          <div className="rounded-md border border-gray-200 p-5">
+          <div className="rounded-lg border border-gray-200 p-[10px]">
             {projectsResults.data?.map((item, i) => (
               <ResultItem key={item.index} pollId={pollId} project={item} rank={i + 1} />
             ))}

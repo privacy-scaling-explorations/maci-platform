@@ -19,12 +19,16 @@ export const ImpactTags = (): JSX.Element => {
   const error = formState.errors.impactCategory;
 
   return (
-    <div className="mb-4">
-      <Label>
-        Impact categories<span className="text-blue-400">*</span>
-      </Label>
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
+        <Label>
+          Impact categories<span className="text-blue-400">*</span>
+        </Label>
 
-      <p className="mb-2 text-gray-300">Please select the categories your project is related to </p>
+        <span className="font-sans text-sm font-normal leading-5 text-gray-400">
+          Please select the categories your project is related to{" "}
+        </span>
+      </div>
 
       <div className="flex flex-wrap gap-2">
         {Object.entries(impactCategories).map(([value, { label }]) => {
@@ -33,7 +37,7 @@ export const ImpactTags = (): JSX.Element => {
             <Tag
               key={value}
               selected={isSelected}
-              size="md"
+              size="sm"
               onClick={() => {
                 const currentlySelected = isSelected ? selected.filter((s) => s !== value) : selected.concat(value);
 

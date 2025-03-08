@@ -18,4 +18,5 @@ packages/subgraph/templates/subgraph.template.yaml
 packages/subgraph/subgraph.yaml
 packages/subgraph/generated/
 packages/interface/metamask/
+packages/interface/src/styles/
 packages/subgraph/abi/

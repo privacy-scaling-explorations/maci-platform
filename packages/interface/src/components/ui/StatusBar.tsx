@@ -6,7 +6,7 @@ import { createComponent } from "~/components/ui";
 const StatusBarContainer = createComponent(
   "div",
   tv({
-    base: "flex rounded-md border p-4 justify-center mb-4",
+    base: "flex rounded-lg text-base font-sans font-medium border py-6 px-4 leading-6 justify-center mb-4",
     variants: {
       status: {
         default: "text-blue-600 border-blue-600 bg-blue-400",

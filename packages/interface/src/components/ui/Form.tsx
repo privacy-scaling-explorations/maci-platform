@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusIcon, Search, Trash } from "lucide-react";
+import { CirclePlusIcon, Search } from "lucide-react";
 import {
   type ComponentPropsWithRef,
   type PropsWithChildren,
@@ -26,10 +26,8 @@ import { type z } from "zod";
 
 import { cn } from "~/utils/classNames";
 
-import { IconButton } from "./Button";
 import { Heading } from "./Heading";
 import { inputBase, Input, InputWrapper, InputIcon } from "./Input";
-import { Tooltip } from "./Tooltip";
 
 import { createComponent } from ".";
 
@@ -57,11 +55,12 @@ export const Checkbox = createComponent(
 export const Label = createComponent(
   "label",
   tv({
-    base: "block tracking-wider font-semibold dark:text-white",
+    base: "block tracking-wider font-medium text-black font-sans text-sm leading-5 dark:text-white",
     variants: {
       required: {
         true: "after:content-['*'] after:text-blue-400",
-        false: "after:content-['(optional)'] after:text-gray-300 after:text-sm after:font-semibold after:ml-1",
+        false:
+          "after:content-['(optional)'] after:text-gray-300 after:leading-[18px] after:text-xs after:font-normal after:ml-1",
       },
     },
   }),
@@ -86,6 +85,7 @@ SearchInput.displayName = "SearchInput";
 export interface IFormControlProps extends ComponentPropsWithoutRef<"fieldset"> {
   name: string;
   label?: string;
+  description?: string;
   required?: boolean;
   valueAsNumber?: boolean;
   hint?: string;
@@ -99,6 +99,7 @@ export const FormControl = ({
   children = null,
   valueAsNumber = false,
   className = "",
+  description = "",
 }: IFormControlProps): JSX.Element => {
   const {
     register,
@@ -110,15 +111,15 @@ export const FormControl = ({
   const error = index && errors[index];
 
   return (
-    <fieldset className={cn(className)}>
+    <fieldset className={cn("flex flex-col gap-1", className)}>
       <div className="flex items-center gap-1">
         {label && (
-          <Label className="mb-1 dark:text-white" htmlFor={name} required={required}>
+          <Label className="dark:text-white" htmlFor={name} required={required}>
             {label}
           </Label>
         )}
 
-        {hint && <Tooltip description={hint} />}
+        {hint && <span className="text-xs font-normal leading-[18px] text-gray-300">{`(${hint})`}</span>}
       </div>
 
       {cloneElement(children as ReactElement, {
@@ -126,6 +127,8 @@ export const FormControl = ({
         error: String(error),
         ...register(name, { valueAsNumber }),
       })}
+
+      {description && <span className="text-sm font-normal leading-5 text-gray-300">{description}</span>}
 
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
     </fieldset>
@@ -152,46 +155,41 @@ export const FieldArray = <S extends z.Schema>({
   const error = form.formState.errors[name]?.message ?? "";
 
   return (
-    <div className="mb-8">
-      <p className="dark:text-white">{title}</p>
+    <div className="flex flex-col gap-[10px] dark:text-white">
+      <div className="flex flex-col gap-[3px]">
+        <Heading className="font-sans text-2xl font-bold">{title}</Heading>
 
-      <p className="mb-2 text-gray-300">{description}</p>
+        <span className="font-sans text-sm font-normal leading-5 text-gray-400">{description}</span>
+      </div>
 
       {error && <div className="border border-red-900 p-2">{String(error)}</div>}
 
       {fields.map((field, i) => (
-        <div key={field.id} className="gap-4 md:flex">
-          {renderField(field, i)}
+        <div key={field.id} className="relative flex flex-col">
+          <div className="gap-4 md:flex">{renderField(field, i)}</div>
 
-          <div className="flex justify-end">
-            <IconButton
-              icon={Trash}
-              tabIndex={-1}
-              type="button"
-              variant="ghost"
-              onClick={() => {
-                remove(i);
-              }}
-            />
-          </div>
+          <button
+            className="absolute bottom-0 right-0 font-sans text-sm text-gray-400 underline duration-200 hover:text-blue-500"
+            type="button"
+            onClick={() => {
+              remove(i);
+            }}
+          >
+            Delete
+          </button>
         </div>
       ))}
 
-      <div className="flex justify-start">
-        <IconButton
-          icon={PlusIcon}
-          size="sm"
-          type="button"
-          variant="outline"
-          onClick={() => {
-            append({});
-          }}
-        >
-          Add row
-        </IconButton>
-      </div>
-
-      <div className="mt-4 h-[1px] w-full bg-gray-100" />
+      <button
+        className="flex w-full items-center gap-[6px] border-t border-gray-100 p-[6px] pt-4 font-sans text-xs font-semibold uppercase text-black duration-200 hover:text-blue-500 dark:text-white"
+        type="button"
+        onClick={() => {
+          append({});
+        }}
+      >
+        <CirclePlusIcon className="size-4" />
+        Add row
+      </button>
     </div>
   );
 };
@@ -199,15 +197,18 @@ export const FieldArray = <S extends z.Schema>({
 export const FormSection = ({
   title,
   description,
-  children,
+  children = null,
+  className = "",
   ...props
 }: { title: string; description: string } & ComponentProps<"section">): JSX.Element => (
-  <section className="mb-8" {...props}>
-    <Heading className="mb-1 font-sans text-xl font-semibold">{title}</Heading>
+  <section className={cn("flex max-w-[824px] flex-col gap-10", className)} {...props}>
+    <div className="flex flex-col gap-[10px]">
+      <Heading className="font-sans text-2xl font-bold">{title}</Heading>
 
-    <p className="mb-4 leading-loose text-gray-400">{description}</p>
+      <p className="font-sans text-base font-normal leading-6 text-gray-400">{description}</p>
+    </div>
 
-    <div className="flex flex-col gap-4">{children}</div>
+    <div className="flex flex-col gap-6">{children}</div>
   </section>
 );
 

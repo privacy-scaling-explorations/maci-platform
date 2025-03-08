@@ -2,7 +2,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { Inter } from "next/font/google";
 
 import { Providers } from "~/providers";
-import "~/styles/globals.css";
+import "~/styles/global.css";
 import "~/styles/HelpButton.css";
 import { api } from "~/utils/api";
 
