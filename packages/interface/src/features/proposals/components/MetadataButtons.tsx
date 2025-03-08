@@ -139,13 +139,18 @@ export const MetadataButtons = ({
       />
 
       {step !== EMetadataStep.PROFILE && (
-        <Button className="text-gray-300 underline" size="auto" variant="ghost" onClick={handleOnClickBackStep}>
+        <Button
+          className="!font-sm !font-normal !normal-case text-gray-300 underline"
+          size="md"
+          variant="ghost"
+          onClick={handleOnClickBackStep}
+        >
           Back
         </Button>
       )}
 
       {step !== EMetadataStep.REVIEW && (
-        <Button size="auto" variant="primary" onClick={handleOnClickNextStep}>
+        <Button size="md" variant="primary" onClick={handleOnClickNextStep}>
           Next
         </Button>
       )}

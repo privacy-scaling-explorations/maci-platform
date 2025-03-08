@@ -3,6 +3,7 @@ import { tv } from "tailwind-variants";
 
 import { createComponent } from "~/components/ui";
 import { useRound } from "~/contexts/Round";
+import { cn } from "~/utils/classNames";
 import { useRoundState } from "~/utils/state";
 import { EInfoCardState, ERoundState } from "~/utils/types";
 
@@ -14,7 +15,7 @@ import { VotingInfo } from "./VotingInfo";
 const InfoContainer = createComponent(
   "div",
   tv({
-    base: "flex justify-center gap-2 rounded-lg bg-white p-5 shadow-lg dark:bg-lightBlack",
+    base: "flex justify-center gap-4 rounded-lg bg-white p-5 shadow-info-card dark:bg-lightBlack overflow-hidden",
     variants: {
       size: {
         sm: "flex-col",
@@ -73,7 +74,7 @@ export const Info = ({
   ];
 
   return (
-    <div className="flex w-full justify-center pb-3">
+    <div className="flex flex-col justify-center gap-5">
       <InfoContainer size={size}>
         {showRoundInfo && <RoundInfo roundId={round?.roundId ?? ""} />}
 
@@ -81,16 +82,23 @@ export const Info = ({
 
         {showRoundInfo && roundState === ERoundState.VOTING && <VotingInfo pollId={pollId} />}
 
-        {showAppState &&
-          steps.map((step) => (
-            <InfoCard
-              key={step.label}
-              end={step.end}
-              start={step.start}
-              state={defineState({ state: step.state, roundState })}
-              title={step.label}
-            />
-          ))}
+        <div
+          className={cn("flex flex-col gap-[10px]", {
+            "w-full": size === "sm",
+            "mx-auto max-lg:w-full xl:w-fit xl:flex-row": size === "default",
+          })}
+        >
+          {showAppState &&
+            steps.map((step) => (
+              <InfoCard
+                key={step.label}
+                end={step.end}
+                start={step.start}
+                state={defineState({ state: step.state, roundState })}
+                title={step.label}
+              />
+            ))}
+        </div>
       </InfoContainer>
     </div>
   );

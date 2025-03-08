@@ -26,15 +26,15 @@ export const VotingInfo = ({ pollId }: IVotingInfoProps): JSX.Element => {
   }, 1000);
 
   return (
-    <div className="w-full py-4">
-      <h4 className="mb-2">Voting Ends In</h4>
+    <div className="flex w-full flex-col">
+      <h4 className="font-sans text-base font-normal uppercase text-gray-400">Voting Ends</h4>
 
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <p className="dark:text-white">Loading...</p>}
 
-      {!isLoading && timeLeft[3] < 0 && <p>Voting has ended</p>}
+      {!isLoading && timeLeft[3] < 0 && <p className="dark:text-white">Voting has ended</p>}
 
       {!isLoading && timeLeft[3] > 0 && (
-        <div className="flex gap-2 dark:text-white">
+        <div className="flex gap-[14px] dark:text-white">
           <TimeSlot num={timeLeft[0]} unit="Days" />
 
           <TimeSlot num={timeLeft[1]} unit="Hours" />

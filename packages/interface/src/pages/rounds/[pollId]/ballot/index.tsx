@@ -72,15 +72,15 @@ interface IEmptyBallotProps {
 }
 
 const EmptyBallot = ({ pollId }: IEmptyBallotProps): JSX.Element => (
-  <div className="flex flex-1 items-center justify-center">
+  <div className="flex flex-1 items-center justify-center text-center">
     <div className=" max-w-[360px] space-y-4">
       <Heading className="text-center" size="lg">
         Your ballot is empty
       </Heading>
 
-      <p className="text-center text-sm text-gray-700">
+      <span className="text-center font-sans text-base text-gray-400">
         There are currently no projects added. Browse through the available projects.
-      </p>
+      </span>
 
       <div className="flex items-center justify-center gap-3">
         <Button as={Link} href={`/rounds/${pollId}`} size="auto" variant="primary">
@@ -137,10 +137,15 @@ const BallotAllocationForm = ({ pollId, mode }: IBallotAllocationFormProps): JSX
           )}
         </div>
 
-        <div className={clsx("flex h-16 items-center justify-end gap-2", sum > initialVoiceCredits && "text-red")}>
+        <div
+          className={clsx(
+            "flex h-16 items-center justify-end gap-2 dark:text-white",
+            sum > initialVoiceCredits && "text-red",
+          )}
+        >
           <h4>Total votes:</h4>
 
-          <p className="dark:text-white">{formatNumber(sum)}</p>
+          <p>{formatNumber(sum)}</p>
         </div>
       </div>
     </div>

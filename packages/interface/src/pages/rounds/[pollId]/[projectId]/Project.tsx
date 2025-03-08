@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { FiAlertCircle } from "react-icons/fi";
 import { zeroAddress } from "viem";
+import { useAccount } from "wagmi";
 
 import { StatusBar } from "~/components/ui/StatusBar";
 import { useRound } from "~/contexts/Round";
@@ -34,9 +35,11 @@ const ProjectDetailsPage = ({ projectId = "", pollId }: IProjectDetailsProps): J
 
   const isDeleted = useMemo(() => project.data?.deleted === true, [project]);
 
+  const { chain } = useAccount();
+
   return (
     <LayoutWithSidebar eligibilityCheck showBallot showInfo pollId={pollId} sidebar="left">
-      {roundState === ERoundState.APPLICATION && !isDeleted && (
+      {roundState === ERoundState.APPLICATION && !isDeleted && chain && (
         <ReviewBar
           edition={hasEdition ? edition.data?.recipient.id : undefined}
           pollId={pollId}

@@ -5,7 +5,7 @@ import { tv } from "tailwind-variants";
 import { createComponent } from ".";
 
 const button = tv({
-  base: "inline-flex items-center justify-center font-semibold uppercase rounded-lg text-center transition-colors duration-150 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  base: "font-sans inline-flex items-center justify-center font-semibold uppercase rounded-lg text-center transition-colors duration-150 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   variants: {
     variant: {
       primary: "bg-black text-white hover:bg-blue-950 dark:bg-white dark:text-black dark:hover:bg-blue-100",
@@ -19,6 +19,8 @@ const button = tv({
       none: "",
     },
     size: {
+      xs: "px-2 text-xs rounded-md",
+      md: "py-2 px-5 text-base leading-6 rounded-[6px] !normal-case",
       sm: "px-3 py-2 h-8 text-xs rounded-md",
       default: "px-4 py-2 h-10 w-full",
       auto: "px-4 py-2 h-10 w-auto",
@@ -36,20 +38,19 @@ const button = tv({
 
 export const Button = createComponent("button", button);
 
-export interface IIconButtonProps extends ComponentPropsWithRef<typeof Button> {
-  icon: LucideIcon;
-  size: string;
-  children: ReactNode;
+export interface IIconButtonProps extends Omit<ComponentPropsWithRef<typeof Button>, "size"> {
+  icon?: LucideIcon | null;
+  size?: string;
+  children?: ReactNode;
 }
 
-export const IconButton = forwardRef(
-  ({ children, icon, size, ...props }: IIconButtonProps, ref): JSX.Element => (
+export const IconButton = forwardRef<HTMLButtonElement, IIconButtonProps>(
+  ({ children = null, icon = null, size = "", ...props }, ref) => (
     <Button ref={ref} {...props} size={children ? size : "icon"}>
-      {(icon as IIconButtonProps["icon"] | undefined)
-        ? createElement(icon, {
-            className: `w-4 h-4 ${children ? "mr-2" : ""}`,
-          })
-        : null}
+      {icon &&
+        createElement(icon, {
+          className: `w-4 h-4 ${children ? "mr-2" : ""}`,
+        })}
 
       {children}
     </Button>

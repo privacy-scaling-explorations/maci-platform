@@ -56,7 +56,12 @@ export const ReviewBar = ({ pollId, projectId, edition = undefined }: IReviewBar
   );
 
   const originalProposal = useMemo(() => {
-    if (!isApproved && original.data) {
+    if (
+      proposal.data?.requestType &&
+      proposal.data.requestType.toString() === "Change" &&
+      !isApproved &&
+      original.data
+    ) {
       return original.data.find((r) => r.initialized === true);
     }
 
