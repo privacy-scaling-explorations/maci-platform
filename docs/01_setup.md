@@ -33,20 +33,11 @@ cp packages/interface/.env.example packages/interface/.env
 
 As a coordinator you need to deploy a MACI instance and poll. Before deploying the contracts you need to:
 
-1. Generate the MACI Keys.
-2. Download the zero knowledge artifacts.
+1. Download the zero knowledge artifacts.
+2. Generate the MACI Keys.
 3. Configure the round metadata.
 4. Set the contract .envs
 5. Configure the deployment file.
-
-### Generate MACI Keys
-
-In order to run MACI polls, a coordinator is required to publish their MACI public key. You will need to generate a MACI keypair, and treat the private key just as your Ethereum private keys. Please store them in a safe place as you won't be able to finish a round if you lose access, or if compromised a bad actor could decrypt the vote and publish them online. You can generate a new key pair by running the following commands:
-
-```bash
-cd packages/coordinator
-pnpm generate-maci-keypair
-```
 
 ### Download the zero knowledge artifacts
 
@@ -64,12 +55,24 @@ pnpm download-zkeys:test
 
 The files are stored on the zkeys folder. Note the locations of the .zkey files cause you will need it when deploying contracts.
 
-### Set the coordinator .env files
+### Generate MACI Keys
 
-Copy the `.env.example` file. For this version only make sure to include the `BLOB_READ_WRITE_TOKEN` variable from vercel to storage the metadata.
+In order to run MACI polls, a coordinator is required to publish their MACI public key. You will need to generate a MACI keypair, and treat the private key just as your Ethereum private keys. Please store them in a safe place as you won't be able to finish a round if you lose access, or if compromised a bad actor could decrypt the vote and publish them online. You can generate a new key pair by using `maci-cli` package.
+
+### Set up the .env files
+
+Copy the `.env.example` file. Especially, you need to make sure to include the `BLOB_READ_WRITE_TOKEN` variable from vercel to storage the metadata.
 
 ```bash
 cp .env.example .env
+```
+
+Make sure to include a mnemonic and RPC url. Make sure to specify the env variable for your desired network.
+
+```
+MNEMONIC="your_ethereum_secret_key"
+OP_SEPOLIA_RPC_URL="the_rpc_url"
+ETHERSCAN_API_KEY="etherscan api key"
 ```
 
 ### Generate the round metadata
@@ -90,23 +93,6 @@ This command will upload the JSON file to your configured vercel account and wil
 
 > [!IMPORTANT]
 > Current version of MACI-PLATFORM supports multiple Polls, for each Poll you should configure new round metadata.
-
-### Set the contract .env files
-
-Head back to the `packages/contracts` folder and copy the `.env.example` file.
-
-```bash
-cd ../../packages/contracts/
-cp .env.example .env
-```
-
-Make sure to include a mnemonic and RPC url. Make sure to specify the env variable for your desired network.
-
-```
-MNEMONIC="your_ethereum_secret_key"
-OP_SEPOLIA_RPC_URL="the_rpc_url"
-ETHERSCAN_API_KEY="etherscan api key"
-```
 
 ### Set the configuration file
 
@@ -235,37 +221,6 @@ https://vercel.com/new
   <img width="45%" src="./images/vercel_new.png" />
   <img width="45%" src="./images/vercel_configure.png" />
 </div>
-
-## Poll finalization
-
-Once the voting time has ended, as a coordinator, first you need to merge signups and messages (votes). Head to **MACI** repository and run the merge command with the deployed poll:
-
-```bash
-cd packages/contracts
-pnpm merge:[network] --poll [poll-id]
-```
-
-Then the coordinator generates proofs for the message processing, and tally calculations. This allows to publish the poll results on-chain and then everyone can verify the results when the poll is over:
-
-```bash
-pnpm run prove:[network] --poll [poll-id] \
-    --coordinator-private-key [coordinator-maci-private-key] \
-    --tally-file ../results/tally.json \
-    --output-dir ../results/proofs/ \
-    --start-block [block-number]
-    --blocks-per-batch [number-of-blocks]
-```
-
-> [!IMPORTANT]
-> You can reduce the time of the proving by including more blocks per batch, you can try with 500.
-
-Now it's time to submit the poll results on-chain so that everyone can verify the results:
-
-```bash
-pnpm submitOnChain:[network] --poll [poll-id] \
-    --output-dir proofs/ \
-    --tally-file proofs/tally.json
-```
 
 ## Additional configuration
 
