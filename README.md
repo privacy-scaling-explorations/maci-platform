@@ -44,10 +44,6 @@ pnpm run dev:interface
 open localhost:3000
 ```
 
-## Documentation
-
-MACI-Platform uses EAS as backbone to run Retroactive Public Goods Funding to reward contributors ([As used by the Optimism Collective](https://community.optimism.io/citizens-house/how-retro-funding-works)) while adding a privacy layer to reduce bribery and collusion using MACI.
-
 ## Credits
 
 The interface started as a fork of [easy-rpgf](https://github.com/gitcoinco/easy-retro-pgf), but now has gone a completely different direction and thus we decided to detach the fork to clarify the new direction of the project, which is not focusing anymore on RPGF only, but other types of voting and funding.
