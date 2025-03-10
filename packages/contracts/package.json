@@ -60,7 +60,7 @@
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@openzeppelin/contracts": "^5.0.2",
-    "@vercel/blob": "^0.27.1",
+    "@vercel/blob": "^0.27.2",
     "circomlibjs": "^0.1.7",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
