@@ -2,10 +2,11 @@
 
 MACI Platform is a complete solution for running voting and funding rounds using [MACI](https://maci.pse.dev).
 
-It is comprised of two components:
+It is comprised of three components:
 
-- Coordinator Service - the complete automation of MACI operations
-- Interface - a web app for managing and voting on MACI polls
+- Interface - a web app for managing and voting on MACI polls.
+- Contracts - allows the deployment of the MACI contracts.
+- Subgraph - queries blockchain to populate the Interface.
 
 ### MACI-Platform docs
 
@@ -46,12 +47,6 @@ open localhost:3000
 ## Documentation
 
 MACI-Platform uses EAS as backbone to run Retroactive Public Goods Funding to reward contributors ([As used by the Optimism Collective](https://community.optimism.io/citizens-house/how-retro-funding-works)) while adding a privacy layer to reduce bribery and collusion using MACI.
-
-## Video Tutorial
-
-A complete installation tutorial can be seen here:
-
-[![Watch the Video](https://img.youtube.com/vi/86VBbO1E4Vk/0.jpg)](https://www.youtube.com/watch?v=86VBbO1E4Vk)
 
 ## Credits
 
