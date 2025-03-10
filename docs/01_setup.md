@@ -57,7 +57,7 @@ The files are stored on the zkeys folder. Note the locations of the .zkey files 
 
 ### Generate MACI Keys
 
-In order to run MACI polls, a coordinator is required to publish their MACI public key. You will need to generate a MACI keypair, and treat the private key just as your Ethereum private keys. Please store them in a safe place as you won't be able to finish a round if you lose access, or if compromised a bad actor could decrypt the vote and publish them online. You can generate a new key pair by using `maci-cli` package.
+In order to run MACI polls, a coordinator is required to publish their MACI public key. You will need to generate a MACI keypair, and treat the private key just as your Ethereum private keys. Please store them in a safe place as you won't be able to finish a round if you lose access, or if compromised a bad actor could decrypt the vote and publish them online. You can generate a new key pair by using `maci-cli` package. The [quickstart guide](https://maci.pse.dev/docs/quick-start#generate-coordinator-keys) on the MACI documentation provides more details.
 
 ### Set up the .env files
 
@@ -221,6 +221,10 @@ https://vercel.com/new
   <img width="45%" src="./images/vercel_new.png" />
   <img width="45%" src="./images/vercel_configure.png" />
 </div>
+
+## Poll Finalization
+
+Read the [Results](./05_results.md) documentation to tally and finalize a poll.
 
 ## Additional configuration
 
