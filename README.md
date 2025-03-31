@@ -1,5 +1,9 @@
 # MACI Platform
 
+> [!IMPORTANT]  
+> MACI Platform is no longer maintained. It can be used as is for running on chain voting rounds using [MACI v2](https://maci.pse.dev/docs/v2.x/introduction), thus we encourage you to fork it and use it as you see fit.
+> MACI (the protocol), is still actively maintained and can be found [here](https://github.com/privacy-scaling-explorations/maci).
+
 MACI Platform is a complete solution for running voting and funding rounds using [MACI](https://maci.pse.dev).
 
 It is comprised of three components:
